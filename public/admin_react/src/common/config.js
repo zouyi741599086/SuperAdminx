@@ -5,7 +5,7 @@ export const config = {
     projectName: 'SuperAdminx后台开发框架', 
     //公司名称，显示在页脚
     company: 'SuperAdminx', 
-    icp: '渝ICP备15012622号-11',
+    icp: '渝ICP备xxxxxxxxxx号',
     //存储本地数据前缀，存在本地的所有数据都有此前缀
     storageDbPrefix: 'adminDb', 
     //是否开启debug

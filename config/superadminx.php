@@ -11,7 +11,7 @@
  */
 
 return [
-    //数据解密私钥，百度“rsa 密钥在线生成”，需2048位PKCS1
+    //数据解密私钥，左边不要有空格，百度“rsa密钥在线生成”，需2048位PKCS1格式
     'rsa_private'         => <<<EOF
 -----BEGIN RSA PRIVATE KEY-----
 MIIEpQIBAAKCAQEAqNoRA7DlwWAp5N3Ax5ebvt2ixWPaYOZXU+cprnubb75zoCby
@@ -86,12 +86,6 @@ EOF,
         // 文件名形如：apiclient_cert.pem
         'mch_public_cert_path' => './config/wechat_cert/apiclient_cert.pem',
     ],
-    //微信开放平台的
-    'wechat_open'         => [
-
-    ],
-    //腾讯地图的key
-    'tencent_map_key'     => 'OTKBZ-AIRCL-GHOPV-M7I2V-4Q6GH-OCFMS',
     //短信配置
     'sms'                 => [
         //凯凌短信

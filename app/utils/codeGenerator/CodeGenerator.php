@@ -363,7 +363,6 @@ class CodeGenerator
 
         $path_file_name = base_path() . "\\{$file_path}\\{$file_name}";
 
-        var_dump($path_file_name);
         if (! $forced && file_exists($path_file_name)) {
             abort('文件已存在，是否进行覆盖~', 2);
         }
