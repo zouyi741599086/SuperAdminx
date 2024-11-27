@@ -1,0 +1,59 @@
+/*侧边栏*/
+.sa-layout-slide .sider{height: calc(100vh - 56px);position:sticky !important;left: 0;top: 56px;bottom: 0;border-right:1px solid rgba(5,5,5,.06);background:#fff;z-index: 3;}
+.sa-layout-slide .sider .ant-layout-sider-children{width:100%;display: flex;flex-direction: column;}
+
+.sa-layout-slide .sider .ant-layout-sider-children .menu-warp{flex:1;overflow-y:auto;}
+.sa-layout-slide .sider .ant-layout-sider-children .menu-warp .menu{border:0px !important;padding:0px 5px;}
+
+/*侧边栏 黑色的时候*/
+.sa-antd-dark .sa-layout-slide .sider{border-right:1px solid rgba(253, 253, 253, 0.12);}
+
+/*header*/
+.sa-layout-slide .header{height:56px;padding: 0; background:rgba(255, 255, 255, .9);position:sticky;top:0px;line-height:100%;backdrop-filter:blur(6px);z-index: 3;border-bottom:1px solid rgba(5, 5, 5, 0.06);}
+
+.sa-layout-slide .header .sa-layout-header-warp{width:100%;height:100%;display: flex;box-sizing: border-box;padding:0px 16px;}
+.sa-layout-slide .header .sa-layout-header-warp .l{flex:1;display: flex;}
+.sa-layout-slide .header .sa-layout-header-warp .l .logo{width:auto; box-sizing: border-box;padding:10px 0px;display: flex;align-items: center;justify-content: center;height:100%;}
+.sa-layout-slide .header .sa-layout-header-warp .l .logo img{width:36px;height:36px;}
+.sa-layout-slide .header .sa-layout-header-warp .l .logo span{display: inline-block;flex:1;padding-left:5px;font-size:16px;line-height:36px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sa-layout-slide .header .sa-layout-header-warp .r{width:auto;display: flex;}
+.sa-layout-slide .header .sa-layout-header-warp .r .item{display: inline-flex;align-items: center;padding:0px 5px;}
+.sa-layout-slide .header .sa-layout-header-warp .r .item .circle{border-radius: 6px;cursor: pointer;box-sizing: border-box;padding:6px;display: flex;align-items: center;justify-content: center;font-size:16px;color:rgba(0,0,0,1);transition: .5s;}
+.sa-layout-slide .header .sa-layout-header-warp .r .item .circle:hover{background-color: rgba(0,0,0,.05);}
+
+/*header 黑色的时候*/
+.sa-antd-dark .sa-layout-slide .sider{background: none;}
+.sa-antd-dark .sa-layout-slide .header{background: rgba(31, 31, 31, 0.6);border-bottom:1px solid rgba(253, 253, 253, 0.12);}
+.sa-antd-dark .sa-layout-slide .header .sa-layout-header-warp .r .item .circle{color:rgba(255, 255, 255, 0.85);}
+.sa-antd-dark .sa-layout-slide .header .sa-layout-header-warp .r .item .circle:hover{background:#303030;}
+
+/*菜单收缩开关*/
+.sa-layout-slide .sa-collapsed{position:absolute;top:9px;color:rgba(0,0,0,0.25);transition:.3s;border:0px;box-shadow:0 4px 16px -4px rgb(0 0 0 / 5%),0 2px 8px -2px rgb(25 15 15 / 7%),0 1px 2px 0 rgb(0 0 0 / 8%);}
+.sa-layout-slide .sa-collapsed .icon{transform: scale(.8);}
+
+.sa-antd-dark .sa-layout-slide .sa-collapsed{background-color: #303030;color:rgba(255, 255, 255, 0.85);}
+.sa-antd-dark .sa-layout-slide .sa-collapsed:hover{color:rgba(255, 255, 255, 0.65);}
+
+
+/*简约风格的时候*/
+.sa-antd-simple .sa-layout-slide .sider{background: none;}
+.sa-antd-simple .sa-layout-slide .sider,
+.sa-antd-simple .sa-antd-dark .sa-layout-slide .sider{border-right:0px;}
+
+.sa-antd-simple .sa-layout-slide .header{border-bottom:0px;background: none;}
+.sa-antd-simple .sa-antd-dark .sa-layout-slide .header{border-bottom:0px;}
+
+
+/*start 圆角风格*/
+.sa-is-radius .sa-layout-slide .sider{background: none !important;border:0px;}
+.sa-is-radius .sa-layout-slide .sider .ant-layout-sider-children{padding:12px 0px 12px 12px;}
+.sa-is-radius .sa-layout-slide .sider .ant-layout-sider-children .menu-warp{background-color: #fff;border-radius: 8px;}
+.sa-is-radius .sa-layout-slide .sa-collapsed{margin-top:10px;}
+
+.sa-is-radius .sa-layout-slide .header{padding:0px 12px;border:0px;background: none;}
+.sa-is-radius .sa-layout-slide .header .sa-layout-header-warp{background:rgba(255,255,255,.9);border:0px;border-bottom-left-radius: 8px;border-bottom-right-radius: 8px;}
+
+.sa-antd-dark.sa-is-radius .sa-layout-slide .sider .ant-layout-sider-children .menu-warp{background-color: #141414;}
+.sa-antd-dark.sa-is-radius .sa-layout-slide .header .sa-layout-header-warp{background:rgba(20,20,20,.9);}
+.sa-antd-dark.sa-is-radius .sa-layout-slide .header{background: none;}
+/*end 圆角风格*/

@@ -1,0 +1,717 @@
+<?php
+/**
+ * 弹窗table
+ */
+    use app\utils\codeGenerator\CodeGenerator;
+    use app\common\model\AdminMenuModel;
+
+    $data = CodeGenerator::getCodeGeneratorInfo($table_name);
+
+    //引入api的文件名称
+    $apiFileName = CodeGenerator::toCamelCase($table_name);
+    $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
+
+    //需要引入的组件
+    $antdComponent = [];
+
+    //需要导入的自定义组件
+    $zidingyiComponent = [];
+
+
+    if (isset($list_fields_type)) {
+        foreach ($list_fields_type as $k => $v) {
+            //需要引入图片组件
+            if (($v == 'image' || $v == 'descriptions') && !in_array('Image', $antdComponent)) {
+                $antdComponent[] = 'Image';
+            }
+            //需要引入Tag组件
+            if ($v == 'tag' && !in_array('Tag', $antdComponent)) {
+                $antdComponent[] = 'Tag';
+            }
+            //需要引入头像组件
+            if (($v == 'avatar' || $v == 'user') && !in_array('Avatar', $antdComponent)) {
+                $antdComponent[] = 'Avatar';
+            }
+            //需要引入Switch开关组件
+            if ($v == 'switch' && !in_array('Switch', $antdComponent)) {
+                $antdComponent[] = 'Switch';
+            }
+            //需要引入排序的InputNumber组件
+            if ($v == 'sort' && !in_array('InputNumber', $antdComponent)) {
+                $antdComponent[] = 'InputNumber';
+            }
+            //需要引入进度条组件
+            if ($v == 'progress' && !in_array('Progress', $antdComponent)) {
+                $antdComponent[] = 'Progress';
+            }
+            //需要引入弹窗描述组件
+            if ($v == 'descriptions' && !in_array('Descriptions', $antdComponent)) {
+                $antdComponent[] = 'Descriptions';
+                $antdComponent[] = 'Popover';
+            }
+
+            //弹窗查看文本
+            if ($v == 'preview_text') {
+                $zidingyiComponent[] = "import PreviewContent from '@/pages/component/preview/content/index';";
+            }
+            //弹窗查看富文本
+            if ($v == 'preview_teditor') {
+                $zidingyiComponent[] = "import PreviewTeditor from '@/pages/component/preview/teditor/index';";
+            }
+            //预览多图或视频
+            if ($v == 'preview_images_videos') {
+                $zidingyiComponent[] = "import PreviewImagesVideos from '@/pages/component/preview/imagesVideos/index';";
+            }
+            //预览视频
+            if ($v == 'preview_video') {
+                $zidingyiComponent[] = "import PreviewVideo from '@/pages/component/preview/video/index';";
+            }
+            //预览pdf
+            if ($v == 'preview_pdf') {
+                $zidingyiComponent[] = "import PreviewPdf from '@/pages/component/preview/pdf/index';";
+            }
+            //预览word
+            if ($v == 'preview_word') {
+                $zidingyiComponent[] = "import PreviewWord from '@/pages/component/preview/word/index';";
+            }
+
+        }
+    }
+?>
+import { useRef, lazy, useState} from 'react';
+import { ModalForm } from '@ant-design/pro-components';
+import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>';
+import { ProTable } from '@ant-design/pro-components';
+import { App, Button, Typography,
+<?php 
+    foreach ($antdComponent as $v) {
+echo "{$v}, ";
+    }
+?>
+} from 'antd';
+import {
+    DeleteOutlined,
+    PlusOutlined,
+} from '@ant-design/icons';
+import { useUpdateEffect } from 'ahooks';
+import Lazyload from '@/pages/component/lazyLoad/index';
+<?php
+    //导入自定义的组件
+    foreach ($zidingyiComponent as $v) {
+echo "{$v}\n";
+    }
+?>
+
+<?php
+    //如果有引入图片标签，则引入图片打开失败的时候的图片
+    if (in_array('Image', $antdComponent)) {
+echo "const imgErr = new URL('@/static/default/imgErr.png', import.meta.url).href;\n";
+    }
+?>
+
+/**
+ * <?php echo $table_title ?? '';?> 
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+export default ({ tableReload, id, setId, ...props }) => {
+    const tableRef = useRef();
+    const { message } = App.useApp();
+    const [open, setOpen] = useState(false);
+
+    useUpdateEffect(() => {
+        if (id > 0) {
+            setOpen(true);
+        }
+    }, [id])
+
+    ///////////////////////////刷新表格数据///////////////////////
+    const tableRe = () => {
+        tableRef?.current?.reset?.();
+    }
+
+    //表格列
+    const columns = [
+<?php
+    if (isset($list_fields_type)) {
+        foreach ($list_fields_type as $field => $type) {
+            //字段的中文名称
+            $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
+            
+            //列的参数
+            $columnsParams = '';
+
+            //是否支持搜索
+            if (isset($list_fields_type_config[$field]['search']) && $list_fields_type_config[$field]['search']) {
+                $columnsParams .= "            search: true,\n";
+            } else {
+                $columnsParams .= "            search: false,\n";
+            }
+            //是否自动省略
+            if (isset($list_fields_type_config[$field]['ellipsis']) && $list_fields_type_config[$field]['ellipsis']) {
+                $columnsParams .= "            ellipsis: true,\n";
+            }
+            //是否支持复制
+            if (isset($list_fields_type_config[$field]['copyable']) && $list_fields_type_config[$field]['copyable']) {
+                $columnsParams .= "            copyable: true,\n";
+            }
+            //是否支持排序
+            if (isset($list_fields_type_config[$field]['sorter']) && $list_fields_type_config[$field]['sorter']) {
+                $columnsParams .= "            sorter: true,\n";
+            }
+            //列的参数 前面加换行
+            if ($columnsParams) {
+                $columnsParams = "\n{$columnsParams}";
+            }
+            $columnsParams = rtrim($columnsParams);
+
+            //常规文本
+            if ($type == 'text') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => _,
+        },\n";
+
+            }
+
+            //可点击链接
+            else if ($type == 'text_link') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <NavLink to={`/xxx/xxx?id=\${record.id}`} disabled={authCkeck('1111')}>{record.{$field}}</NavLink>
+        },\n";
+
+            }
+
+            //图片
+            else if ($type == 'image') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => (
+                <Image
+                    width={40}
+                    src={`\${record.{$field}}`}
+                    fallback={imgErr}
+                />
+            )
+        },\n";
+
+            }
+
+            //姓名/手机号(可复制)
+            else if ($type == 'name_tel_copy') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                {record.xxxx}<br/>
+                <Typography.Paragraph copyable>{record.xxx ?? '-'}</Typography.Paragraph>
+            </>
+        },\n";
+
+            }
+
+            //姓名/年龄/性别
+            else if ($type == 'name_age_sex') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                {record.User?.name}<br />
+                {record.User?.age > 0 ? <Typography.Text code>{record.User?.age}岁</Typography.Text> : ''}
+                {record.User?.sex == 1 ? <Typography.Text type=\"warning\">男</Typography.Text> : ''}
+                {record.User?.sex == 2 ? <Typography.Text type=\"success\">女</Typography.Text> : ''}
+            </>
+        },\n";
+
+            }
+
+            //Tag标签
+            else if ($type == 'tag') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                {/* magenta red volcano orange gold lime green cyan blue geekblue purple*/}
+                <Tag color='magenta'>{record.{$field}}</Tag>
+            </>
+        },\n";
+
+            }
+
+            //头像
+            else if ($type == 'avatar') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <Avatar src={`\${record.img}`}>{record.name?.substr(0, 1)}</Avatar>
+            </>
+        },\n";
+
+            }
+
+            //头像/姓名/手机号
+            else if ($type == 'user') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => {
+                if (record.User) {
+                    return <div style={{ display: 'flex' }}>
+                        <Avatar
+                            src={record.User?.img}
+                            size=\"large\"
+                            style={{
+                                flexShrink: 0
+                            }}
+                        >{record.User?.name?.substr(0, 1)}</Avatar>
+                        <div style={{ paddingLeft: '5px' }}>
+                            {record.User?.name}<br />
+                            {record.User?.tel}
+                        </div>
+                    </div>
+                }
+                return '--';
+            },
+        },\n";
+
+            }
+
+            //金额
+            else if ($type == 'money') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <Typography.Text type=\"danger\">￥{record.{$field}}</Typography.Text>
+            </>
+        },\n";
+
+            }
+
+            //多行的金额
+            else if ($type == 'money_line') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <div>合同金额：<Typography.Text>￥{record.money}</Typography.Text></div>
+                <div>已收金额：<Typography.Text type=\"success\">￥{record.money_into}</Typography.Text></div>
+                <div>支出金额：<Typography.Text type=\"warning\">￥{record.money_out}</Typography.Text></div>
+                <div>实际收款：<Typography.Text>￥{record.money_into_out_balance}</Typography.Text></div>
+                <div>欠款金额：<Typography.Text type=\"danger\">￥{record.money_arrears}</Typography.Text></div>
+            </>
+        },\n";
+
+            }
+
+            //Typography文字
+            else if ($type == 'typography_text') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                {/* type= secondary success warning danger */}
+                {/* 属性 mark={true} || code={true} || strong={true} */}
+                <Typography.Text type=\"success\">{record.{$field}}</Typography.Text>
+            </>
+        },\n";
+
+            }
+
+            //状态开关可切换
+            else if ($type == 'switch') {
+                //权限id
+                $authId = $data['auth_ids']['auth_update_status_id'] ?? 0;
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            //定义搜索框类型
+            valueType: 'select',
+            //订单搜索框的选择项
+            fieldProps: {
+                options: [
+                    {
+                        value: 1,
+                        label: '显示',
+                    },
+                    {
+                        value: 2,
+                        label: '隐藏',
+                    },
+                ]
+            },
+            render: (_, record) => <>
+                <Switch
+                    checked={record.{$field} === 1 ? true : false}
+                    checkedChildren=\"显示\"
+                    unCheckedChildren=\"隐藏\"
+                    onClick={() => {
+                        updateStatus(record.id, record.status == 1 ? 2 : 1);
+                    }}
+                    disabled={authCkeck('{$authId}')}
+                />
+            </>
+        },\n";
+
+            }
+
+            //多颜色状态/类型
+            else if ($type == 'status_type') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            //定义搜索框类型
+            valueType: 'select',
+            //订单搜索框的选择项
+            fieldProps: {
+                options: [
+                    {
+                        value: 1,
+                        label: '待付款',
+                    },
+                    {
+                        value: 2,
+                        label: '待发货',
+                    },
+                    {
+                        value: 3,
+                        label: '待收货',
+                    },
+                    {
+                        value: 4,
+                        label: '待评价',
+                    },
+                    {
+                        value: 5,
+                        label: '已完成',
+                    },
+                    {
+                        value: 6,
+                        label: '已关闭',
+                    },
+                    {
+                        value: 7,
+                        label: '退款审核中',
+                    },
+                    {
+                        value: 8,
+                        label: '已退款',
+                    },
+                ]
+            },
+            render: (_, record) => <>
+                {record.{$field} === 1 ? <>
+                    <Typography.Text type=\"danger\">待付款</Typography.Text>
+                </> : ''}
+                {record.{$field} === 2 ? <>
+                    <Typography.Text mark>待发货</Typography.Text>
+                </> : ''}
+                {record.{$field} === 3 ? <>
+                    <Typography.Text type=\"success\">待收货</Typography.Text>
+                </> : ''}
+                {record.{$field} === 4 ? <>
+                    <Typography.Text type=\"success\">待评价</Typography.Text>
+                </> : ''}
+                {record.{$field} === 5 ? <>
+                    <Typography.Text>已完成</Typography.Text>
+                </> : ''}
+                {record.{$field} === 6 ? <>
+                    <Typography.Text disabled>已关闭</Typography.Text>
+                </> : ''}
+                {record.{$field} === 7 ? <>
+                    <Typography.Text mark>退款审核中</Typography.Text>
+                </> : ''}
+                {record.{$field} === 8 ? <>
+                    <Typography.Text underline>已退款</Typography.Text>
+                </> : ''}
+            </>
+        },\n";
+
+            }
+
+            //排序
+            else if ($type == 'sort') {
+                //权限id
+                $authId = $data['auth_ids']['auth_update_sort_id'] ?? 0;
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <InputNumber
+                    defaultValue={record.{$field}}
+                    style={{ width: '100px' }}
+                    min={0}
+                    disabled={authCkeck('{$authId}')}
+                    onChange={(value) => {
+                        sortArrChange(record.id, value);
+                    }}
+                />
+            </>
+        },\n";
+
+            }
+
+            //进度条
+            else if ($type == 'progress') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <Progress
+                    style={{ maxWidth: 150 }}
+                    percent={record.{$field}}
+                    size=\"small\"
+                    format={(val) => {
+                        return `\${val}%`
+                    }}
+                    percentPosition={{
+                        align: 'end',
+                        type: 'outer',
+                    }}
+                />
+            </>
+        },\n";
+
+            }
+
+            //弹窗用Descriptions描述列表
+            else if ($type == 'descriptions') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => {
+                let items = [
+                    {
+                        key:1,
+                        label: '教学内容',
+                        children: record.xxxx,
+                    },
+                    {
+                        key:2,
+                        label: '教学反馈',
+                        children: record.xxxx,
+                    }
+                    {
+                        key:3,
+                        label: '教学截图',
+                        children: {record.xxx?.length > 0 ? <>
+                            <Image.PreviewGroup>
+                                {record.xxx?.map((item, index) => {
+                                    return <Image key={index} style={{ width: 80, height: 80, margin: '0px 5px 5px 0px' }} src={item} />
+                                })}
+                            </Image.PreviewGroup>
+                        </> : '--'},
+                    }
+                ];
+                return <>
+                    <Popover content={<>
+                        <Descriptions
+                            size=\"small\"
+                            column={1}
+                            style={{ maxWidth: '500px', maxHeight: '260px', overflowY: 'auto' }}
+                            bordered
+                            labelStyle={{ width: '90px' }}
+                            items={items}
+                        />
+                    </>}>
+                        <Button type=\"primary\" size=\"small\" ghost >查看</Button>
+                    </Popover>
+                </>
+            }
+        },\n";
+
+            }
+
+            //弹窗查看文本
+            else if ($type == 'preview_text') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <PreviewContent title=\"查看\" content={record.{$field}} type={1}/>
+            </>
+        },\n";
+
+            }
+
+            //预览富文本内容
+            else if ($type == 'preview_teditor') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <PreviewTeditor title=\"{$tmp_field_title}\" content={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //预览视频
+            else if ($type == 'preview_video') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <PreviewVideo url={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //预览多图或视频
+            else if ($type == 'preview_images_videos') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <PreviewImagesVideos imgs={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //预览pdf
+            else if ($type == 'preview_pdf') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <PreviewPdf title=\"{$tmp_field_title}\" url={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //预览word
+            else if ($type == 'preview_word') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            render: (_, record) => <>
+                <PreviewWord title=\"{$tmp_field_title}\" url={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //添加时间
+            else if ($type == 'create_time') {
+                
+echo "        {
+            title: '{$tmp_field_title}',
+            dataIndex: '{$field}',{$columnsParams}
+            valueType: 'dateRange',
+            render: (_, record) => record.create_time,
+        },\n";
+
+            }
+
+        }
+    }
+?> 
+    ];
+
+    return <>
+        <ModalForm
+            name="list<?php echo CodeGenerator::toCamelCase($table_name);?>"
+            open={open}
+            onOpenChange={(_boolean) => {
+                setOpen(_boolean);
+                //关闭的时候干掉id，不然无法重复修改同一条数据
+                if (_boolean === false) {
+                    setId(0);
+                }
+            }}
+            title="<?php echo $modal_table_title ?? '';?>"
+            //trigger={
+            //    <Button 
+            //        //type="primary" 
+            //        type="link"
+            //        size="small"
+            //        disabled={authCkeck('<?php echo $modal_table_auth_id ?? 0;?>')} 
+            //        icon={<EditOutlined />}
+            //    ><?php echo $modal_table_title ?? '';?></Button>
+            //}
+            width={1000}
+            layout="horizontal"
+            modalProps={{
+                destroyOnClose: true,
+            }}
+            submitter={false}
+        >
+            <ProTable
+                actionRef={tableRef}
+                rowKey="id"
+                ghost={true}
+                search={false}
+                size="small"
+                options={false}
+                //列名
+                columns={columns}
+                //滚动条
+                scroll={{
+                    x: 800
+                }}
+                //翻页
+                pagination={{
+                    defaultPageSize: 10,
+                    size: 'default',
+                    //支持跳到多少页
+                    showQuickJumper: true,
+                    showSizeChanger: true,
+                    responsive: true,
+                }}
+                params={{
+                    id: id
+                }}
+                //请求数据
+                request={async (params = {}, sort, filter) => {
+                    //排序的时候
+                    let orderBy = '';
+                    for (let key in sort) {
+                        orderBy = key + ' ' + (sort[key] === 'descend' ? 'desc' : 'asc');
+                    }
+                    const res = await <?php echo $apiFileName;?>Api.<?php echo $modal_table_api_name;?>({
+                        ...params,//包含了翻页参数跟搜索参数
+                        orderBy, //排序
+                        page: params.current,
+                    });
+                    return {
+                        data: res.data.data,
+                        success: true,
+                        total: res.data.total,
+                    };
+                }}
+
+            />
+        </ModalForm>
+    </>;
+};

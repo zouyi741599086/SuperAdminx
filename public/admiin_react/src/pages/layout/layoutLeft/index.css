@@ -1,0 +1,55 @@
+/*侧边栏*/
+.sa-layout-left .sider{height: 100vh;position:sticky !important;left: 0;top:0px;bottom: 0;border-right:1px solid rgba(5,5,5,.06);background:#fff;z-index: 3;}
+.sa-layout-left .sider .ant-layout-sider-children{width:100%;display: flex;flex-direction: column;}
+
+.sa-layout-left .sider .ant-layout-sider-children .logo{box-sizing: border-box;padding:10px 12px;display: flex;align-items: center;justify-content: center;height:56px;}
+.sa-layout-left .sider .ant-layout-sider-children .logo img{width:36px;height:36px;}
+.sa-layout-left .sider .ant-layout-sider-children .logo span{display: inline-block;flex:1;padding-left:5px;font-size:16px;line-height:36px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.sa-layout-left .sider .ant-layout-sider-children .menuWarp{flex:1;overflow-y: auto;}
+.sa-layout-left .sider .ant-layout-sider-children .menuWarp .menu{border:0px !important;padding:0px 5px;}
+
+.sa-layout-left .sider .ant-layout-sider-children .userWarp{width:100%;box-sizing: border-box;display: flex;padding:0 5px 0 10px;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarp .l{flex:1;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarp .r{width:auto;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarp .r .item{display: inline-flex;align-items: center;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarp .r .item .circle{border-radius: 6px;cursor: pointer;box-sizing: border-box;padding:6px;display: flex;align-items: center;justify-content: center;font-size:17px;color:rgba(0,0,0,10);transition: .5s;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarp .r .item .circle:hover{background-color: rgba(0,0,0,.05);}
+
+.sa-layout-left .sider .ant-layout-sider-children .userWarpCollapsed{width:100%;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarpCollapsed .item{width:100%;text-align: center;padding:5px 0px;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarpCollapsed .item .circle{border-radius: 6px;cursor: pointer;box-sizing: border-box;padding:6px;display: flex;align-items: center;justify-content: center;font-size:17px;color:rgba(0,0,0,10);transition: .5s;width:29px;margin:0px auto;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarpCollapsed .item:last-child .circle{width:39px;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarpCollapsed .item .circle:hover{background-color: rgba(0,0,0,.05);}
+
+
+/*侧边栏 黑色的时候*/
+.sa-antd-dark .sa-layout-left .sider{background:none;border-right:1px solid rgba(253, 253, 253, 0.12);}
+
+.sa-antd-dark .sa-layout-left .sider .ant-layout-sider-children .logo span{color:#fff;}
+.sa-antd-dark .sa-layout-left .sider .ant-layout-sider-children .userWarp .r .item .circle{color:rgba(255, 255, 255, 0.85);}
+.sa-antd-dark .sa-layout-left .sider .ant-layout-sider-children .userWarp .r .item .circle:hover{background:#303030;}
+.sa-antd-dark .sa-layout-left .sider .ant-layout-sider-children .userWarpCollapsed .item .circle{color:rgba(255, 255, 255, 0.85);}
+.sa-antd-dark .sa-layout-left .sider .ant-layout-sider-children .userWarpCollapsed .item .circle:hover{background-color: #303030;}
+
+
+/**侧边栏收起按钮开关 */
+.sa-layout-left .sa-collapsed{position:absolute;top:9px;color:rgba(0,0,0,0.25);transition:.3s;border:0px;box-shadow:0 4px 16px -4px rgb(0 0 0 / 5%),0 2px 8px -2px rgb(25 15 15 / 7%),0 1px 2px 0 rgb(0 0 0 / 8%);}
+.sa-layout-left .sa-collapsed .icon{transform: scale(.8);}
+
+.sa-antd-dark .sa-layout-left .sa-collapsed{background-color: #303030;color:rgba(255, 255, 255, 0.85);}
+.sa-antd-dark .sa-layout-left .sa-collapsed:hover{color:rgba(255, 255, 255, 0.65);}
+
+
+/*简约风格的时候*/
+.sa-antd-simple .sa-layout-left .sider{border-right:0px;background: none;}
+.sa-antd-simple .sa-antd-dark .sa-layout-left .sider{border-right:0px;}
+
+
+/*start 圆角风格*/
+.sa-is-radius .sa-layout-left .sider{background: none !important;border:0px;padding:12px 0px 12px 12px;}
+.sa-is-radius .sa-layout-left .ant-layout-sider-children{background: #fff;border-radius: 8px;}
+.sa-is-radius .sa-layout-left .sa-collapsed{margin-top:14px;}
+
+.sa-antd-dark.sa-is-radius .sa-layout-left .ant-layout-sider-children{background:rgba(20,20,20,.9);}
+/*end 圆角风格*/

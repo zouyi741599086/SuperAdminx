@@ -1,0 +1,342 @@
+<?php
+/**
+ * 生成控制器
+ */
+use app\utils\codeGenerator\CodeGenerator;
+
+    $data = CodeGenerator::getCodeGeneratorInfo($table_name);
+    //当前的表名转驼峰
+    $tableNameToCamelCase = CodeGenerator::toCamelCase($table_name);
+    
+?>
+namespace <?php echo $file_path ?? ''; ?>;
+
+use support\Request;
+use support\Response;
+
+<?php
+    //如果有导入数据则引入文件上传
+    if (isset($functions) && in_array('importData', $functions)) {
+    echo "use app\utils\File as FileUtils;\n";
+    }
+    // 引入逻辑层
+    echo "use {$data['logic']['file_path']}\\{$data['logic']['file_name']};\n"; 
+?>
+
+/**
+ * <?php echo $table_title ?? '';?> 控制器
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+class <?php echo $file_name ?? ''; ?>
+
+{
+
+    // 此控制器是否需要登录
+    protected $onLogin = true;
+    
+    // 不需要登录的方法
+    protected $noNeedLogin = [];
+
+<?php
+    // getList方法
+    if (isset($functions) && in_array('getList', $functions)) {
+        //接口权限
+        $auth = '';
+        if (isset($functions_auth) && in_array('getList', $functions_auth) && isset($data['auth_ids']['auth_list_id'])) {
+            $auth = "\n     * @auth {$data['auth_ids']['auth_list_id']}";
+        }
+
+        echo "
+    /**
+     * 列表
+     * @method get{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function getList(Request \$request): Response
+    {
+        \$list = {$data['logic']['file_name']}::getList(\$request->get());
+        return success(\$list);
+    }";
+
+    }
+?>
+
+<?php
+    // create方法
+    if (isset($functions) && in_array('create', $functions)) {
+        //接口权限
+        $auth = '';
+        if (isset($functions_auth) && in_array('create', $functions_auth) && isset($data['auth_ids']['auth_create_id'])) {
+            $auth = "\n     * @auth {$data['auth_ids']['auth_create_id']}";
+        }
+
+        echo "
+    /**
+     * @log 新增{$data['table_title']}
+     * @method post{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function create(Request \$request): Response
+    {
+        {$data['logic']['file_name']}::create(\$request->post());
+        return success([], '添加成功');
+    }";
+
+    }
+?>
+
+<?php
+    // 获取数据
+    if (isset($functions) && in_array('findData', $functions)) {
+
+        echo "
+    /**
+     * 获取数据
+     * @method get
+     * @param int \$id 
+     * @return Response
+     */
+    public function findData(int \$id): Response
+    {
+        \$data = {$data['logic']['file_name']}::findData(\$id);
+        return success(\$data);
+    }";
+
+    }
+?>
+
+<?php
+    // update方法
+    if (isset($functions) && in_array('update', $functions)) {
+        //接口权限
+        $auth = '';
+        if (isset($functions_auth) && in_array('update', $functions_auth) && isset($data['auth_ids']['auth_update_id'])) {
+            $auth = "\n     * @auth {$data['auth_ids']['auth_update_id']}";
+        }
+
+        echo "
+    /**
+     * @log 修改{$data['table_title']}
+     * @method post{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function update(Request \$request): Response
+    {
+        {$data['logic']['file_name']}::update(\$request->post());
+        return success([], '修改成功');
+    }";
+
+    }
+?>
+
+<?php
+    // delete方法
+    if (isset($functions) && in_array('delete', $functions)) {
+        //接口权限
+        $auth = '';
+        if (isset($functions_auth) && in_array('delete', $functions_auth) && isset($data['auth_ids']['auth_delete_id'])) {
+            $auth = "\n     * @auth {$data['auth_ids']['auth_delete_id']}";
+        }
+
+        echo "
+    /**
+     * @log 删除{$data['table_title']}
+     * @method post{$auth}
+     * @param int|array \$id 
+     * @return Response
+     */
+    public function delete(int|array \$id): Response
+    {
+        {$data['logic']['file_name']}::delete(\$id);
+        return success([], '删除成功');
+    }";
+
+    }
+?>
+
+<?php
+    // updateSort更新排序
+    if (isset($functions) && in_array('updateSort', $functions)) {
+        //接口权限
+        $auth = '';
+        if (isset($functions_auth) && in_array('updateSort', $functions_auth) && isset($data['auth_ids']['auth_update_sort_id'])) {
+            $auth = "\n     * @auth {$data['auth_ids']['auth_update_sort_id']}";
+        }
+
+        echo "
+    /**
+     * @log 更改{$data['table_title']}排序
+     * @method post{$auth}
+     * @param array \$list 
+     * @return Response
+     * */
+    public function updateSort(array \$list) : Response
+    {
+        {$data['logic']['file_name']}::updateSort(\$list);
+        return success();
+    }";
+
+    }
+?>
+
+<?php
+    // updateStatus更新状态
+    if (isset($functions) && in_array('updateStatus', $functions)) {
+        //接口权限
+        $auth = '';
+        if (isset($functions_auth) && in_array('updateStatus', $functions_auth) && isset($data['auth_ids']['auth_update_status_id'])) {
+            $auth = "\n     * @auth {$data['auth_ids']['auth_update_status_id']}";
+        }
+
+        echo "
+    /**
+     * @log 修改{$data['table_title']}状态
+     * @method post{$auth}
+     * @param int \$id 数据id
+     * @param int \$status 数据状态 
+     * @return Response
+     */
+    public function updateStatus(int \$id, int \$status): Response
+    {
+        {$data['logic']['file_name']}::updateStatus(\$id, \$status);
+        return success();
+    }";
+
+    }
+?>
+
+<?php
+    // 搜索选择某条数据
+    if (isset($functions) && in_array('select', $functions)) {
+
+        echo "
+    /**
+     * @log 搜索选择某条数据
+     * @method get
+     * @param string \$keywords 搜索的关键字
+     * @param int \$id 选中的数据id
+     * @return Response
+     */
+    public function select{$tableNameToCamelCase}(string \$keywords = null, int \$id = null): Response
+    {
+        \$list = {$data['logic']['file_name']}::select{$tableNameToCamelCase}(\$keywords, \$id);
+        return success(\$list);
+    }";
+
+    }
+?>
+
+<?php
+    // importData导入数据下载表格模板
+    if (isset($functions) && in_array('importData', $functions)) {
+        //接口权限
+        $auth = '';
+        if (isset($functions_auth) && in_array('importData', $functions_auth) && isset($data['auth_ids']['auth_import_id'])) {
+            $auth = "\n     * @auth {$data['auth_ids']['auth_import_id']}";
+        }
+
+        echo "
+    /**
+     * 下载导入{$data['table_title']}数据的表格模板
+     * @method get{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function downloadImportExcel(Request \$request): Response
+    {
+        \$data = {$data['logic']['file_name']}::downloadImportExcel();
+        return success(\$data);
+    }";
+
+    }
+?>
+
+<?php
+    // importData导入数据
+    if (isset($functions) && in_array('importData', $functions)) {
+        //接口权限
+        $auth = '';
+        if (isset($functions_auth) && in_array('importData', $functions_auth) && isset($data['auth_ids']['auth_import_id'])) {
+            $auth = "\n     * @auth {$data['auth_ids']['auth_import_id']}";
+        }
+
+        echo "
+    /**
+     * @log 导入{$data['table_title']}数据
+     * @method post{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function importData(Request \$request): Response
+    {
+        \$result = FileUtils::uploadPublic('/tmp_file');
+        if (! isset(\$result['file']) || ! \$result['file']) {
+            abort('请上传导入的表格');
+        }
+        {$data['logic']['file_name']}::importData(\$result['file']);
+        return success();
+    }";
+
+    }
+?>
+
+<?php
+    // exportData导出数据
+    if (isset($functions) && in_array('exportData', $functions)) {
+        //接口权限
+        $auth = '';
+        if (isset($functions_auth) && in_array('exportData', $functions_auth) && isset($data['auth_ids']['auth_export_id'])) {
+            $auth = "\n     * @auth {$data['auth_ids']['auth_export_id']}";
+        }
+
+        echo "
+    /**
+     * @log 导出{$data['table_title']}数据
+     * @method get{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function exportData(Request \$request): Response
+    {
+        \$data = {$data['logic']['file_name']}::exportData(\$request->get());
+        return success(\$data);
+    }";
+
+    }
+?>
+
+
+<?php
+    // 生成控制器其它方法
+    if (isset($other_functions) && is_array($other_functions)) {
+        
+        foreach ($other_functions as $key => $value) {
+            //接口权限
+            $auth = '';
+            if (isset($value['auth_id'])) {
+                $auth = "\n     * @auth {$value['auth_id']}";
+            }
+            
+            echo "
+    /**
+     * @log {$value['title']}
+     * @method {$value['method']}{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function {$value['name']}(Request \$request): Response
+    {
+        \$data = {$data['logic']['file_name']}::{$value['name']}(\$request->{$value['method']}());
+        return success(\$data);
+    }\n";
+
+        }
+    }
+?>
+
+}

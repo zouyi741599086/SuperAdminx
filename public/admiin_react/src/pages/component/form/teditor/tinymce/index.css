@@ -1,0 +1,12 @@
+/**编辑器弹出层 层级太高 */
+.tox-tinymce-aux{z-index: 1000 !important;}
+.tox .tox-dialog-wrap{z-index: 1000 !important;}
+
+/*全屏弹出层 层级太高*/
+.tox-shadowhost.tox-fullscreen,
+.tox.tox-tinymce.tox-fullscreen{z-index:999 !important;}
+
+/* 查看源代码弹窗高 */
+.tox-dialog__body .tox-form__group--stretched,
+.tox-dialog__body .tox-form__group--stretched .tox-textarea-wrap,
+.tox-dialog__body .tox-form__group--stretched .tox-textarea-wrap .tox-textarea{height:100%;}

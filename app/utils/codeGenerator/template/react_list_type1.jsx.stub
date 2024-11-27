@@ -1,0 +1,1212 @@
+<?php
+/**
+ * 列表页，常规列表页
+ */
+    use app\utils\codeGenerator\CodeGenerator;
+    use app\common\model\AdminMenuModel;
+
+    $data = CodeGenerator::getCodeGeneratorInfo($table_name);
+
+    //需要引入的api文件
+    $apiFileArr = [];
+
+    //引入api的文件名称
+    $apiFileName = CodeGenerator::toCamelCase($table_name);
+    $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
+    $apiFileArr[] = $apiFileName;
+
+    //需要引入的antd组件
+    $antdComponent = [];
+
+    //需要导入的自定义组件
+    $zidingyiComponent = [];
+
+    //异步加载的组件
+    $constComponent = [];
+
+    if (isset($list_fields_type)) {
+        foreach ($list_fields_type as $k => $v) {
+            //需要引入图片组件
+            if (($v == 'image' || $v == 'descriptions') && !in_array('Image', $antdComponent)) {
+                $antdComponent[] = 'Image';
+            }
+            //需要引入Tag组件
+            if ($v == 'tag' && !in_array('Tag', $antdComponent)) {
+                $antdComponent[] = 'Tag';
+            }
+            //需要引入头像组件
+            if (($v == 'avatar' || $v == 'user') && !in_array('Avatar', $antdComponent)) {
+                $antdComponent[] = 'Avatar';
+            }
+            //需要引入Switch开关组件
+            if ($v == 'switch' && !in_array('Switch', $antdComponent)) {
+                $antdComponent[] = 'Switch';
+            }
+            //需要引入排序的InputNumber组件
+            if ($v == 'sort' && !in_array('InputNumber', $antdComponent)) {
+                $antdComponent[] = 'InputNumber';
+            }
+            //需要引入进度条组件
+            if ($v == 'progress' && !in_array('Progress', $antdComponent)) {
+                $antdComponent[] = 'Progress';
+            }
+            //需要引入弹窗描述组件
+            if ($v == 'descriptions' && !in_array('Descriptions', $antdComponent)) {
+                $antdComponent[] = 'Descriptions';
+                $antdComponent[] = 'Popover';
+            }
+
+            //弹窗查看文本
+            if ($v == 'preview_text') {
+                $zidingyiComponent[] = "import PreviewContent from '@/pages/component/preview/content/index';";
+            }
+            //弹窗查看富文本
+            if ($v == 'preview_teditor') {
+                $zidingyiComponent[] = "import PreviewTeditor from '@/pages/component/preview/teditor/index';";
+            }
+            //预览多图或视频
+            if ($v == 'preview_images_videos') {
+                $zidingyiComponent[] = "import PreviewImagesVideos from '@/pages/component/preview/imagesVideos/index';";
+            }
+            //预览视频
+            if ($v == 'preview_video') {
+                $zidingyiComponent[] = "import PreviewVideo from '@/pages/component/preview/video/index';";
+            }
+            //预览pdf
+            if ($v == 'preview_pdf') {
+                $zidingyiComponent[] = "import PreviewPdf from '@/pages/component/preview/pdf/index';";
+            }
+            //预览word
+            if ($v == 'preview_word') {
+                $zidingyiComponent[] = "import PreviewWord from '@/pages/component/preview/word/index';";
+            }
+
+        }
+    }
+
+    if (isset($list_fields_type_config)) {
+        foreach ($list_fields_type_config as $k => $v) {
+            //搜索中需要引入的api文件
+            if (isset($v['search_data_source_table'])) {
+                $tmp = CodeGenerator::toCamelCase($v['search_data_source_table']);
+                $tmp1 = strtolower($tmp[0]) . substr($tmp, 1);
+                if (!in_array($tmp1, $apiFileArr)) {
+                    $apiFileArr[] = $tmp1;
+                }
+
+                //存一份后面要用
+                $list_fields_type_config[$k]['dataSourceApi'] = $tmp1;
+                $list_fields_type_config[$k]['renderFormItem'] = $tmp;
+
+                //如果是异步搜索选择某个表的id
+                if ($v['search_type'] == 'selectTable') {
+                    $tmp = "import Select{$tmp} from '@/pages/components/select{$tmp}';";
+                    if (!in_array($tmp, $zidingyiComponent)) {
+                        $zidingyiComponent[] = $tmp;
+                    }
+                }
+            }
+            
+        }
+    }
+
+    //如果有引入顶部的tabs，则需要引入Badge组件
+    if (isset($card_tabs_list) && $card_tabs_list && !in_array('Badge', $antdComponent)) {
+        $antdComponent[] = 'Badge';
+    } 
+
+    //如果有添加操作，同时添加是弹窗，则引入添加组件
+    $createIsModal = false; //添加是否是弹窗打开
+    if (
+        isset($table_action_list) && 
+        in_array('create', $table_action_list) && 
+        ($data['react_create_update']['open_type'] ?? null) == 1 
+    ) {
+        $createIsModal = true;
+        $constComponent[] = "const Create = lazy(() => import('./create'));";
+    }
+    //如果有修改操作，同时修改是弹窗，则引入修改组件
+    $updateIsModal = false; //修改是否是弹窗打开
+    if (
+        isset($table_action_list) && 
+        in_array('update', $table_action_list) && 
+        ($data['react_create_update']['open_type'] ?? null) == 1 &&
+        ($data['react_create_update']['update_page'] ?? null) == 1
+    ) {
+        $updateIsModal = true;
+        $constComponent[] = "const Update = lazy(() => import('./update'));";
+    }
+    //如果有详情操作，同时详情是弹窗，则引入详情组件
+    $infoIsModal = false; //详情是否是弹窗打开
+    if (
+        isset($table_action_list) && 
+        in_array('info', $table_action_list) && 
+        ($data['react_info']['info_open_type'] ?? null) == 2
+    ) {
+        $infoIsModal = true;
+        $constComponent[] = "const Info = lazy(() => import('./info'));";
+    }
+    //是否有导出操作
+    $isExport = false;
+    if (isset($table_action_list) && in_array('export', $table_action_list)) {
+        $isExport = true;
+    }
+
+    //是否有导入操作
+    $isImport = false;
+    if (isset($table_action_list) && in_array('import', $table_action_list)) {
+        $isImport = true;
+    } 
+
+    //其它批量修改方法需要异步加载的组件
+    if (isset($table_action_all_list) && $table_action_all_list) {
+        foreach ($table_action_all_list as $k => $v) {
+            $tmp = CodeGenerator::toCamelCase($v['field']);
+            $zidingyiComponent[] = "import Update{$tmp} from './update{$tmp}';";
+        }
+    }
+                                
+?>
+import { useRef, lazy, useState } from 'react';
+import { PageContainer } from '@ant-design/pro-components';
+<?php
+    foreach ($apiFileArr as $v) {
+echo "import { {$v}Api } from '@/api/{$v}';\n";
+    }
+?>
+import { ProTable } from '@ant-design/pro-components';
+import { App, Button, Popconfirm, Typography, Space, Tooltip,
+<?php 
+    foreach ($antdComponent as $v) {
+echo "{$v}, ";
+    }
+?>
+} from 'antd';
+import {
+    OrderedListOutlined,
+    QuestionCircleOutlined,
+    CloudDownloadOutlined,
+    DeleteOutlined,
+    PlusOutlined,
+    EyeOutlined,
+    EyeInvisibleOutlined,
+} from '@ant-design/icons';
+import { config } from '@/common/config';
+import { NavLink } from 'react-router-dom';
+import { authCkeck, arrayToTree} from '@/common/function';
+<?php echo $isExport ? "import { fileApi } from '@/api/file';\n" : '';?>
+<?php echo $isImport ? "import ImportData from './importData';\n" : '';?>
+import Lazyload from '@/pages/component/lazyLoad/index';
+<?php
+    //导入自定义的组件
+    foreach ($zidingyiComponent as $v) {
+echo "{$v}\n";
+    }
+?>
+
+<?php
+    //如果有引入图片标签，则引入图片打开失败的时候的图片
+    if (in_array('Image', $antdComponent)) {
+echo "const imgErr = new URL('@/static/default/imgErr.png', import.meta.url).href;\n";
+    }
+?>
+<?php
+    //导入异步加载的组件
+    foreach ($constComponent as $v) {
+echo "{$v}\n";
+    }
+?>
+
+/**
+ * <?php echo $table_title ?? '';?> 
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+export default () => {
+    const { message } = App.useApp();
+    const tableRef = useRef();
+    const formRef = useRef();
+
+    //刷新表格数据
+    const tableReload = () => {
+        tableRef.current.reload();
+        tableRef.current.clearSelected();
+    }
+<?php
+    //如果修改是弹窗修改
+    if ($updateIsModal) {
+        echo "
+    //要修改的数据
+    const [updateId, setUpdateId] = useState(0);";
+    }
+
+    //如果详情是弹窗查看
+    if ($infoIsModal) {
+        echo "
+    //要查看详情的数据
+    const [infoId, setInfoId] = useState(0);";
+    }
+?>
+    
+<?php 
+    //说明有切换状态
+    if (in_array('Switch', $antdComponent)) {
+        echo "
+    /////////////修改状态///////////////
+    const updateStatus = (id, status) => {
+        {$apiFileName}Api.updateStatus({
+            id,
+            status
+        }).then(res => {
+            if (res.code === 1) {
+                message.success(res.message)
+                tableReload();
+            } else {
+                message.error(res.message)
+            }
+        })
+    }";
+    }
+?>
+
+<?php 
+    //说明有排序
+    if (in_array('InputNumber', $antdComponent)) {
+        echo "
+    ///////////////////////////保存排序///////////////////////////
+    const [sortArr, setSortArr] = useState([]);
+    const updateSort = () => {
+        {$apiFileName}Api.updateSort({ list: sortArr }).then(res => {
+            if (res.code === 1) {
+                message.success(res.message)
+                tableReload();
+                setSortArr([]);
+                getList();
+            } else {
+                message.error(res.message)
+            }
+        })
+    }
+    //排序改变的时候
+    const sortArrChange = (id, sort) => {
+        let _sortArr = [...sortArr];
+        let whether = _sortArr.some(_item => {
+            if (_item.id === id) {
+                _item.sort = sort;
+                return true;
+            }
+        })
+        if (!whether) {
+            _sortArr.push({
+                id,
+                sort
+            })
+        }
+        setSortArr(_sortArr);
+    }";
+    }
+?>
+
+<?php
+    if (isset($table_action_list) && in_array('delete', $table_action_list)) {
+        echo "
+    /////////////////删除//////////////
+    const del = (id) => {
+        {$apiFileName}Api.delete({
+            id
+        }).then(res => {
+            if (res.code === 1) {
+                message.success(res.message)
+                tableReload();
+            } else {
+                message.error(res.message)
+            }
+        })
+    }";
+    }
+?>
+
+<?php
+    //是否有导出操作
+    if ($isExport) {
+        echo "
+    /////////////////////////导出////////////////////////
+    const exportData = () => {
+        message.open({
+            type: 'loading',
+            content: '数据生成中...',
+            duration: 0,
+            key: 'excel'
+        });
+        let params = formRef.current.getFieldsValue();
+        {$apiFileName}Api.exportData(params).then(res => {
+            message.destroy('excel')
+            if (res.code === 1 && res.data.filePath && res.data.fileName) {
+                message.success('数据已生成');
+                setTimeout(() => {
+                    window.open(`\${fileApi.download}?filePath=\${res.data.filePath}&fileName=\${res.data.fileName}`);
+                }, 1000)
+            } else {
+                message.error('数据导出失败');
+            }
+        })
+    }";
+    }
+?>
+
+<?php
+        //顶部的tabs的
+        if (isset($card_tabs_list) && $card_tabs_list) {
+
+                echo "
+    ////////////////////顶部的tabs//////////////////////
+    const [tabsKey, setTabsKey] = useState('0');
+    const [tabsList] = useState([";
+
+        foreach ($card_tabs_list as $k => $v) {
+            $authId = $card_tabs_list_auth_id[$k - 1] ?? 0;
+            $disabled = ($k == 0 || $authId == 0) ? '' : "disabled: authCkeck('{$authId}'), //权限id";
+            echo "
+        {
+            key: '{$k}',
+            label: <Badge size=\"small\" count={10} offset={[10, 0]}>{$v}</Badge>,
+            {$disabled}
+        },";
+        }
+
+    echo "
+    ]);
+    ";
+        }
+?>
+
+    //表格列
+    const columns = [
+<?php
+    if (isset($list_fields_type)) {
+        foreach ($list_fields_type as $field => $type) {
+            //字段的中文名称
+            $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
+            
+            //列的参数
+            $columnsParams = "            title: '{$tmp_field_title}',\n";
+            $columnsParams .= "            dataIndex: '{$field}',\n";
+
+            //是否支持搜索
+            if (isset($list_fields_type_config[$field]['search']) && $list_fields_type_config[$field]['search']) {
+                $columnsParams .= "            search: true,\n";
+            } else {
+                $columnsParams .= "            search: false,\n";
+            }
+            //搜索的类型
+            if (isset($list_fields_type_config[$field]['search_type']) && $list_fields_type_config[$field]['search_type']) {
+                $valueType = $list_fields_type_config[$field]['search_type'];
+                $columnsParams .= "            valueType : '{$valueType}',\n";
+
+                //如果搜索的类型是下拉等选择项的时候///////////////
+                $search_data_type = $list_fields_type_config[$field]['search_data_type'] ?? 1;
+                //自己输入选择项
+                if (in_array($valueType, ['select', 'checkbox', 'radio']) && $search_data_type == 1) {
+
+                    //下拉才有搜索
+                    $tmp = $valueType == 'select' ? "showSearch: true," : ""; 
+                    $columnsParams .= "            fieldProps: {
+                {$tmp}
+                options: [
+                    {
+                        value: 1,
+                        label: '显示',
+                    },
+                    {
+                        value: 2,
+                        label: '隐藏',
+                    },
+                ]
+            },\n";
+            
+                }
+                //有下级数据的选择项
+                if (in_array($valueType, ['treeSelect', 'cascader']) && $search_data_type == 1) {
+                    //树选择才有搜索的字段配置
+                    $tmp = $valueType == 'treeSelect' ? "treeNodeFilterProp: 'label'," : "";
+
+                    $columnsParams .= "            fieldProps: {
+                showSearch: true,
+                {$tmp}
+                options: [
+                    {
+                        value: 1,
+                        label: '北京',
+                    },
+                    {
+                        value: 2,
+                        label: '重庆',
+                        children: [
+                            {
+                                value: 21,
+                                label: '南岸区',
+                            },
+                            {
+                                value: 22,
+                                label: '渝中区',
+                            }
+                        ]
+                    },
+                ]
+            },\n";
+
+                }
+                //异步搜索选择某个表的id
+                if ($valueType == 'selectTable' && $search_data_type == 1) {
+                    $tmp = $list_fields_type_config[$field]['renderFormItem'];
+                    $columnsParams .= "            renderFormItem: () => <Select{$tmp} />,\n";
+                }
+                //api请求选择项
+                if (in_array($valueType, ['select', 'treeSelect', 'cascader', 'checkbox', 'radio']) && $search_data_type == 2) {
+
+                    $tmp = $list_fields_type_config[$field]['dataSourceApi'];
+                    //下拉、树选择、级联选择才有搜索
+                    $tmp1 = in_array($valueType, ['select', 'treeSelect', 'cascader']) ? "showSearch: true," : "";
+                    //树选择才有搜索的字段配置
+                    $tmp1 .= $valueType == 'treeSelect' ? "\n                treeNodeFilterProp: 'title'," : "";
+
+                    $columnsParams .= "            request: async () => {
+                const result = await {$tmp}Api.getList();
+                return result.data ; //arrayToTree(result.data);
+            },
+            fieldProps: {
+                {$tmp1}
+                fieldNames: {
+                    label: 'title',
+                    value: 'id'
+                }
+            },\n";
+
+                }
+            }
+            //是否自动省略
+            if (isset($list_fields_type_config[$field]['ellipsis']) && $list_fields_type_config[$field]['ellipsis']) {
+                $columnsParams .= "            ellipsis: true,\n";
+            }
+            //是否支持复制
+            if (isset($list_fields_type_config[$field]['copyable']) && $list_fields_type_config[$field]['copyable']) {
+                $columnsParams .= "            copyable: true,\n";
+            }
+            //是否支持排序
+            if (isset($list_fields_type_config[$field]['sorter']) && $list_fields_type_config[$field]['sorter']) {
+                $columnsParams .= "            sorter: true,\n";
+            }
+            //列的参数 前面加换行
+            if ($columnsParams) {
+                $columnsParams = "\n{$columnsParams}";
+            }
+            $columnsParams = rtrim($columnsParams);
+
+            //常规文本
+            if ($type == 'text') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => _,
+        },\n";
+
+            }
+
+            //可点击链接
+            else if ($type == 'text_link') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <NavLink to={`/xxx/xxx?id=\${record.id}`} disabled={authCkeck('1111')}>{record.{$field}}</NavLink>
+        },\n";
+
+            }
+
+            //图片
+            else if ($type == 'image') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => (
+                <Image
+                    width={40}
+                    src={`\${record.{$field}}`}
+                    fallback={imgErr}
+                />
+            )
+        },\n";
+
+            }
+
+            //姓名/手机号(可复制)
+            else if ($type == 'name_tel_copy') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                {record.xxxx}<br/>
+                <Typography.Paragraph copyable>{record.xxx ?? '-'}</Typography.Paragraph>
+            </>
+        },\n";
+
+            }
+
+            //姓名/年龄/性别
+            else if ($type == 'name_age_sex') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                {record.User?.name}<br />
+                {record.User?.age > 0 ? <Typography.Text code>{record.User?.age}岁</Typography.Text> : ''}
+                {record.User?.sex == 1 ? <Typography.Text type=\"warning\">男</Typography.Text> : ''}
+                {record.User?.sex == 2 ? <Typography.Text type=\"success\">女</Typography.Text> : ''}
+            </>
+        },\n";
+
+            }
+
+            //Tag标签
+            else if ($type == 'tag') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                {/* magenta red volcano orange gold lime green cyan blue geekblue purple*/}
+                <Tag color='magenta'>{record.{$field}}</Tag>
+            </>
+        },\n";
+
+            }
+
+            //头像
+            else if ($type == 'avatar') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <Avatar src={`\${record.img}`}>{record.name?.substr(0, 1)}</Avatar>
+            </>
+        },\n";
+
+            }
+
+            //头像/姓名/手机号
+            else if ($type == 'user') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => {
+                if (record.User) {
+                    return <div style={{ display: 'flex' }}>
+                        <Avatar
+                            src={record.User?.img}
+                            size=\"large\"
+                            style={{
+                                flexShrink: 0
+                            }}
+                        >{record.User?.name?.substr(0, 1)}</Avatar>
+                        <div style={{ paddingLeft: '5px' }}>
+                            {record.User?.name}<br />
+                            {record.User?.tel}
+                        </div>
+                    </div>
+                }
+                return '--';
+            },
+        },\n";
+
+            }
+
+            //金额
+            else if ($type == 'money') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <Typography.Text type=\"danger\">￥{record.{$field}}</Typography.Text>
+            </>
+        },\n";
+
+            }
+
+            //多行的金额
+            else if ($type == 'money_line') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <div>合同金额：<Typography.Text>￥{record.money}</Typography.Text></div>
+                <div>已收金额：<Typography.Text type=\"success\">￥{record.money_into}</Typography.Text></div>
+                <div>支出金额：<Typography.Text type=\"warning\">￥{record.money_out}</Typography.Text></div>
+                <div>实际收款：<Typography.Text>￥{record.money_into_out_balance}</Typography.Text></div>
+                <div>欠款金额：<Typography.Text type=\"danger\">￥{record.money_arrears}</Typography.Text></div>
+            </>
+        },\n";
+
+            }
+
+            //Typography文字
+            else if ($type == 'typography_text') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                {/* type= secondary success warning danger */}
+                {/* 属性 mark={true} || code={true} || strong={true} */}
+                <Typography.Text type=\"success\">{record.{$field}}</Typography.Text>
+            </>
+        },\n";
+
+            }
+
+            //状态开关可切换
+            else if ($type == 'switch') {
+                //权限id
+                $authId = $data['auth_ids']['auth_update_status_id'] ?? 0;
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <Switch
+                    checked={record.{$field} === 1 ? true : false}
+                    checkedChildren=\"显示\"
+                    unCheckedChildren=\"隐藏\"
+                    onClick={() => {
+                        updateStatus(record.id, record.status == 1 ? 2 : 1);
+                    }}
+                    disabled={authCkeck('{$authId}')}
+                />
+            </>
+        },\n";
+
+            }
+
+            //多颜色状态/类型
+            else if ($type == 'status_type') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                {record.{$field} === 1 ? <>
+                    <Typography.Text type=\"danger\">待付款</Typography.Text>
+                </> : ''}
+                {record.{$field} === 2 ? <>
+                    <Typography.Text mark>待发货</Typography.Text>
+                </> : ''}
+                {record.{$field} === 3 ? <>
+                    <Typography.Text type=\"success\">待收货</Typography.Text>
+                </> : ''}
+                {record.{$field} === 4 ? <>
+                    <Typography.Text type=\"success\">待评价</Typography.Text>
+                </> : ''}
+                {record.{$field} === 5 ? <>
+                    <Typography.Text>已完成</Typography.Text>
+                </> : ''}
+                {record.{$field} === 6 ? <>
+                    <Typography.Text disabled>已关闭</Typography.Text>
+                </> : ''}
+                {record.{$field} === 7 ? <>
+                    <Typography.Text mark>退款审核中</Typography.Text>
+                </> : ''}
+                {record.{$field} === 8 ? <>
+                    <Typography.Text underline>已退款</Typography.Text>
+                </> : ''}
+            </>
+        },\n";
+
+            }
+
+            //排序
+            else if ($type == 'sort') {
+                //权限id
+                $authId = $data['auth_ids']['auth_update_sort_id'] ?? 0;
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <InputNumber
+                    defaultValue={record.{$field}}
+                    style={{ width: '100px' }}
+                    min={0}
+                    disabled={authCkeck('{$authId}')}
+                    onChange={(value) => {
+                        sortArrChange(record.id, value);
+                    }}
+                />
+            </>
+        },\n";
+
+            }
+
+            //进度条
+            else if ($type == 'progress') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <Progress
+                    style={{ maxWidth: 150 }}
+                    percent={record.{$field}}
+                    size=\"small\"
+                    format={(val) => {
+                        return `\${val}%`
+                    }}
+                    percentPosition={{
+                        align: 'end',
+                        type: 'outer',
+                    }}
+                />
+            </>
+        },\n";
+
+            }
+
+            //弹窗用Descriptions描述列表
+            else if ($type == 'descriptions') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => {
+                let items = [
+                    {
+                        key:1,
+                        label: '教学内容',
+                        children: record.xxxx,
+                    },
+                    {
+                        key:2,
+                        label: '教学反馈',
+                        children: record.xxxx,
+                    }
+                    {
+                        key:3,
+                        label: '教学截图',
+                        children: {record.xxx?.length > 0 ? <>
+                            <Image.PreviewGroup>
+                                {record.xxx?.map((item, index) => {
+                                    return <Image key={index} style={{ width: 80, height: 80, margin: '0px 5px 5px 0px' }} src={item} />
+                                })}
+                            </Image.PreviewGroup>
+                        </> : '--'},
+                    }
+                ];
+                return <>
+                    <Popover content={<>
+                        <Descriptions
+                            size=\"small\"
+                            column={1}
+                            style={{ maxWidth: '500px', maxHeight: '260px', overflowY: 'auto' }}
+                            bordered
+                            labelStyle={{ width: '90px' }}
+                            items={items}
+                        />
+                    </>}>
+                        <Button type=\"primary\" size=\"small\" ghost >查看</Button>
+                    </Popover>
+                </>
+            }
+        },\n";
+
+            }
+
+            //弹窗查看文本
+            else if ($type == 'preview_text') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <PreviewContent title=\"查看\" content={record.{$field}} type={1}/>
+            </>
+        },\n";
+
+            }
+
+            //预览富文本内容
+            else if ($type == 'preview_teditor') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <PreviewTeditor title=\"{$tmp_field_title}\" content={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //预览视频
+            else if ($type == 'preview_video') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <PreviewVideo url={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //预览多图或视频
+            else if ($type == 'preview_images_videos') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <PreviewImagesVideos imgs={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //预览pdf
+            else if ($type == 'preview_pdf') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <PreviewPdf title=\"{$tmp_field_title}\" url={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //预览word
+            else if ($type == 'preview_word') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => <>
+                <PreviewWord title=\"{$tmp_field_title}\" url={record.{$field}} />
+            </>
+        },\n";
+
+            }
+
+            //添加时间
+            else if ($type == 'create_time') {
+                
+echo "        {{$columnsParams}
+            render: (_, record) => record.create_time,
+        },\n";
+
+            }
+
+        }
+    }
+?>
+<?php
+    //表格的操作列
+    if (isset($table_action_list)) {
+        if (
+            in_array('update', $table_action_list) ||
+            in_array('delete', $table_action_list) ||
+            in_array('info', $table_action_list)
+        ){
+            echo "
+        {
+            title: '操作',
+            dataIndex: 'action',
+            search: false,
+            render: (_, record) => {
+                return <>";
+                    //是否有详情操作
+                    if (in_array('info', $table_action_list)) {
+                        $info_auth_id = $data['auth_ids']['auth_info_id'] ?? 0;
+
+                        //判断修改是否是弹窗修改
+                        if ($infoIsModal) {
+                            echo "
+                    <Button
+                        type=\"link\"
+                        size=\"small\"
+                        onClick={() => { 
+                            setInfoId(record.id) 
+                        }}
+                        disabled={authCkeck('{$info_auth_id}')}
+                    >详情</Button>";
+                        } else {
+                            $info_menu = AdminMenuModel::where('name', $data['auth_ids']['auth_info_id'] ?? null)->find();
+                            $info_url = $info_menu['path'] ?? '';
+                            echo "
+                    <NavLink to={authCkeck('{$info_auth_id}') ? '' : `{$info_url}?id=\${record.id}`}>
+                        <Button
+                            type=\"link\"
+                            size=\"small\"
+                            disabled={authCkeck('{$info_auth_id}')}
+                        >详情</Button>
+                    </NavLink>";
+                        }
+                    }
+
+                    //是否有修改操作
+                    if (in_array('update', $table_action_list)) {
+                        $update_auth_id = $data['auth_ids']['auth_update_id'] ?? 0;
+                        
+                        //判断修改是否是弹窗修改
+                        if ($updateIsModal) {
+                            echo "
+                    <Button
+                        type=\"link\"
+                        size=\"small\"
+                        onClick={() => { 
+                            setUpdateId(record.id) 
+                        }}
+                        disabled={authCkeck('{$update_auth_id}')}
+                    >修改</Button>";
+                        } else {
+                            $update_menu = AdminMenuModel::where('name', $data['auth_ids']['auth_update_id'] ?? null)->find();
+                            $update_url = $update_menu['path'] ?? '';
+                            echo "
+                    <NavLink to={authCkeck('{$update_auth_id}') ? '' : `{$update_url}?id=\${record.id}`}>
+                        <Button
+                            type=\"link\"
+                            size=\"small\"
+                            disabled={authCkeck('{$update_auth_id}')}
+                        >修改</Button>
+                    </NavLink>";
+                        }
+                    }
+
+                    //是否有删除操作
+                    if (in_array('delete', $table_action_list)) {
+                        $delete_auth_id = $data['auth_ids']['auth_delete_id'] ?? 0;
+                        echo "
+                    <Popconfirm
+                        title=\"确认要删除吗？\"
+                        onConfirm={() => { 
+                            del(record.id);
+                        }}
+                        disabled={authCkeck('{$delete_auth_id}')}
+                    >
+                        <Button
+                            type=\"link\"
+                            size=\"small\"
+                            danger
+                            disabled={authCkeck('{$delete_auth_id}')}
+                        >删除</Button>
+                    </Popconfirm>";
+                    }
+                    
+                echo "
+                </>
+            },
+        },";
+        }
+    }
+?>
+        
+    ];
+    return (
+        <>
+ <?php
+    //如果修改是弹窗修改
+    if ($updateIsModal) {
+echo "           {/* 修改表单 */}
+            <Lazyload block={false}>
+                <Update
+                    tableReload={tableReload}
+                    updateId={updateId}
+                    setUpdateId={setUpdateId}
+                />
+            </Lazyload>\n";
+    }
+
+    //如果查看详情是弹窗查看
+    if ($infoIsModal) {
+echo "           {/* 查看详情 */}
+            <Lazyload block={false}>
+                <Info
+                    infoId={infoId}
+                    setInfoId={setInfoId}
+                />
+            </Lazyload>\n";
+    }
+?>
+            <PageContainer
+                className="sa-page-container"
+                ghost
+                header={{
+                    title: '<?php echo $table_title ?? '';?>',
+                    style: { padding: '0px 24px 12px' },
+                }}
+                <?php
+                    if (isset($card_tabs_list) && $card_tabs_list) {
+                        echo "
+                tabProps={{
+                    className: 'sa-page-container_ant-tabs'
+                }}
+                tabList={tabsList}
+                tabActiveKey={tabsKey}
+                onTabChange={setTabsKey}\n";
+                    }
+                ?>
+            >
+                <ProTable
+                    actionRef={tableRef}
+                    formRef={formRef}
+                    rowKey="id"
+                    columns={columns}
+                    scroll={{
+                        x: 1000
+                    }}
+                    options={{
+                        fullScreen: true
+                    }}
+                    columnsState={{
+                        //此table列设置后存储本地的唯一key
+                        persistenceKey: 'table_column_' + '<?php echo CodeGenerator::toCamelCase($table_name);?>', 
+                        persistenceType: 'localStorage'
+                    }}
+                    headerTitle={
+                        <Space>
+                            <?php
+                                //判断是否有新增操作
+                                if (isset($table_action_list) && in_array('create', $table_action_list)) {
+                                    //如果有新增，同时新增是弹窗
+                                    if ($createIsModal) {
+                                    echo "<Lazyload block={false}>
+                                <Create tableReload={tableReload} />
+                            </Lazyload>
+                                    ";
+                                    } else {
+                                        $create_auth_id = $data['auth_ids']['auth_create_id'] ?? 0;
+                                        $create_menu = AdminMenuModel::where('name', $data['auth_ids']['auth_create_id'] ?? 0)->find();
+                                        $create_url = $create_menu['path'] ?? '';
+                                    echo "<NavLink to={authCkeck('{$create_auth_id}') ? '' : `{$create_url}`}>
+                                <Button
+                                    type=\"primary\"
+                                    disabled={authCkeck('{$create_auth_id}')}
+                                    icon={<PlusOutlined />}
+                                >添加{$table_title}</Button>
+                            </NavLink>";
+                                    }
+                                }
+
+                                //是否有导出操作
+                                if (isset($table_action_list) && in_array('export', $table_action_list)) {
+                                    $export_auth_id = $data['auth_ids']['auth_export_id'];
+                                    echo "
+                            <Tooltip title=\"根据当前搜索条件导出数据~\">
+                                <Button
+                                    type=\"primary\"
+                                    danger
+                                    ghost
+                                    icon={<CloudDownloadOutlined />}
+                                    onClick={exportData}
+                                    disabled={authCkeck('{$export_auth_id}')}
+                                >导出</Button>
+                            </Tooltip>";
+                                }
+                                
+                                //如果有导入到账
+                                if ($isImport) {
+                                    echo "
+                            <ImportData
+                                tableReload={tableReload}
+                            />";
+                                }
+
+                                //如果有排序
+                                if (in_array('InputNumber', $antdComponent)) {
+                                    //排序的权限id
+                                    $authId = $data['auth_ids']['auth_update_sort_id'] ?? 0;
+                                    echo "
+                            <Button
+                                type=\"primary\"
+                                onClick={updateSort}
+                                disabled={authCkeck('{$authId}')}
+                                icon={<OrderedListOutlined />}
+                            >保存排序</Button>\n";
+                                }
+                            ?>
+                        </Space>
+                    }
+                    pagination={{
+                        defaultPageSize: 10,
+                        size: 'default',
+                        //支持跳到多少页
+                        showQuickJumper: true,
+                        showSizeChanger: true,
+                        responsive: true,
+                    }}
+                    request={async (params = {}, sort, filter) => {
+                        //排序的时候
+                        let orderBy = '';
+                        for (let key in sort) {
+                            orderBy = key + ' ' + (sort[key] === 'descend' ? 'desc' : 'asc');
+                        }
+                        const result = await <?php echo $apiFileName;?>Api.getList({
+                            ...params,//包含了翻页参数跟搜索参数
+                            orderBy, //排序
+                            page: params.current,
+                        });
+                        return {
+                            data: result.data.data,
+                            success: true,
+                            total: result.data.total,
+                        };
+                    }}
+<?php
+    if ((isset($table_action_list) && $table_action_list) || (isset($table_action_all_list) && $table_action_all_list)) {
+        if (
+            in_array('all_delete', $table_action_list) ||
+            in_array('all_update_status', $table_action_list) ||
+            (isset($table_action_all_list) && $table_action_all_list)
+        ){
+            echo "
+                    //开启批量选择
+                    rowSelection={{
+                        preserveSelectedRowKeys: true,
+                    }}
+                    //批量选择后左边操作
+                    tableAlertRender={({ selectedRowKeys, }) => {
+                        return (
+                            <Space>
+                                <span>已选 {selectedRowKeys.length} 项</span>";
+
+                                //如果有批量删除
+                                if (in_array('all_delete', $table_action_list)) {
+                                    $delete_auth_id = $data['auth_ids']['auth_delete_id'] ?? 0;
+                                    echo "
+                                <Popconfirm
+                                    title={`确定批量删除这\${selectedRowKeys.length}条数据吗？`}
+                                    onConfirm={() => { 
+                                        del(selectedRowKeys) 
+                                    }}
+                                    disabled={authCkeck('{$delete_auth_id}')}
+                                >
+                                    <Button 
+                                        type=\"link\" 
+                                        size='small' 
+                                        danger 
+                                        icon={<DeleteOutlined />} 
+                                        disabled={authCkeck('{$delete_auth_id}')}
+                                    >批量删除</Button>
+                                </Popconfirm>\n";
+                                }
+                                
+                                //如果有批量上下架
+                                if (in_array('all_update_status', $table_action_list)) {
+                                    $auth_update_status_id = $data['auth_ids']['auth_update_status_id'] ?? 0;
+                                    echo "
+                                <Button
+                                    type=\"link\"
+                                    size='small'
+                                    icon={<EyeOutlined />}
+                                    disabled={authCkeck('{$auth_update_status_id}')}
+                                    onClick={()=>{
+                                        updateStatus(selectedRowKeys,1);
+                                    }}
+                                >显示</Button>
+                                <Button
+                                    type=\"link\"
+                                    size='small'
+                                    icon={<EyeInvisibleOutlined />}
+                                    disabled={authCkeck('{$auth_update_status_id}')}
+                                    onClick={()=>{
+                                        updateStatus(selectedRowKeys,2);
+                                    }}
+                                >隐藏</Button>\n";
+                                }
+
+                                //其它批量操作
+                                foreach ($table_action_all_list as $k => $v) {
+                                    $tmp = CodeGenerator::toCamelCase($v['field']);
+                                echo "                                <Update{$tmp} 
+                                    tableReload={tableReload} 
+                                    ids={selectedRowKeys} 
+                                />\n";
+                                }
+                                
+                            echo "
+                            </Space>
+                        );
+                    }}";
+        }
+    }
+?>
+                
+                />
+            </PageContainer>
+        </>
+    )
+}

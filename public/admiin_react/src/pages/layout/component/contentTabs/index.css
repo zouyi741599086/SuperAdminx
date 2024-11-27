@@ -1,0 +1,64 @@
+.sa-tabs{background: rgba(238,238,238,.6);backdrop-filter:blur(6px);position: sticky;left:0px;top:56px;z-index: 2;padding:0px;display: flex;}
+.sa-tabs .tabs-l{flex: 1;overflow: hidden;box-sizing: border-box;padding-left:8px;}
+.sa-tabs .tabs-r{width:40px;height:100%;padding-right:10px;}
+.sa-tabs .tabs-r .span{display: flex;width:100%;height:100%;align-items: center;justify-content: center;cursor: pointer;}
+.sa-tabs .tabs-r .span .btn{border:0px;}
+
+/**选项卡里面 标签按钮的样式 */
+.tabs-pane-btn{padding:0px 8px;border-radius: 4px;height:26px;font-size:13px;background: #fff;border:0px;display:flex;align-items: center;box-sizing: border-box;}
+.tabs-pane-btn .icon{transform: scale(.7);}
+.tabs-pane-btn.on{color:#fff;}
+.tabs-pane-btn.on .icon{color:#ccc;}
+.tabs-pane-btn.on .icon:hover{color:#fff;}
+
+/*修改antd tabs默认样式*/
+.sa-tabs .ant-tabs-ink-bar{display: none;}
+.sa-tabs .ant-tabs-top >.ant-tabs-nav::before,
+.sa-tabs .ant-tabs-bottom >.ant-tabs-nav::before,
+.sa-tabs .ant-tabs-top >div>.ant-tabs-nav::before,
+.sa-tabs .ant-tabs-bottom >div>.ant-tabs-nav::before{border:0px;}
+
+/**黑色主题的时候 */
+.sa-antd-dark .sa-tabs{background: #141414 !important;}
+.sa-antd-dark .tabs-pane-btn{background: none; border:1px solid var(--ant-color-border);}
+.sa-antd-dark .tabs-pane-btn .icon:hover{color:#fff;}
+.sa-antd-dark .tabs-pane-btn.on{border-color: #141414;}
+.sa-antd-dark .tabs-pane-btn.on .icon{color:#ccc;}
+.sa-antd-dark .tabs-pane-btn.on .icon:hover{color:#fff;}
+.sa-antd-dark .sa-tabs .tabs-r .span .btn{background: #1f1f1f;}
+
+/* 简约的时候 */
+.sa-antd-simple .sa-tabs{background: rgba(255,255,255,.9);border-radius: 8px;}
+.sa-antd-simple .sa-tabs .tabs-pane-btn{border:1px solid var(--ant-color-border);}
+
+/* 圆角的时候 */
+.sa-is-radius .sa-tabs{background: rgba(255,255,255,.9);border-radius: 8px;}
+.sa-is-radius .sa-tabs .tabs-pane-btn{border:1px solid var(--ant-color-border);}
+
+/* slide侧边 + 简约 */
+.sa-antd-simple .sa-layout-slide .sa-tabs{margin:0px 12px 0px 24px;overflow: hidden;}
+/* slide侧边 + 圆角 */
+.sa-is-radius .sa-layout-slide .sa-tabs{margin:12px 12px 0px 24px;overflow: hidden;top:68px;}
+
+/* 左边分类 + 简约 */
+.sa-antd-simple .sa-layout-slideSplitMenus .sa-tabs{margin:0px 12px 0px 24px;overflow: hidden;}
+/* 左边分栏 + 圆角的时候 */
+.sa-is-radius .sa-layout-slideSplitMenus .sa-tabs{top:56px;margin:0px 12px 0px 24px;}
+
+/* 左边 */
+.sa-layout-left .sa-tabs{top:0px;}
+/* 左边 + 简约 */
+.sa-antd-simple .sa-layout-left .sa-tabs{margin:6px 24px 0px 24px;overflow: hidden;top:6px}
+/* 左边 + 圆角 */
+.sa-is-radius .sa-layout-left .sa-tabs{margin:12px 24px 0px 24px;overflow: hidden;top:12px;}
+
+/* 顶部 + 圆角 */
+.sa-is-radius .sa-layout-top .sa-tabs{margin:12px 12px 0px 12px;overflow: hidden;top:68px;}
+/* 顶部 + 简约 */
+.sa-antd-simple .sa-layout-top .sa-tabs{margin:12px 12px 0px 12px;overflow: hidden;top:68px}
+
+
+/* 顶部分栏 + 简约 */
+.sa-antd-simple .sa-layout-topSplitMenus .sa-tabs{margin:0px 12px 0px 24px;overflow: hidden;}
+/* 顶部分栏 + 圆角 */
+.sa-is-radius .sa-layout-topSplitMenus .sa-tabs{margin:12px 12px 0px 24px;overflow: hidden;top:68px;}

@@ -1,0 +1,12 @@
+.uploaddan-img-mini{width:50px;height:50px;cursor:pointer;margin:0px 12px 0px 0px;text-align: center;position: relative;}
+.chosenClass .uploaddan-img-mini{border:3px solid #ccc;}
+
+.uploaddan-img-mini .bg{width:42px;height:42px;border-radius: 5px;margin:0px auto;border:1px solid #fff;transition: .3s;position: relative;}
+.uploaddan-img-mini .bg img{width:100%;height:100%;}
+.uploaddan-img-mini .bg .hover{opacity: 0;transition: .5s; position: absolute;left:0px;top:0px;background-color: rgba(0,0,0,.7);width:100%;height:100%;display: flex;align-items: center;}
+.uploaddan-img-mini:hover .bg .hover{opacity: 1;}
+.uploaddan-img-mini .bg .hover div{display: flex;justify-content: center;width:100%;}
+.uploaddan-img-mini .bg .hover div .icon{color:#fff;font-size:16px;}
+
+.uploadimgmini.ant-upload-wrapper.ant-upload-picture-card-wrapper .ant-upload.ant-upload-select,
+.uploadimgmini.ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select{width:50px;height:50px;margin-bottom: 3px;}

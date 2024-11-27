@@ -1,0 +1,14 @@
+
+.theme-set-ul{list-style-type:none;padding:10px 0px}
+.theme-set-ul li{display:inline-block;margin-right:10px;cursor:pointer;position:relative}
+.theme-set-ul li .c{width:20px;height:20px;border-radius:2px;display:inline-block;position:relative}
+.theme-set-ul li .on{display:inline-block;width:20px;height:20px;position:absolute;right:5px;bottom:7px;z-index:1}
+.theme-set-ul li .c .on{width:100%;height:100%;right:0px;bottom:0px;line-height:20px;text-align:center}
+.theme-set-ul li .c .on .icon{color:#fff}
+.theme-set-flex{list-style-type:none;padding:0px}
+.theme-set-flex li{display:flex;padding:5px 0px}
+.theme-set-flex li .txt{flex:1;display: flex;align-items: center;}
+.theme-set-flex li .txt.disabled{color:#666}
+.theme-set-flex li .cont{width:80px}
+.theme-set-flex li .cont.wauto{width:auto}
+.layout-men-dark .color{color:#f5f5f6}

@@ -1,0 +1,73 @@
+*{margin:0px;}
+
+/*色弱模式*/
+.sa-filter{filter: invert(85%);}
+
+/*star 滚动条*/
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: #fff;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: #c8c8c8;
+}
+/*end 滚动条*/
+
+/*全屏后任然能上下滚动*/
+body:fullscreen {
+    overflow: auto;
+}
+
+/*修改全局 pc的时候主体内容的边距*/
+.ant-pro-page-container-children-container,
+.ant-pro-page-container-children-content{padding:8px 24px;}
+/*修改全局 移动的时候主体内容的边距*/
+.sa-mobile .ant-pro-page-container-children-container,
+.sa-mobile .ant-pro-page-container-children-content{padding:8px;}
+
+/*抽屉设置最大宽*/
+.ant-drawer-content-wrapper{max-width: 100%;}
+
+/*页面容器，加淡入动画 为了菜单收缩开关与富文本编辑器的层级问题，不得不关闭，同时需要设置两个类的position为static*/
+.sa-page-container{/*animation:fadeIn 1s 0s ease both;*/position: static;}
+.sa-page-container .ant-page-header{position: static;}
+
+@keyframes fadeIn{
+    0%{opacity:0}
+    100%{opacity:1}
+}
+@keyframes fadeIn{
+    0%{opacity:0}
+    100%{opacity:1}
+}
+
+/* 页面容器 顶部加入tabs的时候，去掉边距 */
+.sa-page-container_ant-tabs .ant-tabs-nav{margin-bottom: 0px;}
+
+/* ProTable 当在详情页的Card 或 弹窗中的时候，去掉表格及搜索框的一些边距，使用的时候给ProTable加上此类就行 */
+.pro-table-info .ant-pro-table-search{margin-block-end:0px;}
+.pro-table-info .ant-pro-query-filter.ant-pro-query-filter{padding-left:0px;padding-right:0px;}
+.pro-table-info .ant-pro-card-body{padding-inline: 0px;}
+
+/* 简单配置表格页面的 样式，如简单分类表这种 */
+.list-title-item{display: inline-block;background: #eef2f5;border-radius: 6px;margin:0px 15px 15px 0px;border:1px solid #eef2f5;cursor:pointer;position: relative;width:220px;padding:10px 6px;}
+.list-title-item .item{width:100%;overflow: hidden;text-align: center;text-overflow:ellipsis;white-space:nowrap;}
+.sa-antd-dark .list-title-item{background: #333;border-color: #333;}
+.sa-antd-dark .list-title-item.on{border-color:var(--ant-primary-color) ;}
+
+.list-title-item .hover{opacity: 0;transition: .5s; position: absolute;left:0px;top:0px;background-color: rgba(0,0,0,.7);width:100%;height:100%;border-radius: 5px;display: flex;align-items: center;}
+.list-title-item:hover  .hover{opacity: 1;}
+.list-title-item .hover div{display: flex;justify-content: center;width:100%;}
+.list-title-item .hover div .icon{color:#fff;font-size:16px;}
+/* 简单配置表格页面的 样式，如简单分类表这种 */

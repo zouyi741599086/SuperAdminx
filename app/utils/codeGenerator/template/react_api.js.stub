@@ -1,0 +1,184 @@
+<?php
+/**
+ * 生成后端api文件
+ */
+use app\utils\codeGenerator\CodeGenerator;
+
+    $data = CodeGenerator::getCodeGeneratorInfo($table_name);
+    //当前的表名转驼峰
+    $tableNameToCamelCase = CodeGenerator::toCamelCase($table_name);
+    //导出的名称
+    $apiFileName = strtolower($tableNameToCamelCase[0]) . substr($tableNameToCamelCase, 1);
+
+    $list = [];
+
+    //如果是从配置中生成
+    if (isset($generator_type) && $generator_type == 1) {
+        if (isset($data['controller']['functions']) && in_array('getList', $data['controller']['functions'])) {
+            $list[] = [
+                'title' => '列表',
+                'functoin_name' => 'getList',
+                'method' => 'get',
+                'url' => "/admin/{$tableNameToCamelCase}/getList"           
+            ];
+        }
+        if (isset($data['controller']['functions']) && in_array('create', $data['controller']['functions'])) {
+            $list[] = [
+                'title' => '新增',
+                'functoin_name' => 'create',
+                'method' => 'post',
+                'url' => "/admin/{$tableNameToCamelCase}/create"           
+            ];
+        }
+        if (isset($data['controller']['functions']) && in_array('findData', $data['controller']['functions'])) {
+            $list[] = [
+                'title' => '获取数据',
+                'functoin_name' => 'findData',
+                'method' => 'get',
+                'url' => "/admin/{$tableNameToCamelCase}/findData"           
+            ];
+        }
+        if (isset($data['controller']['functions']) && in_array('update', $data['controller']['functions'])) {
+            $list[] = [
+                'title' => '更新',
+                'functoin_name' => 'update',
+                'method' => 'post',
+                'url' => "/admin/{$tableNameToCamelCase}/update"           
+            ];
+        }
+        if (isset($data['controller']['functions']) && in_array('delete', $data['controller']['functions'])) {
+            $list[] = [
+                'title' => '删除',
+                'functoin_name' => 'delete',
+                'method' => 'post',
+                'url' => "/admin/{$tableNameToCamelCase}/delete"           
+            ];
+        }
+        if (isset($data['controller']['functions']) && in_array('updateSort', $data['controller']['functions'])) {
+            $list[] = [
+                'title' => '更新排序',
+                'functoin_name' => 'updateSort',
+                'method' => 'post',
+                'url' => "/admin/{$tableNameToCamelCase}/updateSort"           
+            ];
+        }
+        if (isset($data['controller']['functions']) && in_array('updateStatus', $data['controller']['functions'])) {
+            $list[] = [
+                'title' => '更新状态',
+                'functoin_name' => 'updateStatus',
+                'method' => 'post',
+                'url' => "/admin/{$tableNameToCamelCase}/updateStatus"           
+            ];
+        }
+        if (isset($data['controller']['functions']) && in_array('select', $data['controller']['functions'])) {
+            $list[] = [
+                'title' => '搜索选择某条数据',
+                'functoin_name' => "select{$tableNameToCamelCase}",
+                'method' => 'get',
+                'url' => "/admin/{$tableNameToCamelCase}/select{$tableNameToCamelCase}"           
+            ];
+        }
+        if (isset($data['controller']['functions']) && in_array('importData', $data['controller']['functions'])) {
+            //下载导入模板
+            $list[] = [
+                'title' => '下载导入数据的表格模板',
+                'functoin_name' => 'downloadImportExcel',
+                'method' => 'get',
+                'url' => "/admin/{$tableNameToCamelCase}/downloadImportExcel"           
+            ];
+            //如果是导入数据，则不一样，是直接返回上传文件的地址
+            $list[] = [
+                'title' => '导入数据',
+                'content' => "importData: `\${config.url}/admin/{$tableNameToCamelCase}/importData`,"       
+            ];
+        }
+        if (isset($data['controller']['functions']) && in_array('exportData', $data['controller']['functions'])) {
+            $list[] = [
+                'title' => '导出数据',
+                'functoin_name' => 'exportData',
+                'method' => 'get',
+                'url' => "/admin/{$tableNameToCamelCase}/exportData"           
+            ];
+        }
+        // 生成逻辑层的其它方法
+        if (isset($data['logic']['other_functions']) && is_array($data['logic']['other_functions'])) {
+            
+            foreach ($data['logic']['other_functions'] as $key => $value) {
+                $list[] = [
+                    'title' => $value['title'],
+                    'functoin_name' => $value['name'],
+                    'method' => $value['method'],
+                    'url' => "/admin/{$tableNameToCamelCase}/{$value['name']}"           
+                ];
+            }
+        }
+        // 生成控制器的其它方法
+        if (isset($data['controller']['other_functions']) && is_array($data['controller']['other_functions'])) {
+            
+            foreach ($data['controller']['other_functions'] as $key => $value) {
+                $list[] = [
+                    'title' => $value['title'],
+                    'functoin_name' => $value['name'],
+                    'method' => $value['method'],
+                    'url' => "/admin/{$tableNameToCamelCase}/{$value['name']}"           
+                ];
+            }
+        }
+    }
+
+    //如果是从反射中生成
+    if (isset($generator_type) && $generator_type == 2) {
+        // 通过反射获取控制器哪些方法不需要登录
+        $methods = CodeGenerator::getOwnMethods("{$data['controller']['file_path']}\\{$data['controller']['file_name']}");
+        foreach ($methods as $key => $m) {
+            $docComment = $m->getDocComment();
+            //如果是导入数据，则不一样
+            if ($m->name == 'importData') {
+                $list[] = [
+                    'title' => '导入数据',
+                    'content' => "importData: `\${config.url}/admin/{$tableNameToCamelCase}/importData`,"       
+                ];
+            } else {
+                $list[] = [
+                    'title' => CodeGenerator::getMethodsDocComment($docComment, 'title'),
+                    'functoin_name' => $m->name,
+                    'method' => CodeGenerator::getMethodsDocComment($docComment, 'method'),
+                    'url' => "/admin/{$tableNameToCamelCase}/{$m->name}"           
+                ];
+            }
+        }
+    }
+    
+?>
+import { http } from '@/common/axios.js'
+import { config } from '@/common/config';
+
+/**
+ * <?php echo $table_title ?? '';?> API
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+export const <?php echo $apiFileName;?>Api = {
+    <?php
+        foreach ($list as $key => $value) {
+
+            if (isset($value['content']) && $value['content']) {
+
+    echo "//{$value['title']}
+    {$value['content']}
+    ";
+
+            } else {
+
+    echo "//{$value['title']}
+    {$value['functoin_name']}: (params = {}) => {
+        return http.{$value['method']}('{$value['url']}',params);
+    },
+    ";
+
+            }
+        }    
+    ?>
+    
+}

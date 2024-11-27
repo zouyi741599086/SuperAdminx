@@ -1,0 +1,6 @@
+<?php
+/**
+ * 生成后端其它组件
+ */
+    include __DIR__ . "/react_other_{$component_type}.jsx.stub";
+?>

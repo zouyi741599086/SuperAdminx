@@ -1,0 +1,501 @@
+<?php
+/**
+ * 详情 新页面打开的时候
+ */
+    use app\utils\codeGenerator\CodeGenerator;
+    use app\common\model\AdminMenuModel;
+
+    $data = CodeGenerator::getCodeGeneratorInfo($table_name);
+
+    //所有要引入的api，额外用一个变量来存储，来引入
+    $apiAll = [];
+
+    //引入api的文件名称
+    $apiFileName = CodeGenerator::toCamelCase($table_name);
+    $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
+    $apiAll[] = $apiFileName;
+
+    //列表权限节点
+    $menu = AdminMenuModel::where('name', $data['auth_ids']['auth_list_id'] ?? null)->find();
+
+    //所有的字段的类型
+    $filedsTypeArr = [];
+    if(isset($info_fields_type)) {
+        foreach ($info_fields_type as $v) {
+            if (!in_array($v,$filedsTypeArr)) {
+                $filedsTypeArr[] = $v;
+            }
+        }
+    }
+
+    //proTable引入的api的文件
+    $proTableApiName = [];
+    if (isset($table_list) && $table_list) {
+        foreach ($table_list as $k => $v) {
+            $tmpApiName = CodeGenerator::toCamelCase($v['apiFileName']);
+            $tmpApiName = strtolower($tmpApiName[0]) . substr($tmpApiName, 1);
+            $proTableApiName[] = $tmpApiName;
+
+            //判断是否需要引入此api，因为可能已经引入过了
+            if (!in_array($tmpApiName, $apiAll)) {
+                $apiAll[] = $tmpApiName;
+                
+            }
+        }
+    }
+
+    //时间轴的数据来源api文件
+    $timeLineApiFileName = '';
+    if (isset($right_timeline) && $right_timeline == 2 && $right_timeline_apiFileName) {
+        $timeLineApiFileName = CodeGenerator::toCamelCase($right_timeline_apiFileName);
+        $timeLineApiFileName = strtolower($timeLineApiFileName[0]) . substr($timeLineApiFileName, 1);
+
+        //判断是否需要引入此api，因为可能已经引入过了
+        if (!in_array($timeLineApiFileName, $apiAll)) {
+            $apiAll[] = $timeLineApiFileName;
+            
+        }
+    }
+?>
+import { useRef, useState, lazy, useEffect } from 'react';
+import {
+    ProTable,
+    ProCard,
+    PageContainer,
+    ProForm,
+} from '@ant-design/pro-components';
+<?php
+//需要引入的api文件
+foreach ($apiAll as $v) {
+    echo "import { {$v}Api } from '@/api/{$v}';\n";
+}
+?>
+import { App, Space, Row, Col, Descriptions, Typography, Affix, Flex, Timeline } from 'antd';
+import { useMount } from 'ahooks';
+import { useNavigate, useSearchParams } from "react-router-dom";
+import Lazyload from '@/pages/component/lazyLoad/index';
+<?php
+//导入需要使用的自定义的字段
+if (in_array('preview_content',$filedsTypeArr)) echo "import PreviewContent from '@/pages/component/preview/content/index';\n" ;
+if (in_array('preview_images_videos',$filedsTypeArr)) echo "import PreviewImagesVideos from '@/pages/component/preview/imagesVideos/index';\n";
+if (in_array('preview_teditor',$filedsTypeArr)) echo "import PreviewTeditor from '@/pages/component/preview/teditor/index';\n";
+if (in_array('preview_video',$filedsTypeArr)) echo "import PreviewVideo from '@/pages/component/preview/video/index';\n";
+if (in_array('preview_pdf',$filedsTypeArr)) echo "import PreviewPdf from '@/pages/component/preview/pdf/index';\n";
+if (in_array('preview_word',$filedsTypeArr)) echo "import PreviewWord from '@/pages/component/preview/word/index';\n";
+?>
+
+/**
+ * <?php echo $table_title ?? '';?> 详情
+ * 
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+export default () => {
+<?php
+        //如果有proTable
+        if (isset($table_list) && $table_list) {
+            echo "    const tableRef = useRef();\n";
+        }
+?>
+    const navigate = useNavigate();
+    const { message } = App.useApp();
+    const [search] = useSearchParams();
+
+    const [id, setId] = useState();
+    const [data, setData] = useState({});
+    useMount(() => {
+        const _id = search.get('id');
+        if (!_id) {
+            onBack();
+        }
+        setId(_id);
+        findData(_id);
+<?php 
+            if ($timeLineApiFileName) {
+        echo "        getRecordList();
+";
+            }
+?>
+    });
+
+    ////////////////获取详情////////////////////
+    const findData = (_id = null) => {
+        <?php echo $apiFileName;?>Api.findData({
+            id: _id || id
+        }).then(res => {
+            if (res.code === 1) {
+                setData(res.data);
+            } else {
+                message.error(res.message);
+                onBack();
+            }
+        })
+    }
+    //返回上一页
+    const onBack = () => {
+        navigate('<?php echo $menu['path'] ?? '';?>');
+    }
+
+    //////////描述列表的列
+    const [descriptionsItems, setDescriptionsItems] = useState([]);
+    useEffect(() => {
+        setDescriptionsItems([
+<?php
+            if (isset($info_fields_type)) {
+                foreach ($info_fields_type as $field => $type) {
+
+                //字段的中文名称
+                $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
+
+                $children = "";
+                //文本
+                if ($type == 'text') {
+                    $children = "<Typography.Text>{data.{$field}}</Typography.Text>";
+                }
+
+                //文本可展开
+                if ($type == 'text_ellipsis') {
+                    $children = "<Typography.Paragraph
+                        ellipsis={{
+                            rows: 1,
+                            expandable: 'collapsible',
+                        }}
+                >{data.{$field}}</Typography.Paragraph>";
+                }
+
+                //状态如订单状态
+                if ($type == 'status') {
+                    $children = "<>
+                    {data.{$field} === 1 ? <>
+                        <Typography.Text type=\"danger\">待付款</Typography.Text>
+                    </> : ''}
+                    {data.{$field} === 2 ? <>
+                        <Typography.Text mark>待发货</Typography.Text>
+                    </> : ''}
+                    {data.{$field} === 3 ? <>
+                        <Typography.Text type=\"success\">待收货</Typography.Text>
+                    </> : ''}
+                    {data.{$field} === 4 ? <>
+                        <Typography.Text type=\"success\">待评价</Typography.Text>
+                    </> : ''}
+                    {data.{$field} === 5 ? <>
+                        <Typography.Text>已完成</Typography.Text>
+                    </> : ''}
+                    {data.{$field} === 6 ? <>
+                        <Typography.Text disabled>已关闭</Typography.Text>
+                    </> : ''}
+                    {data.{$field} === 7 ? <>
+                        <Typography.Text mark>退款审核中</Typography.Text>
+                    </> : ''}
+                    {data.{$field} === 8 ? <>
+                        <Typography.Text underline>已退款</Typography.Text>
+                    </> : ''}
+                </>";
+                }
+
+                //文本可复制
+                if ($type == 'text_copy') {
+                    $children = "<Typography.Paragraph
+                    copyable={{
+                        text: data.{$field},
+                    }}
+                >{data.{$field}}</Typography.Paragraph>";
+                }
+
+                //灰色文本
+                if ($type == 'text_secondary') {
+                    $children = "<Typography.Text type='secondary'>{data.{$field}}</Typography.Text>";
+                }
+
+                //绿色文本
+                if ($type == 'text_success') {
+                    $children = "<Typography.Text type='success'>{data.{$field}}</Typography.Text>";
+                }
+
+                //黄色文本
+                if ($type == 'text_warning') {
+                    $children = "<Typography.Text type='warning'>{data.{$field}}</Typography.Text>";
+                }
+
+                //红色文本
+                if ($type == 'text_danger') {
+                    $children = "<Typography.Text type='danger'>{data.{$field}}</Typography.Text>";
+                }
+
+                //加粗文本
+                if ($type == 'text_strong') {
+                    $children = "<Typography.Text strong={true}>{data.{$field}}</Typography.Text>";
+                }
+
+                //黄色底文本
+                if ($type == 'text_mark') {
+                    $children = "<Typography.Text mark={true}>{data.{$field}}</Typography.Text>";
+                }
+
+                //灰色底文本
+                if ($type == 'text_code') {
+                    $children = "<Typography.Text code={true}>{data.{$field}}</Typography.Text>";
+                }
+
+                //弹窗查看文本
+                if ($type == 'preview_content') {
+                    $children = "<PreviewContent title=\"查看\" content={data.{$field}} type={1}/>";
+                }
+
+                //预览多个图片或视频
+                if ($type == 'preview_images_videos') {
+                    $children = "<PreviewImagesVideos imgs={data.{$field}} />";
+                }
+
+                //预览富文本内容
+                if ($type == 'preview_teditor') {
+                    $children = "<PreviewTeditor title=\"{$tmp_field_title}\" content={data.{$field}} />";
+                }
+
+                //预览视频
+                if ($type == 'preview_video') {
+                    $children = "<PreviewVideo url={data.{$field}} />";
+                }
+
+                //preview_pdf
+                if ($type == 'preview_pdf') {
+                    $children = "<PreviewPdf title=\"{$tmp_field_title}\" url={data.{$field}} />";
+                }
+
+                //预览word
+                if ($type == 'preview_word') {
+                    $children = "<PreviewWord title=\"{$tmp_field_title}\" url={data.{$field}} />";
+                }
+                
+
+            echo "            {
+                key: '{$field}',
+                label: '{$tmp_field_title}',
+                children: {$children},
+            },
+";
+
+                }
+            }
+        ?>
+        ]);
+    }, [data]) 
+
+    <?php
+        if ($timeLineApiFileName) {
+
+    echo "/////////时间轴的数据
+    const [recordList, setRecordList] = useState([]);
+    const getRecordList = (_id = null) => {
+        {$timeLineApiFileName}Api.getList({
+            xxx_id: _id || id,
+        }).then(res => {
+            if (res.code === 1) {
+                setRecordList(res.data.map((item, index) => {
+                    return {
+                        color: index === 0 ? 'green' : 'gray',
+                        children: <>
+                            <b>{item.title}</b><br />
+                            {item.name ? <>
+                                {item.name}/{item.tel}<br />
+                            </> : ''}
+                            {item.create_time}
+                        </>
+                    }
+                }));
+            } else {
+                message.error(res.message);
+                onBack();
+            }
+        });
+    }";
+
+        }
+    ?>
+
+<?php
+        //proTable的顶部的tabs的
+        if (isset($table_list) && $table_list) {
+
+                echo "
+    ////////////////////ProTable的tabs//////////////////////
+    const [proTableKey, setProTableKey] = useState('0');
+    const [proTableTabs] = useState([";
+
+        foreach ($table_list as $k => $v) {
+            echo "
+        {
+            key: '".$k."',
+            label: '{$v['name']}',
+        },";
+        }
+
+    echo "
+    ]);
+    ";
+
+    echo "
+    //刷新表格数据
+    const tableReload = () => {
+        tableRef.current.reload();
+        tableRef.current.clearSelected();
+    }";
+    
+    echo "
+    /////////////////////ProTable每个tabs的表格不同的配置
+    const [proTableConfig] = useState([";
+
+        foreach ($table_list as $k => $v) {
+
+            echo "
+        {
+            columns: [ //每个表格的列需要修改
+                {
+                    title: '项目名称',
+                    dataIndex: 'title',
+                },
+            ], 
+            params: {
+                proTableKey: proTableKey,
+                id: id, //详情数据的主ID
+            },
+            request: async (params = {}, sort, filter) => {
+                const res = await {$proTableApiName[$k]}Api.{$v['apiFileName_action']}({
+                    ...params,//包含了翻页参数跟搜索参数
+                    page: params.current,
+                });
+                return {
+                    data: res.data.data,
+                    success: true,
+                    total: res.data.total,
+                };
+            },
+        },";
+
+        }
+
+        echo "
+    ])
+    ";
+
+        }
+    ?>
+
+    return <>
+        <PageContainer
+            className="sa-page-container"
+            ghost
+            header={{
+                title: '<?php echo $table_title ?? '';?>详情',
+                style: { padding: '0px 24px 12px' },
+                onBack: onBack
+            }}
+        >
+            <Row gutter={16}>
+                <?php 
+                //生成时间轴的时候
+                echo (isset($right_timeline) && $right_timeline == 2) ? "<Col xs={24} sm={24} md={12} lg={16} xl={18}>\n" : "<Col xs={24} sm={24} md={24} lg={24} xl={24}>\n";?>
+                    <Space direction="vertical" style={{ width: '100%' }}>
+                        <ProCard>
+                            <Descriptions 
+                                size="small" 
+                                column={<?php echo (isset($right_timeline) && $right_timeline == 2) ? 3 : 4;?>}
+                                items={descriptionsItems}
+                            />
+                        </ProCard>
+
+                <?php
+                       //生成Card的时候
+                    if (isset($table_list) && $table_list) {
+
+                                echo "
+                        <ProTable
+                            toolbar={{
+                                // filter: '筛选在这',
+                                menu: {
+                                    type: 'tab',
+                                    activeKey: proTableKey,
+                                    items: proTableTabs,
+                                    onChange: setProTableKey,
+                                },
+                                // actions: [
+                                //     '操作在这',
+                                // ],
+                            }}
+                            search={false}
+                            size='small'
+                            options={false}
+                            actionRef={tableRef}
+                            rowKey='id'
+                            pagination={{
+                                defaultPageSize: 10,
+                                size: 'default',
+                                //支持跳到多少页
+                                showQuickJumper: true,
+                                showSizeChanger: true,
+                                responsive: true,
+                            }}
+                            //滚动条
+                            scroll={{
+                                x: 1000
+                            }}
+                            {...proTableConfig[proTableKey + 0]}
+                        >
+                        </ProTable>\n";
+
+                            }
+                ?>
+                    </Space>
+                </Col>
+
+                <?php
+                    //生成时间轴的时候
+                    if (isset($right_timeline) && $right_timeline == 2) {
+                        
+                        echo "
+                <Col xs={24} sm={24} md={12} lg={8} xl={6}>
+                    <ProCard
+                        title=\"操作记录\"
+                    >
+                        <Timeline
+                            items={recordList}
+                        />
+                    </ProCard>
+                </Col>\n";
+
+                    }
+                ?>
+                
+                <?php
+                    //生成底部操作栏的时候
+                    if (isset($bottom_action) && $bottom_action == 2) {
+
+                        echo "
+                <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{ marginTop: 16 }}>
+                    {(data?.status < 4 || data?.status == 7) ? <>
+                        <Affix offsetBottom={10}>
+                            <ProCard boxShadow >
+                                <Flex align=\"center\" justify=\"center\" gap=\"small\">
+                                    {/**待付款 待发货的时候，可以修改收货地址 */}
+                                    {([1, 2].indexOf(data?.status) !== -1) ? <>
+                                        {/* <UpdateAddress
+                                            id={id}
+                                            tableReload={() => {
+                                                findData();
+                                                //getRecordList();
+                                                //tableRef.current.reload();
+                                            }}
+                                        /> */}
+                                    </> : ''}
+                                </Flex>
+                            </ProCard>
+                        </Affix>
+                    </> : ''}
+                </Col>\n";
+
+                    }                
+                ?>
+            </Row>
+        </PageContainer>
+    </>
+};
