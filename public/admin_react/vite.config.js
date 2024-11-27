@@ -49,7 +49,7 @@ export default defineConfig(({ command }) => {
             //excludeFolderPlugin('src/pages/adminSetting/codeGenerator'),
         ],
         server: {
-            port: '5204', // 指定启动端口
+            port: '5205', // 指定启动端口
         },
         base: '/admin/',
         build: {

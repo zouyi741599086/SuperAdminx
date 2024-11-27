@@ -28,8 +28,8 @@ function requestAfter(response, aes_key, aes_iv) {
             }, 1500)
         }
         //解密数据
-        if (response.data.encrypt_data !== undefined) {
-            response.data.data = aesDecrypt(response.data.encrypt_data, aes_key, aes_iv)
+        if (config.api_encryptor) {
+            response.data.data = aesDecrypt(response.data?.encrypt_data, aes_key, aes_iv)
         }
         return response.data;
     } else {
@@ -49,7 +49,7 @@ const requestBefore = (url, params, method) => {
     const aes_key = getStr(32);
     const aes_iv = getStr(16);
     //非debug的时候加密数据
-    if (!config.debug) {
+    if (config.api_encryptor) {
         params = {
             encrypt_data: aesEncrypt(params, aes_key, aes_iv)
         }

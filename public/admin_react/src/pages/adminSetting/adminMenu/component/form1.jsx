@@ -48,7 +48,7 @@ export default (props) => {
                     rules={[
                         { required: true, message: '请输入' }
                     ]}
-                    extra="必须要唯一，可用控制器名+方法名"
+                    extra="必须唯一，可用控制器名+方法名，设置后最好不要更改，要修改react里面的按钮权限及控制器中的auth注释"
                 />
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
@@ -66,7 +66,7 @@ export default (props) => {
                 <ProFormRadio.Group
                     name="type"
                     label="类型"
-                    extra="参数设置权限：不能在这编辑或添加，必须到/config去管理，这会同步过来"
+                    extra="参数设置权限：不能在这编辑或添加，必须到/config去管理，会自动同步过来"
                     options={[
                         {
                             value: 1,

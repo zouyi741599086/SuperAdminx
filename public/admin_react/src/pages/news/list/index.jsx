@@ -124,7 +124,7 @@ export default () => {
                     defaultValue={text}
                     style={{ width: '100px' }}
                     min={0}
-                    disabled={authCkeck('newsSort')}
+                    disabled={authCkeck('newsUpdateSort')}
                     onChange={(value) => {
                         sortArrChange(record.id, value);
                     }}
@@ -145,7 +145,7 @@ export default () => {
                 checkedChildren="显示"
                 unCheckedChildren="隐藏"
                 value={record.status == 1}
-                disabled={authCkeck('newsStatus')}
+                disabled={authCkeck('newsUpdateStatus')}
                 onClick={() => {
                     updateStatus(record.id, record.status == 1 ? 2 : 1);
                 }}
@@ -244,7 +244,7 @@ export default () => {
                             <Button
                                 type="primary"
                                 onClick={updateSort}
-                                disabled={authCkeck('newsSort')}
+                                disabled={authCkeck('newsUpdateSort')}
                                 icon={<OrderedListOutlined />}
                             >保存排序</Button>
                         </Space>

@@ -128,7 +128,7 @@ function result($data = [], int $code = 1, string $mssage = '操作成功', bool
         'data'    => $data,
     ];
     //判断是否需要加密
-    if (config('app.debug') == false && isset($result['data']) && $is_encrypt) {
+    if (config('superadminx.api_encryptor.enable') == true && isset($result['data']) && $is_encrypt) {
         $result['encrypt_data'] = DataEncryptor::aesEncrypt($result['data'], request()->aes_key, request()->aes_iv);
         unset($result['data']);
     }

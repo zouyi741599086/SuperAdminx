@@ -18,8 +18,11 @@ class DataEncryptor
      * @param string $data 解密的数据
      * @return string
      */
-    public static function rsaDecrypt(string $data) : string
+    public static function rsaDecrypt(?string $data) : string
     {
+        if (! $data) {
+            abort('解密的数据不能为空');
+        }
         $private_key = config('superadminx.rsa_private');
         if (! $private_key) {
             abort('未设置解密私钥');
@@ -64,8 +67,11 @@ class DataEncryptor
      * @param string $v 解密iv
      * @return array
      */
-    public static function aesDecrypt(string $data, string $key, string $iv) : array
+    public static function aesDecrypt(?string $data, string $key, string $iv) : array
     {
+        if (! $data) {
+            abort('解密的数据不能为空');
+        }
         try {
             $data = base64_decode($data);
             $data = openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);

@@ -45,6 +45,7 @@ class NewsClass
     /**
      * @log 添加文章分类
      * @method post
+     * @auth newsClassCreate
      * @param Request $request 
      * @return Response
      */
@@ -57,6 +58,7 @@ class NewsClass
     /**
      * @log 显示隐藏文章分类
      * @method post
+     * @auth newsClassUpdateStatus
      * @param Request $request 
      * @return Response
      */
@@ -69,6 +71,7 @@ class NewsClass
     /**
      * @log 修改文章分类
      * @method post
+     * @auth newsClassUpdate
      * @param Request $request 
      * @return Response
      */
@@ -81,6 +84,7 @@ class NewsClass
     /**
      * @log 删除文章分类
      * @method post
+     * @auth newsClassDelete
      * @param Request $request 
      * @return Response
      */
@@ -93,6 +97,7 @@ class NewsClass
     /**
      * @log 更改文章分类的排序
      * @method post
+     * @auth newsClassUpdateSort
      * @param Request $request 
      * @return Response
      * */

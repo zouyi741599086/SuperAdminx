@@ -2,14 +2,16 @@ export const config = {
     //项目的url
     url: import.meta.env.VITE_APP_BASE_URL,
     //项目名称，显示登录页及登录后左上角
-    projectName: 'SuperAdminx后台开发框架', 
+    projectName: 'SuperAdminx后台开发框架',
     //公司名称，显示在页脚
-    company: 'SuperAdminx', 
+    company: 'SuperAdminx',
     icp: '渝ICP备xxxxxxxxxx号',
     //存储本地数据前缀，存在本地的所有数据都有此前缀
-    storageDbPrefix: 'adminDb', 
+    storageDbPrefix: 'adminDb',
+    //api请求数据是否加密，，需要跟后端的开关对应
+    api_encryptor: true,//import.meta.env.VITE_APP_DEBUG === 'true' ? true : false,
     //是否开启debug
-    debug: import.meta.env.VITE_APP_DEBUG === 'true' ? true : false, 
+    debug: import.meta.env.VITE_APP_DEBUG === 'true' ? true : false,
     //加密key
     rsa_public: `-----BEGIN PUBLIC KEY-----
     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqNoRA7DlwWAp5N3Ax5eb

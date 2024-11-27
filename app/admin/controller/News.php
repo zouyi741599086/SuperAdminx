@@ -57,6 +57,7 @@ class News
     /**
      * @log 修改文章
      * @method post
+     * @auth news
      * @param Request $request 
      * @return Response
      */
@@ -69,6 +70,7 @@ class News
     /**
      * @log 显示隐藏文章
      * @method post
+     * @auth newsUpdateStatus
      * @param Request $request 
      * @return Response
      */
@@ -81,6 +83,7 @@ class News
     /**
      * @log 删除文章
      * @method post
+     * @auth newsDelete
      * @param Request $request 
      * @return Response
      */
@@ -106,6 +109,7 @@ class News
     /**
      * 更改排序
      * @method post
+     * @auth newsUpdateSort
      * @param Request $request 
      * @return Response
      * */
