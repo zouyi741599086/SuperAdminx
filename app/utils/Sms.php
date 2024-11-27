@@ -117,8 +117,8 @@ class Sms
      */
     public static function LkSend(string $tel, string $content)
     {
-        $sms_id       = config('app.sms.sms_uid');
-        $sms_password = config('app.sms.sms_password');
+        $sms_id       = config('superadminx.sms.sms_uid');
+        $sms_password = config('superadminx.sms.sms_password');
         if (! $sms_id || ! $sms_password) {
             abort('未设置短信参数');
         }
@@ -145,8 +145,8 @@ class Sms
      * */
     public static function getLkBalance()
     {
-        $sms_id       = config('app.sms.sms_uid');
-        $sms_password = config('app.sms.sms_password');
+        $sms_id       = config('superadminx.sms.sms_uid');
+        $sms_password = config('superadminx.sms.sms_password');
         if (! $sms_id || ! $sms_password) {
             abort('未设置短信参数');
         }
@@ -163,10 +163,10 @@ class Sms
      */
     public static function aliyunSend(string $tel, array $templateParam, string $templateCode)
     {
-        $accessKeyId     = config('app.sms.accessKeyId');
-        $accessKeySecret = config('app.sms.accessKeySecret');
-        $signName        = config('app.sms.signName');
-        $type            = config('app.sms.type');
+        $accessKeyId     = config('superadminx.sms.accessKeyId');
+        $accessKeySecret = config('superadminx.sms.accessKeySecret');
+        $signName        = config('superadminx.sms.signName');
+        $type            = config('superadminx.sms.type');
         if (! $accessKeyId || ! $accessKeySecret || ! $signName) {
             abort('未设置短信参数');
         }

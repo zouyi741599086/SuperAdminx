@@ -33,7 +33,7 @@ class NewsClassLogic
      * 获取下级列表
      * @param int $id
      * */
-    public static function getNextList(int $id)
+    public static function getChildrenList(int $id)
     {
         return NewsClassModel::order('sort desc,id desc')
             ->where('pid', $id)
@@ -63,18 +63,9 @@ class NewsClassLogic
             validate(NewsClassValidate::class)->check($params);
             $result = NewsClassModel::create($params);
 
-            //找出我的路劲
-            if (isset($params['pid']) && $params['pid']) {
-                $pid_path = NewsClassModel::where('id', $params['pid'])->value('pid_path');
-                $pid_path = "{$pid_path}{$result->id},";
-            } else {
-                $pid_path = ",{$result->id},";
-            }
-            //更新路劲
-            NewsClassModel::update([
-                'id'       => $result->id,
-                'pid_path' => $pid_path,
-            ]);
+            //重新更新我下面所有数据的pid_path相关字段
+            self::updatePidPath($result->id);
+
             Cache::forget("NewsClass");
             Db::commit();
         } catch (\Exception $e) {
@@ -99,20 +90,7 @@ class NewsClassLogic
             NewsClassModel::update($params);
 
             //重新更新我下面所有数据的pid_path相关字段
-            $update_list = NewsClassModel::where('pid_path', 'like', "%,{$params['id']},%")
-                ->orderRaw("CHAR_LENGTH(pid_path) asc")
-                ->field('id,title,pid,pid_path')
-                ->select()
-                ->toArray();
-            foreach ($update_list as $k => $v) {
-                if ($v['pid']) {
-                    $pid_data      = NewsClassModel::field('id,pid,pid_path')->find($v['pid']);
-                    $v['pid_path'] = "{$pid_data['pid_path']}{$v['id']},";
-                } else {
-                    $v['pid_path'] = ",{$v['id']},";
-                }
-                NewsClassModel::update($v);
-            }
+            self::updatePidPath($params['id']);
 
             Cache::forget("NewsClass");
             Cache::forget("NewsClass{$params['id']}");
@@ -120,6 +98,45 @@ class NewsClassLogic
         } catch (\Exception $e) {
             Db::rollback();
             abort($e->getMessage());
+        }
+    }
+
+    /**
+     * 添加修改共用，维护数据的pid_path、pid_path_title两个字段
+     * @param int $id
+     */
+    private static function updatePidPath(int $id)
+    {
+        $data = NewsClassModel::find($id);
+
+        //更新我自己
+        if (! $data['pid']) {
+            $data['pid_path']       = ",{$id},";
+            $data['pid_path_title'] = $data['title'];
+        } else {
+            $pidData                = NewsClassModel::find($data['pid']);
+            $data['pid_path']       = "{$pidData['pid_path']}{$id},";
+            $data['pid_path_title'] = "{$pidData['pid_path_title']}-{$data['title']}";
+        }
+        $data->save();
+        //NewsClassModel::update($data);
+
+        //更新我的下级
+        $childrenList = NewsClassModel::where('pid_path', 'like', "%,{$data['id']},%")
+            ->orderRaw("CHAR_LENGTH(pid_path) asc")
+            ->field('id,title,pid,pid_path,pid_path_title')
+            ->select()
+            ->toArray();
+        foreach ($childrenList as $v) {
+            if ($v['pid']) {
+                $pidData             = NewsClassModel::field('id,pid,pid_path,pid_path_title')->find($v['pid']);
+                $v['pid_path']       = "{$pidData['pid_path']}{$v['id']},";
+                $v['pid_path_title'] = "{$pidData['pid_path_title']}-{$v['title']}";
+            } else {
+                $v['pid_path']       = ",{$v['id']},";
+                $v['pid_path_title'] = $v['title'];
+            }
+            NewsClassModel::update($v);
         }
     }
 

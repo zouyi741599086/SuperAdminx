@@ -6,7 +6,7 @@ use support\Response;
 use app\common\logic\ConfigLogic;
 
 /**
- * 灵活的配置
+ * 参数设置
  * 
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/

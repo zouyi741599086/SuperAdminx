@@ -27,7 +27,7 @@ import { PageContainer,  ProForm} from '@ant-design/pro-components';
 import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>';
 import { App, Card, <?php echo $row_columns_number == 1 ? 'Space, Row, Col, ' : ''?>} from 'antd';
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Lazyload from '@/pages/component/lazyLoad/index';
+import Lazyload from '@/component/lazyLoad/index';
 
 <?php
     $card_tab_list_count = 1;

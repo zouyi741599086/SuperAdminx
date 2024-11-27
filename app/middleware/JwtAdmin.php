@@ -41,7 +41,7 @@ class JwtAdmin implements MiddlewareInterface
                 $menuId = AdminMenuModel::where('name', $authName)
                     ->where('id', 'in', function ($query) use ($request)
                     {
-                        $query->table('rx_admin_role_menu')->where('admin_role_id', $request->adminUser->admin_role_id)->field('admin_menu_id');
+                        $query->table('sa_admin_role_menu')->where('admin_role_id', $request->adminUser->admin_role_id)->field('admin_menu_id');
                     })
                     ->value('id');
                 if (! $menuId) {

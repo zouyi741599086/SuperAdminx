@@ -58,27 +58,27 @@
 
             //弹窗查看文本
             if ($v == 'preview_text') {
-                $zidingyiComponent[] = "import PreviewContent from '@/pages/component/preview/content/index';";
+                $zidingyiComponent[] = "import PreviewContent from '@/component/preview/content/index';";
             }
             //弹窗查看富文本
             if ($v == 'preview_teditor') {
-                $zidingyiComponent[] = "import PreviewTeditor from '@/pages/component/preview/teditor/index';";
+                $zidingyiComponent[] = "import PreviewTeditor from '@/component/preview/teditor/index';";
             }
             //预览多图或视频
             if ($v == 'preview_images_videos') {
-                $zidingyiComponent[] = "import PreviewImagesVideos from '@/pages/component/preview/imagesVideos/index';";
+                $zidingyiComponent[] = "import PreviewImagesVideos from '@/component/preview/imagesVideos/index';";
             }
             //预览视频
             if ($v == 'preview_video') {
-                $zidingyiComponent[] = "import PreviewVideo from '@/pages/component/preview/video/index';";
+                $zidingyiComponent[] = "import PreviewVideo from '@/component/preview/video/index';";
             }
             //预览pdf
             if ($v == 'preview_pdf') {
-                $zidingyiComponent[] = "import PreviewPdf from '@/pages/component/preview/pdf/index';";
+                $zidingyiComponent[] = "import PreviewPdf from '@/component/preview/pdf/index';";
             }
             //预览word
             if ($v == 'preview_word') {
-                $zidingyiComponent[] = "import PreviewWord from '@/pages/component/preview/word/index';";
+                $zidingyiComponent[] = "import PreviewWord from '@/component/preview/word/index';";
             }
 
         }
@@ -196,7 +196,7 @@ import { NavLink } from 'react-router-dom';
 import { authCkeck, arrayToTree} from '@/common/function';
 <?php echo $isExport ? "import { fileApi } from '@/api/file';\n" : '';?>
 <?php echo $isImport ? "import ImportData from './importData';\n" : '';?>
-import Lazyload from '@/pages/component/lazyLoad/index';
+import Lazyload from '@/component/lazyLoad/index';
 <?php
     //导入自定义的组件
     foreach ($zidingyiComponent as $v) {

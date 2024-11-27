@@ -32,12 +32,12 @@ import { useUpdateEffect } from 'ahooks';
 import { authCkeck } from '@/common/function';
 <?php
 //导入需要使用的自定义的字段
-if (in_array('preview_content',$filedsTypeArr)) echo "import PreviewContent from '@/pages/component/preview/content/index';\n" ;
-if (in_array('preview_images_videos',$filedsTypeArr)) echo "import PreviewImagesVideos from '@/pages/component/preview/imagesVideos/index';\n";
-if (in_array('preview_teditor',$filedsTypeArr)) echo "import PreviewTeditor from '@/pages/component/preview/teditor/index';\n";
-if (in_array('preview_video',$filedsTypeArr)) echo "import PreviewVideo from '@/pages/component/preview/video/index';\n";
-if (in_array('preview_pdf',$filedsTypeArr)) echo "import PreviewPdf from '@/pages/component/preview/pdf/index';\n";
-if (in_array('preview_word',$filedsTypeArr)) echo "import PreviewWord from '@/pages/component/preview/word/index';\n";
+if (in_array('preview_content',$filedsTypeArr)) echo "import PreviewContent from '@/component/preview/content/index';\n" ;
+if (in_array('preview_images_videos',$filedsTypeArr)) echo "import PreviewImagesVideos from '@/component/preview/imagesVideos/index';\n";
+if (in_array('preview_teditor',$filedsTypeArr)) echo "import PreviewTeditor from '@/component/preview/teditor/index';\n";
+if (in_array('preview_video',$filedsTypeArr)) echo "import PreviewVideo from '@/component/preview/video/index';\n";
+if (in_array('preview_pdf',$filedsTypeArr)) echo "import PreviewPdf from '@/component/preview/pdf/index';\n";
+if (in_array('preview_word',$filedsTypeArr)) echo "import PreviewWord from '@/component/preview/word/index';\n";
 ?>
 
 /**

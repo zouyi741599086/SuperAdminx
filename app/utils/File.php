@@ -34,7 +34,7 @@ class File
      */
     public static function upload(string $disk = '')
     {
-        $disk    = $disk ?: config('app.file_system.default');
+        $disk    = $disk ?: config('superadminx.file_system.default');
         $request = request();
         $width   = intval($request->post('width')) ?: null;
         $height  = intval($request->post('height')) ?: null;

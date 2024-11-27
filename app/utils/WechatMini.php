@@ -23,8 +23,8 @@ class WechatMini
             return self::$app;
         }
         $config = [
-            'app_id'  => config('app.wechat_xiaochengxu.AppID'),
-            'secret'  => config('app.wechat_xiaochengxu.AppSecret'),
+            'app_id'  => config('superadminx.wechat_xiaochengxu.AppID'),
+            'secret'  => config('superadminx.wechat_xiaochengxu.AppSecret'),
             'token'   => 'easywechat',
             'aes_key' => '',
 
@@ -96,8 +96,8 @@ class WechatMini
     {
         try {
             $response = self::initApp()->getClient()->get('/sns/jscode2session', [
-                'appid'      => config('app.wechat_xiaochengxu.AppID'),
-                'secret'     => config('app.wechat_xiaochengxu.AppSecret'),
+                'appid'      => config('superadminx.wechat_xiaochengxu.AppID'),
+                'secret'     => config('superadminx.wechat_xiaochengxu.AppSecret'),
                 'js_code'    => $code,
                 'grant_type' => 'authorization_code',
             ]);

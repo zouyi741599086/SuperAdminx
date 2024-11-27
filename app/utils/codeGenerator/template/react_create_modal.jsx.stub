@@ -17,7 +17,7 @@ import {
 import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>';
 import { Button, App } from 'antd';
 import { authCkeck } from '@/common/function';
-import Lazyload from '@/pages/component/lazyLoad/index';
+import Lazyload from '@/component/lazyLoad/index';
 
 const Form1 = lazy(() => import('./../component/form1'));
 

@@ -53,11 +53,11 @@ class Login
         ]);
 
         $adminUser          = AdminUserLogic::getAdminUser($adminUser['id']);
-        $adminUser['token'] = Jwt::generateToken([
+        $adminUser['token'] = Jwt::generateToken('admin_pc', [
             'id'   => $adminUser['id'],
             'name' => $adminUser['name'],
             'tel'  => $adminUser['tel']
-        ], 'admin_pc');
+        ]);
         return success($adminUser, '登录成功');
     }
 }

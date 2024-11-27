@@ -36,7 +36,7 @@ class CodeGenerator
 
     /**
      * 获取某个表的详情
-     * @param string $table_name 表名，如 rx_admin_user
+     * @param string $table_name 表名，如 sa_admin_user
      * @return array
      */
     public static function getTableInfo(string $table_name) : array
@@ -107,7 +107,7 @@ class CodeGenerator
 
     /**
      * 字符串转驼峰会自动去掉表前缀
-     * @param string $string 要转的字符串 如 rx_admin_user 转换成AdminUser
+     * @param string $string 要转的字符串 如 sa_admin_user 转换成AdminUser
      * @return string
      */
     public static function toCamelCase(string $string) : string
@@ -115,7 +115,7 @@ class CodeGenerator
         // 去除表前缀
         $dbPrefix = getenv('DB_PREFIX');
         if (strpos($string, $dbPrefix) === 0) {
-            $string = substr($string, strlen($dbPrefix)); // 从索引3开始截取，因为'rx_'长度为3  
+            $string = substr($string, strlen($dbPrefix)); // 从索引3开始截取，因为'sa_'长度为3  
         }
         // 使用空格替换字符串中的下划线  
         $string = str_replace('_', ' ', $string);
@@ -248,7 +248,7 @@ class CodeGenerator
             abort('未设置，请先生成预览代码');
         }
 
-        if (config('debug') == false) {
+        if (config('app.debug') == false) {
             abort('正式环境不允许操作~');
         }
         //配置
@@ -324,7 +324,7 @@ class CodeGenerator
 
             //生成的是搜索选择数据组件
             if ($data['react_other']['component_type'] == 'select') {
-                $file_path = "public\admin_react\src\pages\components";
+                $file_path = "public\admin_react\src\components";
                 $file_name = 'select' . self::toCamelCase($table_name) . '.jsx';
             }
 
@@ -363,6 +363,7 @@ class CodeGenerator
 
         $path_file_name = base_path() . "\\{$file_path}\\{$file_name}";
 
+        var_dump($path_file_name);
         if (! $forced && file_exists($path_file_name)) {
             abort('文件已存在，是否进行覆盖~', 2);
         }

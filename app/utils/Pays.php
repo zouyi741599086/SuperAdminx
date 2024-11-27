@@ -51,28 +51,28 @@ class Pays
                 'default' => [
                     // 必填-商户号，服务商模式下为服务商商户号
                     // 可在 https://pay.weixin.qq.com/ 账户中心->商户信息 查看
-                    'mch_id'                  => config('app.wechat_pay.mch_id'),
+                    'mch_id'                  => config('superadminx.wechat_pay.mch_id'),
                     // 选填-v2商户私钥
-                    'mch_secret_key_v2'       => config('app.wechat_pay.mch_secret_key_v2'),
+                    'mch_secret_key_v2'       => config('superadminx.wechat_pay.mch_secret_key_v2'),
                     // 必填-v3 商户秘钥
                     // 即 API v3 密钥(32字节，形如md5值)，可在 账户中心->API安全 中设置
-                    'mch_secret_key'          => config('app.wechat_pay.mch_secret_key'),
+                    'mch_secret_key'          => config('superadminx.wechat_pay.mch_secret_key'),
                     // 必填-商户私钥 字符串或路径
                     // 即 API证书 PRIVATE KEY，可在 账户中心->API安全->申请API证书 里获得
                     // 文件名形如：apiclient_key.pem
-                    'mch_secret_cert'         => config('app.wechat_pay.mch_secret_cert'),
+                    'mch_secret_cert'         => config('superadminx.wechat_pay.mch_secret_cert'),
                     // 必填-商户公钥证书路径
                     // 即 API证书 CERTIFICATE，可在 账户中心->API安全->申请API证书 里获得
                     // 文件名形如：apiclient_cert.pem
-                    'mch_public_cert_path'    => config('app.wechat_pay.mch_public_cert_path'),
+                    'mch_public_cert_path'    => config('superadminx.wechat_pay.mch_public_cert_path'),
                     // 必填-微信回调url
                     // 不能有参数，如?号，空格等，否则会无法正确回调
-                    'notify_url'              => config('app.url') . "/api/Pay/notify",
+                    'notify_url'              => config('superadminx.url') . "/api/Pay/notify",
                     // 选填-公众号 的 app_id
                     // 可在 mp.weixin.qq.com 设置与开发->基本配置->开发者ID(AppID) 查看
                     'mp_app_id'               => '',
                     // 选填-小程序 的 app_id
-                    'mini_app_id'             => config('app.wechat_xiaochengxu.AppID'),
+                    'mini_app_id'             => config('superadminx.wechat_xiaochengxu.AppID'),
                     // 选填-app 的 app_id
                     'app_id'                  => '',
                     // 选填-合单 app_id
@@ -174,9 +174,9 @@ class Pays
                 isset($result['trade_state']) &&
                 $result['trade_state'] == 'SUCCESS' &&
                 isset($result['appid']) &&
-                $result['appid'] == config('app.wechat_xiaochengxu.AppID') &&
+                $result['appid'] == config('superadminx.wechat_xiaochengxu.AppID') &&
                 isset($result['mchid']) &&
-                $result['mchid'] == config('app.wechat_pay.mch_id')
+                $result['mchid'] == config('superadminx.wechat_pay.mch_id')
             ) {
                 return $result;
             } else {

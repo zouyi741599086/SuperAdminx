@@ -36,9 +36,9 @@ class AliyunOss
             return self::$ossClient;
         }
         return self::$ossClient = new OssClient(
-            config('app.file_system.aliyun.AccessKeyID'),
-            config('app.file_system.aliyun.AccessKeySecret'),
-            config('app.file_system.aliyun.endpoint')
+            config('superadminx.file_system.aliyun.AccessKeyID'),
+            config('superadminx.file_system.aliyun.AccessKeySecret'),
+            config('superadminx.file_system.aliyun.endpoint')
         );
     }
 
@@ -65,12 +65,12 @@ class AliyunOss
 
             //开始上传oss
             $result = self::initOssClient()->uploadFile(
-                config('app.file_system.aliyun.bucket'),
+                config('superadminx.file_system.aliyun.bucket'),
                 $ossPath,
                 "./public/{$filePath}"
             );
             //上传后访问的连接
-            $url = config('app.file_system.aliyun.bucket_url') . "/{$ossPath}";
+            $url = config('superadminx.file_system.aliyun.bucket_url') . "/{$ossPath}";
             //存入file表数据库
             FileLogic::create(
                 'aliyun',
@@ -110,7 +110,7 @@ class AliyunOss
                 OssClient::OSS_VERSION_ID    => $version_id
             ];
             self::initOssClient()->getObject(
-                config('app.file_system.aliyun.bucket'),
+                config('superadminx.file_system.aliyun.bucket'),
                 $object,
                 $options
             );
@@ -130,7 +130,7 @@ class AliyunOss
         try {
             // 删除指定versionId的Object。
             self::initOssClient()->deleteObject(
-                config('app.file_system.aliyun.bucket'),
+                config('superadminx.file_system.aliyun.bucket'),
                 $object,
                 [OssClient::OSS_VERSION_ID => $version_id]
             );
@@ -167,7 +167,7 @@ class AliyunOss
                 self::initOssClient()::OSS_VERSION_ID => $version_id
             ];
             // 生成签名URL。
-            return self::initOssClient()->signUrl(config('app.file_system.aliyun.bucket'), $object, $timeout, "GET", $options);
+            return self::initOssClient()->signUrl(config('superadminx.file_system.aliyun.bucket'), $object, $timeout, "GET", $options);
         } catch (OssException $e) {
             abort($e->getMessage());
         }
@@ -185,7 +185,7 @@ class AliyunOss
         $dir  = $dir ?: "{$date}/";
 
         //设置回调参数
-        $url             = config('app.url');
+        $url             = config('superadminx.url');
         $callback_param  = [
             'callbackUrl'      => "{$url}/admin/File/uploadAliyunOssCallback", //前端直传阿里云后的异步回调地址
             'callbackBody'     => 'filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}',
@@ -218,10 +218,10 @@ class AliyunOss
         $policy         = json_encode($arr);
         $base64_policy  = base64_encode($policy);
         $string_to_sign = $base64_policy;
-        $signature      = base64_encode(hash_hmac('sha1', $string_to_sign, config('app.file_system.aliyun.AccessKeySecret'), true));
+        $signature      = base64_encode(hash_hmac('sha1', $string_to_sign, config('superadminx.file_system.aliyun.AccessKeySecret'), true));
 
-        $response['accessid']  = config('app.file_system.aliyun.AccessKeyID');
-        $response['host']      = config('app.file_system.aliyun.bucket_url');
+        $response['accessid']  = config('superadminx.file_system.aliyun.AccessKeyID');
+        $response['host']      = config('superadminx.file_system.aliyun.bucket_url');
         $response['policy']    = $base64_policy;
         $response['signature'] = $signature;
         $response['expire']    = $end;
@@ -240,13 +240,13 @@ class AliyunOss
         $post = request()->post();
         try {
             //获取文件的元信息
-            $exist = self::initOssClient()->getObjectMeta(config('app.file_system.aliyun.bucket'), $post['filename']);
+            $exist = self::initOssClient()->getObjectMeta(config('superadminx.file_system.aliyun.bucket'), $post['filename']);
             //获取文件的版本id
             $version_id = $exist['x-oss-version-id'];
 
             FileLogic::create(
                 'aliyun',
-                config('app.file_system.aliyun.bucket_url') . "/{$post['filename']}",
+                config('superadminx.file_system.aliyun.bucket_url') . "/{$post['filename']}",
                 $post['size'],
                 $post['filename'],
                 $version_id

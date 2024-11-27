@@ -10,9 +10,9 @@ use app\utils\DataEncryptor;
  * 生成token后会装入数据库或redis，只保留最新xx条token
  * 解密token先执行解密，成功后在到数据库中获取token（获取不到直接失败），获取到了后在判断过期时间（过期则删除）
  * 
- * Jwt::generateToken(array $user, string $app_name) 生成token
+ * Jwt::generateToken(string $app_name, array $user) 生成token
  * Jwt::getUser(string $app_name) 解密token获取登录用户
- * Jwt::getDbToken(string $app_name, int $key) 从数据库中获取当前登录用户的token
+ * Jwt::logoutUser(string $app_name, int $key_value) 强制清退某个应用的某个用户
  * Jwt::getHeaderToken() 从header中获取当前登录用户的token
  * 
  * @author zy <741599086@qq.com>
@@ -22,11 +22,11 @@ class Jwt
 {
     /**
      * 生成token
-     * @param array $user 生成token的数据
+     * @param array $user 生成token的数据，数组key不要太多，一般3-5个即可，太多会影响token的长度
      * @param string $app_name 给哪个应用生成token
      * @return string
      */
-    public static function generateToken(array $user, string $app_name) : string
+    public static function generateToken(string $app_name, array $user) : string
     {
         $config = self::getConfig($app_name);
         if (! isset($user[$config['key']]) || ! $user[$config['key']]) {
@@ -36,7 +36,7 @@ class Jwt
         $token     = self::tokenEncryption($user, 'E', $config['expires_at']);
         $token_key = self::getTokenKey($app_name, $user[$config['key']]);
 
-        if (config('app.jwt.db') === 'mysql') {
+        if (config('superadminx.jwt.db') === 'mysql') {
             //存入数据库
             Db::name('Token')->insert([
                 'token_key' => $token_key,
@@ -49,7 +49,7 @@ class Jwt
                 ->where('id', 'not in', $ids)
                 ->delete();
         }
-        if (config('app.jwt.db') === 'redis') {
+        if (config('superadminx.jwt.db') === 'redis') {
             //存入数据库
             Redis::lpush($token_key, $token);
             //删除多余的token，只保留xx条
@@ -76,7 +76,7 @@ class Jwt
         }
         $token_key = self::getTokenKey($app_name, $user[$config['key']]);
 
-        if (config('app.jwt.db') === 'mysql') {
+        if (config('superadminx.jwt.db') === 'mysql') {
             //判断token是否在数据库中
             $id = Db::name('Token')->where([
                 ['token_key', '=', $token_key],
@@ -92,7 +92,7 @@ class Jwt
                 abort('登录已失效', -2);
             }
         }
-        if (config('app.jwt.db') === 'redis') {
+        if (config('superadminx.jwt.db') === 'redis') {
             //判断token是否在redis中
             $listLength    = Redis::lLen($token_key);
             $indexToDelete = -1;
@@ -117,22 +117,20 @@ class Jwt
     }
 
     /**
-     * 从数据库中获取token
+     * 强制清退某个用户
      * @param string $app_name 应用名称
-     * @param int $id 应用配置的key的这个字段的值，一般是用户的id
-     * @return string
+     * @param int $key_value 加密时候的唯一性字段的值，一般是id
      */
-    public static function getDbToken(string $app_name, int $id) : string
+    public static function logoutUser(string $app_name, int $key_value)
     {
-        $token_key = self::getTokenKey($app_name, $id);
+        $token_key = self::getTokenKey($app_name, $key_value);
 
-        if (config('app.jwt.db') === 'mysql') {
-            $token = Db::name('Token')->where('token_key', $token_key)->order('id desc')->value('token');
+        if (config('superadminx.jwt.db') === 'mysql') {
+            Db::name('Token')->where('token_key', $token_key)->delete();
         }
-        if (config('app.jwt.db') === 'redis') {
-            $token = Redis::lIndex($token_key, 0);
+        if (config('superadminx.jwt.db') === 'redis') {
+            Redis::del($token_key);
         }
-        return $token;
     }
 
     /**
@@ -143,7 +141,7 @@ class Jwt
     {
         $request = request();
         //判断是否有token
-        $token = $request->header(config('app.jwt.header_key'));
+        $token = $request->header(config('superadminx.jwt.header_key'));
         if (! $token) {
             abort('非法请求', -2);
         }
@@ -168,7 +166,7 @@ class Jwt
      */
     private static function getTokenKey(string $app_name, int $id) : string
     {
-        $key_prefix = config('app.jwt.key_prefix');
+        $key_prefix = config('superadminx.jwt.key_prefix');
         return "{$key_prefix}_{$app_name}_{$id}";
     }
 
@@ -180,7 +178,7 @@ class Jwt
     private static function getConfig(string $app_name) : array
     {
         $config    = [];
-        $jwtConfig = config('app.jwt.app');
+        $jwtConfig = config('superadminx.jwt.app');
         foreach ($jwtConfig as $v) {
             if ($v['name'] == $app_name) {
                 $config = $v;

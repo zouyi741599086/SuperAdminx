@@ -18,7 +18,7 @@ function get_order_no(string $prefix = 'E') : string
  */
 function file_url($data)
 {
-    $url = config('app.url');
+    $url = config('superadminx.url');
     if ($data && $url) {
         if (is_array($data)) {
             foreach ($data as $k => $v) {
@@ -39,7 +39,7 @@ function file_url($data)
  */
 function file_url_dec($data)
 {
-    $url = config('app.url');
+    $url = config('superadminx.url');
     if ($url && $data) {
         if (is_array($data)) {
             foreach ($data as $k => $v) {

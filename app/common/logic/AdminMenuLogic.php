@@ -81,7 +81,7 @@ class AdminMenuLogic
                 ->toArray();
             foreach ($list as $k => $v) {
                 if ($v['pid_name']) {
-                    $pid_data      = AdminMenuModel::where('name', $v['pid_name'])->field('id,pid_name_path')->find();
+                    $pid_data           = AdminMenuModel::where('name', $v['pid_name'])->field('id,pid_name_path')->find();
                     $v['pid_name_path'] = "{$pid_data['pid_name_path']}{$v['name']},";
                 } else {
                     $v['pid_name_path'] = ",{$v['name']},";

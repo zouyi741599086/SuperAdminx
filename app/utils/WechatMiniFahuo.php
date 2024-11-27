@@ -22,8 +22,8 @@ class WechatMiniFahuo
             return self::$app;
         }
         self::$config = [
-            'app_id'  => config('app.wechat_xiaochengxu.AppID'),
-            'secret'  => config('app.wechat_xiaochengxu.AppSecret'),
+            'app_id'  => config('superadminx.wechat_xiaochengxu.AppID'),
+            'secret'  => config('superadminx.wechat_xiaochengxu.AppSecret'),
             'token'   => 'easywechat',
             'aes_key' => '',
 
@@ -49,7 +49,7 @@ class WechatMiniFahuo
      * @param string $transaction_id 微信支付的单号
      * @param int  $logistics_type 发货方式枚举值：1、实体物流配送采用快递公司进行实体物流配送形式 2、同城配送 3、虚拟商品，虚拟商品，例如话费充值，点卡等，无实体配送形式 4、用户自提
      * @param string $tracking_no 快递单号
-     * @param string $express_company 快递公司编码 rx_express表去拿wechat_express_code字段
+     * @param string $express_company 快递公司编码 sa_express表去拿wechat_express_code字段
      * @param string $receiver_contact 收件人手机号，顺丰必须带
      */
     public static function updateShippingInfo(

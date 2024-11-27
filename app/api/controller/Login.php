@@ -46,11 +46,11 @@ class Login
         }
 
         $user          = UserLogic::findData($user['id']);
-        $user['token'] = Jwt::generateToken([
+        $user['token'] = Jwt::generateToken('user_pc', [
             'id'   => $user['id'],
             'name' => $user['name'],
             'tel'  => $user['tel']
-        ], 'user_pc');
+        ],);
         return success($user, '登录成功');
     }
 }

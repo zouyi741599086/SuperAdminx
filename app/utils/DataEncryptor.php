@@ -20,7 +20,7 @@ class DataEncryptor
      */
     public static function rsaDecrypt(string $data) : string
     {
-        $private_key = config('app.rsa_private');
+        $private_key = config('superadminx.rsa_private');
         if (! $private_key) {
             abort('未设置解密私钥');
         }

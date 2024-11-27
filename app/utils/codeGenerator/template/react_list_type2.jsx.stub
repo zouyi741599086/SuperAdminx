@@ -22,7 +22,7 @@ import {
     DeleteOutlined,
 } from '@ant-design/icons';
 import { authCkeck } from '@/common/function';
-import Lazyload from '@/pages/component/lazyLoad/index';
+import Lazyload from '@/component/lazyLoad/index';
 import Create from './create';
 import Update from './update';
 

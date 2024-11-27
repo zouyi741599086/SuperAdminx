@@ -89,21 +89,21 @@ import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>'
 import { Button, App, Row, Col } from 'antd';
 import { authCkeck } from '@/common/function';
 import { useUpdateEffect } from 'ahooks';
-import Lazyload from '@/pages/component/lazyLoad/index';
+import Lazyload from '@/component/lazyLoad/index';
 <?php
 //导入需要使用的自定义的字段
-if (in_array('province',$filedsTypeArr)) echo "import Province from '@/pages/component/form/province/index';\n" ;
-if (in_array('provinceCity',$filedsTypeArr)) echo "import ProvinceCity from '@/pages/component/form/provinceCity/index';\n";
-if (in_array('provinceCityArea',$filedsTypeArr)) echo "import ProvinceCityArea from '@/pages/component/form/provinceCityArea/index';\n";
-if (in_array('teditor',$filedsTypeArr)) echo "import Teditor from '@/pages/component/form/teditor/index';\n";
-if (in_array('tencentMap',$filedsTypeArr)) echo "import TencentMap from '@/pages/component/form/tencentMap/index';\n";
-if (in_array('uploadFile',$filedsTypeArr)) echo "import UploadFile from '@/pages/component/form/uploadFile/index';\n";
-if (in_array('uploadFileAll',$filedsTypeArr)) echo "import UploadFileAll from '@/pages/component/form/uploadFileAll/index';\n";
-if (in_array('uploadImg',$filedsTypeArr)) echo "import UploadImg from '@/pages/component/form/uploadImg/index';\n";
-if (in_array('uploadImgAll',$filedsTypeArr)) echo "import UploadImgAll from '@/pages/component/form/uploadImgAll/index';\n";
-if (in_array('uploadImgVideoAll',$filedsTypeArr)) echo "import UploadImgVideoAll from '@/pages/component/form/uploadImgVideoAll/index';\n";
-if (in_array('tagArr',$filedsTypeArr)) echo "const TagArrfrom '@/pages/component/form/tagArr/index';\n";
-if (in_array('imgTitle',$filedsTypeArr)) echo "const ImgTitle from '@/pages/component/form/imgTitle/index';\n";
+if (in_array('province',$filedsTypeArr)) echo "import Province from '@/component/form/province/index';\n" ;
+if (in_array('provinceCity',$filedsTypeArr)) echo "import ProvinceCity from '@/component/form/provinceCity/index';\n";
+if (in_array('provinceCityArea',$filedsTypeArr)) echo "import ProvinceCityArea from '@/component/form/provinceCityArea/index';\n";
+if (in_array('teditor',$filedsTypeArr)) echo "import Teditor from '@/component/form/teditor/index';\n";
+if (in_array('tencentMap',$filedsTypeArr)) echo "import TencentMap from '@/component/form/tencentMap/index';\n";
+if (in_array('uploadFile',$filedsTypeArr)) echo "import UploadFile from '@/component/form/uploadFile/index';\n";
+if (in_array('uploadFileAll',$filedsTypeArr)) echo "import UploadFileAll from '@/component/form/uploadFileAll/index';\n";
+if (in_array('uploadImg',$filedsTypeArr)) echo "import UploadImg from '@/component/form/uploadImg/index';\n";
+if (in_array('uploadImgAll',$filedsTypeArr)) echo "import UploadImgAll from '@/component/form/uploadImgAll/index';\n";
+if (in_array('uploadImgVideoAll',$filedsTypeArr)) echo "import UploadImgVideoAll from '@/component/form/uploadImgVideoAll/index';\n";
+if (in_array('tagArr',$filedsTypeArr)) echo "const TagArrfrom '@/component/form/tagArr/index';\n";
+if (in_array('imgTitle',$filedsTypeArr)) echo "const ImgTitle from '@/component/form/imgTitle/index';\n";
 ?>
 <?php
 //导入需要使用的异步搜索选择组件
