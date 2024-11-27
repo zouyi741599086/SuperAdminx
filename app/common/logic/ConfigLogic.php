@@ -28,7 +28,7 @@ class ConfigLogic
 
     /**
      * 添加
-     * @param array $params
+     * @param array $params 
      */
     public static function create(array $params)
     {
@@ -50,6 +50,9 @@ class ConfigLogic
                 'sort'          => $params['sort'] ?? 0,
                 'desc'          => $params['description'] ?? null,
             ]);
+
+            Cache::forget("Config");
+
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
@@ -86,7 +89,10 @@ class ConfigLogic
                 'sort'          => $params['sort'] ?? 0,
                 'desc'          => $params['description'] ?? null,
             ]);
-            
+
+            Cache::forget("Config");
+            Cache::forget("Config_{$oldName}");
+
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
@@ -104,6 +110,10 @@ class ConfigLogic
         try {
             ConfigModel::update($params);
 
+            $configName = ConfigModel::where('id', $params['id'])->value('name');
+            Cache::forget("Config");
+            Cache::forget("Config_{$configName}");
+
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
@@ -119,7 +129,10 @@ class ConfigLogic
     public static function findData(?int $id, ?string $name)
     {
         if ($name) {
-            return ConfigModel::where('name', $name)->find();
+            return Cache::rememberForever("Config_{$name}", function () use ($name)
+            {
+                return ConfigModel::where('name', $name)->find();
+            });
         }
         if ($id) {
             return ConfigModel::find($id);
@@ -134,14 +147,17 @@ class ConfigLogic
     {
         Db::startTrans();
         try {
-            //旧的配置name
-            $oldName = ConfigModel::where('id', $id)->value('name');
+            //配置name
+            $configName = ConfigModel::where('id', $id)->value('name');
 
             //修改本表的数据
             ConfigModel::destroy($id);
 
             //要同步删除adminMenu的数据
-            AdminMenuModel::where('name', "config_{$oldName}")->delete();
+            AdminMenuModel::where('name', "config_{$configName}")->delete();
+
+            Cache::forget("Config");
+            Cache::forget("Config_{$configName}");
 
             Db::commit();
         } catch (\Exception $e) {
@@ -154,9 +170,12 @@ class ConfigLogic
      * 获取配置内容
      * @param string $name
      */
-    public static function getConfig(int $name)
+    public static function getConfig(string $name)
     {
-        $data = ConfigModel::where('name', $name)->find();
+        $data = Cache::rememberForever("Config_{$name}", function () use ($name)
+        {
+            return ConfigModel::where('name', $name)->find();
+        });
         return $data['content'] ?? [];
     }
 
@@ -180,6 +199,7 @@ class ConfigLogic
                     'sort' => $v['sort']
                 ]);
             }
+            Cache::forget("Config");
 
             Db::commit();
         } catch (\Exception $e) {

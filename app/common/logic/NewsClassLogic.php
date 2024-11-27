@@ -172,8 +172,8 @@ class NewsClassLogic
     {
         Db::startTrans();
         try {
+            //删除关联的文章
             $ids = NewsClassModel::where('pid_path', 'like', "%,{$id},%")->whereOr('id', $id)->column('id');
-            //删除文章
             NewsModel::destroy(function ($query) use ($ids)
             {
                 $query->where('news_class_id', 'in', $ids);

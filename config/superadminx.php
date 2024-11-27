@@ -62,7 +62,7 @@ EOF,
     //api请求中数据是否加解密，需要跟前端的开关对应
     'api_encryptor'       => [
         //开关
-        'enable' => true,
+        'enable' => false,
         //不加密的url，上传接口则不加密
         'url'    => ['/admin/File/upload', '/api/File/upload'],
     ],

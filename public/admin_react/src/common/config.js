@@ -8,8 +8,8 @@ export const config = {
     icp: '渝ICP备xxxxxxxxxx号',
     //存储本地数据前缀，存在本地的所有数据都有此前缀
     storageDbPrefix: 'adminDb',
-    //api请求数据是否加密，，需要跟后端的开关对应
-    api_encryptor: true,//import.meta.env.VITE_APP_DEBUG === 'true' ? true : false,
+    //api请求数据是否加密，需要跟后端的开关对应
+    api_encryptor: import.meta.env.VITE_APP_DEBUG === 'true' ? false : true,
     //是否开启debug
     debug: import.meta.env.VITE_APP_DEBUG === 'true' ? true : false,
     //加密key
