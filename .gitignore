@@ -5,4 +5,5 @@
 /runtime/*
 /public/tmp_file/*
 /public/admin/*
+/public/storage/*
 /node_modules
