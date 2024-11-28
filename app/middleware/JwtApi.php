@@ -28,7 +28,7 @@ class JwtApi implements MiddlewareInterface
             $request->user = Jwt::getUser('user_pc');
         } catch (\Exception $e) {
             //必须要登录同时验证失败了，才抛出错误
-            if ($this->actionIsLogin()) { 
+            if ($this->actionIsLogin()) {
                 abort($e->getMessage(), -2);
             }
         }
