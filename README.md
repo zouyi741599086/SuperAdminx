@@ -1,18 +1,18 @@
 # SuperAdminx-WebmanReact
 
-#### 介绍
+### 介绍
 后端主要集成权限管理（可基于接口级别权限）、代码生成，后续将已经插件形式开放更多功能；前端内置多种布局，基于按钮级别的权限，扩展多种form字段及table中预览展示的多个组件
 
-#### 软件架构
-没有高科技，更没有黑科技，实用为主，后端基于[workerman](https://www.workerman.net/)的[webman](https://www.workerman.net/webman)高性能HTTP框架，常用的[ThinkORM](https://doc.thinkphp.cn/@think-orm/)、[ThinkValidate](https://doc.thinkphp.cn/v8_0/validator.html)，前端基于`react`用`js`写的，主要用到的组件库是[Ant Design](https://ant.design/index-cn)、[ProComponents](https://procomponents.ant.design/)
+### 软件架构
+后端基于[workerman](https://www.workerman.net/)的[webman](https://www.workerman.net/webman)高性能HTTP框架，常用的[ThinkORM](https://doc.thinkphp.cn/@think-orm/)、[ThinkValidate](https://doc.thinkphp.cn/v8_0/validator.html)，前端基于`react`用`js`写的，主要用到的组件库是[Ant Design](https://ant.design/index-cn)、[ProComponents](https://procomponents.ant.design/)
 
-#### 使用文档
+### 使用文档
 [SuperAdminx文档](http://www.superadminx.com)
 
-#### 预览
+### 预览
 [点此预览](http://www.superadminx.com/preview.html)
 
-#### 安装教程
+### 安装教程
 
 **环境要求**
 - php 8+ 
