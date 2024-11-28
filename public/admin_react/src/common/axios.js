@@ -40,9 +40,9 @@ function requestAfter(response, aes_key, aes_iv) {
 
 /**
  * 请求前组装get的参数，对params参数进行加密，headers数据等
- * @param {*} url 
- * @param {*} params 
- * @param {*} method 
+ * @param {string} url 
+ * @param {object} params 
+ * @param {string} method 
  * @returns 
  */
 const requestBefore = (url, params, method) => {
