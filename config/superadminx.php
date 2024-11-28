@@ -119,6 +119,8 @@ EOF,
                 'name'       => 'admin_pc',
                 //生成token的数组里面能代表唯一性的字段
                 'key'        => 'id',
+                //生成token的字段
+                'field'      => ['id', 'name', 'tel'],
                 //同一个用户允许登录的终端设备数量
                 'num'        => 100,
                 //token过期时间，单位秒
@@ -127,6 +129,7 @@ EOF,
             [
                 'name'       => 'user_pc',
                 'key'        => 'id',
+                'field'      => ['id', 'name', 'tel'],
                 'num'        => 1,
                 'expires_at' => 365 * 24 * 60 * 60,
             ],

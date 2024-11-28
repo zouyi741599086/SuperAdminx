@@ -30,6 +30,7 @@ class Login
     {
         $username = $request->post('username');
         $password = $request->post('password');
+
         //验证参数
         if (! $username || ! $password) {
             return error('用户名或密码错误');
@@ -53,11 +54,7 @@ class Login
         ]);
 
         $adminUser          = AdminUserLogic::getAdminUser($adminUser['id']);
-        $adminUser['token'] = Jwt::generateToken('admin_pc', [
-            'id'   => $adminUser['id'],
-            'name' => $adminUser['name'],
-            'tel'  => $adminUser['tel']
-        ]);
+        $adminUser['token'] = Jwt::generateToken('admin_pc', $adminUser);
         return success($adminUser, '登录成功');
     }
 }

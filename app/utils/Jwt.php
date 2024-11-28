@@ -33,10 +33,12 @@ class Jwt
             abort("Jwt：生成token的数据中缺少必要的key>{$config['key']}");
         }
 
+        $user      = array_intersect_key($user, array_flip($config['field']));
         $token     = self::tokenEncryption($user, 'E', $config['expires_at']);
         $token_key = self::getTokenKey($app_name, $user[$config['key']]);
-
-        if (config('superadminx.jwt.db') === 'mysql') {
+        $db        = config('superadminx.jwt.db');
+        
+        if ($db === 'mysql') {
             //存入数据库
             Db::name('Token')->insert([
                 'token_key' => $token_key,
@@ -48,8 +50,7 @@ class Jwt
                 ->where('token_key', $token_key)
                 ->where('id', 'not in', $ids)
                 ->delete();
-        }
-        if (config('superadminx.jwt.db') === 'redis') {
+        } else if ($db === 'redis') {
             //存入数据库
             Redis::lpush($token_key, $token);
             //删除多余的token，只保留xx条
@@ -76,7 +77,8 @@ class Jwt
         }
         $token_key = self::getTokenKey($app_name, $user[$config['key']]);
 
-        if (config('superadminx.jwt.db') === 'mysql') {
+        $db = config('superadminx.jwt.db');
+        if ($db === 'mysql') {
             //判断token是否在数据库中
             $id = Db::name('Token')->where([
                 ['token_key', '=', $token_key],
@@ -91,8 +93,7 @@ class Jwt
                 Db::name('Token')->where('id', $id)->delete();
                 abort('登录已失效', -2);
             }
-        }
-        if (config('superadminx.jwt.db') === 'redis') {
+        } else if ($db === 'redis') {
             //判断token是否在redis中
             $listLength    = Redis::lLen($token_key);
             $indexToDelete = -1;
@@ -125,10 +126,10 @@ class Jwt
     {
         $token_key = self::getTokenKey($app_name, $key_value);
 
-        if (config('superadminx.jwt.db') === 'mysql') {
+        $db = config('superadminx.jwt.db');
+        if ($db === 'mysql') {
             Db::name('Token')->where('token_key', $token_key)->delete();
-        }
-        if (config('superadminx.jwt.db') === 'redis') {
+        } else if ($db === 'redis') {
             Redis::del($token_key);
         }
     }
@@ -203,7 +204,7 @@ class Jwt
     {
         if ($operation == 'E') {
             $data['expires_at'] = time() + $expires_at;
-			$data['rand']       = rand(1, 10000);
+            $data['rand']       = rand(1, 10000);
             $data               = json_encode($data);
         } else {
             $data = str_replace('%', '+', $data);
