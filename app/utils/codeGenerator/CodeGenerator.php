@@ -183,7 +183,7 @@ class CodeGenerator
                 $vars['table_action_list'] &&
                 in_array('import', $vars['table_action_list'])
             ) {
-                $params["react_list_component_code"]['importData'] = self::templateRender('react_list_import', $vars, $params[$code_name]['file_suffix']);
+                $params["react_list_component_code"]['importData'] = self::templateRender('react_list_table_import', $vars, $params[$code_name]['file_suffix']);
             }
             //如果有生成其它批量修改字段，则生成对应的修改弹窗
             if (
@@ -197,7 +197,7 @@ class CodeGenerator
                     //当前正在生成的批量操作的权限id
                     $vars['tmp_table_action_all_update_auth_id'] = $v['update_field_auth_id'];
                     //开始生成批量修改的弹窗
-                    $params["react_list_component_code"]["update{$tmp}"] = self::templateRender('react_list_all_update', $vars, $params[$code_name]['file_suffix']);
+                    $params["react_list_component_code"]["update{$tmp}"] = self::templateRender('react_list_table_allUpdate', $vars, $params[$code_name]['file_suffix']);
                 }
             }
             $params["{$code_name}_code"] = self::templateRender($code_name, $vars, $params[$code_name]['file_suffix']);

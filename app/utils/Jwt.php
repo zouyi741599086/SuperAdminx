@@ -37,7 +37,7 @@ class Jwt
         $token     = self::tokenEncryption($user, 'E', $config['expires_at']);
         $token_key = self::getTokenKey($app_name, $user[$config['key']]);
         $db        = config('superadminx.jwt.db');
-        
+
         if ($db === 'mysql') {
             //存入数据库
             Db::name('Token')->insert([
@@ -120,11 +120,11 @@ class Jwt
     /**
      * 强制清退某个用户
      * @param string $app_name 应用名称
-     * @param int $key_value 加密时候的唯一性字段的值，一般是id
+     * @param int $id 加密时候的唯一性字段的值，一般是id
      */
-    public static function logoutUser(string $app_name, int $key_value)
+    public static function logoutUser(string $app_name, int $id)
     {
-        $token_key = self::getTokenKey($app_name, $key_value);
+        $token_key = self::getTokenKey($app_name, $id);
 
         $db = config('superadminx.jwt.db');
         if ($db === 'mysql') {

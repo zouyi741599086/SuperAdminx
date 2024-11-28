@@ -2,7 +2,6 @@ import {
     ProFormText,
     ProFormRadio,
     ProFormTreeSelect,
-    ProFormSelect,
     ProFormDigit,
     ProFormDependency,
 } from '@ant-design/pro-components';

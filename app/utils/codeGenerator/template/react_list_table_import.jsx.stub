@@ -12,6 +12,9 @@
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
     //导入的权限id
+    if (!isset($data['auth_ids']['auth_import_id'])) {
+        abort('未设置导入的权限节点');
+    }
     $importDataAuthId = $data['auth_ids']['auth_import_id'] ?? 0;
 ?>
 import {

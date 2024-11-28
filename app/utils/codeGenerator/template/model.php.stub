@@ -48,7 +48,7 @@ echo "    use SoftDelete;\n";
 ?>
 
     // 表名
-    protected $name = '<?php echo ltrim($table_name, getenv('DB_PREFIX')); ?>';
+    protected $name = '<?php echo substr($table_name, strlen(getenv('DB_PREFIX'))); ?>';
 <?php
     if ($delete_time) {
 echo "    // 软删除
