@@ -1,13 +1,10 @@
 # SuperAdminx-WebmanReact
 
 #### 介绍
-没有高科技，更没有黑科技，实用为主，后端基于[workerman](https://www.workerman.net/)的[webman](https://www.workerman.net/webman)高性能HTTP框架，常用的[ThinkORM](https://doc.thinkphp.cn/@think-orm/)、[ThinkValidate](https://doc.thinkphp.cn/v8_0/validator.html)，前端基于`react`用`js`写的，主要用到的组件库是[Ant Design](https://ant.design/index-cn)、[ProComponents](https://procomponents.ant.design/)
-
+后端主要集成权限管理（可基于接口级别权限）、代码生成，后续将已经插件形式开放更多功能；前端内置多种布局，基于按钮级别的权限，扩展多种form字段及table中预览展示的多个组件
 
 #### 软件架构
-webman、ThinkORM、ThinkValidate
-
-react、Ant Design、Ant Design Pro Components
+没有高科技，更没有黑科技，实用为主，后端基于[workerman](https://www.workerman.net/)的[webman](https://www.workerman.net/webman)高性能HTTP框架，常用的[ThinkORM](https://doc.thinkphp.cn/@think-orm/)、[ThinkValidate](https://doc.thinkphp.cn/v8_0/validator.html)，前端基于`react`用`js`写的，主要用到的组件库是[Ant Design](https://ant.design/index-cn)、[ProComponents](https://procomponents.ant.design/)
 
 #### 使用文档
 [SuperAdminx文档](http://www.superadminx.com)
@@ -28,7 +25,7 @@ react、Ant Design、Ant Design Pro Components
 - exif
 - pdo_sqlsrv
 - xlswriter 表格导入导出用的此扩展，如导入导出换成其它逻辑可以不用安装
-- redis 非必须，如果要用消息列队
+- redis 非必须，如果要用消息列队或缓存
 
 **php需要解除的禁用函数**
 - [点此查看webman官方说明](https://www.workerman.net/doc/webman/others/disable-function-check.html)
