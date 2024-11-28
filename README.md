@@ -1,9 +1,8 @@
 # SuperAdminx-WebmanReact
 
 #### 介绍
-::: tip
-**没有高科技，更没有黑科技，实用为主，后端基于[workerman](https://www.workerman.net/)的[webman](https://www.workerman.net/webman)高性能HTTP框架，常用的[ThinkORM](https://doc.thinkphp.cn/@think-orm/)、[ThinkValidate](https://doc.thinkphp.cn/v8_0/validator.html)，前端基于`react`用`js`写的，主要用到的组件库是[Ant Design](https://ant.design/index-cn)、[ProComponents](https://procomponents.ant.design/)**
-:::
+没有高科技，更没有黑科技，实用为主，后端基于[workerman](https://www.workerman.net/)的[webman](https://www.workerman.net/webman)高性能HTTP框架，常用的[ThinkORM](https://doc.thinkphp.cn/@think-orm/)、[ThinkValidate](https://doc.thinkphp.cn/v8_0/validator.html)，前端基于`react`用`js`写的，主要用到的组件库是[Ant Design](https://ant.design/index-cn)、[ProComponents](https://procomponents.ant.design/)
+
 
 #### 软件架构
 webman、ThinkORM、ThinkValidate
@@ -18,13 +17,12 @@ react、Ant Design、Ant Design Pro Components
 
 #### 安装教程
 
-::: tip 
-## 环境要求
+**环境要求**
 - php 8+ 
 - mysql 5.6+
 - node 21+
 
-### php需要的扩展
+**php需要的扩展**
 - fileinfo
 - imagemagick
 - exif
@@ -32,10 +30,10 @@ react、Ant Design、Ant Design Pro Components
 - xlswriter 表格导入导出用的此扩展，如导入导出换成其它逻辑可以不用安装
 - redis 非必须，如果要用消息列队
 
-### php需要解除的禁用函数
+**php需要解除的禁用函数**
 - [点此查看webman官方说明](https://www.workerman.net/doc/webman/others/disable-function-check.html)
 
-## 安装
+**开始安装**
 
 1. git获取源码
 ``` sh
@@ -76,4 +74,3 @@ npm install
 ``` sh
 npm run dev
 ```
-:::
