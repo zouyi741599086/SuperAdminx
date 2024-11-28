@@ -121,25 +121,24 @@ class NewsClassLogic
             $data['pid_path_title'] = "{$pidData['pid_path_title']}-{$data['title']}";
         }
         $data->save();
-        //NewsClassModel::update($data);
 
         //更新我的下级
-        $childrenList = NewsClassModel::where('pid_path', 'like', "%,{$data['id']},%")
+        NewsClassModel::where('pid_path', 'like', "%,{$data['id']},%")
             ->orderRaw("CHAR_LENGTH(pid_path) asc")
             ->field('id,title,pid,pid_path,pid_path_title')
             ->select()
-            ->toArray();
-        foreach ($childrenList as $v) {
-            if ($v['pid']) {
-                $pidData             = NewsClassModel::field('id,pid,pid_path,pid_path_title')->find($v['pid']);
-                $v['pid_path']       = "{$pidData['pid_path']}{$v['id']},";
-                $v['pid_path_title'] = "{$pidData['pid_path_title']}-{$v['title']}";
-            } else {
-                $v['pid_path']       = ",{$v['id']},";
-                $v['pid_path_title'] = $v['title'];
-            }
-            NewsClassModel::update($v);
-        }
+            ->each(function ($item)
+            {
+                if ($item['pid']) {
+                    $pidData                = NewsClassModel::field('id,pid,pid_path,pid_path_title')->find($item['pid']);
+                    $item['pid_path']       = "{$pidData['pid_path']}{$item['id']},";
+                    $item['pid_path_title'] = "{$pidData['pid_path_title']}-{$item['title']}";
+                } else {
+                    $item['pid_path']       = ",{$item['id']},";
+                    $item['pid_path_title'] = $item['title'];
+                }
+                $item->save();
+            });
     }
 
     /**

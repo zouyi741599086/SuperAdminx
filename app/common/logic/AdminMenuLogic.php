@@ -74,20 +74,20 @@ class AdminMenuLogic
             ]);
 
             //重新更新我下面所有数据的pid_path相关字段
-            $list = AdminMenuModel::where('pid_name_path', 'like', "%,{$oldName},%")
+            AdminMenuModel::where('pid_name_path', 'like', "%,{$oldName},%")
                 ->orderRaw("CHAR_LENGTH(pid_name_path) asc")
                 ->field('id,name,pid_name,pid_name_path')
                 ->select()
-                ->toArray();
-            foreach ($list as $k => $v) {
-                if ($v['pid_name']) {
-                    $pid_data           = AdminMenuModel::where('name', $v['pid_name'])->field('id,pid_name_path')->find();
-                    $v['pid_name_path'] = "{$pid_data['pid_name_path']}{$v['name']},";
-                } else {
-                    $v['pid_name_path'] = ",{$v['name']},";
-                }
-                AdminMenuModel::update($v);
-            }
+                ->each(function ($item)
+                {
+                    if ($item['pid_name']) {
+                        $pid_data              = AdminMenuModel::where('name', $item['pid_name'])->field('id,pid_name_path')->find();
+                        $item['pid_name_path'] = "{$pid_data['pid_name_path']}{$item['name']},";
+                    } else {
+                        $item['pid_name_path'] = ",{$item['name']},";
+                    }
+                    $item->save();
+                });
         } catch (\Exception $e) {
             abort($e->getMessage());
         }
