@@ -33,7 +33,7 @@ namespace <?php echo $file_path ?? ''; ?>;
     // 引入验证器
     echo "use {$data['validate']['file_path']}\\{$data['validate']['file_name']};\n";  
 ?>
-use Shopwwi\LaravelCache\Cache;
+use support\Cache;
 use think\facade\Db;
 
 /**
@@ -92,12 +92,13 @@ class <?php echo $file_name ?? ''; ?>
      * */
     public static function getList()
     {
-        return Cache::rememberForever('{$tableNameToCamelCase}', function ()
-        {
-            return {$data['model']['file_name']}::order('{$orderBy}')
-            ->select()
-            ->toArray();
-        });
+        \$list = Cache::get('{$tableNameToCamelCase}');
+        if (is_null(\$list)) {
+            \$list = {$data['model']['file_name']}::order('{$orderBy}')
+                ->select()
+                ->toArray();
+        }
+        return \$list;
     }";   
         }
     }
@@ -132,7 +133,7 @@ class <?php echo $file_name ?? ''; ?>
             //是否有全局缓存
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
-            Cache::forget(\"{$tableNameToCamelCase}\");";
+            Cache::delete(\"{$tableNameToCamelCase}\");";
             }
 
             echo "
@@ -160,10 +161,11 @@ class <?php echo $file_name ?? ''; ?>
         if (isset($logic_type) && $logic_type == 2) {
 
             echo "
-        return Cache::rememberForever(\"{$tableNameToCamelCase}{\$id}\", function () use (\$id)
-        {
-            return {$data['model']['file_name']}::find(\$id);
-        });";
+        \$data = Cache::get(\"{$tableNameToCamelCase}{\$id}\");
+        if (is_null(\$data)) {
+            \$data = {$data['model']['file_name']}::find(\$id);
+        }
+        return \$data;";
 
         } else {
 
@@ -207,8 +209,8 @@ class <?php echo $file_name ?? ''; ?>
             //是否有全表缓存
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
-            Cache::forget(\"{$tableNameToCamelCase}\");
-            Cache::forget(\"{$tableNameToCamelCase}{\$params['id']}\");";
+            Cache::delete(\"{$tableNameToCamelCase}\");
+            Cache::delete(\"{$tableNameToCamelCase}{\$params['id']}\");";
             }
             
         echo "
@@ -239,13 +241,13 @@ class <?php echo $file_name ?? ''; ?>
 
             echo "
 
-        Cache::forget(\"{$tableNameToCamelCase}\");
+        Cache::delete(\"{$tableNameToCamelCase}\");
         if (is_array(\$id)) {
             foreach (\$id as \$v) {
-                Cache::forget(\"{$tableNameToCamelCase}{\$v}\");
+                Cache::delete(\"{$tableNameToCamelCase}{\$v}\");
             } 
         } else {
-            Cache::forget(\"{$tableNameToCamelCase}{\$id}\");
+            Cache::delete(\"{$tableNameToCamelCase}{\$id}\");
         }";
 
         }
@@ -278,7 +280,7 @@ class <?php echo $file_name ?? ''; ?>
             //是否全表缓存
             if (isset($logic_type) && $logic_type == 2) {
             echo "
-            Cache::forget(\"{$tableNameToCamelCase}\");";
+            Cache::delete(\"{$tableNameToCamelCase}\");";
             }
 
             echo "
@@ -312,13 +314,13 @@ class <?php echo $file_name ?? ''; ?>
             //是否全表缓存
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
-            Cache::forget(\"{$tableNameToCamelCase}\");
+            Cache::delete(\"{$tableNameToCamelCase}\");
             if (is_array(\$id)) {
                 foreach (\$id as \$v) {
-                    Cache::forget(\"{$tableNameToCamelCase}{\$v}\");
+                    Cache::delete(\"{$tableNameToCamelCase}{\$v}\");
                 }
             } else {
-                Cache::forget(\"{$tableNameToCamelCase}{\$id}\");
+                Cache::delete(\"{$tableNameToCamelCase}{\$id}\");
             }";
             }
 
@@ -496,7 +498,7 @@ class <?php echo $file_name ?? ''; ?>
             //是否全表缓存
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
-            Cache::forget(\"{$tableNameToCamelCase}\");\n";
+            Cache::delete(\"{$tableNameToCamelCase}\");\n";
             }
 
             echo "
@@ -601,9 +603,9 @@ class <?php echo $file_name ?? ''; ?>
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
             //删除缓存
-            Cache::forget(\"{$tableNameToCamelCase}\");
+            Cache::delete(\"{$tableNameToCamelCase}\");
             foreach (\$params['ids'] as \$id) {
-                Cache::forget(\"{$tableNameToCamelCase}{\$id}\");
+                Cache::delete(\"{$tableNameToCamelCase}{\$id}\");
             }";
             }
             

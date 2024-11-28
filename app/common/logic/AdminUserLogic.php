@@ -36,7 +36,6 @@ class AdminUserLogic
         try {
             validate(AdminUserValidate::class)->scene('create')->check($params);
 
-            //$params['password_hash'] = password_hash($params['password'], PASSWORD_DEFAULT);
             AdminUserModel::create($params);
         } catch (\Exception $e) {
             abort($e->getMessage());

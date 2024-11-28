@@ -2,7 +2,7 @@
 namespace app\common\logic;
 
 use think\facade\Db;
-use Shopwwi\LaravelCache\Cache;
+use support\Cache;
 use app\common\model\ConfigModel;
 use app\common\validate\ConfigValidate;
 use app\common\model\AdminMenuModel;
@@ -51,8 +51,6 @@ class ConfigLogic
                 'desc'          => $params['description'] ?? null,
             ]);
 
-            Cache::forget("Config");
-
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
@@ -90,8 +88,7 @@ class ConfigLogic
                 'desc'          => $params['description'] ?? null,
             ]);
 
-            Cache::forget("Config");
-            Cache::forget("Config_{$oldName}");
+            Cache::delete("Config_{$oldName}");
 
             Db::commit();
         } catch (\Exception $e) {
@@ -111,8 +108,7 @@ class ConfigLogic
             ConfigModel::update($params);
 
             $configName = ConfigModel::where('id', $params['id'])->value('name');
-            Cache::forget("Config");
-            Cache::forget("Config_{$configName}");
+            Cache::delete("Config_{$configName}");
 
             Db::commit();
         } catch (\Exception $e) {
@@ -129,10 +125,11 @@ class ConfigLogic
     public static function findData(?int $id, ?string $name)
     {
         if ($name) {
-            return Cache::rememberForever("Config_{$name}", function () use ($name)
-            {
-                return ConfigModel::where('name', $name)->find();
-            });
+            $data = Cache::get("Config_{$name}");
+            if (is_null($data)) {
+                $data = ConfigModel::where('name', $name)->find();
+            }
+            return $data;
         }
         if ($id) {
             return ConfigModel::find($id);
@@ -156,8 +153,7 @@ class ConfigLogic
             //要同步删除adminMenu的数据
             AdminMenuModel::where('name', "config_{$configName}")->delete();
 
-            Cache::forget("Config");
-            Cache::forget("Config_{$configName}");
+            Cache::delete("Config_{$configName}");
 
             Db::commit();
         } catch (\Exception $e) {
@@ -172,10 +168,7 @@ class ConfigLogic
      */
     public static function getConfig(string $name)
     {
-        $data = Cache::rememberForever("Config_{$name}", function () use ($name)
-        {
-            return ConfigModel::where('name', $name)->find();
-        });
+        $data = self::findData(null, $name);
         return $data['content'] ?? [];
     }
 
@@ -187,7 +180,7 @@ class ConfigLogic
     {
         Db::startTrans();
         try {
-            foreach ($params as $k => $v) {
+            foreach ($params as $v) {
                 ConfigModel::update([
                     'id'   => $v['id'],
                     'sort' => $v['sort'],
@@ -199,7 +192,6 @@ class ConfigLogic
                     'sort' => $v['sort']
                 ]);
             }
-            Cache::forget("Config");
 
             Db::commit();
         } catch (\Exception $e) {

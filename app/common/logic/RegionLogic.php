@@ -1,7 +1,7 @@
 <?php
 namespace app\common\logic;
 
-use Shopwwi\LaravelCache\Cache;
+use support\Cache;
 use app\common\model\RegionModel;
 
 /**
@@ -30,14 +30,15 @@ class RegionLogic
      **/
     public static function getProvince()
     {
-        return Cache::rememberForever('provinceList', function ()
-        {
-            return RegionModel::order('id asc')
+        $list = Cache::get('provinceList');
+        if (is_null($list)) {
+            $list = RegionModel::order('id asc')
                 ->field('id,title,pid')
                 ->where('level', 1)
                 ->select()
                 ->toArray();
-        });
+        }
+        return $list;
     }
 
     /**
@@ -45,15 +46,16 @@ class RegionLogic
      **/
     public static function getProvinceCity()
     {
-        return Cache::rememberForever('provinceCityList', function ()
-        {
+        $list = Cache::get('provinceCityList');
+        if (is_null($list)) {
             $list = RegionModel::order('id asc')
                 ->field('id,title,pid')
                 ->where('level', '<', 3)
                 ->select()
                 ->toArray();
-            return self::arrayToTree($list);
-        });
+            $list = self::arrayToTree($list);
+        }
+        return $list;
     }
 
     /**
@@ -61,14 +63,15 @@ class RegionLogic
      **/
     public static function getListAll()
     {
-        return Cache::rememberForever('provinceCityAreaList', function ()
-        {
+        $list = Cache::get('provinceCityAreaList');
+        if (is_null($list)) {
             $list = RegionModel::order('id asc')
                 ->field('id,title,pid')
                 ->select()
                 ->toArray();
-            return self::arrayToTree($list);
-        });
+            $list = self::arrayToTree($list);
+        }
+        return $list;
     }
 
     /**
@@ -79,9 +82,9 @@ class RegionLogic
     {
         $pid_path = RegionModel::where('id', $id)->value('pid_path');
         return RegionModel::where('id', 'in', $pid_path)
-        ->field('id,pid,level,title')
-        ->order('level asc')
-        ->select();
+            ->field('id,pid,level,title')
+            ->order('level asc')
+            ->select();
     }
 
     /**

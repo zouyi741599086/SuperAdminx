@@ -1,7 +1,7 @@
 <?php
 namespace app\common\logic;
 
-use Shopwwi\LaravelCache\Cache;
+use support\Cache;
 use think\facade\Db;
 use app\common\model\NewsClassModel;
 use app\common\model\NewsModel;
@@ -21,12 +21,13 @@ class NewsClassLogic
      * */
     public static function getList()
     {
-        return Cache::rememberForever('NewsClass', function ()
-        {
-            return NewsClassModel::order('sort desc,id desc')
+        $list = Cache::get('NewsClass');
+        if (is_null($list)) {
+            $list = NewsClassModel::order('sort desc,id desc')
                 ->select()
                 ->toArray();
-        });
+        }
+        return $list;
     }
 
     /**
@@ -46,10 +47,11 @@ class NewsClassLogic
      */
     public static function findData(int $id)
     {
-        return Cache::rememberForever("NewsClass{$id}", function () use ($id)
-        {
-            return NewsClassModel::find($id);
-        });
+        $data = Cache::get('NewsClass');
+        if (is_null($data)) {
+            $data = NewsClassModel::find($id);
+        }
+        return $data;
     }
 
     /**
@@ -66,7 +68,7 @@ class NewsClassLogic
             //重新更新我下面所有数据的pid_path相关字段
             self::updatePidPath($result->id);
 
-            Cache::forget("NewsClass");
+            Cache::delete("NewsClass");
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
@@ -92,8 +94,8 @@ class NewsClassLogic
             //重新更新我下面所有数据的pid_path相关字段
             self::updatePidPath($params['id']);
 
-            Cache::forget("NewsClass");
-            Cache::forget("NewsClass{$params['id']}");
+            Cache::delete("NewsClass");
+            Cache::delete("NewsClass{$params['id']}");
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
@@ -155,8 +157,8 @@ class NewsClassLogic
                 'id'     => $params['id'],
                 'status' => $params['status']
             ]);
-            Cache::forget("NewsClass");
-            Cache::forget("NewsClass{$params['id']}");
+            Cache::delete("NewsClass");
+            Cache::delete("NewsClass{$params['id']}");
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
@@ -181,8 +183,8 @@ class NewsClassLogic
             //删除分类
             NewsClassModel::destroy($ids);
             //删除缓存
-            Cache::forget("NewsClass");
-            Cache::forget("NewsClass{$id}");
+            Cache::delete("NewsClass");
+            Cache::delete("NewsClass{$id}");
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
@@ -204,7 +206,7 @@ class NewsClassLogic
                     'sort' => $v['sort']
                 ]);
             }
-            Cache::forget("NewsClass");
+            Cache::delete("NewsClass");
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();

@@ -32,7 +32,6 @@
     "aliyuncs/oss-sdk-php": "^2.6",
     "workerman/crontab": "^1.0",
     "webman/push": "^1.0",
-    "shopwwi/laravel-cache": "^1.0",
     "w7corp/easywechat": "^6.7",
     "yansongda/pay": "~3.7.0",
     "guzzlehttp/guzzle": "^7.0",
@@ -42,7 +41,9 @@
     "illuminate/redis": "^10.48",
     "illuminate/events": "^10.48",
     "webman/event": "^1.0",
-    "taoser/webman-validate": "^1.7"
+    "taoser/webman-validate": "^1.7",
+    "symfony/cache": "^6.4",
+    "psr/simple-cache": "^3.0"
   },
   "suggest": {
     "ext-event": "For better performance. "

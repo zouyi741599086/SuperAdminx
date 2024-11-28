@@ -24,9 +24,6 @@ class File
     //允许上传的文件类型
     public static $fileMimeType = ['image/png', 'image/jpeg', 'image/gif', 'application/x-rar-compressed', 'application/rar', 'application/zip', 'text/plain', 'audio/mpeg', 'audio/mp3', 'video/mp4', 'video/x-m4v', 'application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
-    //运行上传的文件大小
-    public static $fileSize = 100 * 1024 * 1024;
-
     /**
      * 文件上传，上传的数据回记录到file表进行管理
      * @param string $disk 上传到哪，public》本地，aliyun》阿里云
@@ -90,7 +87,7 @@ class File
                 if (! in_array($suffix, self::$fileSuffix) || ! in_array($mimeType, self::$fileMimeType)) {
                     abort('不允许上传的文件类型');
                 }
-                if ($size > self::$fileSize) {
+                if ($size > config('server.max_package_size')) {
                     abort('文件太大，超出允许上传的范围');
                 }
                 $time = time();
@@ -105,7 +102,8 @@ class File
                 $result[$key] = $path;
             }
         } catch (\Exception $e) {
-            Log::error($e->getMessage(), []);
+            Log::error($e->getMessage());
+            abort($e->getMessage());
         }
 
         return $result;

@@ -13,17 +13,18 @@
  */
 
 return [
-    'default' => [
-        'host'     => '127.0.0.1',
-        'password' => '123456',
-        'port'     => 6379,
-        'database' => 0,
-    ],
-    'cache'   => [
-        'host'     => '127.0.0.1',
-        'password' => '123456',
-        'port'     => 6379,
-        'database' => 1,
-        'prefix'   => 'cache-',
+    'default' => 'file',
+    'stores'  => [
+        'file'  => [
+            'driver' => 'file',
+            'path'   => runtime_path('cache')
+        ],
+        'redis' => [
+            'driver'     => 'redis',
+            'connection' => 'cache'
+        ],
+        'array' => [
+            'driver' => 'array'
+        ]
     ]
 ];

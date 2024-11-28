@@ -28,7 +28,7 @@ function requestAfter(response, aes_key, aes_iv) {
             }, 1500)
         }
         //解密数据
-        if (config.api_encryptor) {
+        if (config.api_encryptor && response.data?.encrypt_data) {
             response.data.data = aesDecrypt(response.data?.encrypt_data, aes_key, aes_iv)
         }
         return response.data;
