@@ -108,9 +108,10 @@ class CodeGenerator
     /**
      * 字符串转驼峰会自动去掉表前缀
      * @param string $string 要转的字符串 如 sa_admin_user 转换成AdminUser
+     * @param bool $letter 首字母是否消息 如sa_admin_user 转换成 adminUser
      * @return string
      */
-    public static function toCamelCase(string $string) : string
+    public static function toCamelCase(string $string, bool $letter = false) : string
     {
         // 去除表前缀
         $dbPrefix = getenv('DB_PREFIX');
@@ -123,7 +124,7 @@ class CodeGenerator
         $string = ucwords($string);
         // 将空格替换为空，实现驼峰命名  
         $string = str_replace(' ', '', $string);
-        return $string;
+        return $letter ? lcfirst($string) : $string;
     }
 
     /**
@@ -261,9 +262,9 @@ class CodeGenerator
         // 如果是新增更新页面，则要生成两个文件
         if ($name == 'react_create_update') {
             //从列表页的权限id，找生成的目录
-            $adminMenu = AdminMenuModel::where('name', $data['auth_ids']['auth_list_id'] ?? null)->find();
+            $adminMenu = AdminMenuModel::where('name', self::toCamelCase($table_name, true))->find();
             if (! $adminMenu) {
-                abort('未设置列表页权限节点~');
+                abort('未设置列表页权限节点，无法找到生成目录~');
             }
 
             //生成新增页面的代码
@@ -285,22 +286,22 @@ class CodeGenerator
         //如果生成的是前端的详情页面
         else if ($name == "react_info") {
             //详情的权限id，从这找生成的目录
-            $adminMenu = AdminMenuModel::where('name', $data['auth_ids']['auth_info_id'] ?? null)->find();
+            $adminMenu = AdminMenuModel::where('name', self::toCamelCase($table_name, true))->find();
             if (! $adminMenu || ! $adminMenu['component_path']) {
-                abort('详情权限节点的组件目录未设置，无法保存生成的文件');
+                abort('未设置列表页权限节点，无法找到生成目录~');
             }
 
             //开始生成代码并保存
-            $file_path = "public\admin_react\src\pages{$adminMenu->component_path}";
+            $file_path = "public\admin_react\src\pages{$adminMenu->component_path}\info";
             self::generateFile($file_path, $file_name, $data['react_info_code'], $forced);
 
         }
         //如果生成的是前端的列表
         else if ($name == "react_list") {
             //列表的权限id，从这找生成的目录
-            $adminMenu = AdminMenuModel::where('name', $data['auth_ids']['auth_list_id'] ?? null)->find();
+            $adminMenu = AdminMenuModel::where('name', self::toCamelCase($table_name, true))->find();
             if (! $adminMenu || ! $adminMenu['component_path']) {
-                abort('列表权限节点的组件目录未设置，无法保存生成的文件');
+                abort('未设置列表页权限节点，无法找到生成目录~');
             }
 
             //开始生成代码并保存
@@ -380,10 +381,10 @@ class CodeGenerator
 
     /**
      * 通过反射获取类所有自己的方法，非继承的方法
-     * @param mixed $className 如 app\admin\controller\AdminUser
+     * @param string $className 如 app\admin\controller\AdminUser
      * @return array
      */
-    private static function getOwnMethods($className) : array
+    private static function getOwnMethods(string $className) : array
     {
         $reflectedClass = new \ReflectionClass($className);
         $ownMethods     = [];
@@ -416,11 +417,11 @@ class CodeGenerator
 
     /**
      * 从方法的注释中提取内容
-     * @param mixed $docComment 方法的注释
-     * @param mixed $type 提取的内容，如title method等
+     * @param string $docComment 方法的注释
+     * @param string $type 提取的内容，如title method等
      * @return mixed
      */
-    private static function getMethodsDocComment($docComment, $type)
+    private static function getMethodsDocComment(string $docComment, string $type)
     {
         // 移除开头的'/**'和结尾的'*/'，以便更容易地按行分割  
         $docComment = trim($docComment, "/*");
@@ -451,4 +452,5 @@ class CodeGenerator
             return $method;
         }
     }
+
 }

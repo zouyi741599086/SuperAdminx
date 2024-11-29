@@ -19,7 +19,7 @@ class ConfigModel extends BaseModel
 
     //字段类型转换
     protected $type = [
-        'content'       => 'serialize',
-        'fields_config' => 'serialize',
+        'content'       => 'json',
+        'fields_config' => 'json',
     ];
 }

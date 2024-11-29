@@ -52,7 +52,7 @@
 import { lazy } from 'react';
 <?php
     foreach ($apiFileArr as $v) {
-        echo "import {$v}Api from '@/api/{$v}';\n";
+        echo "import { {$v}Api } from '@/api/{$v}';\n";
     }
 ?>
 import { ProForm, <?php
@@ -107,11 +107,11 @@ echo "import Select{$v} from '@/pages/components/select{$v}';\n";
 /**
  * <?php echo $table_title ?? '';?> 添加修改的form字段
  * 
- * @param {string} type create》添加，update》修改
+ * @param {string} typeAction create》添加，update》修改
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({type, ...props}) => {
+export default ({typeAction, ...props}) => {
 
     return <>
         <Row gutter={[24, 0]}>

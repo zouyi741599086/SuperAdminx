@@ -12,7 +12,7 @@ import {
     ProFormDependency
 } from '@ant-design/pro-components';
 import { App, Typography, Space, Flex, Button, Affix, Row, Col } from 'antd';
-import CodeEditor from '@/component/codeEditor'
+import CodeHighlight from '@/component/codeHighlight';
 import './model.css';
 
 /**
@@ -62,7 +62,6 @@ export default ({ tableName, operationFile, ...props }) => {
     const getTableColumnList = () => {
         adminCodeGeneratorApi.getTableColumnList().then(res => {
             if (res.code === 1) {
-                console.log(res.data)
                 setTableCloumnList(res.data);
             } else {
                 message.error(res.message);
@@ -526,7 +525,7 @@ export default ({ tableName, operationFile, ...props }) => {
                 />
 
                 <ProForm.Item name="model_code" >
-                    <CodeEditor language='php' readOnly={true} />
+                    <CodeHighlight language='php' />
                 </ProForm.Item>
             </Space>
 

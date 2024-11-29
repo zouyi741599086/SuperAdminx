@@ -7,7 +7,7 @@ import {
     ProFormRadio,
 } from '@ant-design/pro-components';
 import { App, Space, Flex, Button, Affix, Row, Col } from 'antd';
-import CodeEditor from '@/component/codeEditor'
+import CodeHighlight from '@/component/codeHighlight';
 
 
 /**
@@ -98,7 +98,7 @@ export default ({ tableName, operationFile, ...props }) => {
                 </Row>
 
                 <ProForm.Item name="react_api_code" >
-                    <CodeEditor readOnly={true} />
+                    <CodeHighlight/>
                 </ProForm.Item>
             </Space>
 

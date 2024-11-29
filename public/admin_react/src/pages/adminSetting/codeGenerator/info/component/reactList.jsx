@@ -13,7 +13,7 @@ import {
 import { App, Space, Flex, Button, Affix, Row, Col } from 'antd';
 import { menuToTree } from '@/common/function';
 import { adminMenuApi } from '@/api/adminMenu';
-import CodeEditor from '@/component/codeEditor'
+import CodeHighlight from '@/component/codeHighlight';
 import './reactList.css';
 
 /**
@@ -766,7 +766,7 @@ export default ({ tableName, operationFile, ...props }) => {
                 <ProForm.Item
                     name="react_list_code"
                 >
-                    <CodeEditor readOnly={true} />
+                    <CodeHighlight/>
                 </ProForm.Item>
 
             </Space>

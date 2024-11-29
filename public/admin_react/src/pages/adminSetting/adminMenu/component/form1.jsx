@@ -11,6 +11,7 @@ import { Row, Col } from 'antd';
 /**
  * 后台菜单 新增修改的form字段
  * 
+ * @param {string} typeAction 新增还是修改
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
@@ -47,7 +48,8 @@ export default ({ typeAction, ...props }) => {
                     rules={[
                         { required: true, message: '请输入' }
                     ]}
-                    extra="必须唯一，可用控制器名+方法名，设置后最好不要更改，要修改react里面的按钮权限及控制器中的auth注释"
+                    tooltip="系统内置几个权限名称规则，表名转驼峰首字母小写，如adminUser，内置了列表：xxxGetList、新增：xxxCreate、修改：xxxUpdate、查看详情：xxxInfo、删除：xxxDelete、修改排序：xxxUpdateSort、修改状态：xxxUpdateSort、导出数据：xxxExportData、导入数据：xxxImportData；代码生成的时候会按照此规则获取权限名称自动注入权限！"
+                    extra="须唯一，用控制器名+方法名，设置后最好不要更改，否则要修改react里面的按钮权限及控制器中的auth注释"
                 />
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
@@ -281,6 +283,8 @@ export default ({ typeAction, ...props }) => {
                                             { label: '删除', value: 'Delete' },
                                             { label: '修改排序', value: 'UpdateSort' },
                                             { label: '修改状态', value: 'UpdateStatus' },
+                                            { label: '导出数据', value: 'ExportData' },
+                                            { label: '导入数据', value: 'ImportData' },
                                         ]}
                                         fieldProps={{
                                             mode: 'multiple',

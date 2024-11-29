@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2024-11-27 18:18:08
+Date: 2024-11-29 21:30:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,6 @@ CREATE TABLE `sa_admin_code_generator` (
   `table_name` varchar(255) DEFAULT NULL COMMENT '表名称',
   `table_title` varchar(255) DEFAULT NULL COMMENT '表的中文名称',
   `field_title` text COMMENT '表的字段的中文名称，存的json',
-  `auth_ids` text COMMENT '添加、修改、删除、详情、导出、状态修改、修改排序的权限id',
   `validate` text COMMENT '验证器的配置',
   `validate_code` text COMMENT '验证器的代码',
   `model` text COMMENT '模型的配置',
@@ -47,7 +46,7 @@ CREATE TABLE `sa_admin_code_generator` (
   `react_other` text COMMENT '生成后端其它组件的配置',
   `react_other_code` text COMMENT '生成后端其它组件的代码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COMMENT='代码生成器的配置';
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COMMENT='代码生成器的配置';
 
 -- ----------------------------
 -- Records of sa_admin_code_generator
@@ -97,7 +96,7 @@ CREATE TABLE `sa_admin_menu` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=838 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台管理连接';
+) ENGINE=InnoDB AUTO_INCREMENT=902 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台管理连接';
 
 -- ----------------------------
 -- Records of sa_admin_menu
@@ -123,23 +122,23 @@ INSERT INTO `sa_admin_menu` VALUES ('18', '删除', '6', '', '', 'adminMenuDelet
 INSERT INTO `sa_admin_menu` VALUES ('19', '操作日志', '2', 'icon-wenzhang2', '/adminSetting/adminLog', 'adminLog', 'systemSetting', ',systemSetting,adminLog,', '/adminSetting/adminLog', null, '4', '1', null, '1', '2023-02-02 15:56:15', '2024-11-20 17:36:39');
 INSERT INTO `sa_admin_menu` VALUES ('20', '代码生成', '2', 'icon-jurassic_data', '/adminSetting/codeGenerator', 'codeGenerator', 'systemSetting', ',systemSetting,codeGenerator,', '/adminSetting/codeGenerator', null, '10', '2', null, '1', '2024-09-13 14:09:38', '2024-11-20 19:53:50');
 INSERT INTO `sa_admin_menu` VALUES ('21', '详情', '5', '', '/adminSetting/codeGenerator/info', 'codeGeneratorInfo', 'codeGenerator', ',systemSetting,codeGenerator,codeGeneratorInfo,', '/adminSetting/codeGenerator/info', null, '0', '1', null, '2', '2024-09-13 14:25:32', '2024-11-20 19:53:50');
-INSERT INTO `sa_admin_menu` VALUES ('30', '文章管理', '1', 'icon-wenzhang2', '', 'newsManage', null, ',newsManage,', '', null, '1000', '1', null, '1', '2023-03-31 16:36:45', '2024-11-20 17:34:23');
-INSERT INTO `sa_admin_menu` VALUES ('31', '文章分类', '2', 'icon-zuzhijigou1', '/news/class', 'newsClass', 'newsManage', ',newsManage,newsClass,', '/news/class', null, '0', '1', null, '1', '2023-04-03 13:59:48', '2024-11-20 17:34:28');
-INSERT INTO `sa_admin_menu` VALUES ('32', '只浏览数据', '6', '', '', 'newsClassGetList', 'newsClass', ',newsManage,newsClass,newsClassGetList,', '', null, '0', '1', null, '1', '2023-10-10 13:40:23', '2024-11-20 17:34:33');
-INSERT INTO `sa_admin_menu` VALUES ('33', '添加分类', '6', '', '/news_class/create', 'newsClassCreate', 'newsClass', ',newsManage,newsClass,newsClassCreate,', '/news_class/create', null, '1', '1', null, '1', '2023-04-03 14:11:05', '2024-11-20 17:34:35');
-INSERT INTO `sa_admin_menu` VALUES ('34', '修改分类', '6', '', '', 'newsClassUpdate', 'newsClass', ',newsManage,newsClass,newsClassUpdate,', '', null, '2', '1', null, '1', '2023-04-04 13:36:14', '2024-11-20 17:34:40');
-INSERT INTO `sa_admin_menu` VALUES ('35', '删除分类', '6', '', '', 'newsClassDelete', 'newsClass', ',newsManage,newsClass,newsClassDelete,', '', null, '2', '1', null, '1', '2023-04-04 13:36:25', '2024-11-20 17:34:37');
-INSERT INTO `sa_admin_menu` VALUES ('36', '修改排序', '6', '', '', 'newsClassUpdateSort', 'newsClass', ',newsManage,newsClass,newsClassUpdateSort,', '', null, '3', '1', null, '1', '2023-04-04 15:00:16', '2024-11-27 17:44:55');
-INSERT INTO `sa_admin_menu` VALUES ('37', '状态修改', '6', '', '', 'newsClassUpdateStatus', 'newsClass', ',newsManage,newsClass,newsClassUpdateStatus,', '', null, '7', '1', null, '1', '2024-04-09 18:47:04', '2024-11-27 17:44:25');
-INSERT INTO `sa_admin_menu` VALUES ('40', '文章列表', '2', 'icon-wenzhang2', '/news/list', 'news', 'newsManage', ',newsManage,news,', '/news/list', null, '1', '1', null, '1', '2023-04-03 14:00:28', '2024-11-20 17:34:48');
-INSERT INTO `sa_admin_menu` VALUES ('41', '只浏览数据', '6', '', '', 'newsGetList', 'news', ',newsManage,news,newsGetList,', '', null, '0', '1', null, '1', '2023-10-10 13:40:48', '2024-11-20 17:34:52');
-INSERT INTO `sa_admin_menu` VALUES ('42', '添加文章', '5', '', '/news/list/create', 'newsCreate', 'news', ',newsManage,news,newsCreate,', '/news/list/create', null, '1', '1', null, '1', '2023-04-04 13:36:34', '2024-11-20 17:34:57');
-INSERT INTO `sa_admin_menu` VALUES ('43', '修改文章', '5', '', '/news/list/update', 'newsUpdate', 'news', ',newsManage,news,newsUpdate,', '/news/list/update', null, '2', '1', null, '2', '2023-04-04 13:36:46', '2024-11-20 17:35:04');
-INSERT INTO `sa_admin_menu` VALUES ('44', '删除文章', '6', '', '', 'newsDelete', 'news', ',newsManage,news,newsDelete,', '', null, '2', '1', null, '1', '2023-04-04 13:36:59', '2024-11-20 17:35:00');
-INSERT INTO `sa_admin_menu` VALUES ('45', '复制文章', '6', '', '', 'newsCopy', 'news', ',newsManage,news,newsCopy,', '', null, '3', '1', null, '1', '2023-04-04 13:37:53', '2024-11-20 17:35:07');
-INSERT INTO `sa_admin_menu` VALUES ('46', '批量切换分类', '6', '', '', 'newsUpdateClassId', 'news', ',newsManage,news,newsUpdateClassId,', '', null, '4', '1', null, '1', '2023-04-04 13:38:04', '2024-11-20 17:35:10');
-INSERT INTO `sa_admin_menu` VALUES ('47', '修改排序', '6', '', '', 'newsUpdateSort', 'news', ',newsManage,news,newsUpdateSort,', '', null, '5', '1', null, '1', '2023-04-05 09:57:27', '2024-11-27 17:43:30');
-INSERT INTO `sa_admin_menu` VALUES ('48', '状态修改', '6', '', '', 'newsUpdateStatus', 'news', ',newsManage,news,newsUpdateStatus,', '', null, '7', '1', '上架下架', '1', '2024-04-09 18:47:20', '2024-11-27 17:42:28');
+INSERT INTO `sa_admin_menu` VALUES ('30', '文章管理', '1', 'icon-wenzhang2', '', 'newsManage', null, ',newsManage,', '', null, '1000', '1', null, '1', '2023-03-31 16:36:45', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('31', '文章分类', '2', 'icon-zuzhijigou1', '/news/class', 'newsClass', 'newsManage', ',newsManage,newsClass,', '/news/class', null, '0', '1', null, '1', '2023-04-03 13:59:48', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('32', '只浏览数据', '6', '', '', 'newsClassGetList', 'newsClass', ',newsManage,newsClass,newsClassGetList,', '', null, '0', '1', null, '1', '2023-10-10 13:40:23', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('33', '添加分类', '6', '', '/news_class/create', 'newsClassCreate', 'newsClass', ',newsManage,newsClass,newsClassCreate,', '/news_class/create', null, '1', '1', null, '1', '2023-04-03 14:11:05', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('34', '修改分类', '6', '', '', 'newsClassUpdate', 'newsClass', ',newsManage,newsClass,newsClassUpdate,', '', null, '2', '1', null, '1', '2023-04-04 13:36:14', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('35', '删除分类', '6', '', '', 'newsClassDelete', 'newsClass', ',newsManage,newsClass,newsClassDelete,', '', null, '2', '1', null, '1', '2023-04-04 13:36:25', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('36', '修改排序', '6', '', '', 'newsClassUpdateSort', 'newsClass', ',newsManage,newsClass,newsClassUpdateSort,', '', null, '3', '1', null, '1', '2023-04-04 15:00:16', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('37', '状态修改', '6', '', '', 'newsClassUpdateStatus', 'newsClass', ',newsManage,newsClass,newsClassUpdateStatus,', '', null, '7', '1', null, '1', '2024-04-09 18:47:04', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('40', '文章列表', '2', 'icon-wenzhang2', '/news/list', 'news', 'newsManage', ',newsManage,news,', '/news/list', null, '1', '1', null, '1', '2023-04-03 14:00:28', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('41', '只浏览数据', '6', '', '', 'newsGetList', 'news', ',newsManage,news,newsGetList,', '', null, '0', '1', null, '1', '2023-10-10 13:40:48', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('42', '添加文章', '5', '', '/news/list/create', 'newsCreate', 'news', ',newsManage,news,newsCreate,', '/news/list/create', null, '1', '1', null, '1', '2023-04-04 13:36:34', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('43', '修改文章', '5', '', '/news/list/update', 'newsUpdate', 'news', ',newsManage,news,newsUpdate,', '/news/list/update', null, '2', '1', null, '2', '2023-04-04 13:36:46', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('44', '删除文章', '6', '', '', 'newsDelete', 'news', ',newsManage,news,newsDelete,', '', null, '2', '1', null, '1', '2023-04-04 13:36:59', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('45', '复制文章', '6', '', '', 'newsCopy', 'news', ',newsManage,news,newsCopy,', '', null, '3', '1', null, '1', '2023-04-04 13:37:53', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('46', '批量切换分类', '6', '', '', 'newsUpdateClassId', 'news', ',newsManage,news,newsUpdateClassId,', '', null, '4', '1', null, '1', '2023-04-04 13:38:04', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('47', '修改排序', '6', '', '', 'newsUpdateSort', 'news', ',newsManage,news,newsUpdateSort,', '', null, '5', '1', null, '1', '2023-04-05 09:57:27', '2024-11-28 10:59:49');
+INSERT INTO `sa_admin_menu` VALUES ('48', '状态修改', '6', '', '', 'newsUpdateStatus', 'news', ',newsManage,news,newsUpdateStatus,', '', null, '7', '1', '上架下架', '1', '2024-04-09 18:47:20', '2024-11-28 10:59:49');
 INSERT INTO `sa_admin_menu` VALUES ('50', '参数设置', '1', 'icon-peizhi1', '', 'configManage', null, ',configManage,', '', null, '1200', '1', null, '1', '2023-03-08 16:09:11', '2024-11-20 19:38:57');
 INSERT INTO `sa_admin_menu` VALUES ('51', '设置管理', '2', 'icon-peizhi1', '/config', 'config', 'configManage', ',configManage,config,', '/config', null, '0', '2', null, '1', '2024-11-20 18:00:11', '2024-11-20 19:38:57');
 INSERT INTO `sa_admin_menu` VALUES ('52', '只浏览数据', '6', '', '', 'configGetList', 'config', ',configManage,config,configGetList,', '', null, '0', '1', null, '1', '2024-11-20 18:13:41', '2024-11-20 19:38:57');
@@ -147,8 +146,8 @@ INSERT INTO `sa_admin_menu` VALUES ('53', '添加配置', '5', '', '/config/crea
 INSERT INTO `sa_admin_menu` VALUES ('54', '修改配置', '6', '', '', 'configUpdate', 'config', ',configManage,config,configUpdate,', '', null, '2', '1', null, '1', '2024-11-20 18:14:12', '2024-11-20 19:38:57');
 INSERT INTO `sa_admin_menu` VALUES ('55', '删除配置', '6', '', '', 'configDelete', 'config', ',configManage,config,configDelete,', '', null, '3', '1', null, '1', '2024-11-20 18:14:24', '2024-11-20 19:38:57');
 INSERT INTO `sa_admin_menu` VALUES ('56', '修改排序', '6', '', '', 'configUpdateSort', 'config', ',configManage,config,configUpdateSort,', '', null, '4', '1', null, '1', '2024-11-20 18:24:14', '2024-11-20 19:38:57');
-INSERT INTO `sa_admin_menu` VALUES ('834', '网站设置', '7', 'icon-peizhi1', '/config/web', 'config_web', 'configManage', ',configManage,config_web,', '', null, '0', '1', '', '1', '2024-11-20 18:43:48', '2024-11-27 16:36:39');
-INSERT INTO `sa_admin_menu` VALUES ('835', '首页轮播图', '7', 'icon-peizhi1', '/config/home_banner', 'config_home_banner', 'configManage', ',configManage,config_home_banner,', '', null, '0', '1', '首页的轮播图设置，最多设置6张', '1', '2024-11-20 18:48:43', '2024-11-27 16:14:03');
+INSERT INTO `sa_admin_menu` VALUES ('900', '网站参数设置', '7', 'icon-peizhi1', '/config/web_config', 'config_web_config', 'configManage', ',configManage,config_web_config,', '', null, '0', '1', '', '1', '2024-11-29 21:26:06', '2024-11-29 21:27:35');
+INSERT INTO `sa_admin_menu` VALUES ('901', '首页轮播图', '7', 'icon-peizhi1', '/config/home_banner', 'config_home_banner', 'configManage', ',configManage,config_home_banner,', '', null, '0', '1', null, '1', '2024-11-29 21:27:18', '2024-11-29 21:27:18');
 
 -- ----------------------------
 -- Table structure for sa_admin_role
@@ -186,8 +185,6 @@ CREATE TABLE `sa_admin_role_menu` (
 -- ----------------------------
 -- Records of sa_admin_role_menu
 -- ----------------------------
-INSERT INTO `sa_admin_role_menu` VALUES ('6464', '27', '835');
-INSERT INTO `sa_admin_role_menu` VALUES ('6465', '27', '834');
 INSERT INTO `sa_admin_role_menu` VALUES ('6484', '27', '52');
 INSERT INTO `sa_admin_role_menu` VALUES ('6485', '27', '41');
 INSERT INTO `sa_admin_role_menu` VALUES ('6486', '27', '32');
@@ -257,7 +254,7 @@ CREATE TABLE `sa_admin_user` (
 -- ----------------------------
 -- Records of sa_admin_user
 -- ----------------------------
-INSERT INTO `sa_admin_user` VALUES ('1', 'runxuekeji', '$2y$10$Sl201uURHptin.FDMWl2hORcldPVP0Gt6tc/Jxz2x/vsCIPZxsdPW', '1', '1', '邹意', '18819806503', 'https://lechuang-runxue.oss-cn-hangzhou.aliyuncs.com/2024-07-29/jpg/1722222526_43769.jpg', '1732702239', '127.0.0.1', '2023-03-22 16:04:08', '2024-11-27 18:10:40');
+INSERT INTO `sa_admin_user` VALUES ('1', 'runxuekeji', '$2y$10$Sl201uURHptin.FDMWl2hORcldPVP0Gt6tc/Jxz2x/vsCIPZxsdPW', '1', '1', '邹意', '18819806503', 'https://lechuang-runxue.oss-cn-hangzhou.aliyuncs.com/2024-07-29/jpg/1722222526_43769.jpg', '1732886469', '127.0.0.1', '2023-03-22 16:04:08', '2024-11-29 21:21:10');
 INSERT INTO `sa_admin_user` VALUES ('76', 'admin', '$2y$10$KtWHQ552b2V8.Az1XT7i5u9OVeP2WdGH/gfSmAuelL723awErKt7O', '27', '1', '邹意', '18819806503', '', '1732103765', '192.168.1.192', '2024-07-09 14:41:00', '2024-11-20 19:56:05');
 
 -- ----------------------------
@@ -277,13 +274,13 @@ CREATE TABLE `sa_config` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='参数设置';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='参数设置';
 
 -- ----------------------------
 -- Records of sa_config
 -- ----------------------------
-INSERT INTO `sa_config` VALUES ('11', 'form', '0', 'web', '网站设置', '', 'a:4:{i:0;a:10:{s:2:\"id\";i:1732099422330;s:9:\"dataIndex\";s:5:\"title\";s:9:\"valueType\";s:4:\"text\";s:14:\"valueTypeTitle\";s:6:\"文本\";s:4:\"name\";s:5:\"title\";s:5:\"title\";s:12:\"网站名称\";s:13:\"formItemProps\";a:2:{s:5:\"rules\";a:0:{}s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:10:\"fieldProps\";a:1:{s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:6:\"fields\";a:0:{}s:12:\"updateFields\";a:3:{s:4:\"name\";s:5:\"title\";s:5:\"title\";s:12:\"网站名称\";s:8:\"required\";i:1;}}i:1;a:10:{s:2:\"id\";i:1732695325576;s:9:\"dataIndex\";s:3:\"icp\";s:9:\"valueType\";s:4:\"text\";s:14:\"valueTypeTitle\";s:6:\"文本\";s:4:\"name\";s:3:\"icp\";s:5:\"title\";s:9:\"备案号\";s:13:\"formItemProps\";a:2:{s:5:\"rules\";a:0:{}s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:10:\"fieldProps\";a:1:{s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:6:\"fields\";a:0:{}s:12:\"updateFields\";a:3:{s:4:\"name\";s:3:\"icp\";s:5:\"title\";s:9:\"备案号\";s:8:\"required\";i:1;}}i:2;a:10:{s:2:\"id\";i:1732695339616;s:9:\"dataIndex\";s:3:\"tel\";s:9:\"valueType\";s:4:\"text\";s:14:\"valueTypeTitle\";s:6:\"文本\";s:4:\"name\";s:3:\"tel\";s:5:\"title\";s:12:\"客服电话\";s:13:\"formItemProps\";a:2:{s:5:\"rules\";a:0:{}s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:10:\"fieldProps\";a:1:{s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:6:\"fields\";a:0:{}s:12:\"updateFields\";a:3:{s:4:\"name\";s:3:\"tel\";s:5:\"title\";s:12:\"客服电话\";s:8:\"required\";i:1;}}i:3;a:10:{s:2:\"id\";i:1732696591872;s:9:\"dataIndex\";s:2:\"df\";s:9:\"valueType\";s:10:\"tencentMap\";s:14:\"valueTypeTitle\";s:27:\"腾讯地图经纬度选择\";s:4:\"name\";s:2:\"df\";s:5:\"title\";s:6:\"地方\";s:13:\"formItemProps\";a:2:{s:5:\"rules\";a:0:{}s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:10:\"fieldProps\";a:1:{s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:6:\"fields\";a:0:{}s:12:\"updateFields\";a:3:{s:4:\"name\";s:2:\"df\";s:5:\"title\";s:6:\"地方\";s:8:\"required\";i:1;}}}', 'a:3:{s:5:\"title\";N;s:3:\"icp\";N;s:3:\"tel\";N;}', '0', '2024-11-20 18:43:48', '2024-11-27 16:36:39');
-INSERT INTO `sa_config` VALUES ('12', 'list', '6', 'home_banner', '首页轮播图', '首页的轮播图设置，最多设置6张', 'a:1:{i:0;a:5:{s:5:\"title\";s:0:\"\";s:9:\"valueType\";s:8:\"formList\";s:9:\"dataIndex\";s:7:\"content\";s:4:\"name\";s:7:\"content\";s:7:\"columns\";a:2:{i:0;a:10:{s:2:\"id\";i:1732695043184;s:9:\"dataIndex\";s:3:\"img\";s:9:\"valueType\";s:12:\"uploadImgAll\";s:14:\"valueTypeTitle\";s:12:\"多图上传\";s:4:\"name\";s:3:\"img\";s:5:\"title\";s:6:\"图片\";s:13:\"formItemProps\";a:2:{s:5:\"rules\";a:1:{i:0;a:2:{s:8:\"required\";b:1;s:7:\"message\";s:6:\"必填\";}}s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:10:\"fieldProps\";a:4:{s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}s:5:\"width\";i:800;s:6:\"height\";i:400;s:8:\"maxCount\";i:6;}s:6:\"fields\";a:0:{}s:12:\"updateFields\";a:6:{s:4:\"name\";s:3:\"img\";s:5:\"title\";s:6:\"图片\";s:8:\"required\";i:2;s:5:\"width\";i:800;s:6:\"height\";i:400;s:8:\"maxCount\";i:6;}}i:1;a:10:{s:2:\"id\";i:1732695053904;s:9:\"dataIndex\";s:3:\"url\";s:9:\"valueType\";s:4:\"text\";s:14:\"valueTypeTitle\";s:6:\"文本\";s:4:\"name\";s:3:\"url\";s:5:\"title\";s:12:\"图片链接\";s:13:\"formItemProps\";a:2:{s:5:\"rules\";a:0:{}s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:10:\"fieldProps\";a:1:{s:5:\"style\";a:1:{s:5:\"width\";s:4:\"100%\";}}s:6:\"fields\";a:0:{}s:12:\"updateFields\";a:3:{s:4:\"name\";s:3:\"url\";s:5:\"title\";s:12:\"图片链接\";s:8:\"required\";i:1;}}}}}', 'a:1:{i:0;a:2:{s:3:\"img\";a:1:{i:0;s:44:\"/storage/2024-11-27/png/1732695424_48960.png\";}s:3:\"url\";s:20:\"http://www.baidu.com\";}}', '0', '2024-11-20 18:48:43', '2024-11-27 16:17:15');
+INSERT INTO `sa_config` VALUES ('16', 'form', '0', 'web_config', '网站参数设置', '', '[{\"id\":1732886738018,\"dataIndex\":\"title\",\"valueType\":\"text\",\"valueTypeTitle\":\"文本\",\"name\":\"title\",\"title\":\"网站名称\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"title\",\"title\":\"网站名称\",\"required\":1}},{\"id\":1732886745219,\"dataIndex\":\"tel\",\"valueType\":\"text\",\"valueTypeTitle\":\"文本\",\"name\":\"tel\",\"title\":\"联系电话\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"tel\",\"title\":\"联系电话\",\"required\":1}},{\"id\":1732886752271,\"dataIndex\":\"icp\",\"valueType\":\"text\",\"valueTypeTitle\":\"文本\",\"name\":\"icp\",\"title\":\"备案号\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"icp\",\"title\":\"备案号\",\"required\":1}}]', '{\"title\":\"后台框架\",\"tel\":\"110\",\"icp\":\"icp11110\"}', '0', '2024-11-29 21:26:06', '2024-11-29 21:27:52');
+INSERT INTO `sa_config` VALUES ('17', 'list', '6', 'home_banner', '首页轮播图', '', '[{\"title\":\"\",\"valueType\":\"formList\",\"dataIndex\":\"content\",\"name\":\"content\",\"columns\":[{\"id\":1732886813214,\"dataIndex\":\"img\",\"valueType\":\"uploadImg\",\"valueTypeTitle\":\"单图上传\",\"name\":\"img\",\"title\":\"图片\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"width\":800,\"height\":500},\"fields\":[],\"updateFields\":{\"name\":\"img\",\"title\":\"图片\",\"required\":2,\"width\":800,\"height\":500}},{\"id\":1732886825364,\"dataIndex\":\"link\",\"valueType\":\"text\",\"valueTypeTitle\":\"文本\",\"name\":\"link\",\"title\":\"图片链接\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"link\",\"title\":\"图片链接\",\"required\":1}}]}]', '[{\"img\":\"\\/storage\\/2024-11-29\\/png\\/1732886909_66745.png\",\"link\":\"http:\\/\\/www.baidu.com\"}]', '0', '2024-11-29 21:27:18', '2024-11-29 21:28:54');
 
 -- ----------------------------
 -- Table structure for sa_file
@@ -301,11 +298,12 @@ CREATE TABLE `sa_file` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=463 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='附件表';
+) ENGINE=InnoDB AUTO_INCREMENT=466 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='附件表';
 
 -- ----------------------------
 -- Records of sa_file
 -- ----------------------------
+INSERT INTO `sa_file` VALUES ('465', null, '/storage/2024-11-29/png/1732886909_66745.png', '67293', 'png', '1', '', 'public', '2024-11-29 21:28:30', '2024-11-29 21:28:30');
 
 -- ----------------------------
 -- Table structure for sa_file_record
@@ -319,11 +317,13 @@ CREATE TABLE `sa_file_record` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=301 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='附件表-整个系统所有数据里面附件的路劲';
+) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='附件表-整个系统所有数据里面附件的路劲';
 
 -- ----------------------------
 -- Records of sa_file_record
 -- ----------------------------
+INSERT INTO `sa_file_record` VALUES ('303', 'config', '16', '[\"后台框架\",\"110\",\"icp11110\"]', '2024-11-29 21:27:52', '2024-11-29 21:27:52');
+INSERT INTO `sa_file_record` VALUES ('304', 'config', '17', '[\"\\/storage\\/2024-11-29\\/png\\/1732886909_66745.png\",\"http:\\/\\/www.baidu.com\"]', '2024-11-29 21:28:31', '2024-11-29 21:28:54');
 
 -- ----------------------------
 -- Table structure for sa_news
@@ -342,7 +342,7 @@ CREATE TABLE `sa_news` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='新闻表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='新闻表';
 
 -- ----------------------------
 -- Records of sa_news
@@ -366,18 +366,18 @@ CREATE TABLE `sa_news_class` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='新闻分类';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='新闻分类';
 
 -- ----------------------------
 -- Records of sa_news_class
 -- ----------------------------
-INSERT INTO `sa_news_class` VALUES ('1', '关于我们', null, ',1,', '关于我们', '', '', '0', '1', '2024-09-30 13:01:18', '2024-11-27 17:01:56');
+INSERT INTO `sa_news_class` VALUES ('1', '关于我们', null, ',1,', '关于我们', '', '', '0', '1', '2024-09-30 13:01:18', '2024-11-28 10:57:41');
 INSERT INTO `sa_news_class` VALUES ('7', '新闻动态', null, ',7,', '新闻动态', '', '', '0', '1', '2024-11-20 09:25:57', '2024-11-27 17:01:22');
 INSERT INTO `sa_news_class` VALUES ('8', '公司新闻', '7', ',7,8,', '新闻动态-公司新闻', '', '', '0', '1', '2024-11-20 09:26:00', '2024-11-27 17:01:36');
 INSERT INTO `sa_news_class` VALUES ('9', '行业新闻', '7', ',7,9,', '新闻动态-行业新闻', '', '', '0', '1', '2024-11-27 17:01:44', '2024-11-27 17:01:44');
-INSERT INTO `sa_news_class` VALUES ('10', '公司简介', '1', ',1,10,', '关于我们-公司简介', '', '', '0', '1', '2024-11-27 17:02:04', '2024-11-27 17:02:04');
-INSERT INTO `sa_news_class` VALUES ('11', '公司资质', '1', ',1,11,', '关于我们-公司资质', '', '', '0', '1', '2024-11-27 17:02:26', '2024-11-27 17:02:26');
-INSERT INTO `sa_news_class` VALUES ('12', '联系我们', '1', ',1,12,', '关于我们-联系我们', '', '', '0', '1', '2024-11-27 17:02:35', '2024-11-27 17:02:35');
+INSERT INTO `sa_news_class` VALUES ('10', '公司简介', '1', ',1,10,', '关于我们-公司简介', '', '', '0', '1', '2024-11-27 17:02:04', '2024-11-28 10:57:41');
+INSERT INTO `sa_news_class` VALUES ('11', '公司资质', '1', ',1,11,', '关于我们-公司资质', '', '', '0', '1', '2024-11-27 17:02:26', '2024-11-28 10:57:41');
+INSERT INTO `sa_news_class` VALUES ('12', '联系我们', '1', ',1,12,', '关于我们-联系我们', '', '', '0', '1', '2024-11-27 17:02:35', '2024-11-28 10:57:41');
 
 -- ----------------------------
 -- Table structure for sa_region
@@ -4139,21 +4139,19 @@ CREATE TABLE `sa_token` (
   `token` varchar(191) DEFAULT NULL COMMENT '存的token',
   PRIMARY KEY (`id`),
   UNIQUE KEY `token_UNIQUE` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=530 DEFAULT CHARSET=utf8mb4 COMMENT='登录用户的token';
+) ENGINE=InnoDB AUTO_INCREMENT=543 DEFAULT CHARSET=utf8mb4 COMMENT='登录用户的token';
 
 -- ----------------------------
 -- Records of sa_token
 -- ----------------------------
-INSERT INTO `sa_token` VALUES ('442', 'bihengsi_admin_pc_1', 'RgUenGdr7S8drJyQtQOAVkq6kwoP%CP7k5/kJhyWgAAhl3ttvvTA6k%h0sPmjPsBPYO15D3F44U%uW86%FUh839%vGlm8W0eTi0OOsAR9Iz5YA');
-INSERT INTO `sa_token` VALUES ('470', 'haili_lvshihan_user_pc_2', 'FgIZnTM9uH0drJyQtQODVkq6kwoP%CP7k5/ocEyfgAAjw3syvvTA6k%h0sPmjPAIO4i44jzJ5YE%uW86%FUh839%vGlm8W0eTi0PP8gQ8InzYA');
-INSERT INTO `sa_token` VALUES ('489', 'haili_lvshihan_user_pc_1', 'QAcdy2Rs7H0drJyQtQOAVkq6kwoP%CP7k5/kJhyWgAAhl3ttvvTA6k%h0sPmjPsBPYO15D3F44U%uW86%FUh839%vGlm8W0eTiwHPcob9Yz6MbWbbjFmsV39R0UAbw');
-INSERT INTO `sa_token` VALUES ('510', 'haili_lvshihan_admin_pc_76', 'RlkazDBpuS4drJyQtQOGTET2nAYHvzvj7baoL07N5SlikHo7%vrOvF6onNv%n/IBNIu07DvG5oYvt2F95V046GhokFdzp3UVSCgFP8gQ8or%K7vLfT5s90X0QUkHJMY');
-INSERT INTO `sa_token` VALUES ('512', 'haili_lvshihan_admin_pc_76', 'FlQXmz8%7SAdrJyQtQOGTET2nAYHvzvj7baoL07N5SlikHo7%vrOvF6onNv%n/IBNIu07DvG5oYvt2F95V046GhokFdzp3UVSCgFP8gQ8ov8KLvLfT5s90X0Q08GJsY');
-INSERT INTO `sa_token` VALUES ('522', 'haili_lvshihan_admin_pc_1', 'od2BEUtTJQnLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYmgL8kdlu44VzobAOlXZeoxzldw');
-INSERT INTO `sa_token` VALUES ('523', 'haili_lvshihan_admin_pc_1', 'roWBEBBRKljLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYmgH3kdhg44VzobAOlXZYpR3ldw');
-INSERT INTO `sa_token` VALUES ('524', 'SuperAdminx_admin_pc_1', 'rNWCQ0pRIQnLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYmg/0ldxv44VzobAOlXZeoRjkdw');
-INSERT INTO `sa_token` VALUES ('525', 'SuperAdminx_admin_pc_1', '/4fUERFXclPLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYmg/3lN1m44VzobAOlXZboBngdw');
-INSERT INTO `sa_token` VALUES ('526', 'SuperAdminx_admin_pc_1', 'q4CCFxwGdwnLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYmg/xktlk44VzobAOlXZcoh/ndw');
-INSERT INTO `sa_token` VALUES ('527', 'SuperAdminx_admin_pc_1', '/YLQRB5QK1nLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYmg/zmdpm44VzobAOlXZUoxXudw');
-INSERT INTO `sa_token` VALUES ('528', 'SuperAdminx_admin_pc_1', 'rtfQQUsCKg7LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYmg/ylN5l44VzobAOlXZapBrkdw');
-INSERT INTO `sa_token` VALUES ('529', 'SuperAdminx_admin_pc_1', '%tSDQRBVIVLLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYmg/9l91v44VzobAOlXZbohrvdw');
+INSERT INTO `sa_token` VALUES ('532', 'SuperAdminx_admin_pc_1', 'oNeLQU1SKljLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH1mNtj44VzobAOlXZVrhzvdw');
+INSERT INTO `sa_token` VALUES ('533', 'SuperAdminx_admin_pc_1', 'r4DWRRpVIVjLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kd5g44VzobAOlXZbohjkdw');
+INSERT INTO `sa_token` VALUES ('534', 'SuperAdminx_admin_pc_1', 'q4aEERABcQ7LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kdpj44VzobAOlXZVrx7gdw');
+INSERT INTO `sa_token` VALUES ('535', 'SuperAdminx_admin_pc_1', 'rNTTFEpbKg/LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kddg44VzobAOlXZepBjudw');
+INSERT INTO `sa_token` VALUES ('536', 'SuperAdminx_admin_pc_1', '%tfREBFVdlvLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kNxh44VzobAOlXZaohTudw');
+INSERT INTO `sa_token` VALUES ('537', 'SuperAdminx_admin_pc_1', '%oDQE0hWIQ3LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kNhl44VzobAOlXZeoh/udw');
+INSERT INTO `sa_token` VALUES ('538', 'SuperAdminx_admin_pc_1', '/NXTSxAHIl/LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQHxkdxh44VzobAOlXZfrhXhdw');
+INSERT INTO `sa_token` VALUES ('539', 'SuperAdminx_admin_pc_1', 'rIDTERtSJ1/LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlAT2ktpi44VzobAOlXZcpB7gdw');
+INSERT INTO `sa_token` VALUES ('540', 'SuperAdminx_admin_pc_1', 'r4CBEU1UclnLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlATwmNZh44VzobAOlXZcrxXgdw');
+INSERT INTO `sa_token` VALUES ('541', 'SuperAdminx_admin_pc_1', '%4WCFkwBdVLLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlAH9kdZk44VzobAOlXZZpBvudw');
+INSERT INTO `sa_token` VALUES ('542', 'SuperAdminx_admin_pc_1', '/YXRREoAJ17LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlAD3mdhv44VzobAOlXZcpBXgdw');

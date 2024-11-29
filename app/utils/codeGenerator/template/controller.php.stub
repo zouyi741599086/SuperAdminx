@@ -44,8 +44,9 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($functions) && in_array('getList', $functions)) {
         //接口权限
         $auth = '';
-        if (isset($functions_auth) && in_array('getList', $functions_auth) && isset($data['auth_ids']['auth_list_id'])) {
-            $auth = "\n     * @auth {$data['auth_ids']['auth_list_id']}";
+        if (isset($functions_auth) && in_array('getList', $functions_auth)) {
+            $getListAuthName = CodeGenerator::toCamelCase($table_name,true) . 'GetList';
+            $auth = "\n     * @auth {$getListAuthName}";
         }
 
         echo "
@@ -69,8 +70,9 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($functions) && in_array('create', $functions)) {
         //接口权限
         $auth = '';
-        if (isset($functions_auth) && in_array('create', $functions_auth) && isset($data['auth_ids']['auth_create_id'])) {
-            $auth = "\n     * @auth {$data['auth_ids']['auth_create_id']}";
+        if (isset($functions_auth) && in_array('create', $functions_auth)) {
+            $createAuthName = CodeGenerator::toCamelCase($table_name,true) . 'Create';
+            $auth = "\n     * @auth {$createAuthName}";
         }
 
         echo "
@@ -114,8 +116,9 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($functions) && in_array('update', $functions)) {
         //接口权限
         $auth = '';
-        if (isset($functions_auth) && in_array('update', $functions_auth) && isset($data['auth_ids']['auth_update_id'])) {
-            $auth = "\n     * @auth {$data['auth_ids']['auth_update_id']}";
+        if (isset($functions_auth) && in_array('update', $functions_auth)) {
+            $updateAuthName = CodeGenerator::toCamelCase($table_name,true) . 'Update';
+            $auth = "\n     * @auth {$updateAuthName}";
         }
 
         echo "
@@ -139,20 +142,21 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($functions) && in_array('delete', $functions)) {
         //接口权限
         $auth = '';
-        if (isset($functions_auth) && in_array('delete', $functions_auth) && isset($data['auth_ids']['auth_delete_id'])) {
-            $auth = "\n     * @auth {$data['auth_ids']['auth_delete_id']}";
+        if (isset($functions_auth) && in_array('delete', $functions_auth)) {
+            $deleteAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Delete';
+            $auth = "\n     * @auth {$deleteAuthName}";
         }
 
         echo "
     /**
      * @log 删除{$data['table_title']}
      * @method post{$auth}
-     * @param int|array \$id 
+     * @param Request \$request 
      * @return Response
      */
-    public function delete(int|array \$id): Response
+    public function delete(Request \$request): Response
     {
-        {$data['logic']['file_name']}::delete(\$id);
+        {$data['logic']['file_name']}::delete(\$request->post('id'));
         return success([], '删除成功');
     }";
 
@@ -164,8 +168,9 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($functions) && in_array('updateSort', $functions)) {
         //接口权限
         $auth = '';
-        if (isset($functions_auth) && in_array('updateSort', $functions_auth) && isset($data['auth_ids']['auth_update_sort_id'])) {
-            $auth = "\n     * @auth {$data['auth_ids']['auth_update_sort_id']}";
+        if (isset($functions_auth) && in_array('updateSort', $functions_auth)) {
+            $updateSortAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateSort';
+            $auth = "\n     * @auth {$updateSortAuthName}";
         }
 
         echo "
@@ -189,8 +194,9 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($functions) && in_array('updateStatus', $functions)) {
         //接口权限
         $auth = '';
-        if (isset($functions_auth) && in_array('updateStatus', $functions_auth) && isset($data['auth_ids']['auth_update_status_id'])) {
-            $auth = "\n     * @auth {$data['auth_ids']['auth_update_status_id']}";
+        if (isset($functions_auth) && in_array('updateStatus', $functions_auth)) {
+            $updateStatusAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateStatus';
+            $auth = "\n     * @auth {$updateStatusAuthName}";
         }
 
         echo "
@@ -236,8 +242,9 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($functions) && in_array('importData', $functions)) {
         //接口权限
         $auth = '';
-        if (isset($functions_auth) && in_array('importData', $functions_auth) && isset($data['auth_ids']['auth_import_id'])) {
-            $auth = "\n     * @auth {$data['auth_ids']['auth_import_id']}";
+        if (isset($functions_auth) && in_array('importData', $functions_auth)) {
+            $importDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ImportData';
+            $auth = "\n     * @auth {$importDataAuthName}";
         }
 
         echo "
@@ -261,8 +268,9 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($functions) && in_array('importData', $functions)) {
         //接口权限
         $auth = '';
-        if (isset($functions_auth) && in_array('importData', $functions_auth) && isset($data['auth_ids']['auth_import_id'])) {
-            $auth = "\n     * @auth {$data['auth_ids']['auth_import_id']}";
+        if (isset($functions_auth) && in_array('importData', $functions_auth)) {
+            $importDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ImportData';
+            $auth = "\n     * @auth {$importDataAuthName}";
         }
 
         echo "
@@ -290,8 +298,9 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($functions) && in_array('exportData', $functions)) {
         //接口权限
         $auth = '';
-        if (isset($functions_auth) && in_array('exportData', $functions_auth) && isset($data['auth_ids']['auth_export_id'])) {
-            $auth = "\n     * @auth {$data['auth_ids']['auth_export_id']}";
+        if (isset($functions_auth) && in_array('exportData', $functions_auth)) {
+            $exportDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ExportData';
+            $auth = "\n     * @auth {$exportDataAuthName}";
         }
 
         echo "

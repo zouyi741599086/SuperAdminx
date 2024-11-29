@@ -12,7 +12,8 @@
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
     //列表权限节点
-    $menu = AdminMenuModel::where('name', $data['auth_ids']['auth_list_id'] ?? '')->find();
+    $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
+    $menu = AdminMenuModel::where('name', $getListAuthName)->find();
 
     //是否是多tab标签的form
     $isCardTab = false;
@@ -163,7 +164,7 @@ labelCol={{
                         if (!$isCardTab) {
                             echo "
                     <Lazyload>
-                        <Form1 type=\"create\" />
+                        <Form1 typeAction=\"create\" />
                     </Lazyload>
 ";
                         }
@@ -173,7 +174,7 @@ labelCol={{
                                 echo "
                     <div style={{ display: topListKey === '{$i}' ? 'block' : 'none' }}>
                         <Lazyload>
-                            <Form{$i} type=\"create\" />
+                            <Form{$i} typeAction=\"create\" />
                         </Lazyload>
                     </div>
 ";

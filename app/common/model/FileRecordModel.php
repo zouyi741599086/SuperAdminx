@@ -16,7 +16,7 @@ class FileRecordModel extends Model
 
     //字段类型转换
     protected $type = [
-        'files' => 'serialize',
+        'files' => 'json',
     ];
 
 }

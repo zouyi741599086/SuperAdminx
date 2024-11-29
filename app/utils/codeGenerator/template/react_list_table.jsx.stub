@@ -473,14 +473,17 @@ export default () => {
 
                     $columnsParams .= "            request: async () => {
                 const result = await {$tmp}Api.getList();
-                return result.data ; //arrayToTree(result.data);
+                let list = result.data.map(item => {
+                    return {
+                        label: item.title,
+                        value: item.id
+                    }
+                });
+                //list = arrayToTree(list);
+                return list;
             },
             fieldProps: {
                 {$tmp1}
-                fieldNames: {
-                    label: 'title',
-                    value: 'id'
-                }
             },\n";
 
                 }
@@ -525,7 +528,7 @@ export default () => {
                 return <>";
                     //是否有详情操作
                     if (in_array('info', $table_action_list)) {
-                        $info_auth_id = $data['auth_ids']['auth_info_id'] ?? 0;
+                        $infoAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Info';
 
                         //判断修改是否是弹窗修改
                         if ($infoIsModal) {
@@ -536,17 +539,19 @@ export default () => {
                         onClick={() => { 
                             setInfoId(record.id) 
                         }}
-                        disabled={authCheck('{$info_auth_id}')}
+                        disabled={authCheck('{$infoAuthName}')}
                     >详情</Button>";
                         } else {
-                            $info_menu = AdminMenuModel::where('name', $data['auth_ids']['auth_info_id'] ?? null)->find();
-                            $info_url = $info_menu['path'] ?? '';
+                            $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
+                            $getListMenuPath = AdminMenuModel::where('name', $getListAuthName)->value('path');
+                            $info_url = $getListMenuPath . "/info";
+
                             echo "
-                    <NavLink to={authCheck('{$info_auth_id}') ? '' : `{$info_url}?id=\${record.id}`}>
+                    <NavLink to={authCheck('{$infoAuthName}') ? '' : `{$info_url}?id=\${record.id}`}>
                         <Button
                             type=\"link\"
                             size=\"small\"
-                            disabled={authCheck('{$info_auth_id}')}
+                            disabled={authCheck('{$infoAuthName}')}
                         >详情</Button>
                     </NavLink>";
                         }
@@ -554,7 +559,7 @@ export default () => {
 
                     //是否有修改操作
                     if (in_array('update', $table_action_list)) {
-                        $update_auth_id = $data['auth_ids']['auth_update_id'] ?? 0;
+                        $updateAuthName = CodeGenerator::toCamelCase($table_name,true) . 'Update';
                         
                         //判断修改是否是弹窗修改
                         if ($updateIsModal) {
@@ -565,17 +570,18 @@ export default () => {
                         onClick={() => { 
                             setUpdateId(record.id) 
                         }}
-                        disabled={authCheck('{$update_auth_id}')}
+                        disabled={authCheck('{$updateAuthName}')}
                     >修改</Button>";
                         } else {
-                            $update_menu = AdminMenuModel::where('name', $data['auth_ids']['auth_update_id'] ?? null)->find();
-                            $update_url = $update_menu['path'] ?? '';
+                            $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
+                            $getListMenuPath = AdminMenuModel::where('name', $getListAuthName)->value('path');
+                            $update_url = $getListMenuPath . "/update";
                             echo "
-                    <NavLink to={authCheck('{$update_auth_id}') ? '' : `{$update_url}?id=\${record.id}`}>
+                    <NavLink to={authCheck('{$updateAuthName}') ? '' : `{$update_url}?id=\${record.id}`}>
                         <Button
                             type=\"link\"
                             size=\"small\"
-                            disabled={authCheck('{$update_auth_id}')}
+                            disabled={authCheck('{$updateAuthName}')}
                         >修改</Button>
                     </NavLink>";
                         }
@@ -583,20 +589,20 @@ export default () => {
 
                     //是否有删除操作
                     if (in_array('delete', $table_action_list)) {
-                        $delete_auth_id = $data['auth_ids']['auth_delete_id'] ?? 0;
+                        $deleteAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Delete';
                         echo "
                     <Popconfirm
                         title=\"确认要删除吗？\"
                         onConfirm={() => { 
                             del(record.id);
                         }}
-                        disabled={authCheck('{$delete_auth_id}')}
+                        disabled={authCheck('{$deleteAuthName}')}
                     >
                         <Button
                             type=\"link\"
                             size=\"small\"
                             danger
-                            disabled={authCheck('{$delete_auth_id}')}
+                            disabled={authCheck('{$deleteAuthName}')}
                         >删除</Button>
                     </Popconfirm>";
                     }
@@ -683,13 +689,16 @@ echo "           {/* 查看详情 */}
                             </Lazyload>
                                     ";
                                     } else {
-                                        $create_auth_id = $data['auth_ids']['auth_create_id'] ?? 0;
-                                        $create_menu = AdminMenuModel::where('name', $data['auth_ids']['auth_create_id'] ?? 0)->find();
-                                        $create_url = $create_menu['path'] ?? '';
-                                    echo "<NavLink to={authCheck('{$create_auth_id}') ? '' : `{$create_url}`}>
+                                        //新增的权限节点
+                                        $createAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Create';
+                                        //列表的权限节点
+                                        $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
+                                        $getListMenuPath = AdminMenuModel::where('name', $getListAuthName)->value('path');
+                                        $create_url = $getListMenuPath . "/create";
+                                    echo "<NavLink to={authCheck('{$createAuthName}') ? '' : `{$create_url}`}>
                                 <Button
                                     type=\"primary\"
-                                    disabled={authCheck('{$create_auth_id}')}
+                                    disabled={authCheck('{$createAuthName}')}
                                     icon={<PlusOutlined />}
                                 >添加{$table_title}</Button>
                             </NavLink>\n";
@@ -698,10 +707,7 @@ echo "           {/* 查看详情 */}
 
                                 //是否有导出操作
                                 if (isset($table_action_list) && in_array('export', $table_action_list)) {
-                                    if (!isset($data['auth_ids']['auth_export_id'])) {
-                                        abort('未设置导出的权限节点');
-                                    }
-                                    $export_auth_id = $data['auth_ids']['auth_export_id'];
+                                    $exportDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ExportData';
                                     echo "
                             <Tooltip title=\"根据当前搜索条件导出数据~\">
                                 <Button
@@ -710,7 +716,7 @@ echo "           {/* 查看详情 */}
                                     ghost
                                     icon={<CloudDownloadOutlined />}
                                     onClick={exportData}
-                                    disabled={authCheck('{$export_auth_id}')}
+                                    disabled={authCheck('{$exportDataAuthName}')}
                                 >导出</Button>
                             </Tooltip>\n";
                                 }
@@ -726,12 +732,12 @@ echo "           {/* 查看详情 */}
                                 //如果有排序
                                 if (in_array('InputNumber', $antdComponent)) {
                                     //排序的权限id
-                                    $authId = $data['auth_ids']['auth_update_sort_id'] ?? 0;
+                                    $updateSortAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateSort';
                                     echo "
                             <Button
                                 type=\"primary\"
                                 onClick={updateSort}
-                                disabled={authCheck('{$authId}')}
+                                disabled={authCheck('{$updateSortAuthName}')}
                                 icon={<OrderedListOutlined />}
                             >保存排序</Button>\n";
                                 }
@@ -783,34 +789,34 @@ echo "           {/* 查看详情 */}
 
                                 //如果有批量删除
                                 if (in_array('all_delete', $table_action_list)) {
-                                    $delete_auth_id = $data['auth_ids']['auth_delete_id'] ?? 0;
+                                    $deleteAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Delete';
                                     echo "
                                 <Popconfirm
                                     title={`确定批量删除这\${selectedRowKeys.length}条数据吗？`}
                                     onConfirm={() => { 
                                         del(selectedRowKeys) 
                                     }}
-                                    disabled={authCheck('{$delete_auth_id}')}
+                                    disabled={authCheck('{$deleteAuthName}')}
                                 >
                                     <Button 
                                         type=\"link\" 
                                         size='small' 
                                         danger 
                                         icon={<DeleteOutlined />} 
-                                        disabled={authCheck('{$delete_auth_id}')}
+                                        disabled={authCheck('{$deleteAuthName}')}
                                     >批量删除</Button>
                                 </Popconfirm>\n";
                                 }
                                 
                                 //如果有批量上下架
                                 if (in_array('all_update_status', $table_action_list)) {
-                                    $auth_update_status_id = $data['auth_ids']['auth_update_status_id'] ?? 0;
+                                    $updateStatusAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateStatus';
                                     echo "
                                 <Button
                                     type=\"link\"
                                     size='small'
                                     icon={<EyeOutlined />}
-                                    disabled={authCheck('{$auth_update_status_id}')}
+                                    disabled={authCheck('{$updateStatusAuthName}')}
                                     onClick={()=>{
                                         updateStatus(selectedRowKeys,1);
                                     }}
@@ -819,7 +825,7 @@ echo "           {/* 查看详情 */}
                                     type=\"link\"
                                     size='small'
                                     icon={<EyeInvisibleOutlined />}
-                                    disabled={authCheck('{$auth_update_status_id}')}
+                                    disabled={authCheck('{$updateStatusAuthName}')}
                                     onClick={()=>{
                                         updateStatus(selectedRowKeys,2);
                                     }}
@@ -827,14 +833,17 @@ echo "           {/* 查看详情 */}
                                 }
 
                                 //其它批量操作
-                                foreach ($table_action_all_list as $k => $v) {
+                                if (isset($table_action_all_list)) {
+                                    foreach ($table_action_all_list as $k => $v) {
                                     $tmp = CodeGenerator::toCamelCase($v['field']);
                                 echo "
                                 <Update{$tmp} 
                                     tableReload={tableReload} 
                                     ids={selectedRowKeys} 
                                 />\n";
+                                    }
                                 }
+                                
                                 
                             echo "
                             </Space>

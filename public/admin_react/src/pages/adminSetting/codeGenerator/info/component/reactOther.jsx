@@ -7,7 +7,7 @@ import {
     ProFormRadio,
 } from '@ant-design/pro-components';
 import { App, Space, Flex, Button, Affix } from 'antd';
-import CodeEditor from '@/component/codeEditor'
+import CodeHighlight from '@/component/codeHighlight';
 import Lazyload from '@/component/lazyLoad/index';
 
 const ReactOtherSelect = lazy(() => import('./reactOtherSelect'));
@@ -111,7 +111,7 @@ export default ({ tableName, operationFile, ...props }) => {
                 <ProForm.Item
                     name="react_other_code"
                 >
-                    <CodeEditor readOnly={true} />
+                    <CodeHighlight/>
                 </ProForm.Item>
 
             </Space>

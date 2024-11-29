@@ -12,10 +12,7 @@
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
     //导入的权限id
-    if (!isset($data['auth_ids']['auth_import_id'])) {
-        abort('未设置导入的权限节点');
-    }
-    $importDataAuthId = $data['auth_ids']['auth_import_id'] ?? 0;
+    $importDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ImportData';
 ?>
 import {
     CloudUploadOutlined,
@@ -26,10 +23,10 @@ import {
     ModalForm,
 } from '@ant-design/pro-components';
 import { Button, App, Space, Steps, Upload } from 'antd';
-import <?php echo $apiFileName;?>Api from '@/api/<?php echo $apiFileName;?>';
+import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>';
 const { Dragger } = Upload;
 import { getToken } from '@/common/function';
-import fileApi from '@/api/file'
+import { fileApi } from '@/api/file'
 import { authCheck } from '@/common/function';
 
 /**
@@ -124,7 +121,7 @@ export default ({ tableReload, ...props }) => {
                     type="primary"
                     ghost
                     icon={<CloudUploadOutlined />}
-                    disabled={authCheck('<?php echo $importDataAuthId;?>')}
+                    disabled={authCheck('<?php echo $importDataAuthName;?>')}
                 >批量导入</Button>
             }
             footer={null}

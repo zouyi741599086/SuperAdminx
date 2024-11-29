@@ -21,7 +21,6 @@ class AdminCodeGeneratorModel extends BaseModel
     protected $type = [
         'field_title'               => 'json',
         'validate'                  => 'json',
-        'auth_ids'                  => 'json',
         'model'                     => 'json',
         'logic'                     => 'json',
         'controller'                => 'json',

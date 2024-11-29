@@ -11,7 +11,7 @@ import {
     ProFormTreeSelect,
 } from '@ant-design/pro-components';
 import { App, Space, Flex, Button, Affix, Row, Col } from 'antd';
-import CodeEditor from '@/component/codeEditor';
+import CodeHighlight from '@/component/codeHighlight';;
 import { menuToTree } from '@/common/function';
 import { adminMenuApi } from '@/api/adminMenu';
 
@@ -155,7 +155,6 @@ export default ({ tableName, operationFile, ...props }) => {
                         <ProFormCheckbox.Group
                             name={['controller', 'functions_auth']}
                             label="需要验证接口级别权限的方法"
-                            extra="确保在表设置中已经设置好权限节点，否则勾选无用"
                             options={[
                                 {
                                     label: '获取列表',
@@ -261,7 +260,7 @@ export default ({ tableName, operationFile, ...props }) => {
                 </ProFormList>
 
                 <ProForm.Item name="controller_code" >
-                    <CodeEditor language='php' readOnly={true} />
+                    <CodeHighlight language='php' />
                 </ProForm.Item>
             </Space>
 

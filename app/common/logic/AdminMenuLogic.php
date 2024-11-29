@@ -150,6 +150,28 @@ class AdminMenuLogic
                     ];
                     self::create($tmp);
                 }
+                //导出数据
+                if (in_array('ExportData', $params['auto_auth'])) {
+                    $tmp = [
+                        'title'    => '导出数据',
+                        'name'     => "{$params['name']}ExportData",
+                        'sort'     => 7,
+                        'type'     => 6,
+                        'pid_name' => $params['name'],
+                    ];
+                    self::create($tmp);
+                }
+                //导入数据
+                if (in_array('ImportData', $params['auto_auth'])) {
+                    $tmp = [
+                        'title'    => '导出数据',
+                        'name'     => "{$params['name']}ImportData",
+                        'sort'     => 8,
+                        'type'     => 6,
+                        'pid_name' => $params['name'],
+                    ];
+                    self::create($tmp);
+                }
             }
 
             Db::commit();

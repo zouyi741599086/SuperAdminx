@@ -10,7 +10,7 @@ import {
     ProFormRadio,
 } from '@ant-design/pro-components';
 import { App, Space, Flex, Button, Affix, Row, Col } from 'antd';
-import CodeEditor from '@/component/codeEditor'
+import CodeHighlight from '@/component/codeHighlight';
 
 /**
  * 生成逻辑层
@@ -156,7 +156,7 @@ export default ({ tableName, operationFile, ...props }) => {
                 </ProFormList>
 
                 <ProForm.Item name="logic_code" >
-                    <CodeEditor language='php' readOnly={true} />
+                    <CodeHighlight language='php' />
                 </ProForm.Item>
             </Space>
 

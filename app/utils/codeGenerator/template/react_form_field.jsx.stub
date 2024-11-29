@@ -469,7 +469,7 @@
                         const res = await {$requestApi}Api.getList();
                         return res.data.map(item => {
                             return {
-                                lable: item.title,
+                                label: item.title,
                                 value: item.id
                             }
                         });
@@ -621,7 +621,7 @@
                         const res = await {$requestApi}Api.getList();
                         return res.data.map(item => {
                             return {
-                                lable: item.title,
+                                label: item.title,
                                 value: item.id
                             }
                         });
@@ -674,7 +674,7 @@
                         const res = await {$requestApi}Api.getList();
                         return res.data.map(item => {
                             return {
-                                lable: item.title,
+                                label: item.title,
                                 value: item.id
                             }
                         });

@@ -14,7 +14,7 @@ import { App, Space, Flex, Button, Affix, Row, Col, Tooltip, } from 'antd';
 import {
     QuestionCircleOutlined,
 } from '@ant-design/icons';
-import CodeEditor from '@/component/codeEditor'
+import CodeHighlight from '@/component/codeHighlight';
 import './reactCreateUpdate.css'
 
 /**
@@ -911,7 +911,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                             name="react_create_code"
                                             label="新增页面代码"
                                         >
-                                            <CodeEditor readOnly={true} />
+                                            <CodeHighlight/>
                                         </ProForm.Item>
                                     </Col>
                                     <Col span={12}>
@@ -919,7 +919,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                             name="react_update_code"
                                             label="更新页面代码"
                                         >
-                                            <CodeEditor readOnly={true} />
+                                            <CodeHighlight/>
                                         </ProForm.Item>
                                     </Col>
                                 </Row>
@@ -930,7 +930,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                     name="react_create_code"
                                     label="新增页面代码"
                                 >
-                                    <CodeEditor readOnly={true} />
+                                    <CodeHighlight/>
                                 </ProForm.Item>
                             </>
                         }
@@ -948,7 +948,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                     name={['react_form_code', `${index + 1}`]}
                                     label={`Form字段：${item}`}
                                 >
-                                    <CodeEditor readOnly={true} />
+                                    <CodeHighlight/>
                                 </ProForm.Item>
                             })
                         } else {
@@ -956,7 +956,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                 name={['react_form_code', `1`]}
                                 label="Form字段代码"
                             >
-                                <CodeEditor readOnly={true} />
+                                <CodeHighlight/>
                             </ProForm.Item>
                         }
                     }}

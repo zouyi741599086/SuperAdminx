@@ -1,5 +1,6 @@
 <?php
 //所有的表格的列的输出都是这
+use app\utils\codeGenerator\CodeGenerator;
 
             //常规文本
             if ($type == 'text') {
@@ -151,7 +152,7 @@ echo "        {{$columnsParams}
             //状态开关可切换
             else if ($type == 'switch') {
                 //权限id
-                $authId = $data['auth_ids']['auth_update_status_id'] ?? 0;
+                $updateStatusAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateStatus';
                 
 echo "        {{$columnsParams}
             render: (_, record) => <>
@@ -162,7 +163,7 @@ echo "        {{$columnsParams}
                     onClick={() => {
                         updateStatus(record.id, record.status == 1 ? 2 : 1);
                     }}
-                    disabled={authCheck('{$authId}')}
+                    disabled={authCheck('{$updateStatusAuthName}')}
                 />
             </>
         },\n";
@@ -206,7 +207,7 @@ echo "        {{$columnsParams}
             //排序
             else if ($type == 'sort') {
                 //权限id
-                $authId = $data['auth_ids']['auth_update_sort_id'] ?? 0;
+                $updateSortAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateSort';
                 
 echo "        {{$columnsParams}
             render: (_, record) => <>
@@ -214,7 +215,7 @@ echo "        {{$columnsParams}
                     defaultValue={record.{$field}}
                     style={{ width: '100px' }}
                     min={0}
-                    disabled={authCheck('{$authId}')}
+                    disabled={authCheck('{$updateSortAuthName}')}
                     onChange={(value) => {
                         sortArrChange(record.id, value);
                     }}

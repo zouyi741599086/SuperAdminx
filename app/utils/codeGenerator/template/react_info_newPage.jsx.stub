@@ -16,7 +16,8 @@
     $apiAll[] = $apiFileName;
 
     //列表权限节点
-    $menu = AdminMenuModel::where('name', $data['auth_ids']['auth_list_id'] ?? null)->find();
+    $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
+    $menu = AdminMenuModel::where('name', $getListAuthName)->find();
 
     //所有的字段的类型
     $filedsTypeArr = [];

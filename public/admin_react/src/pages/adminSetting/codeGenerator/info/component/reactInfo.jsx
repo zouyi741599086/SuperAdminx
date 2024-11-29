@@ -12,7 +12,7 @@ import {
     DragSortTable,
 } from '@ant-design/pro-components';
 import { App, Space, Flex, Button, Affix, Row, Col } from 'antd';
-import CodeEditor from '@/component/codeEditor'
+import CodeHighlight from '@/component/codeHighlight';
 import './reactInfo.css';
 
 /**
@@ -459,7 +459,7 @@ export default ({ tableName, operationFile, ...props }) => {
                 <ProForm.Item
                     name="react_info_code"
                 >
-                    <CodeEditor readOnly={true} />
+                    <CodeHighlight/>
                 </ProForm.Item>
 
             </Space>

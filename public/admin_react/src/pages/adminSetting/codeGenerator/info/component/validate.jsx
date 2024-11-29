@@ -14,7 +14,7 @@ import { App, Typography, Space, Flex, Button, Affix, Row, Col, Tooltip, Alert }
 import {
     QuestionCircleOutlined,
 } from '@ant-design/icons';
-import CodeEditor from '@/component/codeEditor'
+import CodeHighlight from '@/component/codeHighlight';
 import './validate.css';
 
 
@@ -667,7 +667,7 @@ export default ({ tableName, operationFile, ...props }) => {
                 </ProFormList>
 
                 <ProForm.Item name="validate_code" >
-                    <CodeEditor language='php' readOnly={true} />
+                    <CodeHighlight language='php'/>
                 </ProForm.Item>
             </Space>
 
