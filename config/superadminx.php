@@ -58,7 +58,7 @@ EOF,
         ],
     ],
     //网站的url，上传的资源访问的url也在用
-    'url'                 => getenv('DE_BUG') == 'true' ? 'http://192.168.1.192:8888' : 'https://www.superadminx.com',
+    'url'                 => getenv('DE_BUG') == 'true' ? 'http://127.0.0.1:8888' : 'https://www.superadminx.com',
     //api请求中数据是否加解密，需要跟前端的开关对应
     'api_encryptor'       => [
         //开关
