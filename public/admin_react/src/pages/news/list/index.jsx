@@ -4,7 +4,7 @@ import { ProTable } from '@ant-design/pro-components';
 import { newsClassApi } from '@/api/newsClass';
 import { newsApi } from '@/api/news';
 import { useMount } from 'ahooks';
-import { arrayToTree, authCkeck } from '@/common/function';
+import { arrayToTree, authCheck } from '@/common/function';
 import { Button, Popconfirm, InputNumber, App, Space, Typography, Switch } from 'antd';
 import {
     OrderedListOutlined,
@@ -124,7 +124,7 @@ export default () => {
                     defaultValue={text}
                     style={{ width: '100px' }}
                     min={0}
-                    disabled={authCkeck('newsUpdateSort')}
+                    disabled={authCheck('newsUpdateSort')}
                     onChange={(value) => {
                         sortArrChange(record.id, value);
                     }}
@@ -145,7 +145,7 @@ export default () => {
                 checkedChildren="显示"
                 unCheckedChildren="隐藏"
                 value={record.status == 1}
-                disabled={authCkeck('newsUpdateStatus')}
+                disabled={authCheck('newsUpdateStatus')}
                 onClick={() => {
                     updateStatus(record.id, record.status == 1 ? 2 : 1);
                 }}
@@ -188,24 +188,24 @@ export default () => {
             search: false,
             render: (_, render) => {
                 return <>
-                    <NavLink to={authCkeck('newsUpdate') ? '' : `/news/list/update?id=${render.id}`}>
+                    <NavLink to={authCheck('newsUpdate') ? '' : `/news/list/update?id=${render.id}`}>
                         <Button
                             type="link"
                             size="small"
-                            disabled={authCkeck('newsUpdate')}
+                            disabled={authCheck('newsUpdate')}
                         >修改</Button>
                     </NavLink>
 
                     <Popconfirm
                         title="确认要删除吗？"
                         onConfirm={() => { del(render.id) }}
-                        disabled={authCkeck('newsDelete')}
+                        disabled={authCheck('newsDelete')}
                     >
                         <Button
                             type="link"
                             size="small"
                             danger
-                            disabled={authCkeck('newsDelete')}
+                            disabled={authCheck('newsDelete')}
                         >删除</Button>
                     </Popconfirm>
                 </>
@@ -234,17 +234,17 @@ export default () => {
                     //左上角操作
                     headerTitle={
                         <Space>
-                            <NavLink to={authCkeck('newsCreate') ? '' : `/news/list/create`}>
+                            <NavLink to={authCheck('newsCreate') ? '' : `/news/list/create`}>
                                 <Button
                                     type="primary"
-                                    disabled={authCkeck('newsCreate')}
+                                    disabled={authCheck('newsCreate')}
                                     icon={<PlusOutlined />}
                                 >添加文章</Button>
                             </NavLink>
                             <Button
                                 type="primary"
                                 onClick={updateSort}
-                                disabled={authCkeck('newsUpdateSort')}
+                                disabled={authCheck('newsUpdateSort')}
                                 icon={<OrderedListOutlined />}
                             >保存排序</Button>
                         </Space>
@@ -288,9 +288,9 @@ export default () => {
                                 <Popconfirm
                                     title={`确定批量删除这${selectedRowKeys.length}条数据吗？`}
                                     onConfirm={() => { del(selectedRowKeys) }}
-                                    disabled={authCkeck('newsDelete')}
+                                    disabled={authCheck('newsDelete')}
                                 >
-                                    <Button type="link" size='small' danger icon={<DeleteOutlined />} disabled={authCkeck('newsDelete')}>批量删除</Button>
+                                    <Button type="link" size='small' danger icon={<DeleteOutlined />} disabled={authCheck('newsDelete')}>批量删除</Button>
                                 </Popconfirm>
                                 <MoveAll ids={selectedRowKeys} tableReload={tableReload} />
                                 <CopyAll ids={selectedRowKeys} tableReload={tableReload} />

@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { newsClassApi } from '@/api/newsClass';
 import { useMount } from 'ahooks';
-import { arrayToTree, authCkeck } from '@/common/function';
+import { arrayToTree, authCheck } from '@/common/function';
 import { Button, Popconfirm, InputNumber, App, Space, Switch } from 'antd';
 import {
     OrderedListOutlined,
@@ -112,7 +112,7 @@ export default () => {
                     defaultValue={text}
                     style={{ width: '100px' }}
                     min={0}
-                    disabled={authCkeck('newsClassUpdateSort')}
+                    disabled={authCheck('newsClassUpdateSort')}
                     onChange={(value) => {
                         sortArrChange(record.id, value);
                     }}
@@ -132,7 +132,7 @@ export default () => {
                 checkedChildren="显示"
                 unCheckedChildren="隐藏"
                 value={record.status == 1}
-                disabled={authCkeck('newsClassUpdateStatus')}
+                disabled={authCheck('newsClassUpdateStatus')}
                 onClick={() => {
                     updateStatus(record.id, record.status == 1 ? 2 : 1);
                 }}
@@ -166,18 +166,18 @@ export default () => {
                         type="link"
                         size="small"
                         onClick={() => { setUpdateId(render.id) }}
-                        disabled={authCkeck('newsClassUpdate')}
+                        disabled={authCheck('newsClassUpdate')}
                     >修改</Button>
                     <Popconfirm
                         title={<div style={{ maxWidth: '200px' }}>谨慎操作：会将此分类下所有子分类及所有文章一并删除，确认删除吗？</div>}
                         onConfirm={() => { del(render.id) }}
-                        disabled={authCkeck('newsClassDelete')}
+                        disabled={authCheck('newsClassDelete')}
                     >
                         <Button
                             type="link"
                             size="small"
                             danger
-                            disabled={authCkeck('newsClassDelete')}
+                            disabled={authCheck('newsClassDelete')}
                         >删除</Button>
                     </Popconfirm>
                 </>
@@ -219,7 +219,7 @@ export default () => {
                             <Button
                                 type="primary"
                                 onClick={updateSort}
-                                disabled={authCkeck('newsClassUpdateSort')}
+                                disabled={authCheck('newsClassUpdateSort')}
                                 icon={<OrderedListOutlined />}
                             >保存排序</Button>
                         </Space>

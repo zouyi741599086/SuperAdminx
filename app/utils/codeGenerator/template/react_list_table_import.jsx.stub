@@ -30,7 +30,7 @@ import <?php echo $apiFileName;?>Api from '@/api/<?php echo $apiFileName;?>';
 const { Dragger } = Upload;
 import { getToken } from '@/common/function';
 import fileApi from '@/api/file'
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 
 /**
  * <?php echo $table_title ?? '';?> 批量导入数据
@@ -124,7 +124,7 @@ export default ({ tableReload, ...props }) => {
                     type="primary"
                     ghost
                     icon={<CloudUploadOutlined />}
-                    disabled={authCkeck('<?php echo $importDataAuthId;?>')}
+                    disabled={authCheck('<?php echo $importDataAuthId;?>')}
                 >批量导入</Button>
             }
             footer={null}

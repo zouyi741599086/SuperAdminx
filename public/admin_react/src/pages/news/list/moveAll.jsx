@@ -6,7 +6,7 @@ import {
     ProFormTreeSelect,
 } from '@ant-design/pro-components';
 import { Button, App } from 'antd';
-import { arrayToTree, authCkeck } from '@/common/function';
+import { arrayToTree, authCheck } from '@/common/function';
 import { newsClassApi } from '@/api/newsClass';
 import { newsApi } from '@/api/news';
 
@@ -40,7 +40,7 @@ export default (props) => {
                 <Button
                     type="link"
                     size='small'
-                    disabled={authCkeck('newsUpdateClassId')}
+                    disabled={authCheck('newsUpdateClassId')}
                     icon={<SwapOutlined />}
                 >修改分类</Button>
             }

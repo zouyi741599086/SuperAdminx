@@ -29,7 +29,7 @@ import {
 import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>';
 import { App, Button, Input, Descriptions, Typography, Space } from 'antd';
 import { useUpdateEffect } from 'ahooks';
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 <?php
 //导入需要使用的自定义的字段
 if (in_array('preview_content',$filedsTypeArr)) echo "import PreviewContent from '@/component/preview/content/index';\n" ;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { adminCodeGeneratorApi } from '@/api/adminCodeGenerator';
 import { Typography, Input, Row, Col, Card } from 'antd';
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 import { NavLink } from "react-router-dom";
 import { useMount, useDebounceFn } from 'ahooks';
 import {
@@ -79,7 +79,7 @@ export default () => {
                             xl={6}
                             xxl={4}
                         >
-                            <NavLink to={authCkeck('codeGeneratorInfo') ? '' : `/adminSetting/codeGenerator/info?name=${item.Name}`}>
+                            <NavLink to={authCheck('codeGeneratorInfo') ? '' : `/adminSetting/codeGenerator/info?name=${item.Name}`}>
                                 <Card
                                     size="small"
                                     hoverable

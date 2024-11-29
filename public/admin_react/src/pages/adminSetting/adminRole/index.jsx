@@ -6,7 +6,7 @@ import {
     EditOutlined,
 } from '@ant-design/icons';
 import { adminRoleApi } from '@/api/adminRole'
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
 
 const Create = lazy(() => import('./create'));
@@ -81,7 +81,7 @@ export default () => {
                         onClick={() => {
                             setUpdateId(record.id);
                         }}
-                        disabled={authCkeck('adminRoleUpdate')}
+                        disabled={authCheck('adminRoleUpdate')}
                     >修改</Button>
                     <Button
                         type="link"
@@ -89,14 +89,14 @@ export default () => {
                         onClick={() => {
                             setRoleId(record.id);
                         }}
-                        disabled={authCkeck('adminRoleAuth')}
+                        disabled={authCheck('adminRoleAuth')}
                     >设置权限</Button>
                     <Popconfirm
                         title="确认要删除吗？"
                         onConfirm={() => del(record.id)}
-                        disabled={authCkeck('adminRoleDelete')}
+                        disabled={authCheck('adminRoleDelete')}
                     >
-                        <Button type="link" size="small" danger disabled={authCkeck('adminRoleDelete')}>删除</Button>
+                        <Button type="link" size="small" danger disabled={authCheck('adminRoleDelete')}>删除</Button>
                     </Popconfirm>
                 </>
             },

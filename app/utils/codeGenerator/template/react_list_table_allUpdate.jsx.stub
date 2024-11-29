@@ -93,7 +93,7 @@ import {
     ?>
 } from '@ant-design/pro-components';
 import { Button, App } from 'antd';
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 <?php
     foreach ($apiFileArr as $v) {
         echo "import {$v}Api from '@/api/{$v}';\n";
@@ -140,7 +140,7 @@ export default ({ ids, tableReload, ...props }) => {
                 <Button
                     type="link"
                     size='small'
-                    disabled={authCkeck('<?php echo $tmp_table_action_all_update_auth_id ?? 0;?>')}
+                    disabled={authCheck('<?php echo $tmp_table_action_all_update_auth_id ?? 0;?>')}
                     icon={<FormOutlined />}
                 >修改<?php echo $updateFiledTitle;?></Button>
             }

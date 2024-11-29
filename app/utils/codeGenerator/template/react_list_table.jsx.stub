@@ -193,7 +193,7 @@ import {
 } from '@ant-design/icons';
 import { config } from '@/common/config';
 import { NavLink } from 'react-router-dom';
-import { authCkeck, arrayToTree} from '@/common/function';
+import { authCheck, arrayToTree} from '@/common/function';
 <?php echo $isExport ? "import { fileApi } from '@/api/file';\n" : '';?>
 <?php echo $isImport ? "import ImportData from './importData';\n" : '';?>
 import Lazyload from '@/component/lazyLoad/index';
@@ -366,7 +366,7 @@ export default () => {
 
         foreach ($card_tabs_list as $k => $v) {
             $authId = $card_tabs_list_auth_id[$k - 1] ?? 0;
-            $disabled = ($k == 0 || $authId == 0) ? '' : "disabled: authCkeck('{$authId}'), //权限id";
+            $disabled = ($k == 0 || $authId == 0) ? '' : "disabled: authCheck('{$authId}'), //权限id";
             echo "
         {
             key: '{$k}',
@@ -536,17 +536,17 @@ export default () => {
                         onClick={() => { 
                             setInfoId(record.id) 
                         }}
-                        disabled={authCkeck('{$info_auth_id}')}
+                        disabled={authCheck('{$info_auth_id}')}
                     >详情</Button>";
                         } else {
                             $info_menu = AdminMenuModel::where('name', $data['auth_ids']['auth_info_id'] ?? null)->find();
                             $info_url = $info_menu['path'] ?? '';
                             echo "
-                    <NavLink to={authCkeck('{$info_auth_id}') ? '' : `{$info_url}?id=\${record.id}`}>
+                    <NavLink to={authCheck('{$info_auth_id}') ? '' : `{$info_url}?id=\${record.id}`}>
                         <Button
                             type=\"link\"
                             size=\"small\"
-                            disabled={authCkeck('{$info_auth_id}')}
+                            disabled={authCheck('{$info_auth_id}')}
                         >详情</Button>
                     </NavLink>";
                         }
@@ -565,17 +565,17 @@ export default () => {
                         onClick={() => { 
                             setUpdateId(record.id) 
                         }}
-                        disabled={authCkeck('{$update_auth_id}')}
+                        disabled={authCheck('{$update_auth_id}')}
                     >修改</Button>";
                         } else {
                             $update_menu = AdminMenuModel::where('name', $data['auth_ids']['auth_update_id'] ?? null)->find();
                             $update_url = $update_menu['path'] ?? '';
                             echo "
-                    <NavLink to={authCkeck('{$update_auth_id}') ? '' : `{$update_url}?id=\${record.id}`}>
+                    <NavLink to={authCheck('{$update_auth_id}') ? '' : `{$update_url}?id=\${record.id}`}>
                         <Button
                             type=\"link\"
                             size=\"small\"
-                            disabled={authCkeck('{$update_auth_id}')}
+                            disabled={authCheck('{$update_auth_id}')}
                         >修改</Button>
                     </NavLink>";
                         }
@@ -590,13 +590,13 @@ export default () => {
                         onConfirm={() => { 
                             del(record.id);
                         }}
-                        disabled={authCkeck('{$delete_auth_id}')}
+                        disabled={authCheck('{$delete_auth_id}')}
                     >
                         <Button
                             type=\"link\"
                             size=\"small\"
                             danger
-                            disabled={authCkeck('{$delete_auth_id}')}
+                            disabled={authCheck('{$delete_auth_id}')}
                         >删除</Button>
                     </Popconfirm>";
                     }
@@ -686,10 +686,10 @@ echo "           {/* 查看详情 */}
                                         $create_auth_id = $data['auth_ids']['auth_create_id'] ?? 0;
                                         $create_menu = AdminMenuModel::where('name', $data['auth_ids']['auth_create_id'] ?? 0)->find();
                                         $create_url = $create_menu['path'] ?? '';
-                                    echo "<NavLink to={authCkeck('{$create_auth_id}') ? '' : `{$create_url}`}>
+                                    echo "<NavLink to={authCheck('{$create_auth_id}') ? '' : `{$create_url}`}>
                                 <Button
                                     type=\"primary\"
-                                    disabled={authCkeck('{$create_auth_id}')}
+                                    disabled={authCheck('{$create_auth_id}')}
                                     icon={<PlusOutlined />}
                                 >添加{$table_title}</Button>
                             </NavLink>\n";
@@ -710,7 +710,7 @@ echo "           {/* 查看详情 */}
                                     ghost
                                     icon={<CloudDownloadOutlined />}
                                     onClick={exportData}
-                                    disabled={authCkeck('{$export_auth_id}')}
+                                    disabled={authCheck('{$export_auth_id}')}
                                 >导出</Button>
                             </Tooltip>\n";
                                 }
@@ -731,7 +731,7 @@ echo "           {/* 查看详情 */}
                             <Button
                                 type=\"primary\"
                                 onClick={updateSort}
-                                disabled={authCkeck('{$authId}')}
+                                disabled={authCheck('{$authId}')}
                                 icon={<OrderedListOutlined />}
                             >保存排序</Button>\n";
                                 }
@@ -790,14 +790,14 @@ echo "           {/* 查看详情 */}
                                     onConfirm={() => { 
                                         del(selectedRowKeys) 
                                     }}
-                                    disabled={authCkeck('{$delete_auth_id}')}
+                                    disabled={authCheck('{$delete_auth_id}')}
                                 >
                                     <Button 
                                         type=\"link\" 
                                         size='small' 
                                         danger 
                                         icon={<DeleteOutlined />} 
-                                        disabled={authCkeck('{$delete_auth_id}')}
+                                        disabled={authCheck('{$delete_auth_id}')}
                                     >批量删除</Button>
                                 </Popconfirm>\n";
                                 }
@@ -810,7 +810,7 @@ echo "           {/* 查看详情 */}
                                     type=\"link\"
                                     size='small'
                                     icon={<EyeOutlined />}
-                                    disabled={authCkeck('{$auth_update_status_id}')}
+                                    disabled={authCheck('{$auth_update_status_id}')}
                                     onClick={()=>{
                                         updateStatus(selectedRowKeys,1);
                                     }}
@@ -819,7 +819,7 @@ echo "           {/* 查看详情 */}
                                     type=\"link\"
                                     size='small'
                                     icon={<EyeInvisibleOutlined />}
-                                    disabled={authCkeck('{$auth_update_status_id}')}
+                                    disabled={authCheck('{$auth_update_status_id}')}
                                     onClick={()=>{
                                         updateStatus(selectedRowKeys,2);
                                     }}

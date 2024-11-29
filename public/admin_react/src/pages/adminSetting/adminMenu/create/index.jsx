@@ -52,7 +52,7 @@ export default (props) => {
             }}
         >
             <Lazyload>
-                <Form1 {...props} />
+                <Form1 typeAction="create" {...props} />
             </Lazyload>
         </ModalForm>
     );

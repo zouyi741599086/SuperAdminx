@@ -190,7 +190,7 @@ export default ({ tableReload, id, setId, ...props }) => {
             //        //type="primary" 
             //        type="link"
             //        size="small"
-            //        disabled={authCkeck('<?php echo $modal_table_auth_id ?? 0;?>')} 
+            //        disabled={authCheck('<?php echo $modal_table_auth_id ?? 0;?>')} 
             //        icon={<EditOutlined />}
             //    ><?php echo $modal_table_title ?? '';?></Button>
             //}

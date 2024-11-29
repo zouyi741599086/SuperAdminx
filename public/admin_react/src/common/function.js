@@ -139,7 +139,7 @@ export const isMobileFun = () => {
  * @param {string} name 验证的权限名称
  * @returns boolean 有权限返回false，无权限返回true
  */
-export const authCkeck = (name) => {
+export const authCheck = (name) => {
     if (!name) {
         return true;
     }

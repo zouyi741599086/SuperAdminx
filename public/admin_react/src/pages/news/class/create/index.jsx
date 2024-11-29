@@ -6,7 +6,7 @@ import {
     ProForm,
 } from '@ant-design/pro-components';
 import { Button, App, TreeSelect } from 'antd';
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 import { newsClassApi } from '@/api/newsClass';
 
 /**
@@ -27,7 +27,7 @@ export default (props) => {
             trigger={
                 <Button
                     type="primary"
-                    disabled={authCkeck('newsClassCreate')}
+                    disabled={authCheck('newsClassCreate')}
                     icon={<PlusOutlined />}
                 >添加分类</Button>
             }

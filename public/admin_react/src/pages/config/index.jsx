@@ -10,7 +10,7 @@ import {
     PlusOutlined,
 } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 
 /**
  * 参数设置 管理
@@ -109,7 +109,7 @@ export default () => {
                     defaultValue={record.sort}
                     style={{ width: '100px' }}
                     min={0}
-                    disabled={authCkeck('configUpdateSort')}
+                    disabled={authCheck('configUpdateSort')}
                     onChange={(value) => {
                         sortArrChange(record.id, value);
                     }}
@@ -123,11 +123,11 @@ export default () => {
             search: false,
             render: (_, record) => {
                 return <>
-                    <NavLink to={authCkeck('configUpdate') ? '' : `/config/create?id=${record.id}&type=${record.type}`}>
+                    <NavLink to={authCheck('configUpdate') ? '' : `/config/create?id=${record.id}&type=${record.type}`}>
                         <Button
                             type="link"
                             size="small"
-                            disabled={authCkeck('configUpdate')}
+                            disabled={authCheck('configUpdate')}
                         >修改</Button>
                     </NavLink>
                     <Popconfirm
@@ -135,13 +135,13 @@ export default () => {
                         onConfirm={() => {
                             del(record.id)
                         }}
-                        disabled={authCkeck('configDelete')}
+                        disabled={authCheck('configDelete')}
                     >
                         <Button
                             type="link"
                             size="small"
                             danger
-                            disabled={authCkeck('configDelete')}
+                            disabled={authCheck('configDelete')}
                         >删除</Button>
                     </Popconfirm>
                 </>
@@ -177,24 +177,24 @@ export default () => {
                     }}
                     headerTitle={
                         <Space>
-                            <NavLink to={authCkeck('configCreate') ? '' : `/config/create?type=form`}>
+                            <NavLink to={authCheck('configCreate') ? '' : `/config/create?type=form`}>
                                 <Button
                                     type="primary"
-                                    disabled={authCkeck('configCreate')}
+                                    disabled={authCheck('configCreate')}
                                     icon={<PlusOutlined />}
                                 >添加Form设置</Button>
                             </NavLink>
-                            <NavLink to={authCkeck('configCreate') ? '' : `/config/create?type=list`}>
+                            <NavLink to={authCheck('configCreate') ? '' : `/config/create?type=list`}>
                                 <Button
                                     type="primary"
-                                    disabled={authCkeck('configCreate')}
+                                    disabled={authCheck('configCreate')}
                                     icon={<PlusOutlined />}
                                 >添加List设置</Button>
                             </NavLink>
                             <Button
                                 type="primary"
                                 onClick={updateSort}
-                                disabled={authCkeck('configUpdateSort')}
+                                disabled={authCheck('configUpdateSort')}
                                 icon={<OrderedListOutlined />}
                             >保存排序</Button>
                         </Space>

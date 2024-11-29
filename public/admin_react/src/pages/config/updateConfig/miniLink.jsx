@@ -2,7 +2,7 @@ import {
     DrawerForm
 } from '@ant-design/pro-components';
 import { Button, Typography, List, Alert } from 'antd';
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 import {
     LinkOutlined
 } from '@ant-design/icons';
@@ -45,7 +45,7 @@ export default (props) => {
                     },
                     {
                         title: '畅享商家详情',
-                        description: <Button type="link" disabled={authCkeck(379)}><Link type="link" to="/store">点此前往商家管理列表去复制</Link></Button>,
+                        description: <Button type="link" disabled={authCheck(379)}><Link type="link" to="/store">点此前往商家管理列表去复制</Link></Button>,
                         message: ''
                     },
                     {
@@ -85,7 +85,7 @@ export default (props) => {
                     },
                     {
                         title: '畅享信息详情',
-                        description: <Button type="link" disabled={authCkeck(521)}><Link type="link" to="/information">点此前往畅享信息管理列表去复制</Link></Button>,
+                        description: <Button type="link" disabled={authCheck(521)}><Link type="link" to="/information">点此前往畅享信息管理列表去复制</Link></Button>,
                         message: ''
                     },
                     {

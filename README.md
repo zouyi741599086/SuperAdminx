@@ -7,7 +7,7 @@
 后端基于[workerman](https://www.workerman.net/)的[webman](https://www.workerman.net/webman)高性能HTTP框架，常用的[ThinkORM](https://doc.thinkphp.cn/@think-orm/)、[ThinkValidate](https://doc.thinkphp.cn/v8_0/validator.html)，前端基于`react`用`js`写的，主要用到的组件库是[Ant Design](https://ant.design/index-cn)、[ProComponents](https://procomponents.ant.design/)
 
 ### 使用文档
-[SuperAdminx文档](http://www.superadminx.com)
+[SuperAdminx文档](http://www.superadminx.com) [联系我们](https://www.superadminx.com/about.html)
 
 ### 预览
 [点此预览](http://www.superadminx.com/preview.html)

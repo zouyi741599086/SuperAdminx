@@ -5,7 +5,7 @@ import {
 } from '@ant-design/pro-components';
 import { adminUserApi } from '@/api/adminUser';
 import { Button, App } from 'antd';
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
 
 const Form1 = lazy(() => import('./../component/form1'));
@@ -25,7 +25,7 @@ export default ({ tableReload, ...props }) => {
             formRef={formRef}
             title="添加管理员"
             trigger={
-                <Button type="primary" disabled={authCkeck('adminUserCreate')} icon={<PlusOutlined />}>
+                <Button type="primary" disabled={authCheck('adminUserCreate')} icon={<PlusOutlined />}>
                     添加管理员
                 </Button>
             }

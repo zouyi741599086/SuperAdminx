@@ -67,7 +67,7 @@ export default (props) => {
             }}
         >
             <Lazyload>
-                <Form1 {...props} />
+                <Form1 typeAction="update" {...props} />
             </Lazyload>
         </ProForm>
     </>

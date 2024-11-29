@@ -14,7 +14,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm } from '@ant-design/pro-components';
 import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>';
 import { Button, App } from 'antd';
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
 
 const Form1 = lazy(() => import('./../component/form1'));
@@ -36,7 +36,7 @@ export default ({ tableReload, ...props }) => {
             trigger={
                 <Button 
                     type="primary" 
-                    disabled={authCkeck('<?php echo $data['auth_ids']['auth_create_id'] ?? 0;?>')} 
+                    disabled={authCheck('<?php echo $data['auth_ids']['auth_create_id'] ?? 0;?>')} 
                     icon={<PlusOutlined />}
                 >添加<?php echo $table_title ?? '';?></Button>
             }

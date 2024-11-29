@@ -21,7 +21,7 @@ import {
     FormOutlined,
     DeleteOutlined,
 } from '@ant-design/icons';
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
 import Create from './create';
 import Update from './update';
@@ -197,15 +197,15 @@ const Item = (props) => {
             <span>{props.title}</span>
             <div className="hover">
                 <div>
-                    <Button type="text" size="small" onClick={() => props.setUpdateId(props.id)} disabled={authCkeck('<?php echo $data['auth_ids']['auth_update_id'] ?? 0;?>')}>
+                    <Button type="text" size="small" onClick={() => props.setUpdateId(props.id)} disabled={authCheck('<?php echo $data['auth_ids']['auth_update_id'] ?? 0;?>')}>
                         <FormOutlined className="icon" />
                     </Button>
                     <Popconfirm
                         title="确认要删除吗？"
                         onConfirm={() => props.del(props.id)}
-                        disabled={authCkeck('<?php echo $data['auth_ids']['auth_delete_id'] ?? 0;?>')}
+                        disabled={authCheck('<?php echo $data['auth_ids']['auth_delete_id'] ?? 0;?>')}
                     >
-                        <Button type="text" size="small" disabled={authCkeck('<?php echo $data['auth_ids']['auth_delete_id'] ?? 0;?>')} >
+                        <Button type="text" size="small" disabled={authCheck('<?php echo $data['auth_ids']['auth_delete_id'] ?? 0;?>')} >
                             <DeleteOutlined className="icon" />
                         </Button>
                     </Popconfirm>

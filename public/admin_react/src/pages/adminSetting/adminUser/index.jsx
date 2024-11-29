@@ -5,7 +5,7 @@ import { ProTable } from '@ant-design/pro-components';
 import { App, Avatar, Button, Popconfirm, Switch } from 'antd';
 import { config } from '@/common/config';
 import { adminRoleApi } from '@/api/adminRole'
-import { authCkeck } from '@/common/function';
+import { authCheck } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
 
 const Create = lazy(() => import('./create'));
@@ -113,7 +113,7 @@ export default () => {
                 checkedChildren="正常"
                 unCheckedChildren="禁用"
                 value={record.status == 1}
-                disabled={authCkeck('adminUserUpdateStatus')}
+                disabled={authCheck('adminUserUpdateStatus')}
                 onClick={() => {
                     updateStatus(record.id, record.status == 1 ? 2 : 1);
                 }}
@@ -153,18 +153,18 @@ export default () => {
                         type="link"
                         size="small"
                         onClick={() => { setUpdateId(render.id) }}
-                        disabled={authCkeck('adminUpdate')}
+                        disabled={authCheck('adminUpdate')}
                     >修改</Button>
                     <Popconfirm
                         title="确认要删除吗？"
                         onConfirm={() => { del(render.id) }}
-                        disabled={authCkeck('adminUserDelete')}
+                        disabled={authCheck('adminUserDelete')}
                     >
                         <Button
                             type="link"
                             size="small"
                             danger
-                            disabled={authCkeck('adminUserDelete')}
+                            disabled={authCheck('adminUserDelete')}
                         >删除</Button>
                     </Popconfirm>
                 </>

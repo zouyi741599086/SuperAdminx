@@ -14,7 +14,7 @@ echo "        {{$columnsParams}
             else if ($type == 'text_link') {
                 
 echo "        {{$columnsParams}
-            render: (_, record) => <NavLink to={`/xxx/xxx?id=\${record.id}`} disabled={authCkeck('1111')}>{record.{$field}}</NavLink>
+            render: (_, record) => <NavLink to={`/xxx/xxx?id=\${record.id}`} disabled={authCheck('1111')}>{record.{$field}}</NavLink>
         },\n";
 
             }
@@ -162,7 +162,7 @@ echo "        {{$columnsParams}
                     onClick={() => {
                         updateStatus(record.id, record.status == 1 ? 2 : 1);
                     }}
-                    disabled={authCkeck('{$authId}')}
+                    disabled={authCheck('{$authId}')}
                 />
             </>
         },\n";
@@ -214,7 +214,7 @@ echo "        {{$columnsParams}
                     defaultValue={record.{$field}}
                     style={{ width: '100px' }}
                     min={0}
-                    disabled={authCkeck('{$authId}')}
+                    disabled={authCheck('{$authId}')}
                     onChange={(value) => {
                         sortArrChange(record.id, value);
                     }}

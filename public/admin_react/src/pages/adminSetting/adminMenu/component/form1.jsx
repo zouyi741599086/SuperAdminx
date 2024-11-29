@@ -3,6 +3,7 @@ import {
     ProFormRadio,
     ProFormTreeSelect,
     ProFormDigit,
+    ProFormSelect,
     ProFormDependency,
 } from '@ant-design/pro-components';
 import { Row, Col } from 'antd';
@@ -13,7 +14,7 @@ import { Row, Col } from 'antd';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default (props) => {
+export default ({ typeAction, ...props }) => {
 
     return <>
         <Row gutter={[24, 0]}>
@@ -40,7 +41,6 @@ export default (props) => {
             </Col>
             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                 <ProFormText
-                    key="name"
                     name="name"
                     label="权限英文名称"
                     placeholder="请输入"
@@ -135,7 +135,6 @@ export default (props) => {
                     if ([2, 4, 5].indexOf(type) !== -1) {
                         return <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <ProFormText
-                                key="path"
                                 name="path"
                                 label="访问路劲"
                                 placeholder="请输入"
@@ -153,7 +152,6 @@ export default (props) => {
                     if ([2, 5].indexOf(type) !== -1) {
                         return <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <ProFormText
-                                key="component_path"
                                 name="component_path"
                                 label="组件路劲"
                                 placeholder="请输入"
@@ -172,7 +170,6 @@ export default (props) => {
                         return <>
                             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                                 <ProFormText
-                                    key="icon"
                                     name="icon"
                                     label="阿里云图标"
                                     placeholder="请输入"
@@ -193,7 +190,6 @@ export default (props) => {
                         return <>
                             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                                 <ProFormText
-                                    key="url"
                                     name="url"
                                     label="访问url"
                                     placeholder="请输入"
@@ -265,6 +261,93 @@ export default (props) => {
                     }
                 }}
             </ProFormDependency>
+
+            {typeAction == 'create' ? <>
+                <ProFormDependency name={['type']}>
+                    {({ type }) => {
+                        //是菜单的时候，是否自动生成菜单下面的增删改查的权限节点
+                        if (type == 2) {
+                            return <>
+                                <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+                                    <ProFormSelect
+                                        name="auto_auth"
+                                        label="自动生成权限节点"
+                                        extra="是否自动生成菜单下面的权限节点"
+                                        options={[
+                                            { label: '只浏览数据', value: 'GetList' },
+                                            { label: '添加', value: 'Create' },
+                                            { label: '修改', value: 'Update' },
+                                            { label: '查看详情', value: 'Info' },
+                                            { label: '删除', value: 'Delete' },
+                                            { label: '修改排序', value: 'UpdateSort' },
+                                            { label: '修改状态', value: 'UpdateStatus' },
+                                        ]}
+                                        fieldProps={{
+                                            mode: 'multiple',
+                                        }}
+                                        rules={[
+                                            //{ required: true, message: '请输入' }
+                                        ]}
+                                    />
+                                </Col>
+                                <ProFormDependency name={['auto_auth']}>
+                                    {({ auto_auth }) => {
+                                        if (Array.isArray(auto_auth)) {
+                                            let _component = [];
+
+                                            if (auto_auth.indexOf('Create') !== -1 || auto_auth.indexOf('Update') !== -1) {
+                                                _component.push(<Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12} key="1">
+                                                    <ProFormRadio.Group
+                                                        name="auto_auth_create_update_type"
+                                                        label="添加修改页面打开类型"
+                                                        options={[
+                                                            {
+                                                                label: '弹窗打开',
+                                                                value: 1,
+                                                            },
+                                                            {
+                                                                label: '新页面打开',
+                                                                value: 2,
+                                                            },
+                                                        ]}
+                                                        rules={[
+                                                            { required: true, message: '请选择' }
+                                                        ]}
+                                                    />
+                                                </Col>);
+                                            }
+
+                                            if (auto_auth.indexOf('Info')) {
+                                                _component.push(<Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12} key="2">
+                                                    <ProFormRadio.Group
+                                                        name="auto_auth_info_type"
+                                                        label="详情页面打开类型"
+                                                        options={[
+                                                            {
+                                                                label: '弹窗打开',
+                                                                value: 1,
+                                                            },
+                                                            {
+                                                                label: '新页面打开',
+                                                                value: 2,
+                                                            },
+                                                        ]}
+                                                        rules={[
+                                                            { required: true, message: '请选择' }
+                                                        ]}
+                                                    />
+                                                </Col>);
+                                            }
+                                            return _component;
+                                        }
+                                    }}
+                                </ProFormDependency>
+                            </>
+                        }
+                    }}
+                </ProFormDependency>
+            </> : ''}
+
         </Row>
     </>;
 };
