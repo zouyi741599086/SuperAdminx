@@ -1,8 +1,5 @@
 import { lazy } from 'react';
-import {
-    CaretDownOutlined,
-    LogoutOutlined,
-} from '@ant-design/icons';
+import { CaretDownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { App, Avatar, Space, Dropdown, Typography } from 'antd';
 import { useRecoilState } from 'recoil';
 import { adminUserStore } from '@/store/adminUser';
