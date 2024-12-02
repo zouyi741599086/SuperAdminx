@@ -12,7 +12,7 @@ use app\common\model\FileModel;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-class File
+class ClearFile
 {
     public function onWorkerStart()
     {
@@ -25,28 +25,11 @@ class File
             ])->column('id');
             $fileIds && FileLogic::delete([['id', 'in', $fileIds]]);
         });
-
-        // 每天的3点10执行一次，删除excel文件夹里面超过一天的文件
-        new Crontab('10 3 * * *', function ()
-        {
-            try {
-                $path  = './public/tmp_file';
-                $files = array_diff(scandir($path), array('.', '..'));
-                foreach ($files as $v) {
-                    $time = filectime("{$path}/{$v}");
-                    if (time() - $time > 86400) {
-                        @unlink("{$path}/{$v}");
-                    }
-                }
-            } catch (\Exception $e) {
-                Log::error($e->getMessage(), []);
-            }
-        });
-
+        
         // 每天的3点30执行一次，删除storage目录里面的空目录
         new Crontab('30 3 * * *', function ()
         {
-            //删除资源里面的空目录
+            // 删除资源里面的空目录
             $path = './public/storage';
             $this->deleteEmptyDirs($path);
         });

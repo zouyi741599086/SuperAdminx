@@ -72,11 +72,11 @@ class WechatMini
             if ($response->isFailed()) {
                 throw new \Exception('获取小程序二维码错误');
             }
-            //如果没得path就直接把图片链接返回
+            // 如果没得path就直接把图片链接返回
             if (! $path) {
                 return $response->toDataUrl();
             }
-            //如果有path就存为图片
+            // 如果有path就存为图片
             $response->saveAs($path);
             return $path;
         } catch (\Exception $e) {

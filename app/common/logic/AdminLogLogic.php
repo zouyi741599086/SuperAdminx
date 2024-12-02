@@ -11,7 +11,7 @@ use app\common\model\AdminLogModel;
  * */
 class AdminLogLogic
 {
-    //所有类方法的的日志
+    // 所有类方法的的日志
     public static $controllerActionLog = [];
 
     /**

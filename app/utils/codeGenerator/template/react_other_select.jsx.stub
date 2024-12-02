@@ -5,14 +5,14 @@
     use app\utils\codeGenerator\CodeGenerator;
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //引入api的文件名称
+    // 引入api的文件名称
     $apiFileName = CodeGenerator::toCamelCase($table_name);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
-    //当前的表名转驼峰
+    // 当前的表名转驼峰
     $tableNameToCamelCase = CodeGenerator::toCamelCase($table_name);
 
-    //从表中读所有字段，判断是否有title、name、tel这三个字段，然后生成如何显示这三个字段
+    // 从表中读所有字段，判断是否有title、name、tel这三个字段，然后生成如何显示这三个字段
     $tableColumn = CodeGenerator::getTableColumn($table_name);
     $tmpFields = [];
     foreach ($tableColumn as $v) {
@@ -25,7 +25,7 @@
         $labelRender .= "\${item.{$v}}/";
     }
     $labelRender = rtrim($labelRender, "/");
-    //提示语
+    // 提示语
     $placeholder = '';
     foreach ($tmpFields as $k => $v) {
         if ($v == 'title') {
@@ -58,11 +58,11 @@ export default ({ value, onChange, ...props }) => {
     const [_value, _setValue] = useState();
 
     useMount(() => {
-        //加载列表数据
+        // 加载列表数据
         getOptions();
     })
 
-    //父组件有值，本组件没值的时候 ajax把下拉数据请求过来
+    // 父组件有值，本组件没值的时候 ajax把下拉数据请求过来
     useEffect(() => {
         if (!_value && value) {
             getOptions({
@@ -76,7 +76,7 @@ export default ({ value, onChange, ...props }) => {
         onChange?.(e);
     }
 
-    //搜索节流
+    // 搜索节流
     useThrottleEffect(
         () => {
             if (keywords) {

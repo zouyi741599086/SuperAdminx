@@ -64,24 +64,24 @@ class WechatMiniFahuo
         $api      = self::getApp()->getClient();
         $response = $api->postJson('/wxa/sec/order/upload_shipping_info', [
             'order_key'      => [
-                'order_number_type' => 2, //使用微信支付单号
+                'order_number_type' => 2, // 使用微信支付单号
                 'transaction_id'    => $transaction_id,
             ],
             'logistics_type' => $logistics_type,
             'delivery_mode'  => 'UNIFIED_DELIVERY',
             'shipping_list'  => [
                     [
-                        'tracking_no'     => $tracking_no, //快递单号
-                        'express_company' => $express_company, //快递公司编码
-                        'item_desc'       => $goods_title, //购买的商品名称
+                        'tracking_no'     => $tracking_no, // 快递单号
+                        'express_company' => $express_company, // 快递公司编码
+                        'item_desc'       => $goods_title, // 购买的商品名称
                         'contact'         => [
-                                'receiver_contact' => $receiver_contact, //收件人手机号，发顺丰必填
+                                'receiver_contact' => $receiver_contact, // 收件人手机号，发顺丰必填
                             ]
                     ]
                 ],
             'upload_time'    => (new \DateTime)->format(\DateTime::RFC3339),
             'payer'          => [
-                    'openid' => $openid, //用回的openid
+                    'openid' => $openid, // 用户的openid
                 ]
         ]);
         $response = $response->toArray();
@@ -119,7 +119,7 @@ class WechatMiniFahuo
 
         $response = $response->toArray();
 
-        //返回字符串，打印看的
+        // 返回字符串，打印看的
 // 		$str = '';
 // 		foreach ($response['delivery_list'] as $k => $v) {
 // 			$str .= "{$v['delivery_id']}---{$v['delivery_name']}<br/>";

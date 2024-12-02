@@ -28,11 +28,11 @@ class Sms
      */
     public static function send(string $tel, string|array $content, ?string $templateCode = null)
     {
-        //凯凌
+        // 凯凌
         if (is_string($content)) {
             self::LkSend($tel, $content);
         }
-        //阿里云发送
+        // 阿里云发送
         if (is_array($content)) {
             self::aliyunSend($tel, $content, $templateCode);
         }
@@ -58,7 +58,7 @@ class Sms
             abort($e->getMessage());
         }
 
-        //如果此手机号获取得太快了
+        // 如果此手机号获取得太快了
         $id = SmsCodeModel::where('tel', $tel)
             ->where('create_time', '>=', date('Y-m-d H:i:s', time() - 60))
             ->value('id');
@@ -77,7 +77,7 @@ class Sms
      */
     public static function checkCode(string $tel, int $type, string $code)
     {
-        //清理30分钟前验证码
+        // 清理30分钟前验证码
         SmsCodeModel::where('create_time', '<=', date('Y-m-d H:i:s', time() - 30 * 60))->delete();
 
         $id = SmsCodeModel::where([
@@ -187,10 +187,10 @@ class Sms
             $templateParam && $params['TemplateParam'] = $templateParam;
 
             // fixme 可选: 设置发送短信流水号
-            //$params['OutId'] = "12345";
+            // $params['OutId'] = "12345";
 
             // fixme 可选: 上行短信扩展码, 扩展码字段控制在7位或以下，无特殊需求用户请忽略此字段
-            //$params['SmsUpExtendCode'] = "1234567";
+            // $params['SmsUpExtendCode'] = "1234567";
 
             // *** 需用户填写部分结束, 以下代码若无必要无需更改 ***
             if (! empty($params["TemplateParam"]) && is_array($params["TemplateParam"])) {

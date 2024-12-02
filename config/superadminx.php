@@ -11,8 +11,32 @@
  */
 
 return [
-    //数据解密私钥，左边不要有空格，百度“rsa密钥在线生成”，需2048位PKCS1格式
-    'rsa_private'         => <<<EOF
+    //上传文件的配置
+    'file_system'         => [
+        //本地》public，阿里云》aliyun
+        'default'    => 'public',
+        //阿里云
+        'aliyun'     => [
+            'AccessKeyID'     => '',
+            'AccessKeySecret' => '',
+            //阿里云oss Bucket所在地域对应的Endpoint，debug用外网，否则用内网
+            'endpoint'        => getenv('DE_BUG') == 'true' ? '//oss-cn-hangzhou.aliyuncs.com' : '//oss-cn-hangzhou-internal.aliyuncs.com',
+            //阿里云oss Bucket文件访问地址
+            'bucket_url'      => 'https://xxxx.oss-cn-hangzhou.aliyuncs.com',
+            //阿里云oss bucket的名称
+            'bucket'          => 'xxxxx',
+        ],
+    ],
+    //网站的url，上传的资源访问的url也在用
+    'url'                 => getenv('DE_BUG') == 'true' ? 'http://127.0.0.1:8888' : 'https://www.superadminx.com',
+    //api请求中数据是否加解密，需要跟前端的开关对应
+    'api_encryptor'       => [
+        //开关
+        'enable'      => getenv('DE_BUG') == 'true' ? false : true,
+        //不加密的url，上传接口则不加密
+        'url'         => ['/admin/File/upload', '/api/File/upload'],
+        //数据解密私钥，左边不要有空格，百度“rsa密钥在线生成”，需2048位PKCS1格式
+        'rsa_private' => <<<EOF
 -----BEGIN RSA PRIVATE KEY-----
 MIIEpQIBAAKCAQEAqNoRA7DlwWAp5N3Ax5ebvt2ixWPaYOZXU+cprnubb75zoCby
 ks9zajuYPeSLUHF/jeg11aMcm/VC2URT/lpN0PbdhvjASPhVw5Sr//TSfZpXWzAc
@@ -41,30 +65,6 @@ cd7aSjZ/fuFc6mIFUQnSAkQvNsLYJcE1rw8F8nJvw/Aas9WuDiqnXPxpfDIQQ0xG
 fRsED8dQS0FS+41+8l3q/5XtbXOLfbqivMDTrhB3FLG8B7YDW7th8fM=
 -----END RSA PRIVATE KEY-----    
 EOF,
-    //上传文件的配置
-    'file_system'         => [
-        //本地》public，阿里云》aliyun
-        'default' => 'public',
-        //阿里云
-        'aliyun'  => [
-            'AccessKeyID'     => '',
-            'AccessKeySecret' => '',
-            //阿里云oss Bucket所在地域对应的Endpoint，debug用外网，否则用内网
-            'endpoint'        => getenv('DE_BUG') == 'true' ? '//oss-cn-hangzhou.aliyuncs.com' : '//oss-cn-hangzhou-internal.aliyuncs.com',
-            //阿里云oss Bucket文件访问地址
-            'bucket_url'      => 'https://xxxx.oss-cn-hangzhou.aliyuncs.com',
-            //阿里云oss bucket的名称
-            'bucket'          => 'xxxxx',
-        ],
-    ],
-    //网站的url，上传的资源访问的url也在用
-    'url'                 => getenv('DE_BUG') == 'true' ? 'http://127.0.0.1:8888' : 'https://www.superadminx.com',
-    //api请求中数据是否加解密，需要跟前端的开关对应
-    'api_encryptor'       => [
-        //开关
-        'enable' => false,
-        //不加密的url，上传接口则不加密
-        'url'    => ['/admin/File/upload', '/api/File/upload'],
     ],
     //微信公众号的
     'wechat_gongzhonghao' => [

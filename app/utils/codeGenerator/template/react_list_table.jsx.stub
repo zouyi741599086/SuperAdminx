@@ -7,76 +7,76 @@
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //需要引入的api文件
+    // 需要引入的api文件
     $apiFileArr = [];
 
-    //引入api的文件名称
+    // 引入api的文件名称
     $apiFileName = CodeGenerator::toCamelCase($table_name);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
     $apiFileArr[] = $apiFileName;
 
-    //需要引入的antd组件
+    // 需要引入的antd组件
     $antdComponent = [];
 
-    //需要导入的自定义组件
+    // 需要导入的自定义组件
     $zidingyiComponent = [];
 
-    //异步加载的组件
+    // 异步加载的组件
     $constComponent = [];
 
     if (isset($list_fields_type)) {
         foreach ($list_fields_type as $k => $v) {
-            //需要引入图片组件
+            // 需要引入图片组件
             if (($v == 'image' || $v == 'descriptions') && !in_array('Image', $antdComponent)) {
                 $antdComponent[] = 'Image';
             }
-            //需要引入Tag组件
+            // 需要引入Tag组件
             if ($v == 'tag' && !in_array('Tag', $antdComponent)) {
                 $antdComponent[] = 'Tag';
             }
-            //需要引入头像组件
+            // 需要引入头像组件
             if (($v == 'avatar' || $v == 'user') && !in_array('Avatar', $antdComponent)) {
                 $antdComponent[] = 'Avatar';
             }
-            //需要引入Switch开关组件
+            // 需要引入Switch开关组件
             if ($v == 'switch' && !in_array('Switch', $antdComponent)) {
                 $antdComponent[] = 'Switch';
             }
-            //需要引入排序的InputNumber组件
+            // 需要引入排序的InputNumber组件
             if ($v == 'sort' && !in_array('InputNumber', $antdComponent)) {
                 $antdComponent[] = 'InputNumber';
             }
-            //需要引入进度条组件
+            // 需要引入进度条组件
             if ($v == 'progress' && !in_array('Progress', $antdComponent)) {
                 $antdComponent[] = 'Progress';
             }
-            //需要引入弹窗描述组件
+            // 需要引入弹窗描述组件
             if ($v == 'descriptions' && !in_array('Descriptions', $antdComponent)) {
                 $antdComponent[] = 'Descriptions';
                 $antdComponent[] = 'Popover';
             }
 
-            //弹窗查看文本
+            // 弹窗查看文本
             if ($v == 'preview_text') {
                 $zidingyiComponent[] = "import PreviewContent from '@/component/preview/content/index';";
             }
-            //弹窗查看富文本
+            // 弹窗查看富文本
             if ($v == 'preview_teditor') {
                 $zidingyiComponent[] = "import PreviewTeditor from '@/component/preview/teditor/index';";
             }
-            //预览多图或视频
+            // 预览多图或视频
             if ($v == 'preview_images_videos') {
                 $zidingyiComponent[] = "import PreviewImagesVideos from '@/component/preview/imagesVideos/index';";
             }
-            //预览视频
+            // 预览视频
             if ($v == 'preview_video') {
                 $zidingyiComponent[] = "import PreviewVideo from '@/component/preview/video/index';";
             }
-            //预览pdf
+            // 预览pdf
             if ($v == 'preview_pdf') {
                 $zidingyiComponent[] = "import PreviewPdf from '@/component/preview/pdf/index';";
             }
-            //预览word
+            // 预览word
             if ($v == 'preview_word') {
                 $zidingyiComponent[] = "import PreviewWord from '@/component/preview/word/index';";
             }
@@ -86,7 +86,7 @@
 
     if (isset($list_fields_type_config)) {
         foreach ($list_fields_type_config as $k => $v) {
-            //搜索中需要引入的api文件
+            // 搜索中需要引入的api文件
             if (isset($v['search_data_source_table'])) {
                 $tmp = CodeGenerator::toCamelCase($v['search_data_source_table']);
                 $tmp1 = strtolower($tmp[0]) . substr($tmp, 1);
@@ -94,11 +94,11 @@
                     $apiFileArr[] = $tmp1;
                 }
 
-                //存一份后面要用
+                // 存一份后面要用
                 $list_fields_type_config[$k]['dataSourceApi'] = $tmp1;
                 $list_fields_type_config[$k]['renderFormItem'] = $tmp;
 
-                //如果是异步搜索选择某个表的id
+                // 如果是异步搜索选择某个表的id
                 if ($v['search_type'] == 'selectTable') {
                     $tmp = "import Select{$tmp} from '@/pages/components/select{$tmp}';";
                     if (!in_array($tmp, $zidingyiComponent)) {
@@ -110,13 +110,13 @@
         }
     }
 
-    //如果有引入顶部的tabs，则需要引入Badge组件
+    // 如果有引入顶部的tabs，则需要引入Badge组件
     if (isset($card_tabs_list) && $card_tabs_list && !in_array('Badge', $antdComponent)) {
         $antdComponent[] = 'Badge';
     } 
 
-    //如果有添加操作，同时添加是弹窗，则引入添加组件
-    $createIsModal = false; //添加是否是弹窗打开
+    // 如果有添加操作，同时添加是弹窗，则引入添加组件
+    $createIsModal = false; // 添加是否是弹窗打开
     if (
         isset($table_action_list) && 
         in_array('create', $table_action_list) && 
@@ -125,8 +125,8 @@
         $createIsModal = true;
         $constComponent[] = "const Create = lazy(() => import('./create'));";
     }
-    //如果有修改操作，同时修改是弹窗，则引入修改组件
-    $updateIsModal = false; //修改是否是弹窗打开
+    // 如果有修改操作，同时修改是弹窗，则引入修改组件
+    $updateIsModal = false; // 修改是否是弹窗打开
     if (
         isset($table_action_list) && 
         in_array('update', $table_action_list) && 
@@ -136,7 +136,7 @@
         $updateIsModal = true;
         $constComponent[] = "const Update = lazy(() => import('./update'));";
     }
-    //如果有详情操作，同时详情是弹窗，则引入详情组件
+    // 如果有详情操作，同时详情是弹窗，则引入详情组件
     $infoIsModal = false; //详情是否是弹窗打开
     if (
         isset($table_action_list) && 
@@ -146,19 +146,19 @@
         $infoIsModal = true;
         $constComponent[] = "const Info = lazy(() => import('./info'));";
     }
-    //是否有导出操作
+    // 是否有导出操作
     $isExport = false;
     if (isset($table_action_list) && in_array('export', $table_action_list)) {
         $isExport = true;
     }
 
-    //是否有导入操作
+    // 是否有导入操作
     $isImport = false;
     if (isset($table_action_list) && in_array('import', $table_action_list)) {
         $isImport = true;
     } 
 
-    //其它批量修改方法需要异步加载的组件
+    // 其它批量修改方法需要异步加载的组件
     if (isset($table_action_all_list) && $table_action_all_list) {
         foreach ($table_action_all_list as $k => $v) {
             $tmp = CodeGenerator::toCamelCase($v['field']);
@@ -198,20 +198,20 @@ import { authCheck, arrayToTree} from '@/common/function';
 <?php echo $isImport ? "import ImportData from './importData';\n" : '';?>
 import Lazyload from '@/component/lazyLoad/index';
 <?php
-    //导入自定义的组件
+    // 导入自定义的组件
     foreach ($zidingyiComponent as $v) {
 echo "{$v}\n";
     }
 ?>
 
 <?php
-    //如果有引入图片标签，则引入图片打开失败的时候的图片
+    // 如果有引入图片标签，则引入图片打开失败的时候的图片
     if (in_array('Image', $antdComponent)) {
 echo "const imgErr = new URL('@/static/default/imgErr.png', import.meta.url).href;\n";
     }
 ?>
 <?php
-    //导入异步加载的组件
+    // 导入异步加载的组件
     foreach ($constComponent as $v) {
 echo "{$v}\n";
     }
@@ -228,29 +228,29 @@ export default () => {
     const tableRef = useRef();
     const formRef = useRef();
 
-    //刷新表格数据
+    // 刷新表格数据
     const tableReload = () => {
         tableRef.current.reload();
         tableRef.current.clearSelected();
     }
 <?php
-    //如果修改是弹窗修改
+    // 如果修改是弹窗修改
     if ($updateIsModal) {
         echo "
-    //要修改的数据
+    // 要修改的数据
     const [updateId, setUpdateId] = useState(0);";
     }
 
-    //如果详情是弹窗查看
+    // 如果详情是弹窗查看
     if ($infoIsModal) {
         echo "
-    //要查看详情的数据
+    // 要查看详情的数据
     const [infoId, setInfoId] = useState(0);";
     }
 ?>
     
 <?php 
-    //说明有切换状态
+    // 说明有切换状态
     if (in_array('Switch', $antdComponent)) {
         echo "
     /////////////修改状态///////////////
@@ -271,7 +271,7 @@ export default () => {
 ?>
 
 <?php 
-    //说明有排序
+    // 说明有排序
     if (in_array('InputNumber', $antdComponent)) {
         echo "
     ///////////////////////////保存排序///////////////////////////
@@ -288,7 +288,7 @@ export default () => {
             }
         })
     }
-    //排序改变的时候
+    // 排序改变的时候
     const sortArrChange = (id, sort) => {
         let _sortArr = [...sortArr];
         let whether = _sortArr.some(_item => {
@@ -328,7 +328,7 @@ export default () => {
 ?>
 
 <?php
-    //是否有导出操作
+    // 是否有导出操作
     if ($isExport) {
         echo "
     /////////////////////////导出////////////////////////
@@ -356,7 +356,7 @@ export default () => {
 ?>
 
 <?php
-        //顶部的tabs的
+        // 顶部的tabs的
         if (isset($card_tabs_list) && $card_tabs_list) {
 
                 echo "
@@ -366,7 +366,7 @@ export default () => {
 
         foreach ($card_tabs_list as $k => $v) {
             $authId = $card_tabs_list_auth_id[$k - 1] ?? 0;
-            $disabled = ($k == 0 || $authId == 0) ? '' : "disabled: authCheck('{$authId}'), //权限id";
+            $disabled = ($k == 0 || $authId == 0) ? '' : "disabled: authCheck('{$authId}'), // 权限id";
             echo "
         {
             key: '{$k}',
@@ -381,35 +381,35 @@ export default () => {
         }
 ?>
 
-    //表格列
+    // 表格列
     const columns = [
 <?php
     if (isset($list_fields_type)) {
         foreach ($list_fields_type as $field => $type) {
-            //字段的中文名称
+            // 字段的中文名称
             $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
             
-            //列的参数
+            // 列的参数
             $columnsParams = "            title: '{$tmp_field_title}',\n";
             $columnsParams .= "            dataIndex: '{$field}',\n";
 
-            //是否支持搜索
+            // 是否支持搜索
             if (isset($list_fields_type_config[$field]['search']) && $list_fields_type_config[$field]['search']) {
                 $columnsParams .= "            search: true,\n";
             } else {
                 $columnsParams .= "            search: false,\n";
             }
-            //搜索的类型
+            // 搜索的类型
             if (isset($list_fields_type_config[$field]['search_type']) && $list_fields_type_config[$field]['search_type']) {
                 $valueType = $list_fields_type_config[$field]['search_type'];
                 $columnsParams .= "            valueType : '{$valueType}',\n";
 
-                //如果搜索的类型是下拉等选择项的时候///////////////
+                // 如果搜索的类型是下拉等选择项的时候///////////////
                 $search_data_type = $list_fields_type_config[$field]['search_data_type'] ?? 1;
-                //自己输入选择项
+                // 自己输入选择项
                 if (in_array($valueType, ['select', 'checkbox', 'radio']) && $search_data_type == 1) {
 
-                    //下拉才有搜索
+                    // 下拉才有搜索
                     $tmp = $valueType == 'select' ? "showSearch: true," : ""; 
                     $columnsParams .= "            fieldProps: {
                 {$tmp}
@@ -426,9 +426,9 @@ export default () => {
             },\n";
             
                 }
-                //有下级数据的选择项
+                // 有下级数据的选择项
                 if (in_array($valueType, ['treeSelect', 'cascader']) && $search_data_type == 1) {
-                    //树选择才有搜索的字段配置
+                    // 树选择才有搜索的字段配置
                     $tmp = $valueType == 'treeSelect' ? "treeNodeFilterProp: 'label'," : "";
 
                     $columnsParams .= "            fieldProps: {
@@ -457,18 +457,18 @@ export default () => {
             },\n";
 
                 }
-                //异步搜索选择某个表的id
+                // 异步搜索选择某个表的id
                 if ($valueType == 'selectTable' && $search_data_type == 1) {
                     $tmp = $list_fields_type_config[$field]['renderFormItem'];
                     $columnsParams .= "            renderFormItem: () => <Select{$tmp} />,\n";
                 }
-                //api请求选择项
+                // api请求选择项
                 if (in_array($valueType, ['select', 'treeSelect', 'cascader', 'checkbox', 'radio']) && $search_data_type == 2) {
 
                     $tmp = $list_fields_type_config[$field]['dataSourceApi'];
-                    //下拉、树选择、级联选择才有搜索
+                    // 下拉、树选择、级联选择才有搜索
                     $tmp1 = in_array($valueType, ['select', 'treeSelect', 'cascader']) ? "showSearch: true," : "";
-                    //树选择才有搜索的字段配置
+                    // 树选择才有搜索的字段配置
                     $tmp1 .= $valueType == 'treeSelect' ? "\n                treeNodeFilterProp: 'title'," : "";
 
                     $columnsParams .= "            request: async () => {
@@ -488,19 +488,19 @@ export default () => {
 
                 }
             }
-            //是否自动省略
+            // 是否自动省略
             if (isset($list_fields_type_config[$field]['ellipsis']) && $list_fields_type_config[$field]['ellipsis']) {
                 $columnsParams .= "            ellipsis: true,\n";
             }
-            //是否支持复制
+            // 是否支持复制
             if (isset($list_fields_type_config[$field]['copyable']) && $list_fields_type_config[$field]['copyable']) {
                 $columnsParams .= "            copyable: true,\n";
             }
-            //是否支持排序
+            // 是否支持排序
             if (isset($list_fields_type_config[$field]['sorter']) && $list_fields_type_config[$field]['sorter']) {
                 $columnsParams .= "            sorter: true,\n";
             }
-            //列的参数 前面加换行
+            // 列的参数 前面加换行
             if ($columnsParams) {
                 $columnsParams = "\n{$columnsParams}";
             }
@@ -512,7 +512,7 @@ export default () => {
     }
 ?>
 <?php
-    //表格的操作列
+    // 表格的操作列
     if (isset($table_action_list)) {
         if (
             in_array('update', $table_action_list) ||
@@ -526,11 +526,11 @@ export default () => {
             search: false,
             render: (_, record) => {
                 return <>";
-                    //是否有详情操作
+                    // 是否有详情操作
                     if (in_array('info', $table_action_list)) {
                         $infoAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Info';
 
-                        //判断修改是否是弹窗修改
+                        // 判断修改是否是弹窗修改
                         if ($infoIsModal) {
                             echo "
                     <Button
@@ -557,11 +557,11 @@ export default () => {
                         }
                     }
 
-                    //是否有修改操作
+                    // 是否有修改操作
                     if (in_array('update', $table_action_list)) {
                         $updateAuthName = CodeGenerator::toCamelCase($table_name,true) . 'Update';
                         
-                        //判断修改是否是弹窗修改
+                        // 判断修改是否是弹窗修改
                         if ($updateIsModal) {
                             echo "
                     <Button
@@ -587,7 +587,7 @@ export default () => {
                         }
                     }
 
-                    //是否有删除操作
+                    // 是否有删除操作
                     if (in_array('delete', $table_action_list)) {
                         $deleteAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Delete';
                         echo "
@@ -619,7 +619,7 @@ export default () => {
     return (
         <>
  <?php
-    //如果修改是弹窗修改
+    // 如果修改是弹窗修改
     if ($updateIsModal) {
 echo "           {/* 修改表单 */}
             <Lazyload block={false}>
@@ -631,7 +631,7 @@ echo "           {/* 修改表单 */}
             </Lazyload>\n";
     }
 
-    //如果查看详情是弹窗查看
+    // 如果查看详情是弹窗查看
     if ($infoIsModal) {
 echo "           {/* 查看详情 */}
             <Lazyload block={false}>
@@ -673,25 +673,25 @@ echo "           {/* 查看详情 */}
                         fullScreen: true
                     }}
                     columnsState={{
-                        //此table列设置后存储本地的唯一key
+                        // 此table列设置后存储本地的唯一key
                         persistenceKey: 'table_column_' + '<?php echo CodeGenerator::toCamelCase($table_name);?>', 
                         persistenceType: 'localStorage'
                     }}
                     headerTitle={
                         <Space>
                             <?php
-                                //判断是否有新增操作
+                                // 判断是否有新增操作
                                 if (isset($table_action_list) && in_array('create', $table_action_list)) {
-                                    //如果有新增，同时新增是弹窗
+                                    // 如果有新增，同时新增是弹窗
                                     if ($createIsModal) {
                                     echo "<Lazyload block={false}>
                                 <Create tableReload={tableReload} />
                             </Lazyload>
                                     ";
                                     } else {
-                                        //新增的权限节点
+                                        // 新增的权限节点
                                         $createAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Create';
-                                        //列表的权限节点
+                                        // 列表的权限节点
                                         $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
                                         $getListMenuPath = AdminMenuModel::where('name', $getListAuthName)->value('path');
                                         $create_url = $getListMenuPath . "/create";
@@ -705,7 +705,7 @@ echo "           {/* 查看详情 */}
                                     }
                                 }
 
-                                //是否有导出操作
+                                // 是否有导出操作
                                 if (isset($table_action_list) && in_array('export', $table_action_list)) {
                                     $exportDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ExportData';
                                     echo "
@@ -721,7 +721,7 @@ echo "           {/* 查看详情 */}
                             </Tooltip>\n";
                                 }
                                 
-                                //如果有导入
+                                // 如果有导入
                                 if ($isImport) {
                                     echo "
                             <ImportData
@@ -729,9 +729,9 @@ echo "           {/* 查看详情 */}
                             />\n";
                                 }
 
-                                //如果有排序
+                                // 如果有排序
                                 if (in_array('InputNumber', $antdComponent)) {
-                                    //排序的权限id
+                                    // 排序的权限id
                                     $updateSortAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateSort';
                                     echo "
                             <Button
@@ -747,20 +747,20 @@ echo "           {/* 查看详情 */}
                     pagination={{
                         defaultPageSize: 20,
                         size: 'default',
-                        //支持跳到多少页
+                        // 支持跳到多少页
                         showQuickJumper: true,
                         showSizeChanger: true,
                         responsive: true,
                     }}
                     request={async (params = {}, sort, filter) => {
-                        //排序的时候
+                        // 排序的时候
                         let orderBy = '';
                         for (let key in sort) {
                             orderBy = key + ' ' + (sort[key] === 'descend' ? 'desc' : 'asc');
                         }
                         const result = await <?php echo $apiFileName;?>Api.getList({
-                            ...params,//包含了翻页参数跟搜索参数
-                            orderBy, //排序
+                            ...params,// 包含了翻页参数跟搜索参数
+                            orderBy, // 排序
                             page: params.current,
                         });
                         return {
@@ -777,17 +777,17 @@ echo "           {/* 查看详情 */}
             (isset($table_action_all_list) && $table_action_all_list)
         ){
             echo "
-                    //开启批量选择
+                    // 开启批量选择
                     rowSelection={{
                         preserveSelectedRowKeys: true,
                     }}
-                    //批量选择后左边操作
+                    // 批量选择后左边操作
                     tableAlertRender={({ selectedRowKeys, }) => {
                         return (
                             <Space>
                                 <span>已选 {selectedRowKeys.length} 项</span>";
 
-                                //如果有批量删除
+                                // 如果有批量删除
                                 if (in_array('all_delete', $table_action_list)) {
                                     $deleteAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Delete';
                                     echo "
@@ -808,7 +808,7 @@ echo "           {/* 查看详情 */}
                                 </Popconfirm>\n";
                                 }
                                 
-                                //如果有批量上下架
+                                // 如果有批量上下架
                                 if (in_array('all_update_status', $table_action_list)) {
                                     $updateStatusAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateStatus';
                                     echo "
@@ -832,7 +832,7 @@ echo "           {/* 查看详情 */}
                                 >隐藏</Button>\n";
                                 }
 
-                                //其它批量操作
+                                // 其它批量操作
                                 if (isset($table_action_all_list)) {
                                     foreach ($table_action_all_list as $k => $v) {
                                     $tmp = CodeGenerator::toCamelCase($v['field']);

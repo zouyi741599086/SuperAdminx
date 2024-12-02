@@ -21,7 +21,7 @@ class AdminRoleLogic
      */
     public static function getList(array $params)
     {
-        //不需要翻页的时候，如添加用户的时候选择角色
+        // 不需要翻页的时候，如添加用户的时候选择角色
         if (isset($params['isPage']) && $params['isPage'] == 'no') {
             return AdminRoleModel::withSearch(['title'], $params)
                 ->order('id desc')
@@ -106,7 +106,7 @@ class AdminRoleLogic
         Db::startTrans();
         try {
             AdminRoleMenuModel::where('admin_role_id', $params['id'])->delete();
-            //权限节点
+            // 权限节点
             foreach ($params['admin_menu_id'] as $v) {
                 $admin_role_menu[] = [
                     'admin_role_id' => $params['id'],

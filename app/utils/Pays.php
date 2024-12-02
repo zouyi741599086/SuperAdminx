@@ -150,9 +150,9 @@ class Pays
      */
     public static function wechatMiniPay($data)
     {
-        //先注入配置
+        // 先注入配置
         self::setConfig();
-        //发起支付
+        // 发起支付
         return Pay::wechat()->mini($data);
     }
 
@@ -163,7 +163,7 @@ class Pays
      */
     public static function wechatNotifyData() : array
     {
-        //先注入配置
+        // 先注入配置
         self::setConfig();
 
         try {
@@ -195,15 +195,15 @@ class Pays
      */
     public static function wechatRefund(string $transaction_id, float $refund, float $total)
     {
-        //先注入配置
+        // 先注入配置
         self::setConfig();
         try {
             $order = [
                 'transaction_id' => $transaction_id,
                 'out_refund_no'  => get_order_no(),
                 'amount'         => [
-                    'refund'   => intval($refund * 100), //退款金额
-                    'total'    => intval($total * 100), //原支付交易的订单总金额，单位为分
+                    'refund'   => intval($refund * 100), // 退款金额
+                    'total'    => intval($total * 100), // 原支付交易的订单总金额，单位为分
                     'currency' => 'CNY',
                 ],
             ];

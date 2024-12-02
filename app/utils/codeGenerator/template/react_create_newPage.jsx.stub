@@ -7,15 +7,15 @@
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //引入api的文件名称
+    // 引入api的文件名称
     $apiFileName = CodeGenerator::toCamelCase($table_name);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
-    //列表权限节点
+    // 列表权限节点
     $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
     $menu = AdminMenuModel::where('name', $getListAuthName)->find();
 
-    //是否是多tab标签的form
+    // 是否是多tab标签的form
     $isCardTab = false;
     if ($open_type == 2) {
         if (isset($card_tab_list) && is_array($card_tab_list) && count($card_tab_list) > 0) {
@@ -51,7 +51,7 @@ export default () => {
     const navigate = useNavigate();
     const { message } = App.useApp();
 
-    //返回上一页
+    // 返回上一页
     const onBack = () => {
         navigate('<?php echo $menu['path'] ?? '';?>');
     }
@@ -120,9 +120,9 @@ labelCol={{
                         },
                     }}
                     <?php }?>
-//可以回车提交
+// 可以回车提交
                     isKeyPressSubmit={true}
-                    //不干掉null跟undefined 的数据
+                    // 不干掉null跟undefined 的数据
                     omitNil={false}
                     onFinish={async (values) => {
                         const result = await <?php echo $apiFileName;?>Api.create(values);
@@ -137,7 +137,7 @@ labelCol={{
                     <?php
                         if ($isCardTab) {
                      echo "onFinishFailed={({ errorFields }) => {
-                        //form验证失败的时候，用来自动切换顶部";
+                        // form验证失败的时候，用来自动切换顶部";
                         
                         foreach ($card_tab_list as $k => $v) {
                             $tmpFields = '';

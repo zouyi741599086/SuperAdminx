@@ -5,7 +5,7 @@
 use app\utils\codeGenerator\CodeGenerator;
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
-    //当前的表名转驼峰
+    // 当前的表名转驼峰
     $tableNameToCamelCase = CodeGenerator::toCamelCase($table_name);
     
 ?>
@@ -15,7 +15,7 @@ use support\Request;
 use support\Response;
 
 <?php
-    //如果有导入数据则引入文件上传
+    // 如果有导入数据则引入文件上传
     if (isset($functions) && in_array('importData', $functions)) {
     echo "use app\utils\File as FileUtils;\n";
     }
@@ -42,7 +42,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // getList方法
     if (isset($functions) && in_array('getList', $functions)) {
-        //接口权限
+        // 接口权限
         $auth = '';
         if (isset($functions_auth) && in_array('getList', $functions_auth)) {
             $getListAuthName = CodeGenerator::toCamelCase($table_name,true) . 'GetList';
@@ -68,7 +68,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // create方法
     if (isset($functions) && in_array('create', $functions)) {
-        //接口权限
+        // 接口权限
         $auth = '';
         if (isset($functions_auth) && in_array('create', $functions_auth)) {
             $createAuthName = CodeGenerator::toCamelCase($table_name,true) . 'Create';
@@ -114,7 +114,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // update方法
     if (isset($functions) && in_array('update', $functions)) {
-        //接口权限
+        // 接口权限
         $auth = '';
         if (isset($functions_auth) && in_array('update', $functions_auth)) {
             $updateAuthName = CodeGenerator::toCamelCase($table_name,true) . 'Update';
@@ -140,7 +140,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // delete方法
     if (isset($functions) && in_array('delete', $functions)) {
-        //接口权限
+        // 接口权限
         $auth = '';
         if (isset($functions_auth) && in_array('delete', $functions_auth)) {
             $deleteAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Delete';
@@ -166,7 +166,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // updateSort更新排序
     if (isset($functions) && in_array('updateSort', $functions)) {
-        //接口权限
+        // 接口权限
         $auth = '';
         if (isset($functions_auth) && in_array('updateSort', $functions_auth)) {
             $updateSortAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateSort';
@@ -192,7 +192,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // updateStatus更新状态
     if (isset($functions) && in_array('updateStatus', $functions)) {
-        //接口权限
+        // 接口权限
         $auth = '';
         if (isset($functions_auth) && in_array('updateStatus', $functions_auth)) {
             $updateStatusAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateStatus';
@@ -240,7 +240,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // importData导入数据下载表格模板
     if (isset($functions) && in_array('importData', $functions)) {
-        //接口权限
+        // 接口权限
         $auth = '';
         if (isset($functions_auth) && in_array('importData', $functions_auth)) {
             $importDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ImportData';
@@ -266,7 +266,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // importData导入数据
     if (isset($functions) && in_array('importData', $functions)) {
-        //接口权限
+        // 接口权限
         $auth = '';
         if (isset($functions_auth) && in_array('importData', $functions_auth)) {
             $importDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ImportData';
@@ -296,7 +296,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // exportData导出数据
     if (isset($functions) && in_array('exportData', $functions)) {
-        //接口权限
+        // 接口权限
         $auth = '';
         if (isset($functions_auth) && in_array('exportData', $functions_auth)) {
             $exportDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ExportData';
@@ -325,7 +325,7 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($other_functions) && is_array($other_functions)) {
         
         foreach ($other_functions as $key => $value) {
-            //接口权限
+            // 接口权限
             $auth = '';
             if (isset($value['auth_id'])) {
                 $auth = "\n     * @auth {$value['auth_id']}";

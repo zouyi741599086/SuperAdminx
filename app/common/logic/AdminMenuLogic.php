@@ -37,22 +37,22 @@ class AdminMenuLogic
             validate(AdminMenuValidate::class)->check($params);
 
             $result = AdminMenuModel::create($params);
-            //找出我的路劲
+            // 找出我的路劲
             if (isset($params['pid_name']) && $params['pid_name']) {
                 $pid_name_path = AdminMenuModel::where('name', $params['pid_name'])->value('pid_name_path');
                 $pid_name_path = "{$pid_name_path}{$result->name},";
             } else {
                 $pid_name_path = ",{$result->name},";
             }
-            //更新路劲
+            // 更新路劲
             AdminMenuModel::update([
                 'id'            => $result->id,
                 'pid_name_path' => $pid_name_path
             ]);
 
-            //自动生成菜单下面的权限节点
+            // 自动生成菜单下面的权限节点
             if (isset($params['auto_auth']) && $params['auto_auth']) {
-                //只浏览数据
+                // 只浏览数据
                 if (in_array('GetList', $params['auto_auth'])) {
                     $tmp = [
                         'title'    => '只浏览数据',
@@ -63,7 +63,7 @@ class AdminMenuLogic
                     ];
                     self::create($tmp);
                 }
-                //新增
+                // 新增
                 if (in_array('Create', $params['auto_auth'])) {
                     $tmp = [
                         'title'    => '添加',
@@ -72,7 +72,7 @@ class AdminMenuLogic
                         'type'     => 6,
                         'pid_name' => $params['name'],
                     ];
-                    //如果是新页面打开
+                    // 如果是新页面打开
                     if (isset($params['auto_auth_create_update_type']) && $params['auto_auth_create_update_type'] == 2) {
                         $tmp['type']           = 2;
                         $tmp['path']           = "{$params['path']}/create";
@@ -81,7 +81,7 @@ class AdminMenuLogic
                     }
                     self::create($tmp);
                 }
-                //修改
+                // 修改
                 if (in_array('Update', $params['auto_auth'])) {
                     $tmp = [
                         'title'    => '修改',
@@ -90,7 +90,7 @@ class AdminMenuLogic
                         'type'     => 6,
                         'pid_name' => $params['name'],
                     ];
-                    //如果是新页面打开
+                    // 如果是新页面打开
                     if (isset($params['auto_auth_create_update_type']) && $params['auto_auth_create_update_type'] == 2) {
                         $tmp['type']           = 2;
                         $tmp['path']           = "{$params['path']}/update";
@@ -99,7 +99,7 @@ class AdminMenuLogic
                     }
                     self::create($tmp);
                 }
-                //查看详情
+                // 查看详情
                 if (in_array('Info', $params['auto_auth'])) {
                     $tmp = [
                         'title'    => '查看详情',
@@ -108,7 +108,7 @@ class AdminMenuLogic
                         'type'     => 6,
                         'pid_name' => $params['name'],
                     ];
-                    //如果是新页面打开
+                    // 如果是新页面打开
                     if (isset($params['auto_auth_info_type']) && $params['auto_auth_info_type'] == 2) {
                         $tmp['type']           = 2;
                         $tmp['path']           = "{$params['path']}/info";
@@ -117,7 +117,7 @@ class AdminMenuLogic
                     }
                     self::create($tmp);
                 }
-                //删除
+                // 删除
                 if (in_array('Delete', $params['auto_auth'])) {
                     $tmp = [
                         'title'    => '删除',
@@ -128,7 +128,7 @@ class AdminMenuLogic
                     ];
                     self::create($tmp);
                 }
-                //修改排序
+                // 修改排序
                 if (in_array('UpdateSort', $params['auto_auth'])) {
                     $tmp = [
                         'title'    => '修改排序',
@@ -139,7 +139,7 @@ class AdminMenuLogic
                     ];
                     self::create($tmp);
                 }
-                //修改状态
+                // 修改状态
                 if (in_array('UpdateStatus', $params['auto_auth'])) {
                     $tmp = [
                         'title'    => '修改状态',
@@ -150,7 +150,7 @@ class AdminMenuLogic
                     ];
                     self::create($tmp);
                 }
-                //导出数据
+                // 导出数据
                 if (in_array('ExportData', $params['auto_auth'])) {
                     $tmp = [
                         'title'    => '导出数据',
@@ -161,7 +161,7 @@ class AdminMenuLogic
                     ];
                     self::create($tmp);
                 }
-                //导入数据
+                // 导入数据
                 if (in_array('ImportData', $params['auto_auth'])) {
                     $tmp = [
                         'title'    => '导出数据',
@@ -187,14 +187,14 @@ class AdminMenuLogic
      */
     public static function update(array $params)
     {
-        //由于前段form会把字段等于null的干掉，所以这要特别加上
+        // 由于前段form会把字段等于null的干掉，所以这要特别加上
         if (! isset($params['pid_name']) || ! $params['pid_name']) {
             $params['pid_name'] = null;
         }
         try {
             validate(AdminMenuValidate::class)->check($params);
 
-            //原来旧的name
+            // 原来旧的name
             $oldName = AdminMenuModel::where('id', $params['id'])->value('name');
 
             AdminMenuModel::update($params);
@@ -202,7 +202,7 @@ class AdminMenuLogic
                 'pid_name' => $params['name'],
             ]);
 
-            //重新更新我下面所有数据的pid_path相关字段
+            // 重新更新我下面所有数据的pid_path相关字段
             AdminMenuModel::where('pid_name_path', 'like', "%,{$oldName},%")
                 ->orderRaw("CHAR_LENGTH(pid_name_path) asc")
                 ->field('id,name,pid_name,pid_name_path')
@@ -238,7 +238,7 @@ class AdminMenuLogic
     public static function delete(array $ids)
     {
         foreach ($ids as $id) {
-            //不能删除50》参数设置，configLogic的增删除改里面要用此id同步到adminMenu表
+            // 不能删除50》参数设置，configLogic的增删除改里面要用此id同步到adminMenu表
             if (! in_array($id, [50])) {
                 AdminMenuModel::destroy($id);
             }

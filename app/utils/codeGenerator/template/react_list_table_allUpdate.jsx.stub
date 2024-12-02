@@ -7,24 +7,24 @@
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //引入api的文件名称
+    // 引入api的文件名称
     $apiFileName = CodeGenerator::toCamelCase($table_name);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
-    //批量修改字段的中文名称
+    // 批量修改字段的中文名称
     $updateFiledTitle = $data['field_title'][$tmp_table_action_all_update_field] ?? $tmp_table_action_all_update_field;
 
-    //批量修改的字段，转驼峰
+    // 批量修改的字段，转驼峰
     $updateFieldCamelCase = CodeGenerator::toCamelCase($tmp_table_action_all_update_field);
 
 
     //////////////////////////下面是新增更新react_form.jsx.stub搬过来的
     $form_fileds_type = $data['react_create_update']['form_fileds_type'];
     $form_fields_type_config = $data['react_create_update']['form_fields_type_config'];
-    //异步搜索选择某个表的id 需要导入的组件
+    // 异步搜索选择某个表的id 需要导入的组件
     $selectComponents = [];
 
-    //所有的字段的类型
+    // 所有的字段的类型
     $filedsTypeArr = [];
     if(isset($form_fileds_type)) {
         foreach ($form_fileds_type as $k => $v) {
@@ -33,7 +33,7 @@
                     $filedsTypeArr[] = $v;
                 }
 
-                //如果有异步搜索选择某个表的id的字段，则把表转为驼峰当组件的名称
+                // 如果有异步搜索选择某个表的id的字段，则把表转为驼峰当组件的名称
                 if ($v == 'SelectTable') {
                     $tmp = CodeGenerator::toCamelCase($form_fields_type_config[$k]['dataSourceTable']);
                     $form_fields_type_config[$k]['select_component_name'] = $tmp;
@@ -45,7 +45,7 @@
         }
     }
 
-    //所有需要引入的api请求
+    // 所有需要引入的api请求
     $apiFileArr = [$apiFileName];
     if (isset($form_fields_type_config)) {
         foreach ($form_fields_type_config as $k => $v) {
@@ -57,7 +57,7 @@
                         $apiFileArr[] = $tmpApiFileName;
                     }
                     
-                    $form_fields_type_config[$k]['dataSourceApi'] = $tmpApiFileName; //字段配置里面存一份下面好用
+                    $form_fields_type_config[$k]['dataSourceApi'] = $tmpApiFileName; // 字段配置里面存一份下面好用
                 }
             }
         }
@@ -68,7 +68,7 @@ import { FormOutlined } from '@ant-design/icons';
 import {
     ModalForm, ProForm,
     <?php
-        //导入需要使用的字段
+        // 导入需要使用的字段
         if (in_array('Text',$filedsTypeArr) || in_array('Password',$filedsTypeArr)) {
             echo 'ProFormText, ';
         }
@@ -100,7 +100,7 @@ import { authCheck } from '@/common/function';
     }
 ?>
 <?php
-//导入需要使用的自定义的字段
+// 导入需要使用的自定义的字段
 if (in_array('province',$filedsTypeArr)) echo "import Province from '@/component/form/province/index';\n" ;
 if (in_array('provinceCity',$filedsTypeArr)) echo "import ProvinceCity from '@/component/form/provinceCity/index';\n";
 if (in_array('provinceCityArea',$filedsTypeArr)) echo "import ProvinceCityArea from '@/component/form/provinceCityArea/index';\n";
@@ -115,7 +115,7 @@ if (in_array('tagArr',$filedsTypeArr)) echo "const TagArrfrom '@/component/form/
 if (in_array('imgTitle',$filedsTypeArr)) echo "const ImgTitle from '@/component/form/imgTitle/index';\n";
 ?>
 <?php
-//导入需要使用的异步搜索选择组件
+// 导入需要使用的异步搜索选择组件
 foreach ($selectComponents as $v) {
 echo "import Select{$v} from '@/pages/components/select{$v}';\n";
 }
@@ -146,11 +146,11 @@ export default ({ ids, tableReload, ...props }) => {
             }
             width={460}
             colProps={{ md: 12, xs: 24 }}
-            //第一个输入框获取焦点
+            // 第一个输入框获取焦点
             autoFocusFirstInput={true}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             omitNil={false}
             onFinish={async (values) => {
                 const result = await <?php echo $apiFileName;?>Api.update<?php echo $updateFieldCamelCase;?>({
@@ -173,12 +173,12 @@ export default ({ ids, tableReload, ...props }) => {
             if ($field != $tmp_table_action_all_update_field) {
                 continue;
             }
-            //字段的中文名称
+            // 字段的中文名称
             $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
-            //字段的配置
+            // 字段的配置
             $field_config = $form_fields_type_config[$field] ?? [];
             $field_config['extra'] = $field_config['extra'] ?? '';
-            //字段的props 前缀 后缀
+            // 字段的props 前缀 后缀
             $fieldProps = [];
             if (isset($field_config['addonBefore']) && $field_config['addonBefore']) {
                 $fieldProps[] = "addonBefore: '{$field_config['addonBefore']}',";
@@ -186,7 +186,7 @@ export default ({ ids, tableReload, ...props }) => {
             if (isset($field_config['addonAfter']) && $field_config['addonAfter']) {
                 $fieldProps[] = "addonAfter: '{$field_config['addonAfter']}',";
             }
-            //提示语是请输入还是请选择还是请上传
+            // 提示语是请输入还是请选择还是请上传
             $filedTip = '请输入';
             if (in_array($type, ['DatePicker', 'DateTimePicker', 'DateRangePicker', 'DateTimeRangePicker', 'TimePicker', 'TimePickerRange', 'Select', 'TreeSelect', 'SelectTable', 'Checkbox', 'Radio', 'Cascader', 'Switch', 'province', 'provinceCity', 'provinceCityArea', 'tencentMap'])) {
                 $filedTip = '请选择';
@@ -202,7 +202,7 @@ export default ({ ids, tableReload, ...props }) => {
             if (in_array($type, ['Checkbox','uploadFileAll','uploadImgAll','uploadImgVideoAll'])) {
                 $fieldType = 'array';
             }
-            //字段的验证规则
+            // 字段的验证规则
             $validata = [];
             if (in_array('required', $field_config['validateRules'] ?? [])) {
                 $validata[] = "{ required: true, message: '{$filedTip}' },";

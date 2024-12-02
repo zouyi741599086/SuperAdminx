@@ -66,13 +66,13 @@ class ConfigLogic
     {
         Db::startTrans();
         try {
-            //旧的配置name
+            // 旧的配置name
             $oldName = ConfigModel::where('id', $params['id'])->value('name');
 
-            //修改本表的数据
+            // 修改本表的数据
             ConfigModel::update($params);
 
-            //要同时修改adminMenu的数据 才能注入权限管理
+            // 要同时修改adminMenu的数据 才能注入权限管理
             $config      = AdminMenuModel::find(50);
             $adminMenuId = AdminMenuModel::where('name', "config_{$oldName}")->value('id');
             AdminMenuModel::update([
@@ -144,13 +144,13 @@ class ConfigLogic
     {
         Db::startTrans();
         try {
-            //配置name
+            // 配置name
             $configName = ConfigModel::where('id', $id)->value('name');
 
-            //修改本表的数据
+            // 修改本表的数据
             ConfigModel::destroy($id);
 
-            //要同步删除adminMenu的数据
+            // 要同步删除adminMenu的数据
             AdminMenuModel::where('name', "config_{$configName}")->delete();
 
             Cache::delete("Config_{$configName}");
@@ -186,7 +186,7 @@ class ConfigLogic
                     'sort' => $v['sort'],
                 ]);
 
-                //要同步删除adminMenu的数据的排序
+                // 要同步删除adminMenu的数据的排序
                 $name = ConfigModel::where('id', $v['id'])->value('name');
                 AdminMenuModel::where('name', "config_{$name}")->update([
                     'sort' => $v['sort']

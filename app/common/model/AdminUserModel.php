@@ -10,7 +10,7 @@ namespace app\common\model;
  * */
 class AdminUserModel extends BaseModel
 {
-    //表名
+    // 表名
     protected $name = 'admin_user';
 
     protected $dateFormat = 'Y-m-d H:i:s';
@@ -19,7 +19,7 @@ class AdminUserModel extends BaseModel
     ];
 
 
-    //包含附件的字段，key是字段名称，value是如何取值里面的图片的路劲
+    // 包含附件的字段，key是字段名称，value是如何取值里面的图片的路劲
     public $file = [
         'img' => '',
     ];
@@ -38,18 +38,18 @@ class AdminUserModel extends BaseModel
         return $this->belongsTo(AdminRoleModel::class);
     }
 
-    //查询字段
+    // 查询字段
     public function searchNameAttr($query, $value, $data)
     {
         $value && $query->where('name', 'like', "%{$value}%");
         $query->where('id', '<>', 1);
     }
-    //查询字段
+    // 查询字段
     public function searchTelAttr($query, $value, $data)
     {
         $value && $query->where('tel', 'like', "%{$value}%");
     }
-    //查询字段
+    // 查询字段
     public function searchUsernameAttr($query, $value, $data)
     {
         $value && $query->where('username', 'like', "%{$value}%");
@@ -59,7 +59,7 @@ class AdminUserModel extends BaseModel
     {
         $value && $query->where('admin_role_id', '=', $value);
     }
-    //查询字段
+    // 查询字段
     public function searchStatusAttr($query, $value, $data)
     {
         $value && $query->where('status', '=', $value);

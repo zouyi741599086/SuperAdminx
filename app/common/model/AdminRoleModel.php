@@ -10,7 +10,7 @@ namespace app\common\model;
  * */
 class AdminRoleModel extends BaseModel
 {
-    //表名
+    // 表名
     protected $name = 'admin_role';
 
     /**
@@ -37,7 +37,7 @@ class AdminRoleModel extends BaseModel
         return $this->belongsToMany(AdminMenuModel::class, AdminRoleMenuModel::class, 'admin_role_id', 'admin_menu_id');
     }
 
-    //查询字段
+    // 查询字段
     public function searchTitleAttr($query, $value, $data)
     {
         $value && $query->where('title', 'like', "%{$value}%");

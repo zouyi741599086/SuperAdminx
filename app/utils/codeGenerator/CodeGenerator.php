@@ -54,7 +54,7 @@ class CodeGenerator
     {
         $list = Db::query("SHOW FULL COLUMNS FROM `{$table_name}`");
 
-        //如果此表有添加一些额外的字段，需要压进去，还需要将字段设置的中文名称压进去
+        // 如果此表有添加一些额外的字段，需要压进去，还需要将字段设置的中文名称压进去
         $data = self::getCodeGeneratorInfo($table_name);
         if (isset($data->field_title)) {
             foreach ($data->field_title as $k => $v) {
@@ -66,7 +66,7 @@ class CodeGenerator
                         break;
                     }
                 }
-                //没有找到此字段，说明是额外添加的，则压进去
+                // 没有找到此字段，说明是额外添加的，则压进去
                 if (! $isOn) {
                     $list[] = [
                         'Field'       => $k,
@@ -135,34 +135,34 @@ class CodeGenerator
      */
     public static function generatorCode(array $params, string $code_name) : array
     {
-        //带入模板中要使用的变量
+        // 带入模板中要使用的变量
         $data = self::getCodeGeneratorInfo($params['table_name']);
         if (! $data) {
             abort('请先设置此表的字段名称');
         }
-        $vars                 = $params[$code_name]; //生成的xx代码需要的配置
-        $vars['table_name']   = $params['table_name']; //表名
-        $vars['field_title']  = $data->field_title; //字段的中文名
-        $vars['table_title']  = $data->table_title; //表的中文名
-        $vars['table_column'] = self::getTableColumn($params['table_name']); //表的列
+        $vars                 = $params[$code_name]; // 生成的xx代码需要的配置
+        $vars['table_name']   = $params['table_name']; // 表名
+        $vars['field_title']  = $data->field_title; // 字段的中文名
+        $vars['table_title']  = $data->table_title; // 表的中文名
+        $vars['table_column'] = self::getTableColumn($params['table_name']); // 表的列
 
-        //如果是生成前端react的新增/更新页面
+        // 如果是生成前端react的新增/更新页面
         if ($code_name == 'react_create_update') {
-            //生成新增页面代码
+            // 生成新增页面代码
             $params["react_create_code"] = self::templateRender('react_create', $vars, $params[$code_name]['file_suffix']);
 
-            //是否需要生成更新页面
+            // 是否需要生成更新页面
             if ($params[$code_name]['update_page'] == 1) {
                 $params["react_update_code"] = self::templateRender('react_update', $vars, $params[$code_name]['file_suffix']);
             }
 
-            //生成form的字段组件，因为form可能是多标签Tab的，所以form的代码会生成N个组件
+            // 生成form的字段组件，因为form可能是多标签Tab的，所以form的代码会生成N个组件
             $card_tab_list_count = 1; //生成form的个数
             if ($vars['open_type'] == 2 && isset($vars['card_tab_list']) && count($vars['card_tab_list']) > 0) {
                 $card_tab_list_count = count($vars['card_tab_list']);
             }
             for ($i = 1; $i <= $card_tab_list_count; $i++) {
-                //如整个form共10个字段，找出每个form要生成的字段，其它的不要带进去
+                // 如整个form共10个字段，找出每个form要生成的字段，其它的不要带进去
                 $vars['form_fields_type_config'] = $params[$code_name]['form_fields_type_config'] ?? [];
                 $vars['form_fileds_type']        = $params[$code_name]['form_fileds_type'] ?? [];
                 foreach ($vars['form_fields_type_config'] as $k => $v) {
@@ -176,9 +176,9 @@ class CodeGenerator
                 $params['react_form_code'][$i] = self::templateRender('react_form', $vars, $params[$code_name]['file_suffix']);
             }
         }
-        //如果是生成react的列表页面 
+        // 如果是生成react的列表页面 
         else if ($code_name == 'react_list') {
-            //如果有导入操作，则需要生成导入的组件
+            // 如果有导入操作，则需要生成导入的组件
             if (
                 isset($vars['table_action_list']) &&
                 $vars['table_action_list'] &&
@@ -186,18 +186,18 @@ class CodeGenerator
             ) {
                 $params["react_list_component_code"]['importData'] = self::templateRender('react_list_table_import', $vars, $params[$code_name]['file_suffix']);
             }
-            //如果有生成其它批量修改字段，则生成对应的修改弹窗
+            // 如果有生成其它批量修改字段，则生成对应的修改弹窗
             if (
                 isset($vars['table_action_all_list']) &&
                 $vars['table_action_all_list']
             ) {
                 foreach ($vars['table_action_all_list'] as $k => $v) {
                     $tmp = self::toCamelCase($v['field']);
-                    //当前正在生成的字段的名称
+                    // 当前正在生成的字段的名称
                     $vars['tmp_table_action_all_update_field'] = $v['field'];
-                    //当前正在生成的批量操作的权限id
+                    // 当前正在生成的批量操作的权限id
                     $vars['tmp_table_action_all_update_auth_id'] = $v['update_field_auth_id'];
-                    //开始生成批量修改的弹窗
+                    // 开始生成批量修改的弹窗
                     $params["react_list_component_code"]["update{$tmp}"] = self::templateRender('react_list_table_allUpdate', $vars, $params[$code_name]['file_suffix']);
                 }
             }
@@ -206,7 +206,7 @@ class CodeGenerator
             $params["{$code_name}_code"] = self::templateRender($code_name, $vars, $params[$code_name]['file_suffix']);
         }
 
-        //更新到表中保存
+        // 更新到表中保存
         self::updateCodeGenerator($params);
         return $params;
     }
@@ -243,7 +243,7 @@ class CodeGenerator
      */
     public static function operationFile(string $table_name, string $name, bool $forced = false)
     {
-        //数据库中此表的设置信息
+        // 数据库中此表的设置信息
         $data = self::getCodeGeneratorInfo($table_name);
         if (! $data || ! isset($data[$name]['file_name']) || ! isset($data[$name]['file_suffix'])) {
             abort('未设置，请先生成预览代码');
@@ -252,63 +252,63 @@ class CodeGenerator
         if (config('app.debug') == false) {
             abort('正式环境不允许操作~');
         }
-        //配置
+        // 配置
         $config = $data[$name];
-        //代码
+        // 代码
         $code = $data["{$name}_code"] ?? '';
-        //文件名
+        // 文件名
         $file_name = "{$config['file_name']}.{$config['file_suffix']}";
 
         // 如果是新增更新页面，则要生成两个文件
         if ($name == 'react_create_update') {
-            //从列表页的权限id，找生成的目录
+            // 从列表页的权限id，找生成的目录
             $adminMenu = AdminMenuModel::where('name', self::toCamelCase($table_name, true))->find();
             if (! $adminMenu) {
                 abort('未设置列表页权限节点，无法找到生成目录~');
             }
 
-            //生成新增页面的代码
+            // 生成新增页面的代码
             $file_path = "public\admin_react\src\pages{$adminMenu->component_path}\create";
             self::generateFile($file_path, $file_name, $data['react_create_code'], $forced);
 
-            //是否需要更新页面
+            // 是否需要更新页面
             if ($data[$name]['update_page'] == 1) {
                 $file_path = "public\admin_react\src\pages{$adminMenu->component_path}\update";
                 self::generateFile($file_path, $file_name, $data['react_update_code'], $forced);
             }
 
-            //生成表单字段的代码，可能是多标签tab的form会多个form的字段组件
+            // 生成表单字段的代码，可能是多标签tab的form会多个form的字段组件
             $file_path = "public\admin_react\src\pages{$adminMenu->component_path}\component";
             foreach ($data['react_form_code'] as $k => $v) {
                 self::generateFile($file_path, "form{$k}.jsx", $v, $forced);
             }
         }
-        //如果生成的是前端的详情页面
+        // 如果生成的是前端的详情页面
         else if ($name == "react_info") {
-            //详情的权限id，从这找生成的目录
+            // 详情的权限id，从这找生成的目录
             $adminMenu = AdminMenuModel::where('name', self::toCamelCase($table_name, true))->find();
             if (! $adminMenu || ! $adminMenu['component_path']) {
                 abort('未设置列表页权限节点，无法找到生成目录~');
             }
 
-            //开始生成代码并保存
+            // 开始生成代码并保存
             $file_path = "public\admin_react\src\pages{$adminMenu->component_path}\info";
             self::generateFile($file_path, $file_name, $data['react_info_code'], $forced);
 
         }
-        //如果生成的是前端的列表
+        // 如果生成的是前端的列表
         else if ($name == "react_list") {
-            //列表的权限id，从这找生成的目录
+            // 列表的权限id，从这找生成的目录
             $adminMenu = AdminMenuModel::where('name', self::toCamelCase($table_name, true))->find();
             if (! $adminMenu || ! $adminMenu['component_path']) {
                 abort('未设置列表页权限节点，无法找到生成目录~');
             }
 
-            //开始生成代码并保存
+            // 开始生成代码并保存
             $file_path = "public\admin_react\src\pages{$adminMenu->component_path}";
             self::generateFile($file_path, $file_name, $data['react_list_code'], $forced);
 
-            //如果有生成其它组件，如批量导入、
+            // 如果有生成其它组件，如批量导入、
             if (
                 $data['react_list_component_code'] &&
                 is_array($data['react_list_component_code']) &&
@@ -320,22 +320,22 @@ class CodeGenerator
             }
 
         }
-        //如果生成的是后端的其它组件
+        // 如果生成的是后端的其它组件
         else if ($name == "react_other") {
 
-            //生成的是搜索选择数据组件
+            // 生成的是搜索选择数据组件
             if ($data['react_other']['component_type'] == 'select') {
                 $file_path = "public\admin_react\src\components";
                 $file_name = 'select' . self::toCamelCase($table_name) . '.jsx';
             }
 
-            //生成的是弹窗form
+            // 生成的是弹窗form
             if ($data['react_other']['component_type'] == 'modalForm') {
                 $file_path = $data['react_other']['modal_form_file_path'];
                 $file_name = $data['react_other']['modal_form_file_name'];
             }
 
-            //生成的是弹窗table
+            // 生成的是弹窗table
             if ($data['react_other']['component_type'] == 'modalTable') {
                 $file_path = $data['react_other']['modal_table_file_path'];
                 $file_name = $data['react_other']['modal_table_file_name'];
@@ -368,12 +368,12 @@ class CodeGenerator
             abort('文件已存在，是否进行覆盖~', 2);
         }
 
-        //检测目录是否存在，不存在就创建
+        // 检测目录是否存在，不存在就创建
         if (! file_exists($file_path)) {
             mkdir($file_path, 0777, true);
         }
 
-        //开始写入文件
+        // 开始写入文件
         if (file_put_contents($path_file_name, $content) === FALSE) {
             abort('文件写入失败');
         }

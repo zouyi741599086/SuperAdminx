@@ -5,11 +5,11 @@
     use app\utils\codeGenerator\CodeGenerator;
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //引入api的文件名称
+    // 引入api的文件名称
     $apiFileName = CodeGenerator::toCamelCase($table_name);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
-    //新增的权限节点
+    // 新增的权限节点
     $createAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Create';
 ?>
 import { useRef, lazy } from 'react';
@@ -44,11 +44,11 @@ export default ({ tableReload, ...props }) => {
                 >添加<?php echo $table_title ?? '';?></Button>
             }
             width={<?php echo $row_columns_number * 400;?>}
-            //第一个输入框获取焦点
+            // 第一个输入框获取焦点
             autoFocusFirstInput={true}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             omitNil={false}
             onFinish={async (values) => {
                 const result = await <?php echo $apiFileName;?>Api.create(values);

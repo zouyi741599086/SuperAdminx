@@ -7,19 +7,19 @@
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //所有要引入的api，额外用一个变量来存储，来引入
+    // 所有要引入的api，额外用一个变量来存储，来引入
     $apiAll = [];
 
-    //引入api的文件名称
+    // 引入api的文件名称
     $apiFileName = CodeGenerator::toCamelCase($table_name);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
     $apiAll[] = $apiFileName;
 
-    //列表权限节点
+    // 列表权限节点
     $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
     $menu = AdminMenuModel::where('name', $getListAuthName)->find();
 
-    //所有的字段的类型
+    // 所有的字段的类型
     $filedsTypeArr = [];
     if(isset($info_fields_type)) {
         foreach ($info_fields_type as $v) {
@@ -29,7 +29,7 @@
         }
     }
 
-    //proTable引入的api的文件
+    // proTable引入的api的文件
     $proTableApiName = [];
     if (isset($table_list) && $table_list) {
         foreach ($table_list as $k => $v) {
@@ -37,7 +37,7 @@
             $tmpApiName = strtolower($tmpApiName[0]) . substr($tmpApiName, 1);
             $proTableApiName[] = $tmpApiName;
 
-            //判断是否需要引入此api，因为可能已经引入过了
+            // 判断是否需要引入此api，因为可能已经引入过了
             if (!in_array($tmpApiName, $apiAll)) {
                 $apiAll[] = $tmpApiName;
                 
@@ -45,13 +45,13 @@
         }
     }
 
-    //时间轴的数据来源api文件
+    // 时间轴的数据来源api文件
     $timeLineApiFileName = '';
     if (isset($right_timeline) && $right_timeline == 2 && $right_timeline_apiFileName) {
         $timeLineApiFileName = CodeGenerator::toCamelCase($right_timeline_apiFileName);
         $timeLineApiFileName = strtolower($timeLineApiFileName[0]) . substr($timeLineApiFileName, 1);
 
-        //判断是否需要引入此api，因为可能已经引入过了
+        // 判断是否需要引入此api，因为可能已经引入过了
         if (!in_array($timeLineApiFileName, $apiAll)) {
             $apiAll[] = $timeLineApiFileName;
             
@@ -66,7 +66,7 @@ import {
     ProForm,
 } from '@ant-design/pro-components';
 <?php
-//需要引入的api文件
+// 需要引入的api文件
 foreach ($apiAll as $v) {
     echo "import { {$v}Api } from '@/api/{$v}';\n";
 }
@@ -76,7 +76,7 @@ import { useMount } from 'ahooks';
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Lazyload from '@/component/lazyLoad/index';
 <?php
-//导入需要使用的自定义的字段
+// 导入需要使用的自定义的字段
 if (in_array('preview_content',$filedsTypeArr)) echo "import PreviewContent from '@/component/preview/content/index';\n" ;
 if (in_array('preview_images_videos',$filedsTypeArr)) echo "import PreviewImagesVideos from '@/component/preview/imagesVideos/index';\n";
 if (in_array('preview_teditor',$filedsTypeArr)) echo "import PreviewTeditor from '@/component/preview/teditor/index';\n";
@@ -93,7 +93,7 @@ if (in_array('preview_word',$filedsTypeArr)) echo "import PreviewWord from '@/co
  * */
 export default () => {
 <?php
-        //如果有proTable
+        // 如果有proTable
         if (isset($table_list) && $table_list) {
             echo "    const tableRef = useRef();\n";
         }
@@ -132,7 +132,7 @@ export default () => {
             }
         })
     }
-    //返回上一页
+    // 返回上一页
     const onBack = () => {
         navigate('<?php echo $menu['path'] ?? '';?>');
     }
@@ -145,16 +145,16 @@ export default () => {
             if (isset($info_fields_type)) {
                 foreach ($info_fields_type as $field => $type) {
 
-                //字段的中文名称
+                // 字段的中文名称
                 $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
 
                 $children = "";
-                //文本
+                // 文本
                 if ($type == 'text') {
                     $children = "<Typography.Text>{data.{$field}}</Typography.Text>";
                 }
 
-                //文本可展开
+                // 文本可展开
                 if ($type == 'text_ellipsis') {
                     $children = "<Typography.Paragraph
                         ellipsis={{
@@ -164,7 +164,7 @@ export default () => {
                 >{data.{$field}}</Typography.Paragraph>";
                 }
 
-                //状态如订单状态
+                // 状态如订单状态
                 if ($type == 'status') {
                     $children = "<>
                     {data.{$field} === 1 ? <>
@@ -194,7 +194,7 @@ export default () => {
                 </>";
                 }
 
-                //文本可复制
+                // 文本可复制
                 if ($type == 'text_copy') {
                     $children = "<Typography.Paragraph
                     copyable={{
@@ -203,67 +203,67 @@ export default () => {
                 >{data.{$field}}</Typography.Paragraph>";
                 }
 
-                //灰色文本
+                // 灰色文本
                 if ($type == 'text_secondary') {
                     $children = "<Typography.Text type='secondary'>{data.{$field}}</Typography.Text>";
                 }
 
-                //绿色文本
+                // 绿色文本
                 if ($type == 'text_success') {
                     $children = "<Typography.Text type='success'>{data.{$field}}</Typography.Text>";
                 }
 
-                //黄色文本
+                // 黄色文本
                 if ($type == 'text_warning') {
                     $children = "<Typography.Text type='warning'>{data.{$field}}</Typography.Text>";
                 }
 
-                //红色文本
+                // 红色文本
                 if ($type == 'text_danger') {
                     $children = "<Typography.Text type='danger'>{data.{$field}}</Typography.Text>";
                 }
 
-                //加粗文本
+                // 加粗文本
                 if ($type == 'text_strong') {
                     $children = "<Typography.Text strong={true}>{data.{$field}}</Typography.Text>";
                 }
 
-                //黄色底文本
+                // 黄色底文本
                 if ($type == 'text_mark') {
                     $children = "<Typography.Text mark={true}>{data.{$field}}</Typography.Text>";
                 }
 
-                //灰色底文本
+                // 灰色底文本
                 if ($type == 'text_code') {
                     $children = "<Typography.Text code={true}>{data.{$field}}</Typography.Text>";
                 }
 
-                //弹窗查看文本
+                // 弹窗查看文本
                 if ($type == 'preview_content') {
                     $children = "<PreviewContent title=\"查看\" content={data.{$field}} type={1}/>";
                 }
 
-                //预览多个图片或视频
+                // 预览多个图片或视频
                 if ($type == 'preview_images_videos') {
                     $children = "<PreviewImagesVideos imgs={data.{$field}} />";
                 }
 
-                //预览富文本内容
+                // 预览富文本内容
                 if ($type == 'preview_teditor') {
                     $children = "<PreviewTeditor title=\"{$tmp_field_title}\" content={data.{$field}} />";
                 }
 
-                //预览视频
+                // 预览视频
                 if ($type == 'preview_video') {
                     $children = "<PreviewVideo url={data.{$field}} />";
                 }
 
-                //preview_pdf
+                // preview_pdf
                 if ($type == 'preview_pdf') {
                     $children = "<PreviewPdf title=\"{$tmp_field_title}\" url={data.{$field}} />";
                 }
 
-                //预览word
+                // 预览word
                 if ($type == 'preview_word') {
                     $children = "<PreviewWord title=\"{$tmp_field_title}\" url={data.{$field}} />";
                 }
@@ -315,7 +315,7 @@ export default () => {
     ?>
 
 <?php
-        //proTable的顶部的tabs的
+        // proTable的顶部的tabs的
         if (isset($table_list) && $table_list) {
 
                 echo "
@@ -336,7 +336,7 @@ export default () => {
     ";
 
     echo "
-    //刷新表格数据
+    // 刷新表格数据
     const tableReload = () => {
         tableRef.current.reload();
         tableRef.current.clearSelected();
@@ -350,7 +350,7 @@ export default () => {
 
             echo "
         {
-            columns: [ //每个表格的列需要修改
+            columns: [ // 每个表格的列需要修改
                 {
                     title: '项目名称',
                     dataIndex: 'title',
@@ -358,11 +358,11 @@ export default () => {
             ], 
             params: {
                 proTableKey: proTableKey,
-                id: id, //详情数据的主ID
+                id: id, // 详情数据的主ID
             },
             request: async (params = {}, sort, filter) => {
                 const res = await {$proTableApiName[$k]}Api.{$v['apiFileName_action']}({
-                    ...params,//包含了翻页参数跟搜索参数
+                    ...params,// 包含了翻页参数跟搜索参数
                     page: params.current,
                 });
                 return {
@@ -394,7 +394,7 @@ export default () => {
         >
             <Row gutter={16}>
                 <?php 
-                //生成时间轴的时候
+                // 生成时间轴的时候
                 echo (isset($right_timeline) && $right_timeline == 2) ? "<Col xs={24} sm={24} md={12} lg={16} xl={18}>\n" : "<Col xs={24} sm={24} md={24} lg={24} xl={24}>\n";?>
                     <Space direction="vertical" style={{ width: '100%' }}>
                         <ProCard>
@@ -406,7 +406,7 @@ export default () => {
                         </ProCard>
 
                 <?php
-                       //生成Card的时候
+                       // 生成Card的时候
                     if (isset($table_list) && $table_list) {
 
                                 echo "
@@ -431,12 +431,12 @@ export default () => {
                             pagination={{
                                 defaultPageSize: 10,
                                 size: 'default',
-                                //支持跳到多少页
+                                // 支持跳到多少页
                                 showQuickJumper: true,
                                 showSizeChanger: true,
                                 responsive: true,
                             }}
-                            //滚动条
+                            // 滚动条
                             scroll={{
                                 x: 1000
                             }}
@@ -450,7 +450,7 @@ export default () => {
                 </Col>
 
                 <?php
-                    //生成时间轴的时候
+                    // 生成时间轴的时候
                     if (isset($right_timeline) && $right_timeline == 2) {
                         
                         echo "
@@ -468,7 +468,7 @@ export default () => {
                 ?>
                 
                 <?php
-                    //生成底部操作栏的时候
+                    // 生成底部操作栏的时候
                     if (isset($bottom_action) && $bottom_action == 2) {
 
                         echo "

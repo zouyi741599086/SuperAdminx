@@ -40,15 +40,15 @@ class AdminUserValidate extends Validate
         'confirm_password.min'     => '新密码最少输入6位',
     ];
 
-    //验证场景
+    // 验证场景
     protected $scene = [
-        //添加
+        // 添加
         'create'          => ['name', 'tel', 'username', 'password', 'admin_role_id'],
-        //修改
+        // 修改
         'update'          => ['username', 'admin_role_id', 'name', 'tel'],
-        //修改密码
+        // 修改密码
         'update_password' => ['new_password', 'confirm_password'],
-        //用户修改自己的资料
+        // 用户修改自己的资料
         'update_info'     => ['name', 'tel'],
     ];
 

@@ -9,10 +9,10 @@ namespace app\common\model;
  * */
 class RegionModel extends BaseModel
 {
-    //表名
+    // 表名
     protected $name = 'region';
 
-    //是否自动完成字段
+    // 是否自动完成字段
     protected $autoWriteTimestamp = false;
 
 }

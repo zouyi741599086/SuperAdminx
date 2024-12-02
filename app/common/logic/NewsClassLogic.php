@@ -65,7 +65,7 @@ class NewsClassLogic
             validate(NewsClassValidate::class)->check($params);
             $result = NewsClassModel::create($params);
 
-            //重新更新我下面所有数据的pid_path相关字段
+            // 重新更新我下面所有数据的pid_path相关字段
             self::updatePidPath($result->id);
 
             Cache::delete("NewsClass");
@@ -85,13 +85,13 @@ class NewsClassLogic
         Db::startTrans();
         try {
             validate(NewsClassValidate::class)->check($params);
-            //由于前段form会把字段等于null的干掉，所以这要特别加上
+            // 由于前段form会把字段等于null的干掉，所以这要特别加上
             if (! isset($params['pid']) || ! $params['pid']) {
                 $params['pid'] = null;
             }
             NewsClassModel::update($params);
 
-            //重新更新我下面所有数据的pid_path相关字段
+            // 重新更新我下面所有数据的pid_path相关字段
             self::updatePidPath($params['id']);
 
             Cache::delete("NewsClass");
@@ -122,7 +122,7 @@ class NewsClassLogic
         }
         $data->save();
 
-        //更新我的下级
+        // 更新我的下级
         NewsClassModel::where('pid_path', 'like', "%,{$data['id']},%")
             ->orderRaw("CHAR_LENGTH(pid_path) asc")
             ->field('id,title,pid,pid_path,pid_path_title')
@@ -173,15 +173,15 @@ class NewsClassLogic
     {
         Db::startTrans();
         try {
-            //删除关联的文章
+            // 删除关联的文章
             $ids = NewsClassModel::where('pid_path', 'like', "%,{$id},%")->whereOr('id', $id)->column('id');
             NewsModel::destroy(function ($query) use ($ids)
             {
                 $query->where('news_class_id', 'in', $ids);
             });
-            //删除分类
+            // 删除分类
             NewsClassModel::destroy($ids);
-            //删除缓存
+            // 删除缓存
             Cache::delete("NewsClass");
             Cache::delete("NewsClass{$id}");
             Db::commit();

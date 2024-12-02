@@ -9,10 +9,10 @@ namespace app\common\model;
  * */
 class SmsCodeModel extends BaseModel
 {
-    //表名
+    // 表名
     protected $name = "sms_code";
 
-    //是否自动完成字段
+    // 是否自动完成字段
     protected $updateTime = false;
 
 }

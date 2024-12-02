@@ -15,9 +15,9 @@ use app\common\model\UserModel;
  * */
 class Login
 {
-    //此控制器是否需要登录
+    // 此控制器是否需要登录
     protected $onLogin = false;
-    //不需要登录的方法
+    // 不需要登录的方法
     protected $noNeedLogin = [];
 
     /**
@@ -30,14 +30,14 @@ class Login
     {
         $tel      = $request->post('tel');
         $password = $request->post('password');
-        //验证参数
+        // 验证参数
         if (! $tel || ! $password) {
             return error('用户名或密码错误');
         }
 
-        //查询用户
+        // 查询用户
         $user = UserModel::where('tel', $tel)->find();
-        //判断用户是否存在
+        // 判断用户是否存在
         if (! $user || ! password_verify($password, $user['password_hash'])) {
             return error('手机号或密码错误');
         }

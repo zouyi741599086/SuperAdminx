@@ -52,24 +52,24 @@ class AliyunOss
     {
         try {
             $filePath = rtrim($filePath, '/');
-            //读取文件的后缀
+            // 读取文件的后缀
             $fileInfo = pathinfo($filePath);
-            //读取文件的大小
+            // 读取文件的大小
             $fileSize = filesize(public_path() . "/{$filePath}");
 
-            //保存的目录
+            // 保存的目录
             $date    = date('Y-m-d');
             $time    = time();
             $rand    = mt_rand(0, 100000);
             $ossPath = "{$date}/{$fileInfo['extension']}/{$time}_{$rand}.{$fileInfo['extension']}";
 
-            //开始上传oss
+            // 开始上传oss
             $result = self::initOssClient()->uploadFile(
                 config('superadminx.file_system.aliyun.bucket'),
                 $ossPath,
                 "./public/{$filePath}"
             );
-            //上传后访问的连接
+            // 上传后访问的连接
             $url = config('superadminx.file_system.aliyun.bucket_url') . "/{$ossPath}";
             //存入file表数据库
             FileLogic::create(
@@ -79,17 +79,17 @@ class AliyunOss
                 $ossPath,
                 $result[OssClient::OSS_HEADER_VERSION_ID]
             );
-            //删除本地的文件
+            // 删除本地的文件
             if ($deleteFile) {
                 @unlink("./public/{$filePath}");
             }
         } catch (OssException $e) {
             abort($e->getMessage());
         }
-        //oss权限公共读
+        // oss权限公共读
         return $url;
-        //如果oss权限不是公共读就需要这样返回
-        //return $this->signUrl($object);
+        // 如果oss权限不是公共读就需要这样返回
+        // return $this->signUrl($object);
     }
 
     /**
@@ -125,14 +125,18 @@ class AliyunOss
      * @param string $version_id 文件的版本id
      * @return void
      */
-    public static function delete(string $object, string $version_id) : void
+    public static function delete(string $object, string $version_id = null) : void
     {
         try {
+            $params = [];
+            if ($version_id) {
+                $params[OssClient::OSS_VERSION_ID] = $version_id;
+            }
             // 删除指定versionId的Object。
             self::initOssClient()->deleteObject(
                 config('superadminx.file_system.aliyun.bucket'),
                 $object,
-                [OssClient::OSS_VERSION_ID => $version_id]
+                $params,
             );
         } catch (OssException $e) {
             abort($e->getMessage());
@@ -152,7 +156,7 @@ class AliyunOss
             abort('文件不存在');
         }
         try {
-            //设置文件访问的url过期时间
+            // 设置文件访问的url过期时间
             if (! $timeout) {
                 $tmp    = explode('.', $object);
                 $suffix = end($tmp);
@@ -184,10 +188,10 @@ class AliyunOss
         $date = date('Y-m-d', time());
         $dir  = $dir ?: "{$date}/";
 
-        //设置回调参数
+        // 设置回调参数
         $url             = config('superadminx.url');
         $callback_param  = [
-            'callbackUrl'      => "{$url}/admin/File/uploadAliyunOssCallback", //前端直传阿里云后的异步回调地址
+            'callbackUrl'      => "{$url}/admin/File/uploadAliyunOssCallback", // 前端直传阿里云后的异步回调地址
             'callbackBody'     => 'filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}',
             'callbackBodyType' => "application/x-www-form-urlencoded"
         ];
@@ -195,11 +199,11 @@ class AliyunOss
 
         $base64_callback_body = base64_encode($callback_string);
         $now                  = time();
-        $expire               = 1 * 60 * 60;  //设置该policy超时时间是10s. 即这个policy过了这个有效时间，将不能访问。
+        $expire               = 1 * 60 * 60;  // 设置该policy超时时间是10s. 即这个policy过了这个有效时间，将不能访问。
         $end                  = $now + $expire;
         $expiration           = str_replace('+00:00', '.000Z', gmdate('c', $end));
 
-        //最大文件大小.用户可以自己设置
+        // 最大文件大小.用户可以自己设置
         $condition    = [
             0 => 'content-length-range',
             1 => 0,
@@ -239,9 +243,9 @@ class AliyunOss
     {
         $post = request()->post();
         try {
-            //获取文件的元信息
+            // 获取文件的元信息
             $exist = self::initOssClient()->getObjectMeta(config('superadminx.file_system.aliyun.bucket'), $post['filename']);
-            //获取文件的版本id
+            // 获取文件的版本id
             $version_id = $exist['x-oss-version-id'];
 
             FileLogic::create(

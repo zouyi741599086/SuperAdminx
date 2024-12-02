@@ -7,7 +7,7 @@
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //引入api的文件名称
+    // 引入api的文件名称
     $apiFileName = CodeGenerator::toCamelCase($table_name);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 ?>
@@ -40,7 +40,7 @@ import {
     arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
-    rectSortingStrategy, //排序碰撞算法，有水平、垂直等
+    rectSortingStrategy, // 排序碰撞算法，有水平、垂直等
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -97,7 +97,7 @@ export default () => {
         }),
 
     );
-    //拖拽结束后
+    // 拖拽结束后
     const handleDragEnd = (event) => {
         const { active, over } = event;
         if (active.id !== over?.id) {
@@ -106,7 +106,7 @@ export default () => {
                 const newIndex = list.findIndex((i) => i.id === over?.id);
                 return arrayMove(list, oldIndex, newIndex);
             })();
-            //重新更新排序字段的值
+            // 重新更新排序字段的值
             _fileList = _fileList.map((item,index) => {
                 return {
                     ...item,
@@ -114,7 +114,7 @@ export default () => {
                 }
             })
             setList(_fileList);
-            //更新排序
+            // 更新排序
             <?php echo $apiFileName;?>Api.updateSort({ list: _fileList });
         }
     }

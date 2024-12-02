@@ -16,9 +16,9 @@ use app\utils\Sms;
  * */
 class User
 {
-    //此控制器是否需要登录
+    // 此控制器是否需要登录
     protected $onLogin = true;
-    //不需要登录的方法
+    // 不需要登录的方法
     protected $noNeedLogin = ['getResetPasswordCode', 'resetPassword'];
 
     /**
@@ -70,20 +70,20 @@ class User
             abort('参数错误');
         }
 
-        //验证手机号格式
+        // 验证手机号格式
         Sms::checkTel($data['tel']);
 
-        //判断此律师是否存在 是否正常
+        // 判断此律师是否存在 是否正常
         $user = UserModel::where('tel', $data['tel'])->find();
         if (! $user || $user['status'] == 2) {
             abort('手机号错误~');
         }
 
         $data['code'] = Sms::getCode(4);
-        //开始发送
+        // 开始发送
         //Sms::send($data['tel'], "您的验证码是：{$data['code']}，有效期5分钟。");
 
-        //添加发送记录
+        // 添加发送记录
         $data['type'] = 1;
         SmsCodeModel::create($data);
         return success([], '发送成功');

@@ -5,14 +5,14 @@
 use app\utils\codeGenerator\CodeGenerator;
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
-    //当前的表名转驼峰
+    // 当前的表名转驼峰
     $tableNameToCamelCase = CodeGenerator::toCamelCase($table_name);
-    //导出的名称
+    // 导出的名称
     $apiFileName = strtolower($tableNameToCamelCase[0]) . substr($tableNameToCamelCase, 1);
 
     $list = [];
 
-    //如果是从配置中生成
+    // 如果是从配置中生成
     if (isset($generator_type) && $generator_type == 1) {
         if (isset($data['controller']['functions']) && in_array('getList', $data['controller']['functions'])) {
             $list[] = [
@@ -79,14 +79,14 @@ use app\utils\codeGenerator\CodeGenerator;
             ];
         }
         if (isset($data['controller']['functions']) && in_array('importData', $data['controller']['functions'])) {
-            //下载导入模板
+            // 下载导入模板
             $list[] = [
                 'title' => '下载导入数据的表格模板',
                 'functoin_name' => 'downloadImportExcel',
                 'method' => 'get',
                 'url' => "/admin/{$tableNameToCamelCase}/downloadImportExcel"           
             ];
-            //如果是导入数据，则不一样，是直接返回上传文件的地址
+            // 如果是导入数据，则不一样，是直接返回上传文件的地址
             $list[] = [
                 'title' => '导入数据',
                 'content' => "importData: `\${config.url}/admin/{$tableNameToCamelCase}/importData`,"       
@@ -126,13 +126,13 @@ use app\utils\codeGenerator\CodeGenerator;
         }
     }
 
-    //如果是从反射中生成
+    // 如果是从反射中生成
     if (isset($generator_type) && $generator_type == 2) {
         // 通过反射获取控制器哪些方法不需要登录
         $methods = CodeGenerator::getOwnMethods("{$data['controller']['file_path']}\\{$data['controller']['file_name']}");
         foreach ($methods as $key => $m) {
             $docComment = $m->getDocComment();
-            //如果是导入数据，则不一样
+            // 如果是导入数据，则不一样
             if ($m->name == 'importData') {
                 $list[] = [
                     'title' => '导入数据',

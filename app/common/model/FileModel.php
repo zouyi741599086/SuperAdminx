@@ -11,6 +11,6 @@ use think\Model;
  * */
 class FileModel extends Model
 {
-    //表名
+    // 表名
     protected $name = 'file';
 }

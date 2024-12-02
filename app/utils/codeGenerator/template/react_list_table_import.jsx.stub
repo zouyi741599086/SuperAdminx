@@ -7,11 +7,11 @@
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //引入api的文件名称
+    // 引入api的文件名称
     $apiFileName = CodeGenerator::toCamelCase($table_name);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
-    //导入的权限id
+    // 导入的权限id
     $importDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ImportData';
 ?>
 import {
@@ -39,7 +39,7 @@ import { authCheck } from '@/common/function';
 export default ({ tableReload, ...props }) => {
     const { message, modal } = App.useApp();
 
-    //下载导入模板
+    // 下载导入模板
     const downloadImportExcel = () => {
         message.open({
             type: 'loading',
@@ -60,7 +60,7 @@ export default ({ tableReload, ...props }) => {
         })
     }
 
-    //上传导入
+    // 上传导入
     const uploadProps = {
         name: 'file',
         multiple: false,
