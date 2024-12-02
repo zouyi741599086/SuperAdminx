@@ -59,7 +59,12 @@ return [
             ]
         ]
     ],
-	'file'    => [
-        'handler' => app\process\File::class,
+    // 定时清除没使用的附件
+	'clearFile'    => [
+        'handler' => app\process\ClearFile::class,
     ],
+    // 定时清除临时文件
+	'tmpFile'    => [
+        'handler' => app\process\TmpFile::class,
+    ]
 ];

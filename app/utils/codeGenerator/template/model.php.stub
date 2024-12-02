@@ -4,9 +4,9 @@
  */
 use app\utils\codeGenerator\CodeGenerator;
 
-$delete_time = false; //是否有软删除时间字段
-$create_time = false; //是否有添加时间字段
-$update_time = false; //是否有更新时间字段
+$delete_time = false; // 是否有软删除时间字段
+$create_time = false; // 是否有添加时间字段
+$update_time = false; // 是否有更新时间字段
 foreach ($table_column as $k => $v) {
     if ($v['Field'] == 'create_time') {
         $create_time = true;
@@ -123,11 +123,11 @@ echo "    // 软删除
     // 获取器
     if (isset($get) && is_array($get)) {
         foreach ($get as $key => $value) {
-            //注释
+            // 注释
             $tmp_field_title = (isset($field_title[$key]) && $field_title[$key] != '') ? $field_title[$key] : $key;
             echo "    // {$tmp_field_title} 获取器";
 
-            //获取器的方法名，要将字段名转驼峰
+            // 获取器的方法名，要将字段名转驼峰
             $function_name = CodeGenerator::toCamelCase($key);
             
     echo "
@@ -145,11 +145,11 @@ echo "    // 软删除
     // 搜索器
     if (isset($search) && is_array($search)) {
         foreach ($search as $key => $value) {
-            //注释
+            // 注释
             $tmp_field_title = (isset($field_title[$key]) && $field_title[$key] != '') ? $field_title[$key] : $key;
             echo "    // {$tmp_field_title} 搜索器";
 
-            //搜索器的方法名，要将字段名转驼峰
+            // 搜索器的方法名，要将字段名转驼峰
             $function_name = CodeGenerator::toCamelCase($key);
             
     echo "
@@ -212,10 +212,10 @@ echo "    // 软删除
     // 关联模型
     if (isset($relevance) && is_array($relevance)) {
         foreach ($relevance as $key => $value) {
-            //注释
+            // 注释
             echo "    // {$value['title']} 关联模型";
 
-            //方法名，同时也是关联的模型名，要将表名转驼峰
+            // 方法名，同时也是关联的模型名，要将表名转驼峰
             $function_name = CodeGenerator::toCamelCase($value['model']);
             
     echo "
@@ -236,11 +236,11 @@ echo "    // 软删除
     }
     // 不等于
     if ($value['type'] == 'belongsToMany') {
-        //中间表类名
+        // 中间表类名
         $middle_name = CodeGenerator::toCamelCase($value['middle']);
-        //中间表中当前模型键名
+        // 中间表中当前模型键名
         $me_id = ltrim($table_name, getenv('DB_PREFIX')) . '_id';
-        //中间表中关联模型的键名
+        // 中间表中关联模型的键名
         $to_id = ltrim($value['model'], getenv('DB_PREFIX')) . '_id';
         echo "        return \$this->belongsToMany({$function_name}Model::class, {$middle_name}Model::class, '{$me_id}', '{$to_id}');";
     }

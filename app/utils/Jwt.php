@@ -12,7 +12,7 @@ use app\utils\DataEncryptor;
  * 
  * Jwt::generateToken(string $app_name, array $user) 生成token
  * Jwt::getUser(string $app_name) 解密token获取登录用户
- * Jwt::logoutUser(string $app_name, int $key_value) 强制清退某个应用的某个用户
+ * Jwt::logoutUser(string $app_name, int $id) 强制清退某个应用的某个用户，是清退此用户所有的终端
  * Jwt::getHeaderToken() 从header中获取当前登录用户的token
  * 
  * @author zy <741599086@qq.com>
@@ -39,21 +39,21 @@ class Jwt
         $db        = config('superadminx.jwt.db');
 
         if ($db === 'mysql') {
-            //存入数据库
+            // 存入数据库
             Db::name('Token')->insert([
                 'token_key' => $token_key,
                 'token'     => $token,
             ]);
-            //删除多余的token，只保留xx条
+            // 删除多余的token，只保留xx条
             $ids = Db::name('Token')->where('token_key', $token_key)->order('id desc')->limit($config['num'])->column('id');
             Db::name('Token')
                 ->where('token_key', $token_key)
                 ->where('id', 'not in', $ids)
                 ->delete();
         } else if ($db === 'redis') {
-            //存入数据库
+            // 存入数据库
             Redis::lpush($token_key, $token);
-            //删除多余的token，只保留xx条
+            // 删除多余的token，只保留xx条
             Redis::ltrim($token_key, 0, $config['num'] - 1);
         }
         return $token;
@@ -68,9 +68,9 @@ class Jwt
     {
         $config = self::getConfig($app_name);
 
-        //rsa初次解密
+        // rsa初次解密
         $token = self::getHeaderToken();
-        //解密token获取user，user里面会多一个过期时间字段：expires_at
+        // 解密token获取user，user里面会多一个过期时间字段：expires_at
         $user = self::tokenEncryption($token, 'D');
         if (! is_array($user) || ! $user) {
             abort('非法请求', -2);
@@ -79,7 +79,7 @@ class Jwt
 
         $db = config('superadminx.jwt.db');
         if ($db === 'mysql') {
-            //判断token是否在数据库中
+            // 判断token是否在数据库中
             $id = Db::name('Token')->where([
                 ['token_key', '=', $token_key],
                 ['token', '=', $token]
@@ -87,14 +87,14 @@ class Jwt
             if (! $id) {
                 abort('登录已失效', -2);
             }
-            //判断是否过期
+            // 判断是否过期
             if (time() >= $user['expires_at']) {
-                //删除
+                // 删除
                 Db::name('Token')->where('id', $id)->delete();
                 abort('登录已失效', -2);
             }
         } else if ($db === 'redis') {
-            //判断token是否在redis中
+            // 判断token是否在redis中
             $listLength    = Redis::lLen($token_key);
             $indexToDelete = -1;
             for ($i = 0; $i < $listLength; $i++) {
@@ -107,9 +107,9 @@ class Jwt
             if ($indexToDelete == -1) {
                 abort('登录已失效', -2);
             }
-            //判断是否过期
+            // 判断是否过期
             if (time() >= $user['expires_at']) {
-                //删除
+                // 删除
                 Redis::lRem($token_key, 1, $token);
                 abort('登录已失效', -2);
             }
@@ -118,7 +118,7 @@ class Jwt
     }
 
     /**
-     * 强制清退某个用户
+     * 强制清退某个用户，是清退此用户所有的终端
      * @param string $app_name 应用名称
      * @param int $id 加密时候的唯一性字段的值，一般是id
      */
@@ -141,18 +141,18 @@ class Jwt
     public static function getHeaderToken() : string
     {
         $request = request();
-        //判断是否有token
+        // 判断是否有token
         $token = $request->header(config('superadminx.jwt.header_key'));
         if (! $token) {
             abort('非法请求', -2);
         }
 
-        //rsa初次解密，前端传的token是token与time的通过rsa加密得到的
+        // rsa初次解密，前端传的token是token与time的通过rsa加密得到的
         $tmp = json_decode(DataEncryptor::rsaDecrypt($token), true);
         if (! isset($tmp['token']) || ! isset($tmp['time']) || ! $tmp['token'] || ! $tmp['time']) {
             abort('非法请求', -2);
         }
-        //非上传的时候此次请求时间超过30秒则非法
+        // 非上传的时候此次请求时间超过30秒则非法
         if (time() - intval($tmp['time'] / 1000) >= 60 && ! $request->file()) {
             abort('请求超时', -2);
         }

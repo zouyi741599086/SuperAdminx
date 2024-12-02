@@ -18,7 +18,7 @@ class Handler extends ExceptionHandler
 
     public function report(Throwable $exception)
     {
-        //自定义异常类，专门用于终止程序并返回错误信息，不需要记录日志
+        // 自定义异常类，专门用于终止程序并返回错误信息，不需要记录日志
         if ($exception instanceof CustomException) {
             return;
         }
@@ -36,7 +36,7 @@ class Handler extends ExceptionHandler
     {
         $this->debug = config('app.debug');
         $code        = $exception->getCode();
-        //把返回的msg改为了message
+        // 把返回的msg改为了message
         if ($request->expectsJson() || $request->header('content-type') == 'application/json' || $this->debug) {
             $json = ['code' => $code ?: 500, 'message' => $exception->getMessage()];
             $this->debug && $json['traces'] = (string) $exception;
@@ -48,6 +48,6 @@ class Handler extends ExceptionHandler
         }
         $error = $this->debug ? nl2br((string) $exception) : 'Server internal error';
         return new Response(500, [], $error);
-        //return parent::render($request, $exception);
+        // return parent::render($request, $exception);
     }
 }

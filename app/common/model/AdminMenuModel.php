@@ -9,10 +9,10 @@ namespace app\common\model;
  * */
 class AdminMenuModel extends BaseModel
 {
-    //表名
+    // 表名
     protected $name = 'admin_menu';
 
-    //查询字段
+    // 查询字段
     public function searchHiddenAttr($query, $value, $data)
     {
         if (! $value) {

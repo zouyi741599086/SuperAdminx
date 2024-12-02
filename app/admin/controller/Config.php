@@ -13,9 +13,9 @@ use app\common\logic\ConfigLogic;
  * */
 class Config
 {
-    //此控制器是否需要登录
+    // 此控制器是否需要登录
     protected $onLogin = true;
-    //不需要登录的方法
+    // 不需要登录的方法
     protected $noNeedLogin = [];
 
     /**

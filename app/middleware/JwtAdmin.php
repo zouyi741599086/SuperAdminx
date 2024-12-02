@@ -23,21 +23,21 @@ class JwtAdmin implements MiddlewareInterface
 
     public function process(Request $request, callable $handler) : Response
     {
-        //登录的角色
+        // 登录的角色
         $request->loginRole = 'admin';
         if ($this->actionIsLogin()) {
             $request->adminUser = Jwt::getUser('admin_pc');
 
-            //高并发需要关掉此处控制一下验证时机
+            // 高并发需要关掉此处控制一下验证时机
             $request->adminUser = AdminUserModel::find($request->adminUser['id']);
             if (! $request->adminUser || $request->adminUser['status'] == 2) {
                 abort('非法请求', -2);
             }
 
-            //验证接口级别的权限
+            // 验证接口级别的权限
             $authName = $this->actionIsAuth();
             if ($authName !== false && $request->adminUser->id != 1) {
-                //查询用户是否有此接口的权限
+                // 查询用户是否有此接口的权限
                 $menuId = AdminMenuModel::where('name', $authName)
                     ->where('id', 'in', function ($query) use ($request)
                     {
@@ -49,7 +49,7 @@ class JwtAdmin implements MiddlewareInterface
                 }
             }
 
-            //写访问日志
+            // 写访问日志
             AdminLogLogic::create();
         }
         return $handler($request);
@@ -65,11 +65,11 @@ class JwtAdmin implements MiddlewareInterface
         $key     = "{$request->controller}[{$request->action}]";
 
         if (! isset(self::$controllerActionIsLogin[$key])) {
-            //通过反射获取控制器
+            // 通过反射获取控制器
             $controller = new ReflectionClass($request->controller);
-            //控制器是否需要登录
+            // 控制器是否需要登录
             $onLogin = $controller->getDefaultProperties()['onLogin'] ?? false;
-            //控制器中不需要验证登录的方法
+            // 控制器中不需要验证登录的方法
             $noNeedLogin = $controller->getDefaultProperties()['noNeedLogin'] ?? [];
 
             self::$controllerActionIsLogin[$key] = ($onLogin && ! in_array($request->action, $noNeedLogin)) ? true : false;
@@ -87,7 +87,7 @@ class JwtAdmin implements MiddlewareInterface
         $key     = "{$request->controller}[{$request->action}]";
 
         if (! isset(self::$controllerActionIsAuth[$key])) {
-            //获取控制器》此方法的注释
+            // 获取控制器》此方法的注释
             $reflection = new \ReflectionMethod($request->controller, $request->action);
             $docComment = $reflection->getDocComment();
 

@@ -85,11 +85,11 @@ class FileLogic
         }
         $files = FileModel::where($where)->select();
         foreach ($files as $v) {
-            //说明文件是本地
+            // 说明文件是本地
             if ($v['disk'] == 'public') {
                 @unlink("./public{$v['url']}");
             }
-            //说明是阿里云oss
+            // 说明是阿里云oss
             if ($v['disk'] == 'aliyun') {
                 AliyunOss::delete($v['object'], $v['version_id']);
             }

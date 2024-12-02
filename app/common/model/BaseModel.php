@@ -29,7 +29,7 @@ class BaseModel extends Model
         $tableName = $data->name;
         $tableId   = ($data->toArray())['id'] ?? null;
 
-        //记录这条数据里面所有的附件
+        // 记录这条数据里面所有的附件
         if ($fileUrl && $tableName && $tableId) {
             FileRecordLogic::create($tableName, $tableId, $fileUrl);
         }
@@ -45,7 +45,7 @@ class BaseModel extends Model
         $tableName = $data->name;
         $tableId   = ($data->toArray())['id'] ?? null;
 
-        //重新更新此条数据使用的附件
+        // 重新更新此条数据使用的附件
         if ($fileUrl && $tableName && $tableId) {
             FileRecordLogic::update($tableName, $tableId, $fileUrl);
         }
@@ -60,7 +60,7 @@ class BaseModel extends Model
         $tableName = $data->name;
         $tableId   = ($data->toArray())['id'];
 
-        //删除附件记录
+        // 删除附件记录
         FileRecordLogic::delete($tableName, $tableId);
     }
 
@@ -77,15 +77,15 @@ class BaseModel extends Model
             }
             foreach ($data->file as $k => $v) {
                 if (isset($content[$k]) && $content[$k]) {
-                    //直接等于
+                    // 直接等于
                     if (($v == '' || ! $v) && isset($content[$k]) && $content[$k]) {
                         $fileUrl[] = $content[$k];
                     }
-                    //数组，支持多维数组，随便多深，想自定义表单的提交数据也可以放进来，把提交的每个值都当成附件路劲处理
+                    // 数组，支持多维数组，随便多深，想自定义表单的提交数据也可以放进来，把提交的每个值都当成附件路劲处理
                     if ($v == 'array' && isset($content[$k]) && $content[$k]) {
                         $fileUrl = array_merge($fileUrl, self::arrSearchFile($content[$k]));
                     }
-                    //编辑器
+                    // 编辑器
                     if ($v == 'editor') {
                         $tmp     = self::editorSearchFile($content[$k]);
                         $fileUrl = array_merge($fileUrl, $tmp);

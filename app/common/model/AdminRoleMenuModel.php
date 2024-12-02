@@ -11,10 +11,10 @@ use think\model\Pivot;
  * */
 class AdminRoleMenuModel extends Pivot
 {
-    //自动时间戳
+    // 自动时间戳
     protected $autoWriteTimestamp = false;
 
-    //表名
+    // 表名
     protected $name = 'admin_role_menu';
 
     /**

@@ -15,9 +15,9 @@ use app\utils\Jwt;
  * */
 class Login
 {
-    //此控制器是否需要登录
+    // 此控制器是否需要登录
     protected $onLogin = false;
-    //不需要登录的方法
+    // 不需要登录的方法
     protected $noNeedLogin = [];
 
     /**
@@ -31,14 +31,14 @@ class Login
         $username = $request->post('username');
         $password = $request->post('password');
 
-        //验证参数
+        // 验证参数
         if (! $username || ! $password) {
             return error('用户名或密码错误');
         }
 
-        //查询用户
+        // 查询用户
         $adminUser = AdminUserModel::where('username', $username)->find();
-        //判断用户是否存在
+        // 判断用户是否存在
         if (! $adminUser || ! password_verify($password, $adminUser['password'])) {
             return error('用户名或密码错误');
         }
@@ -46,7 +46,7 @@ class Login
             return error('帐号已被锁定');
         }
 
-        //更新用户登录的ip和时间
+        // 更新用户登录的ip和时间
         AdminUserModel::update([
             'id'        => $adminUser['id'],
             'last_time' => time(),

@@ -21,19 +21,19 @@ class JwtApi implements MiddlewareInterface
 
     public function process(Request $request, callable $handler) : Response
     {
-        //登录的角色
+        // 登录的角色
         $request->loginRole = 'user';
         try {
-            //不管是否需要登录都进行权限验证，因为有的接口可登录可不登录
+            // 不管是否需要登录都进行权限验证，因为有的接口可登录可不登录
             $request->user = Jwt::getUser('user_pc');
         } catch (\Exception $e) {
-            //必须要登录同时验证失败了，才抛出错误
+            // 必须要登录同时验证失败了，才抛出错误
             if ($this->actionIsLogin()) {
                 abort($e->getMessage(), -2);
             }
         }
 
-        //高并发需要关掉此处控制一下验证时机
+        // 高并发需要关掉此处控制一下验证时机
         if ($this->actionIsLogin()) {
             $request->user = UserLogic::findData($request->user['id']);
         }
@@ -50,11 +50,11 @@ class JwtApi implements MiddlewareInterface
         $key     = "{$request->controller}[{$request->action}]";
 
         if (! isset(self::$controllerActionIsLogin[$key])) {
-            //通过反射获取控制器
+            // 通过反射获取控制器
             $controller = new ReflectionClass($request->controller);
-            //控制器是否需要登录
+            // 控制器是否需要登录
             $onLogin = $controller->getDefaultProperties()['onLogin'] ?? false;
-            //控制器中不需要验证登录的方法
+            // 控制器中不需要验证登录的方法
             $noNeedLogin = $controller->getDefaultProperties()['noNeedLogin'] ?? [];
 
             self::$controllerActionIsLogin[$key] = ($onLogin && ! in_array($request->action, $noNeedLogin)) ? true : false;

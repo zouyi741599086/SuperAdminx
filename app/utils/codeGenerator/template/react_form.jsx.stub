@@ -7,10 +7,10 @@
 
     
 
-    //异步搜索选择某个表的id 需要导入的组件
+    // 异步搜索选择某个表的id 需要导入的组件
     $selectComponents = [];
 
-    //所有的字段的类型
+    // 所有的字段的类型
     $filedsTypeArr = [];
     if(isset($form_fileds_type)) {
         foreach ($form_fileds_type as $k => $v) {
@@ -18,7 +18,7 @@
                 $filedsTypeArr[] = $v;
             }
 
-            //如果有异步搜索选择某个表的id的字段，则把表转为驼峰当组件的名称
+            // 如果有异步搜索选择某个表的id的字段，则把表转为驼峰当组件的名称
             if ($v == 'SelectTable') {
                 $tmp = CodeGenerator::toCamelCase($form_fields_type_config[$k]['dataSourceTable']);
                 $form_fields_type_config[$k]['select_component_name'] = $tmp;
@@ -29,7 +29,7 @@
         }
     }
 
-    //所有需要引入的api请求
+    // 所有需要引入的api请求
     $apiFileArr = [];
     if (isset($form_fields_type_config)) {
         foreach ($form_fields_type_config as $k => $v) {
@@ -40,9 +40,9 @@
                     $apiFileArr[] = $tmpApiFileName;
                 }
                 
-                $form_fields_type_config[$k]['dataSourceApi'] = $tmpApiFileName; //字段配置里面存一份下面好用
+                $form_fields_type_config[$k]['dataSourceApi'] = $tmpApiFileName; // 字段配置里面存一份下面好用
             }
-            //判断字段规则里面是否有关联的字段
+            // 判断字段规则里面是否有关联的字段
             if (isset($v['dependencyField']) && $v['dependencyField']) {
                 $filedsTypeArr[] = 'ProFormDependency';
             }
@@ -56,7 +56,7 @@ import { lazy } from 'react';
     }
 ?>
 import { ProForm, <?php
-        //导入需要使用的字段
+        // 导入需要使用的字段
         if (in_array('Text',$filedsTypeArr) || in_array('Password',$filedsTypeArr)) {
             echo 'ProFormText, ';
         }
@@ -83,7 +83,7 @@ import { ProForm, <?php
 import { Row, Col } from 'antd';
 import { arrayToTree } from '@/common/function';
 <?php
-//导入需要使用的自定义的字段
+// 导入需要使用的自定义的字段
 if (in_array('province',$filedsTypeArr)) echo "import Province from '@/component/form/province/index';\n" ;
 if (in_array('provinceCity',$filedsTypeArr)) echo "import ProvinceCity from '@/component/form/provinceCity/index';\n";
 if (in_array('provinceCityArea',$filedsTypeArr)) echo "import ProvinceCityArea from '@/component/form/provinceCityArea/index';\n";
@@ -98,7 +98,7 @@ if (in_array('tagArr',$filedsTypeArr)) echo "const TagArrfrom '@/component/form/
 if (in_array('imgTitle',$filedsTypeArr)) echo "const ImgTitle from '@/component/form/imgTitle/index';\n";
 ?>
 <?php
-//导入需要使用的异步搜索选择组件
+// 导入需要使用的异步搜索选择组件
 foreach ($selectComponents as $v) {
 echo "import Select{$v} from '@/pages/components/select{$v}';\n";
 }
@@ -119,12 +119,12 @@ export default ({typeAction, ...props}) => {
         if(isset($form_fileds_type)) {
             
             foreach ($form_fileds_type as $field => $type) {
-                //字段的中文名称
+                // 字段的中文名称
                 $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
-                //字段的配置
+                // 字段的配置
                 $field_config = $form_fields_type_config[$field] ?? [];
                 $field_config['extra'] = $field_config['extra'] ?? '';
-                //字段的props 前缀 后缀
+                // 字段的props 前缀 后缀
                 $fieldProps = [];
                 if (isset($field_config['addonBefore']) && $field_config['addonBefore']) {
                     $fieldProps[] = "addonBefore: '{$field_config['addonBefore']}',";
@@ -132,7 +132,7 @@ export default ({typeAction, ...props}) => {
                 if (isset($field_config['addonAfter']) && $field_config['addonAfter']) {
                     $fieldProps[] = "addonAfter: '{$field_config['addonAfter']}',";
                 }
-                //提示语是请输入还是请选择还是请上传
+                // 提示语是请输入还是请选择还是请上传
                 $filedTip = '请输入';
                 if (in_array($type, ['DatePicker', 'DateTimePicker', 'DateRangePicker', 'DateTimeRangePicker', 'TimePicker', 'TimePickerRange', 'Select', 'TreeSelect', 'SelectTable', 'Checkbox', 'Radio', 'Cascader', 'Switch', 'province', 'provinceCity', 'provinceCityArea', 'tencentMap'])) {
                     $filedTip = '请选择';
@@ -140,7 +140,7 @@ export default ({typeAction, ...props}) => {
                 if (in_array($type, ['uploadFile', 'uploadFileAll', 'uploadImg', 'uploadImgAll', 'uploadImgVideoAll'])) {
                     $filedTip = '请输入';
                 }
-                //字段的类型 string | number | array
+                // 字段的类型 string | number | array
                 $fieldType = 'string';
                 if ($type == 'Digit') {
                     $fieldType = 'number';
@@ -148,7 +148,7 @@ export default ({typeAction, ...props}) => {
                 if (in_array($type, ['Checkbox','uploadFileAll','uploadImgAll','uploadImgVideoAll'])) {
                     $fieldType = 'array';
                 }
-                //字段的验证规则
+                // 字段的验证规则
                 $validata = [];
                 if (in_array('required', $field_config['validateRules'] ?? [])) {
                     $validata[] = "{ required: true, message: '{$filedTip}' },";
@@ -174,7 +174,7 @@ export default ({typeAction, ...props}) => {
                     $validata[] = "{ type: '{$fieldType}', len: {$field_config['lenNumber']}, message: '最大".($fieldType == 'number' ? '' : '长度')."为：{$field_config['maxNumber']}' },";
                 }
 
-                //每行的宽度
+                // 每行的宽度
                 if ($row_columns_number == 1) {
                     $starCol = "<Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>";
                 }
@@ -195,7 +195,7 @@ export default ({typeAction, ...props}) => {
                 }
                 $endCol = "</Col>";
 
-                //是否是关联字段
+                // 是否是关联字段
                 if (isset($form_fields_type_config[$field]['dependencyField']) && $form_fields_type_config[$field]['dependencyField']) {
                     $dependencyField = $form_fields_type_config[$field]['dependencyField'];
                     $starCol = "

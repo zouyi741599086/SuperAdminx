@@ -1,7 +1,7 @@
 <?php
 namespace app\utils;
 
-//use Intervention\Image\ImageManagerStatic as Image; //图片处理类 https://image.intervention.io/v2
+//use Intervention\Image\ImageManagerStatic as Image; // 图片处理类 https://image.intervention.io/v2
 use Intervention\Image\ImageManager;
 use support\Log;
 use app\common\logic\FileLogic;
@@ -18,10 +18,10 @@ use app\utils\AliyunOss;
  */
 class File
 {
-    //允许上传的文件后缀
+    // 允许上传的文件后缀
     public static $fileSuffix = ['png', 'jpg', 'jpeg', 'gif', 'rar', 'zip', 'txt', 'mp3', 'mp4', 'pdf', 'xlsx', 'xls', 'ppt', 'pptx', 'doc', 'docx'];
 
-    //允许上传的文件类型
+    // 允许上传的文件类型
     public static $fileMimeType = ['image/png', 'image/jpeg', 'image/gif', 'application/x-rar-compressed', 'application/rar', 'application/zip', 'text/plain', 'audio/mpeg', 'audio/mp3', 'video/mp4', 'video/x-m4v', 'application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
     /**
@@ -41,21 +41,21 @@ class File
             $fileSuffix = substr(strrchr($path, '.'), 1);
             $fileSize   = filesize("./public{$path}");
 
-            //图片裁剪 https://image.intervention.io/v2
+            // 图片裁剪 https://image.intervention.io/v2
             if (($width || $height) && in_array($fileSuffix, ['jpg', 'jpeg', 'png'])) {
                 self::imageCrop($path, $width, $height);
             }
-            //如果上传的是图片，则读取图片的Orientation信息，判断是否需要旋转90度使其显示正常，主要是苹果手机
+            // 如果上传的是图片，则读取图片的Orientation信息，判断是否需要旋转90度使其显示正常，主要是苹果手机
             if (in_array($fileSuffix, ['jpg', 'jpeg'])) {
                 self::imageOrientation($path, $fileSuffix);
             }
 
-            //上传到本地的时候
+            // 上传到本地的时候
             if ($disk == 'public') {
-                //存入file表
+                // 存入file表
                 FileLogic::create($disk, $path, $fileSize);
             }
-            //阿里云的时候
+            // 阿里云的时候
             if ($disk == 'aliyun') {
                 $path = AliyunOss::upload($path);
             }
@@ -92,7 +92,7 @@ class File
                 }
                 $time = time();
                 $rand = mt_rand(0, 100000);
-                //上传的目录
+                // 上传的目录
                 if ($dir) {
                     $path = "{$dir}/{$time}_{$rand}.$suffix";
                 } else {
@@ -124,15 +124,15 @@ class File
                 if (isset($exifData['Orientation'])) {
                     $manager = new ImageManager(['driver' => 'imagick']);
                     $image   = $manager->make("public/{$path}");
-                    //需要逆时针90度
+                    // 需要逆时针90度
                     if ($exifData['Orientation'] == 6) {
                         $image->rotate(-90)->save("public/{$path}", 100);
                     }
-                    //需要顺时针90度
+                    // 需要顺时针90度
                     if ($exifData['Orientation'] == 8) {
                         $image->rotate(90)->save("public/{$path}", 100);
                     }
-                    //需要180度
+                    // 需要180度
                     if ($exifData['Orientation'] == 3) {
                         $image->rotate(-180)->save("public/{$path}", 100);
                     }
@@ -157,12 +157,12 @@ class File
             $path    = "public/{$path}";
             $manager = new ImageManager(['driver' => 'imagick']);
             $image   = $manager->make($path);
-            //如果有宽无高
+            // 如果有宽无高
             if ($width && ! $height) {
                 $bili   = $width / $image->width();
                 $height = intval($bili * $image->height());
             }
-            //如果有高无宽
+            // 如果有高无宽
             if ($height && ! $width) {
                 $bili  = $height / $image->height();
                 $width = intval($bili * $image->width());

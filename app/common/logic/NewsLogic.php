@@ -21,7 +21,7 @@ class NewsLogic
      * */
     public static function getList(array $params = [], array $with = ['newsClass'], bool $filter = false)
     {
-        //排序
+        // 排序
         $orderBy = "sort desc,id desc";
         if (isset($params['orderBy']) && $params['orderBy']) {
             $orderBy = "{$params['orderBy']},{$orderBy}";
@@ -118,13 +118,13 @@ class NewsLogic
         if (! $ids || ! $type || ! $news_class_id) {
             abort('参数错误');
         }
-        //1》切换分类
+        // 1》切换分类
         if ($type == 1) {
             NewsModel::whereIn('id', $ids)->update([
                 'news_class_id' => $news_class_id
             ]);
         }
-        //2》复制文章
+        // 2》复制文章
         if ($type == 2) {
             $list = NewsModel::whereIn('id', $ids)->withoutField('id,creaet_time,update_time,pv')->select()->toArray();
             foreach ($list as $k => &$v) {

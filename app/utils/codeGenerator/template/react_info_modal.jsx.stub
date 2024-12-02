@@ -7,11 +7,11 @@
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //引入api的文件名称
+    // 引入api的文件名称
     $apiFileName = CodeGenerator::toCamelCase($table_name);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
-    //所有的字段的类型
+    // 所有的字段的类型
     $filedsTypeArr = [];
     if(isset($info_fields_type)) {
         foreach ($info_fields_type as $v) {
@@ -31,7 +31,7 @@ import { App, Button, Input, Descriptions, Typography, Space } from 'antd';
 import { useUpdateEffect } from 'ahooks';
 import { authCheck } from '@/common/function';
 <?php
-//导入需要使用的自定义的字段
+// 导入需要使用的自定义的字段
 if (in_array('preview_content',$filedsTypeArr)) echo "import PreviewContent from '@/component/preview/content/index';\n" ;
 if (in_array('preview_images_videos',$filedsTypeArr)) echo "import PreviewImagesVideos from '@/component/preview/imagesVideos/index';\n";
 if (in_array('preview_teditor',$filedsTypeArr)) echo "import PreviewTeditor from '@/component/preview/teditor/index';\n";
@@ -76,16 +76,16 @@ export default ({ infoId, setInfoId, ...props }) => {
             if (isset($info_fields_type)) {
                 foreach ($info_fields_type as $field => $type) {
 
-                //字段的中文名称
+                // 字段的中文名称
                 $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
 
                 $children = "";
-                //文本
+                // 文本
                 if ($type == 'text') {
                     $children = "<Typography.Text>{data.{$field}}</Typography.Text>";
                 }
 
-                //文本可展开
+                // 文本可展开
                 if ($type == 'text_ellipsis') {
                     $children = "<Typography.Paragraph
                         ellipsis={{
@@ -95,7 +95,7 @@ export default ({ infoId, setInfoId, ...props }) => {
                 >{data.{$field}}</Typography.Paragraph>";
                 }
 
-                //状态如订单状态
+                // 状态如订单状态
                 if ($type == 'status') {
                     $children = "<>
                     {data.{$field} === 1 ? <>
@@ -125,7 +125,7 @@ export default ({ infoId, setInfoId, ...props }) => {
                 </>";
                 }
 
-                //文本可复制
+                // 文本可复制
                 if ($type == 'text_copy') {
                     $children = "<Typography.Paragraph
                     copyable={{
@@ -134,67 +134,67 @@ export default ({ infoId, setInfoId, ...props }) => {
                 >{data.{$field}}</Typography.Paragraph>";
                 }
 
-                //灰色文本
+                // 灰色文本
                 if ($type == 'text_secondary') {
                     $children = "<Typography.Text type='secondary'>{data.{$field}}</Typography.Text>";
                 }
 
-                //绿色文本
+                // 绿色文本
                 if ($type == 'text_success') {
                     $children = "<Typography.Text type='success'>{data.{$field}}</Typography.Text>";
                 }
 
-                //黄色文本
+                // 黄色文本
                 if ($type == 'text_warning') {
                     $children = "<Typography.Text type='warning'>{data.{$field}}</Typography.Text>";
                 }
 
-                //红色文本
+                // 红色文本
                 if ($type == 'text_danger') {
                     $children = "<Typography.Text type='danger'>{data.{$field}}</Typography.Text>";
                 }
 
-                //加粗文本
+                // 加粗文本
                 if ($type == 'text_strong') {
                     $children = "<Typography.Text strong={true}>{data.{$field}}</Typography.Text>";
                 }
 
-                //黄色底文本
+                // 黄色底文本
                 if ($type == 'text_mark') {
                     $children = "<Typography.Text mark={true}>{data.{$field}}</Typography.Text>";
                 }
 
-                //灰色底文本
+                // 灰色底文本
                 if ($type == 'text_code') {
                     $children = "<Typography.Text code={true}>{data.{$field}}</Typography.Text>";
                 }
 
-                //弹窗查看文本
+                // 弹窗查看文本
                 if ($type == 'preview_content') {
                     $children = "<PreviewContent title=\"查看\" content={data.{$field}} type={1}/>";
                 }
 
-                //预览多个图片或视频
+                // 预览多个图片或视频
                 if ($type == 'preview_images_videos') {
                     $children = "<PreviewImagesVideos imgs={data.{$field}} />";
                 }
 
-                //预览富文本内容
+                // 预览富文本内容
                 if ($type == 'preview_teditor') {
                     $children = "<PreviewTeditor title=\"{$tmp_field_title}\" content={data.{$field}} />";
                 }
 
-                //预览视频
+                // 预览视频
                 if ($type == 'preview_video') {
                     $children = "<PreviewVideo url={data.{$field}} />";
                 }
 
-                //preview_pdf
+                // preview_pdf
                 if ($type == 'preview_pdf') {
                     $children = "<PreviewPdf title=\"{$tmp_field_title}\" url={data.{$field}} />";
                 }
 
-                //预览word
+                // 预览word
                 if ($type == 'preview_word') {
                     $children = "<PreviewWord title=\"{$tmp_field_title}\" url={data.{$field}} />";
                 }
@@ -220,7 +220,7 @@ export default ({ infoId, setInfoId, ...props }) => {
             open={open}
             onOpenChange={(_boolean) => {
                 setOpen(_boolean);
-                //关闭的时候干掉infoId，不然无法重复修改同一条数据
+                // 关闭的时候干掉infoId，不然无法重复修改同一条数据
                 if (_boolean === false) {
                 setInfoId(0);
                 }

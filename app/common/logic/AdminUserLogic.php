@@ -51,7 +51,7 @@ class AdminUserLogic
         try {
             validate(AdminUserValidate::class)->scene('update')->check($params);
 
-            //没修改密码则干掉此字段
+            // 没修改密码则干掉此字段
             if (isset($params['password']) && !$params['password']) {
                 unset($params['password']);
             }
@@ -108,12 +108,12 @@ class AdminUserLogic
         try {
             validate(AdminUserValidate::class)->scene('update_password')->check($data);
 
-            //判断原密码是否正确
+            // 判断原密码是否正确
             $password_hash = AdminUserModel::where('id', $login_admin_user_id)->value('password_hash');
             if (! password_verify($data['password'], $password_hash)) {
                 abort('原密码错误');
             }
-            //判断两次密码输入是否一致
+            // 判断两次密码输入是否一致
             if ($data['new_password'] != $data['confirm_password']) {
                 abort('新密码两次输入不一致');
             }
@@ -153,7 +153,7 @@ class AdminUserLogic
             ->find($admin_user_id)
             ->toArray();
 
-        //用户拥有的权限节点
+        // 用户拥有的权限节点
         if ($data['id'] == 1) {
             $data['menu'] = AdminMenuModel::field('*')
                 ->order('sort asc,id desc')

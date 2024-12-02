@@ -6,10 +6,10 @@ use app\utils\codeGenerator\CodeGenerator;
 
     $data = CodeGenerator::getCodeGeneratorInfo($table_name);
 
-    //当前的表名转驼峰
+    // 当前的表名转驼峰
     $tableNameToCamelCase = CodeGenerator::toCamelCase($table_name);
 
-    //是否有sort字段
+    // 是否有sort字段
     $isSort = false;
     $tableColumn = CodeGenerator::getTableColumn($table_name);
     foreach ($tableColumn as $key => $value) {
@@ -18,10 +18,10 @@ use app\utils\codeGenerator\CodeGenerator;
         }
     }
 
-    //排序规则
+    // 排序规则
     $orderBy = $isSort ? "sort desc,id desc" : "id desc";
 
-    //当前的表名转驼峰，用来当缓存标识
+    // 当前的表名转驼峰，用来当缓存标识
     $tableNameToCamelCase = CodeGenerator::toCamelCase($table_name);
 ?>
 namespace <?php echo $file_path ?? ''; ?>;
@@ -51,7 +51,7 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // getList方法
     if (isset($data['controller']['functions']) && in_array('getList', $data['controller']['functions'])) {
-        //常规方法
+        // 常规方法
         if (isset($logic_type) && $logic_type == 1) {
     echo "
     /**
@@ -61,7 +61,7 @@ class <?php echo $file_name ?? ''; ?>
      * */
     public static function getList(array \$params = [], bool \$page = true)
     {
-        //排序
+        // 排序
         \$orderBy = \"{$orderBy}\";\n";
 
         //排序是否有sort字段
@@ -69,7 +69,7 @@ class <?php echo $file_name ?? ''; ?>
             \$orderBy = \"{\$params['orderBy']},{\$orderBy}\";
         }\n";
 
-        //如果有搜索
+        // 如果有搜索
         if (isset($data['model']['search']) && is_array($data['model']['search'])) {
                 $searchFields = implode("', '", array_keys($data['model']['search']));
         echo "
@@ -86,7 +86,7 @@ class <?php echo $file_name ?? ''; ?>
     }";
         }
 
-        //全表缓存
+        // 全表缓存
         if (isset($logic_type) && $logic_type == 2) {
 
     echo "
@@ -133,7 +133,7 @@ class <?php echo $file_name ?? ''; ?>
 
             {$data['model']['file_name']}::create(\$params);";
         
-            //是否有全局缓存
+            // 是否有全局缓存
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
             Cache::delete(\"{$tableNameToCamelCase}\");";
@@ -160,7 +160,7 @@ class <?php echo $file_name ?? ''; ?>
      */
     public static function findData(int \$id)
     {";
-        //是否缓存数据
+        // 是否缓存数据
         if (isset($logic_type) && $logic_type == 2) {
 
             echo "
@@ -209,7 +209,7 @@ class <?php echo $file_name ?? ''; ?>
 
             {$data['model']['file_name']}::update(\$params);";
 
-            //是否有全表缓存
+            // 是否有全表缓存
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
             Cache::delete(\"{$tableNameToCamelCase}\");
@@ -239,7 +239,7 @@ class <?php echo $file_name ?? ''; ?>
     {
         {$data['model']['file_name']}::destroy(\$id);";
 
-        //是否有全表缓存
+        // 是否有全表缓存
         if (isset($logic_type) && $logic_type == 2) {
 
             echo "
@@ -280,7 +280,7 @@ class <?php echo $file_name ?? ''; ?>
                 ]);
             }";
 
-            //是否全表缓存
+            // 是否全表缓存
             if (isset($logic_type) && $logic_type == 2) {
             echo "
             Cache::delete(\"{$tableNameToCamelCase}\");";
@@ -314,7 +314,7 @@ class <?php echo $file_name ?? ''; ?>
                 'status' => \$status
             ]);";
 
-            //是否全表缓存
+            // 是否全表缓存
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
             Cache::delete(\"{$tableNameToCamelCase}\");
@@ -349,7 +349,7 @@ class <?php echo $file_name ?? ''; ?>
      */
     public static function select{$tableNameToCamelCase}(?string \$keywords, ?int \$id)
     {";
-        //从表中读所有字段，判断是否有title、name、tel这三个字段，然后生成只搜索这三个字段
+        // 从表中读所有字段，判断是否有title、name、tel这三个字段，然后生成只搜索这三个字段
         $tmpFields = [];
         foreach ($tableColumn as $v) {
             if (in_array($v['Field'], ['title','name','tel'])) {
@@ -360,7 +360,7 @@ class <?php echo $file_name ?? ''; ?>
         $tmpSelectFields = implode(',', $tmpFields);
         echo "
         \$where = [];
-        //搜索
+        // 搜索
         \$keywords != null && \$where[] = ['{$tmpSearchFields}', 'like', \"%{\$keywords}%\"];
         \$id != null && \$where[] = ['id', '=', \$id];
 
@@ -377,9 +377,9 @@ class <?php echo $file_name ?? ''; ?>
 <?php
     // importData导入数据  下载导入模板
     if (isset($data['controller']['functions']) && in_array('importData', $data['controller']['functions'])) {
-        //导出的表格头
+        // 导出的表格头
         $excelHeader = isset($data['field_title']) ? implode("', '", $data['field_title']) : [];
-        //导出的表格头需要过滤掉空值
+        // 导出的表格头需要过滤掉空值
         $excelHeader = array_filter($data['field_title'] ?: [], function ($value) {  
             return $value !== null && $value !== '';  
         }); 
@@ -393,12 +393,12 @@ class <?php echo $file_name ?? ''; ?>
     public static function downloadImportExcel()
     {
         try {
-            //表格头
+            // 表格头
             \$tableData = [['{$excelHeader}']];
 
-            //模板里面如果有数据，则继续网\$tableData里面装 
+            // 模板里面如果有数据，则继续网\$tableData里面装 
             
-            //开始生成表格导出
+            // 开始生成表格导出
             \$config    = [
                 'path' => public_path() . '/tmp_file',
             ];
@@ -407,9 +407,9 @@ class <?php echo $file_name ?? ''; ?>
             \$fileObject = \$excel->fileName(rand(1, 1000000) . '.xlsx')->header([])->data(\$tableData);
             \$fileHandle = \$fileObject->getHandle();
 
-            //第一行合并单元格
+            // 第一行合并单元格
             \$fileObject->mergeCells(\"A1:L1\", \"1：请按照表格录入数据\\n2：每一列都是必填项，为空将导致导入失败\");
-            //第一行样式
+            // 第一行样式
             \$format1 = new \Vtiful\Kernel\Format(\$fileHandle);
             \$fileObject->setRow(\"A1\", 60, \$format1
                 ->wrap()
@@ -418,7 +418,7 @@ class <?php echo $file_name ?? ''; ?>
                 ->align(\Vtiful\Kernel\Format::FORMAT_ALIGN_VERTICAL_CENTER)
                 ->toResource()
             );
-            //标题第二行样式
+            // 标题第二行样式
             \$format2 = new \Vtiful\Kernel\Format(\$fileHandle);
             \$fileObject->setRow(\"A2\", 22, \$format2
                 ->bold()
@@ -427,11 +427,11 @@ class <?php echo $file_name ?? ''; ?>
                 ->toResource()
             );
 
-            //设置列的宽度
+            // 设置列的宽度
             //\$fileObject->setColumn('A1:A1000', 10);
             //\$fileObject->setColumn('B1:B1000', 30);
 
-            //下拉选择，如果需要的话，下拉文字总数不能超过255，否则报错
+            // 下拉选择，如果需要的话，下拉文字总数不能超过255，否则报错
             //\$typeArr = ['选择项1', '选择项2'];
             //\$validation = new \Vtiful\Kernel\Validation();
             //\$validation->validationType(\Vtiful\Kernel\Validation::TYPE_LIST)->valueList(\$typeArr);
@@ -498,7 +498,7 @@ class <?php echo $file_name ?? ''; ?>
 
             (new {$data['model']['file_name']}())->saveAll(\$list);";
               
-            //是否全表缓存
+            // 是否全表缓存
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
             Cache::delete(\"{$tableNameToCamelCase}\");\n";
@@ -519,9 +519,9 @@ class <?php echo $file_name ?? ''; ?>
     // exportData导出数据
     if (isset($data['controller']['functions']) && in_array('exportData', $data['controller']['functions'])) {
         
-        //导出的表格头
+        // 导出的表格头
         $excelHeader = isset($data['field_title']) ? implode("', '", $data['field_title']) : [];
-        //导出的表格头需要过滤掉空值
+        // 导出的表格头需要过滤掉空值
         $excelHeader = array_filter($data['field_title'] ?: [], function ($value) {  
             return $value !== null && $value !== '';  
         }); 
@@ -535,13 +535,13 @@ class <?php echo $file_name ?? ''; ?>
     public static function exportData(array \$params)
     {
         try {
-            //表格头
+            // 表格头
             \$header = ['{$excelHeader}'];
 
             \$list    = self::getList(\$params, false);
             \$tmpList = [];
             foreach (\$list as \$v) {
-                //导出的数据
+                // 导出的数据
                 \$tmpList[] = [";
                     if (isset($data['field_title'])) {
                         foreach ($data['field_title'] as $key => $value) {
@@ -554,7 +554,7 @@ class <?php echo $file_name ?? ''; ?>
                 echo "
                 ];
             }
-            //开始生成表格导出
+            // 开始生成表格导出
             \$config    = [
                 'path' => public_path() . '/tmp_file',
             ];
@@ -583,7 +583,7 @@ class <?php echo $file_name ?? ''; ?>
     if (isset($other_functions) && is_array($other_functions)) {
         
         foreach ($other_functions as $key => $value) {
-            //如果方法主体内容是批量更新字段
+            // 如果方法主体内容是批量更新字段
             if ($value['function_content'] == 'updateAll') {
             echo "
     /**
@@ -594,7 +594,7 @@ class <?php echo $file_name ?? ''; ?>
     {
         Db::startTrans();
         try {
-            //为了file表记录更新带附件的字段，所以用循环更新没用批量更新,因为批量更新BaseModel里面无法获取每条更新数据的id，导致file表无法记录到附件
+            // 为了file表记录更新带附件的字段，所以用循环更新没用批量更新,因为批量更新BaseModel里面无法获取每条更新数据的id，导致file表无法记录到附件
             foreach (\$params['ids'] as \$id) {
                 {$data['model']['file_name']}::update([
                     'xxx' => \$params['xxx'],
@@ -602,10 +602,10 @@ class <?php echo $file_name ?? ''; ?>
                 ]);
             }\n";
             
-            //是否有全表缓存
+            // 是否有全表缓存
             if (isset($logic_type) && $logic_type == 2) {
                 echo "
-            //删除缓存
+            // 删除缓存
             Cache::delete(\"{$tableNameToCamelCase}\");
             foreach (\$params['ids'] as \$id) {
                 Cache::delete(\"{$tableNameToCamelCase}{\$id}\");
@@ -623,7 +623,7 @@ class <?php echo $file_name ?? ''; ?>
 
         }
 
-        //自己写方法主体内容
+        // 自己写方法主体内容
         if ($value['function_content'] == 'empty') {
             echo "
     /**

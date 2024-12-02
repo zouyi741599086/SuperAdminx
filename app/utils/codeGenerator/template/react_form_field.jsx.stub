@@ -1,7 +1,7 @@
 <?php
-//整套系统所有的form的field都是这输出
+// 整套系统所有的form的field都是这输出
 
-                //文本输入框
+                // 文本输入框
                 if ($type == 'Text') {
                     echo "    
             {$starCol}
@@ -41,7 +41,7 @@
             {$endCol}";
                 }
 
-                //密码输入框
+                // 密码输入框
                 else if ($type == 'Password') {
                     echo "    
             {$starCol}
@@ -83,7 +83,7 @@
             {$endCol}";
                 }
 
-                //多行文本输入
+                // 多行文本输入
                 else if ($type == 'TextArea') {
                     echo "    
             {$starCol}
@@ -123,7 +123,7 @@
             {$endCol}";
                 }
 
-                //数字输入
+                // 数字输入
                 else if ($type == 'Digit') {
                     echo "    
             {$starCol}
@@ -163,7 +163,7 @@
             {$endCol}";
                 }
 
-                //数字区间输入
+                // 数字区间输入
                 else if ($type == 'DigitRange') {
                     echo "    
             {$starCol}
@@ -202,7 +202,7 @@
             {$endCol}";
                 }
 
-                //日期选择
+                // 日期选择
                 else if ($type == 'DatePicker') {
                     echo "    
             {$starCol}
@@ -238,7 +238,7 @@
             {$endCol}";
                 }
 
-                //日期+时间选择
+                // 日期+时间选择
                 else if ($type == 'DateTimePicker') {
                     echo "    
             {$starCol}
@@ -276,7 +276,7 @@
             {$endCol}";
                 }
 
-                //日期区间选择
+                // 日期区间选择
                 else if ($type == 'DateRangePicker') {
                     echo "    
             {$starCol}
@@ -314,7 +314,7 @@
             {$endCol}";
                 }
 
-                //日期+时间区间选择
+                // 日期+时间区间选择
                 else if ($type == 'DateTimeRangePicker') {
                     echo "    
             {$starCol}
@@ -352,7 +352,7 @@
             {$endCol}";
                 }
 
-                //时间选择
+                // 时间选择
                 else if ($type == 'TimePicker') {
                     echo "    
             {$starCol}
@@ -388,7 +388,7 @@
             {$endCol}";
                 }
 
-                //时间区间选择
+                // 时间区间选择
                 else if ($type == 'TimePickerRange') {
                     echo "    
             {$starCol}
@@ -426,7 +426,7 @@
             {$endCol}";
                 }
 
-                //下拉
+                // 下拉
                 else if ($type == 'Select') {
                     echo "    
             {$starCol}
@@ -445,13 +445,13 @@
                     mode=\"{$field_config['selectMode']}\"";
                     }
 
-                    //多选最大数量
+                    // 多选最大数量
                     if (isset($field_config['maxCount']) && $field_config['maxCount']) {
                         echo "
                     maxCount={{$field_config['maxCount']}}";
                     }
 
-                    //自己输入选择项
+                    // 自己输入选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
                             echo "
                     options={[
@@ -460,9 +460,9 @@
                     ]}";
                     }
 
-                    //从接口请求选择项
+                    // 从接口请求选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
-                        //从哪个api请求
+                        // 从哪个api请求
                         $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
                         echo "
                     request={async () => {
@@ -495,7 +495,7 @@
             {$endCol}";
                 }
 
-                //树选择
+                // 树选择
                 else if ($type == 'TreeSelect') {
                     echo "    
             {$starCol}
@@ -509,13 +509,13 @@
                         treeNodeFilterProp: 'label',
                     }}";
 
-                    //是否显示checkbox
+                    // 是否显示checkbox
                     if (isset($field_config['treeCheckable']) && $field_config['treeCheckable']) {
                         echo "
                     treeCheckable={true}";
                     }
 
-                    //自己输入选择项
+                    // 自己输入选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
                             echo "
                     request={async () => [
@@ -530,9 +530,9 @@
                     ]";
                     }
 
-                    //从接口请求选择项
+                    // 从接口请求选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
-                        //从哪个api请求
+                        // 从哪个api请求
                         $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
                         echo "
                     request={async () => {
@@ -565,7 +565,7 @@
             {$endCol}";
                 }
 
-                //异步搜索选择某个表的id
+                // 异步搜索选择某个表的id
                 else if ($type == 'SelectTable') {
                     echo "    
             {$starCol}
@@ -594,7 +594,7 @@
             {$endCol}";
                 }
 
-                //Checkbox多选
+                // Checkbox多选
                 else if ($type == 'Checkbox') {
                     echo "    
             {$starCol}
@@ -603,7 +603,7 @@
                     label=\"{$tmp_field_title}\"
                     placeholder=\"{$filedTip}\"";
 
-                    //自己输入选择项
+                    // 自己输入选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
                             echo "
                     options={[
@@ -612,9 +612,9 @@
                     ]";
                     }
 
-                    //从接口请求选择项
+                    // 从接口请求选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
-                        //从哪个api请求
+                        // 从哪个api请求
                         $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
                         echo "
                     request={async () => {
@@ -647,7 +647,7 @@
             {$endCol}";
                 }
 
-                //Radio单选
+                // Radio单选
                 else if ($type == 'Radio') {
                     echo "    
             {$starCol}
@@ -656,7 +656,7 @@
                     label=\"{$tmp_field_title}\"
                     placeholder=\"{$filedTip}\"";
 
-                    //自己输入选择项
+                    // 自己输入选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
                             echo "
                     options={[
@@ -665,9 +665,9 @@
                     ]}";
                     }
 
-                    //从接口请求选择项
+                    // 从接口请求选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
-                        //从哪个api请求
+                        // 从哪个api请求
                         $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
                         echo "
                     request={async () => {
@@ -700,7 +700,7 @@
             {$endCol}";
                 }
 
-                //Cascaderlian级联选择
+                // Cascaderlian级联选择
                 else if ($type == 'Cascader') {
                     echo "    
             {$starCol}
@@ -714,13 +714,13 @@
                         expandTrigger:'hover',
                     }}";
 
-                    //是否多选
+                    // 是否多选
                     if (isset($field_config['cascaderMultiple']) && $field_config['cascaderMultiple']) {
                         echo "
                     multiple={true}";
                     }
 
-                    //自己输入选择项
+                    // 自己输入选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
                             echo "
                     request={async () => [
@@ -735,9 +735,9 @@
                     ]";
                     }
 
-                    //从接口请求选择项
+                    // 从接口请求选择项
                     if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
-                        //从哪个api请求
+                        // 从哪个api请求
                         $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
                         echo "
                     request={async () => {
@@ -770,7 +770,7 @@
             {$endCol}";
                 }
 
-                //Switch开关
+                // Switch开关
                 else if ($type == 'Switch') {
                     echo "    
             {$starCol}
@@ -782,7 +782,7 @@
             {$endCol}";
                 }
 
-                //省选择
+                // 省选择
                 if ($type == 'province') {
                     echo "    
             {$starCol}
@@ -811,7 +811,7 @@
             {$endCol}";
                 }
 
-                //省市选择
+                // 省市选择
                 else if ($type == 'provinceCity') {
                     echo "    
             {$starCol}
@@ -840,7 +840,7 @@
             {$endCol}";
                 }
 
-                //省市区选择
+                // 省市区选择
                 else if ($type == 'provinceCityArea') {
                     echo "    
             {$starCol}
@@ -869,7 +869,7 @@
             {$endCol}";
                 }
 
-                //富文本编辑器
+                // 富文本编辑器
                 else if ($type == 'teditor') {
                     echo "    
             {$starCol}
@@ -898,7 +898,7 @@
             {$endCol}";
                 }
 
-                //腾讯经纬度选择
+                // 腾讯经纬度选择
                 else if ($type == 'tencentMap') {
                     echo "    
             {$starCol}
@@ -927,7 +927,7 @@
             {$endCol}";
                 }
 
-                //上传单个文件
+                // 上传单个文件
                 else if ($type == 'uploadFile') {
                     echo "    
             {$starCol}
@@ -967,7 +967,7 @@
             {$endCol}";
                 }
 
-                //上传多个文件
+                // 上传多个文件
                 else if ($type == 'uploadFileAll') {
                     echo "    
             {$starCol}
@@ -1014,7 +1014,7 @@
             {$endCol}";
                 }
 
-                //上传单张图片
+                // 上传单张图片
                 else if ($type == 'uploadImg') {
                     echo "    
             {$starCol}
@@ -1043,7 +1043,7 @@
             {$endCol}";
                 }
 
-                //上传多张图片
+                // 上传多张图片
                 else if ($type == 'uploadImgAll') {
                     echo "    
             {$starCol}
@@ -1072,7 +1072,7 @@
             {$endCol}";
                 }
 
-                //上传图片或视频
+                // 上传图片或视频
                 else if ($type == 'uploadImgVideoAll') {
                     echo "    
             {$starCol}
@@ -1101,7 +1101,7 @@
             {$endCol}";
                 }
 
-                //tag数组
+                // tag数组
                 else if ($type == 'tagArr') {
                     echo "    
             {$starCol}
@@ -1130,7 +1130,7 @@
             {$endCol}";
                 }
 
-                //imgTitle数组
+                // imgTitle数组
                 else if ($type == 'imgTitle') {
                     echo "    
             {$starCol}

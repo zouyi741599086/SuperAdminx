@@ -2,7 +2,7 @@
 //所有的表格的列的输出都是这
 use app\utils\codeGenerator\CodeGenerator;
 
-            //常规文本
+            // 常规文本
             if ($type == 'text') {
                 
 echo "        {{$columnsParams}
@@ -11,7 +11,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //可点击链接
+            // 可点击链接
             else if ($type == 'text_link') {
                 
 echo "        {{$columnsParams}
@@ -20,7 +20,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //图片
+            // 图片
             else if ($type == 'image') {
                 
 echo "        {{$columnsParams}
@@ -35,7 +35,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //姓名/手机号(可复制)
+            // 姓名/手机号(可复制)
             else if ($type == 'name_tel_copy') {
                 
 echo "        {{$columnsParams}
@@ -47,7 +47,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //姓名/年龄/性别
+            // 姓名/年龄/性别
             else if ($type == 'name_age_sex') {
                 
 echo "        {{$columnsParams}
@@ -61,7 +61,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //Tag标签
+            // Tag标签
             else if ($type == 'tag') {
                 
 echo "        {{$columnsParams}
@@ -73,7 +73,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //头像
+            // 头像
             else if ($type == 'avatar') {
                 
 echo "        {{$columnsParams}
@@ -84,7 +84,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //头像/姓名/手机号
+            // 头像/姓名/手机号
             else if ($type == 'user') {
                 
 echo "        {{$columnsParams}
@@ -110,7 +110,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //金额
+            // 金额
             else if ($type == 'money') {
                 
 echo "        {{$columnsParams}
@@ -121,7 +121,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //多行的金额
+            // 多行的金额
             else if ($type == 'money_line') {
                 
 echo "        {{$columnsParams}
@@ -136,7 +136,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //Typography文字
+            // Typography文字
             else if ($type == 'typography_text') {
                 
 echo "        {{$columnsParams}
@@ -149,7 +149,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //状态开关可切换
+            // 状态开关可切换
             else if ($type == 'switch') {
                 //权限id
                 $updateStatusAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateStatus';
@@ -170,7 +170,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //多颜色状态/类型
+            // 多颜色状态/类型
             else if ($type == 'status_type') {
                 
 echo "        {{$columnsParams}
@@ -204,9 +204,9 @@ echo "        {{$columnsParams}
 
             }
 
-            //排序
+            // 排序
             else if ($type == 'sort') {
-                //权限id
+                // 权限id
                 $updateSortAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateSort';
                 
 echo "        {{$columnsParams}
@@ -225,7 +225,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //进度条
+            // 进度条
             else if ($type == 'progress') {
                 
 echo "        {{$columnsParams}
@@ -247,7 +247,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //弹窗用Descriptions描述列表
+            // 弹窗用Descriptions描述列表
             else if ($type == 'descriptions') {
                 
 echo "        {{$columnsParams}
@@ -294,7 +294,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //弹窗查看文本
+            // 弹窗查看文本
             else if ($type == 'preview_text') {
                 
 echo "        {{$columnsParams}
@@ -305,7 +305,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //预览富文本内容
+            // 预览富文本内容
             else if ($type == 'preview_teditor') {
                 
 echo "        {{$columnsParams}
@@ -316,7 +316,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //预览视频
+            // 预览视频
             else if ($type == 'preview_video') {
                 
 echo "        {{$columnsParams}
@@ -327,7 +327,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //预览多图或视频
+            // 预览多图或视频
             else if ($type == 'preview_images_videos') {
                 
 echo "        {{$columnsParams}
@@ -338,7 +338,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //预览pdf
+            // 预览pdf
             else if ($type == 'preview_pdf') {
                 
 echo "        {{$columnsParams}
@@ -349,7 +349,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //预览word
+            // 预览word
             else if ($type == 'preview_word') {
                 
 echo "        {{$columnsParams}
@@ -360,7 +360,7 @@ echo "        {{$columnsParams}
 
             }
 
-            //添加时间
+            // 添加时间
             else if ($type == 'create_time') {
                 
 echo "        {{$columnsParams}

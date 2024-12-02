@@ -11,10 +11,10 @@ use think\Model;
  * */
 class FileRecordModel extends Model
 {
-    //表名
+    // 表名
     protected $name = 'file_record';
 
-    //字段类型转换
+    // 字段类型转换
     protected $type = [
         'files' => 'json',
     ];

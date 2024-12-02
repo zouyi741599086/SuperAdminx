@@ -23,7 +23,7 @@ class DataEncryptor
         if (! $data) {
             abort('解密的数据不能为空');
         }
-        $private_key = config('superadminx.rsa_private');
+        $private_key = config('superadminx.api_encryptor.rsa_private');
         if (! $private_key) {
             abort('未设置解密私钥');
         }
