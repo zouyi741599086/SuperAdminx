@@ -10,7 +10,7 @@ export const rsaEncrypt = (str) => {
         str = JSON.stringify(str)
     }
     const encryptor = new JSEncrypt()
-    encryptor.setPublicKey(config.rsa_public)
+    encryptor.setPublicKey(config.api_encryptor.rsa_public)
     return encryptor.encrypt(str);
 }
 

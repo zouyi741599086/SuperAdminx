@@ -16,14 +16,13 @@ SyntaxHighlighter.registerLanguage('php', php);
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value, language = 'jsx', height = 500, ...props }) => {
+export default ({ value, language = 'javascrippt', height = 500, ...props }) => {
 
     return <>
         <div
             style={{
                 width: '100%',
                 maxHeight: height,
-                position: 'relative',
             }}
         >
             <div

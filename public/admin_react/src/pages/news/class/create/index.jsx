@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import {
     ModalForm,
     ProFormText,
-    ProForm,
+    ProForm
 } from '@ant-design/pro-components';
 import { Button, App, TreeSelect } from 'antd';
 import { authCheck } from '@/common/function';
