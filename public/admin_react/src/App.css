@@ -39,7 +39,7 @@ body:fullscreen {
 /*抽屉设置最大宽*/
 .ant-drawer-content-wrapper{max-width: 100%;}
 
-/*页面容器，加淡入动画 为了菜单收缩开关与富文本编辑器的层级问题，不得不关闭，同时需要设置两个类的position为static*/
+/*页面容器，加淡入动画 为了菜单收缩开关与富文本编辑器的层级问题，暂未解决不得不关闭，同时需要设置两个类的position为static*/
 .sa-page-container{/*animation:fadeIn 1s 0s ease both;*/position: static;}
 .sa-page-container .ant-page-header{position: static;}
 
