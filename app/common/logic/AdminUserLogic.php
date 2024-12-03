@@ -52,7 +52,7 @@ class AdminUserLogic
             validate(AdminUserValidate::class)->scene('update')->check($params);
 
             // 没修改密码则干掉此字段
-            if (isset($params['password']) && !$params['password']) {
+            if (isset($params['password']) && ! $params['password']) {
                 unset($params['password']);
             }
             AdminUserModel::update($params);
@@ -101,16 +101,16 @@ class AdminUserLogic
     /**
      * 修改自己的登录密码
      * @param array $data
-     * @param int $login_admin_user_id 当前登录用户的id
+     * @param int $adminUserId 当前登录用户的id
      */
-    public static function updatePassword(array $data, int $login_admin_user_id)
+    public static function updatePassword(array $data, int $adminUserId)
     {
         try {
             validate(AdminUserValidate::class)->scene('update_password')->check($data);
 
             // 判断原密码是否正确
-            $password_hash = AdminUserModel::where('id', $login_admin_user_id)->value('password_hash');
-            if (! password_verify($data['password'], $password_hash)) {
+            $oldPassword = AdminUserModel::where('id', $adminUserId)->value('password');
+            if (! password_verify($data['password'], $oldPassword)) {
                 abort('原密码错误');
             }
             // 判断两次密码输入是否一致
@@ -118,8 +118,8 @@ class AdminUserLogic
                 abort('新密码两次输入不一致');
             }
             AdminUserModel::update([
-                'id'            => $login_admin_user_id,
-                'password_hash' => password_hash($data['new_password'], PASSWORD_DEFAULT)
+                'id'       => $adminUserId,
+                'password' => $data['new_password']
             ]);
         } catch (\Exception $e) {
             abort($e->getMessage());
