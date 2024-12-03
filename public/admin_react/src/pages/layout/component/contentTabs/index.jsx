@@ -28,7 +28,7 @@ const { Header } = Layout;
 */
 const routerParent = (pageName, menuArrAll) => {
     let menu;
-    //判断当前页面是否是内页
+    // 判断当前页面是否是内页
     menuArrAll.some(item => {
         if (item.name === pageName) {
             item.pid_name_path.some(name => {
@@ -57,23 +57,23 @@ export default () => {
     const [menuAuth] = useRecoilState(menuAuthStore);
     const location = useLocation();
     const navigate = useNavigate();
-    //设置tabs的数据
+    // 设置tabs的数据
     const [tabsList, setTabsList] = useState([]);
 
-    //关闭多个页面
+    // 关闭多个页面
     const closePages = type => {
-        //需要关闭的页面
+        // 需要关闭的页面
         let closeArr = [];
-        //需要保留的页面
+        // 需要保留的页面
         let retainArr = [];
-        //是否循环到当前页面
+        // 是否循环到当前页面
         let isActive = false;
-        //当前选中页面
+        // 当前选中页面
         let activeName = contentTabs.activeName;
 
-        //关闭左侧
+        // 关闭左侧
         if (type === 'left') {
-            //需要关闭的页面
+            // 需要关闭的页面
             contentTabs.list.some((item) => {
                 if (item.close === true && isActive === false && item.name !== contentTabs.activeName) {
                     closeArr.push(item)
@@ -85,9 +85,9 @@ export default () => {
                 }
             })
         }
-        //关闭右侧
+        // 关闭右侧
         if (type === 'right') {
-            //需要关闭的页面
+            // 需要关闭的页面
             contentTabs.list.some((item) => {
                 if (isActive === false || item.name === contentTabs.activeName) {
                     retainArr.push(item)
@@ -99,9 +99,9 @@ export default () => {
                 }
             })
         }
-        //关闭其它
+        // 关闭其它
         if (type === 'other') {
-            //需要关闭的页面
+            // 需要关闭的页面
             contentTabs.list.some((item) => {
                 if (item.close === true && item.name !== contentTabs.activeName) {
                     closeArr.push(item)
@@ -110,9 +110,9 @@ export default () => {
                 }
             })
         }
-        //关闭全部
+        // 关闭全部
         if (type === 'all') {
-            //需要关闭的页面
+            // 需要关闭的页面
             contentTabs.list.some((item) => {
                 if (item.close === true) {
                     closeArr.push(item)
@@ -131,7 +131,7 @@ export default () => {
         }))
     }
 
-    //导航钩子，监听url变化的时候
+    // 导航钩子，监听url变化的时候
     useEffect(() => {
         if (!location.pathname) {
             return;
@@ -140,24 +140,24 @@ export default () => {
         if (!menu) {
             return;
         }
-        //查找当前点击页面 最顶层的一级页面
+        // 查找当前点击页面 最顶层的一级页面
         const menuTop = routerParent(menu.name, menuAuth.menuArrAll);
         if (menuTop) {
             let _list = deepClone(contentTabs.list);
-            //判断当前跳转页面的顶层一级页面是否在tabs中，没在说明是新开标签则添加
+            // 判断当前跳转页面的顶层一级页面是否在tabs中，没在说明是新开标签则添加
             const isTabsOn = contentTabs.list.some(item => item.name === menuTop.name)
             if (isTabsOn === false) {
-                //这是添加tabs中的顶级
+                // 这是添加tabs中的顶级
                 _list.push({
                     name: menuTop.name,
                     title: menuTop.title,
                     path: menuTop.path,
                     keepAlive: [menuTop.name],
-                    close: menuTop.path === '/index' ? false : true //首页不能关闭
+                    close: menuTop.path === '/index' ? false : true // 首页不能关闭
                 });
             }
 
-            //把当前跳转的url赋值给tabs顶级的path，这样切换tabs的时候不会变一级页面，因为tabs所在页面不可能全是一级页面，可能是内页
+            // 把当前跳转的url赋值给tabs顶级的path，这样切换tabs的时候不会变一级页面，因为tabs所在页面不可能全是一级页面，可能是内页
             let tabsIndex; //当前激活tabs的索引
             _list.some((item, index) => {
                 if (item.name === menuTop.name) {
@@ -167,9 +167,9 @@ export default () => {
                 }
             })
 
-            //重新计算keepAlive该缓存哪些页面
+            // 重新计算keepAlive该缓存哪些页面
             let keepAlive = [];
-            //在一个tabs的item中，任意级页面的跳转，重新计算出item中的keepAlive，该缓存多少级页面
+            // 在一个tabs的item中，任意级页面的跳转，重新计算出item中的keepAlive，该缓存多少级页面
             _list[tabsIndex].keepAlive = []; //先清空原tabs中item中的keepAlive
             menuAuth.menuArrAll.find(item => item.name === menu.name).pid_name_path?.some(menuName => {
                 menuAuth.menuArrAll.some(_item => {
@@ -182,7 +182,7 @@ export default () => {
                     }
                 })
             })
-            //缓存计算后删掉不要的缓存
+            // 缓存计算后删掉不要的缓存
             contentTabs.keepAlive.map(_item => {
                 if (keepAlive.indexOf(_item) === -1) {
                     ///////开始删除////////////
@@ -198,10 +198,10 @@ export default () => {
         }
     }, [location])
 
-    //点击关闭一个页面
+    // 点击关闭一个页面
     const closePage = name => {
         let activeName = contentTabs.activeName;
-        //判断当前所在页面是否是要关闭的页面，是的话找到关闭的左边一个页面，关闭了后自动跳到左边个页面
+        // 判断当前所在页面是否是要关闭的页面，是的话找到关闭的左边一个页面，关闭了后自动跳到左边个页面
         if (name === contentTabs.activeName) {
             contentTabs.list.some((item, index) => {
                 if (item.name === name) {
@@ -218,7 +218,7 @@ export default () => {
         }))
     }
 
-    //更新tabs标签
+    // 更新tabs标签
     useEffect(() => {
         let _tabsList = [];
         contentTabs.list.map(item => {

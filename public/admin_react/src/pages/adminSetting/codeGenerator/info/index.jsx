@@ -29,9 +29,9 @@ export default () => {
     const { message, modal } = App.useApp();
     const [search] = useSearchParams();
 
-    //表的名称
+    // 表的名称
     const [tableName, setTableName] = useState();
-    //表的详情
+    // 表的详情
     const [tableInfo, setTableInfo] = useState({});
     useMount(() => {
         const _tableName = search.get('name');
@@ -84,12 +84,12 @@ export default () => {
             }
         })
     }
-    //返回上一页
+    // 返回上一页
     const onBack = () => {
         navigate('/adminSetting/codeGenerator');
     }
 
-    //切换选项卡
+    // 切换选项卡
     const [tabsKey, setTabsKey] = useState('fields');
     const tabsList = [
         {

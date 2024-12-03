@@ -26,7 +26,7 @@ export default ({ showIcon = true, showName = true, placement = 'bottomLeft' }) 
     const { modal } = App.useApp();
     const navigate = useNavigate();
 
-    //退出登录
+    // 退出登录
     const logout = () => {
         modal.confirm({
             title: '提示',

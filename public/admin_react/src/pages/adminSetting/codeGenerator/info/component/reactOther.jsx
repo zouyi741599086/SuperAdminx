@@ -41,16 +41,16 @@ export default ({ tableName, operationFile, ...props }) => {
                 adminCodeGeneratorApi.generatorCode({
                     react_other: {
                         ...data?.react_other,
-                        ...values.react_other, //只要form中的这些值
-                        file_name: 'index', //生成的文件名称
-                        file_suffix: 'jsx', //生成文件的后缀名称
+                        ...values.react_other, // 只要form中的这些值
+                        file_name: 'index', // 生成的文件名称
+                        file_suffix: 'jsx', // 生成文件的后缀名称
                     },
                     table_name: tableName,
-                    code_name: 'react_other', //生成的代码名称
+                    code_name: 'react_other', // 生成的代码名称
                 }).then(res => {
                     if (res.code === 1) {
                         message.success(res.message);
-                        //保存后有生成新的代码要 设置进去
+                        // 保存后有生成新的代码要 设置进去
                         formRef.current.setFieldValue('react_other_code', res.data.react_other_code);
                     } else {
                         message.error(res.message);

@@ -21,10 +21,10 @@ export default () => {
     const { message } = App.useApp();
     const tableRef = useRef();
 
-    //要修改的数据
+    // 要修改的数据
     const [updateId, setUpdateId] = useState(0);
 
-    //修改状态
+    // 修改状态
     const updateStatus = (id, status) => {
         adminUserApi.updateStatus({
             id,
@@ -39,7 +39,7 @@ export default () => {
         })
     }
 
-    //删除用户
+    // 删除用户
     const del = (id) => {
         adminUserApi.delete({
             id
@@ -53,12 +53,12 @@ export default () => {
         })
     }
 
-    //刷新表格数据
+    // 刷新表格数据
     const tableReload = () => {
         tableRef.current.reload();
     }
 
-    //表格列
+    // 表格列
     const columns = [
         {
             title: '头像',
@@ -79,16 +79,16 @@ export default () => {
         {
             title: '角色',
             dataIndex: 'admin_role_id',
-            //定义搜索框类型
+            // 定义搜索框类型
             valueType: 'select',
-            //搜索框选择项
+            // 搜索框选择项
             request: async () => {
                 const result = await adminRoleApi.getList({
                     isPage: 'no'
                 });
                 return result.data;
             },
-            //搜索框中的参数
+            // 搜索框中的参数
             fieldProps: {
                 fieldNames: {
                     label: 'title',
@@ -103,9 +103,9 @@ export default () => {
         {
             title: '状态',
             dataIndex: 'status',
-            //列增加提示
+            // 列增加提示
             tooltip: '点击可切换状态',
-            //列增加提示的同时搜索也会增加，所以要干掉搜索的提示
+            // 列增加提示的同时搜索也会增加，所以要干掉搜索的提示
             formItemProps: {
                 tooltip: ''
             },
@@ -118,9 +118,9 @@ export default () => {
                     updateStatus(record.id, record.status == 1 ? 2 : 1);
                 }}
             />,
-            //定义搜索框类型
+            // 定义搜索框类型
             valueType: 'select',
-            //订单搜索框的选择项
+            // 订单搜索框的选择项
             fieldProps: {
                 options: [
                     {
@@ -211,14 +211,14 @@ export default () => {
                     pagination={{
                         defaultPageSize: 10,
                         size: 'default',
-                        //支持跳到多少页
+                        // 支持跳到多少页
                         showQuickJumper: true,
                         showSizeChanger: true,
                         responsive: true,
                     }}
                     request={async (params = {}, sort, filter) => {
                         const result = await adminUserApi.getList({
-                            ...params,//包含了翻页参数跟搜索参数
+                            ...params,// 包含了翻页参数跟搜索参数
                             page: params.current,
                         });
                         return {

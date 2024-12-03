@@ -135,7 +135,7 @@ export const isMobileFun = () => {
 }
 
 /**
- * //权限验证 
+ * 权限验证 
  * @param {string} name 验证的权限名称
  * @returns boolean 有权限返回false，无权限返回true
  */
@@ -189,7 +189,7 @@ export const colorHsb = (string) => {
         s = 1 - (min / max);
     }
     if (max === min) {
-        h = 0;//事实上，max===min的时候，h无论为多少都无所谓
+        h = 0; // 事实上，max===min的时候，h无论为多少都无所谓
     } else if (max === r && g >= b) {
         h = 60 * ((g - b) / (max - min)) + 0;
     } else if (max === r && g < b) {

@@ -18,7 +18,7 @@ axios.defaults.timeout = 1000 * 60 * 10; //10分钟
  */
 function requestAfter(response, aes_key, aes_iv) {
     if (response && (response?.status === 200)) {
-        //登录过期，强制跳转到登录
+        // 登录过期，强制跳转到登录
         if (response.data.code === -2) {
             storage.remove(`adminUserToken`)
             sessionStorage.removeItem(`adminUserToken`);
@@ -27,7 +27,7 @@ function requestAfter(response, aes_key, aes_iv) {
                 location.reload();
             }, 1500)
         }
-        //解密数据
+        // 解密数据
         if (config.api_encryptor.enable && response.data?.encrypt_data) {
             response.data.data = aesDecrypt(response.data?.encrypt_data, aes_key, aes_iv)
         }
@@ -53,11 +53,11 @@ const requestBefore = (url, params, method) => {
             encrypt_data: aesEncrypt(params, aes_key, aes_iv)
         }
     }
-    //组装get的参数
+    // 组装get的参数
     if (method === 'get' && Object.keys(params).length > 0) {
         url += url.indexOf("?") !== -1 ? '&' : '?' + qs.stringify(params);
     }
-    //headers
+    // headers
     const headers = {
         'Token': getToken(),
         'SuperAdminxKeySecret': rsaEncrypt(aes_key + aes_iv),
@@ -72,7 +72,7 @@ const requestBefore = (url, params, method) => {
     };
 }
 
-//发起请求
+// 发起请求
 const request = (_url, _params, _method) => {
     const { url, params, aes_key, aes_iv, headers } = requestBefore(_url, _params, _method);
     return new Promise((resolve, reject) => {

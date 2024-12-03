@@ -24,41 +24,41 @@ export default ({ value = [], onChange, ...props }) => {
         onChange?.(list)
     }, [list])
 
-    //添加的时候
+    // 添加的时候
     const addInputRef = useRef();
     const [addVisible, setAddVisible] = useState(false);
     const [addValue, setAddValue] = useState('');
 
-    //修改的时候
+    // 修改的时候
     const editInputRef = useRef();
     const [editIndex, setEditIndex] = useState(null);
     const [editValue, setEditValue] = useState('');
 
 
     ///////////////////添加///////////////////////
-    //开始添加标签
+    // 开始添加标签
     const handAddVisible = () => {
         setAddVisible(true);
     }
     useEffect(() => {
         addInputRef.current?.focus();
     }, [addVisible]);
-    //输入框值改变的时候
+    // 输入框值改变的时候
     const handleAddInputChange = (e) => {
         setAddValue(e.target.value);
     };
-    //添加提交的时候
+    // 添加提交的时候
     const handleAddSubmit = () => {
         const title = addValue.replace(/^\s+|\s+$/g, "");
         if (!title) {
             setAddVisible(false);
             return false;
         }
-        //判断list中是否已经有这个value
+        // 判断list中是否已经有这个value
         if (!list.some(item => item == title)) {
             push(title)
             setAddValue('');
-            //添加后继续添加
+            // 添加后继续添加
             setTimeout(() => {
                 addInputRef.current?.focus();
             }, 300);
@@ -70,7 +70,7 @@ export default ({ value = [], onChange, ...props }) => {
     }
 
     ///////////////////修改////////////////////////
-    //开始修改标签
+    // 开始修改标签
     const handleEditVisibleChange = (index, title) => {
         setEditIndex(index);
         setEditValue(title);
@@ -78,18 +78,18 @@ export default ({ value = [], onChange, ...props }) => {
     useEffect(() => {
         editInputRef.current?.focus();
     }, [editIndex]);
-    //输入框值改变的时候
+    // 输入框值改变的时候
     const handleEditInputChange = (e) => {
         setEditValue(e.target.value);
     };
-    //提交修改的标签
+    // 提交修改的标签
     const handleEditSubmit = () => {
         const title = editValue.replace(/^\s+|\s+$/g, "");;
         if (!title) {
             setEditIndex(null);
             return false;
         }
-        //判断是否修改了的
+        // 判断是否修改了的
         if (list.some((item, index) => index === editIndex && item != title)) {
             replace(editIndex, title);
             setEditIndex(null);

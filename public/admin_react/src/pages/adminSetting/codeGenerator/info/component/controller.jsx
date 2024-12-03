@@ -26,20 +26,20 @@ export default ({ tableName, operationFile, ...props }) => {
         getMenuList();
     }, [tableName]);
 
-    //菜单列表 嵌套数组
+    // 菜单列表 嵌套数组
     const [menuList, setMenuList] = useState([]);
     const getMenuList = () => {
         adminMenuApi.getList({
             hidden: 'all'
         }).then(res => {
             if (res.code === 1) {
-                //多维数组
+                // 多维数组
                 setMenuList(menuToTree(res.data))
             }
         })
     }
 
-    //请求类型
+    // 请求类型
     const methods = [
         {
             label: 'get',

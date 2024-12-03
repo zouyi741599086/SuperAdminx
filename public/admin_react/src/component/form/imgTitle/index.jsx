@@ -15,7 +15,7 @@ import {
     arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
-    rectSortingStrategy, //排序碰撞算法，有水平、垂直等
+    rectSortingStrategy, // 排序碰撞算法，有水平、垂直等
 } from '@dnd-kit/sortable';
 
 /**
@@ -28,7 +28,7 @@ import {
 export default ({ value, onChange }) => {
     const [list, setList] = useState([]);
 
-    //父组件的value不等于本组件的value的时候，就更新本组价的value
+    // 父组件的value不等于本组件的value的时候，就更新本组价的value
     useEffect(() => {
         if (list !== value) {
             setList(value || []);
@@ -44,7 +44,7 @@ export default ({ value, onChange }) => {
     }
 
     /////////////////////删除某个///////////////
-    //图片删除的时候
+    // 图片删除的时候
     const remove = (data) => {
         let _list = [...list];
         _list.map((item, key) => {
@@ -58,13 +58,13 @@ export default ({ value, onChange }) => {
     }
 
     /////////////////////////预览图片/////////////////////////
-    //预览图片开关
+    // 预览图片开关
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewCurrent, setPreviewCurrent] = useState(0);
     const previewVisibleChange = () => {
         setPreviewVisible(!previewVisible);
     }
-    //图片预览的时候
+    // 图片预览的时候
     const preview = (data) => {
         list.some((item, key) => {
             if (item === data) {
@@ -87,7 +87,7 @@ export default ({ value, onChange }) => {
         }),
 
     );
-    //拖拽结束后
+    // 拖拽结束后
     const handleDragEnd = (event) => {
         const { active, over } = event;
         if (active.id !== over?.id) {
@@ -98,8 +98,6 @@ export default ({ value, onChange }) => {
             onChange(_list)
         }
     }
-    //拖拽结束后排序
-
 
     return (
         <>

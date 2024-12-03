@@ -23,7 +23,7 @@ export default () => {
     const { message } = App.useApp();
     const [search] = useSearchParams();
 
-    //返回上一页
+    // 返回上一页
     const onBack = () => {
         navigate('/news/list');
     }
@@ -60,9 +60,9 @@ export default () => {
                                 )
                             },
                         }}
-                        //可以回车提交
+                        // 可以回车提交
                         isKeyPressSubmit={true}
-                        //不干掉null跟undefined 的数据
+                        // 不干掉null跟undefined 的数据
                         omitNil={false}
                         onFinish={async (values) => {
                             const result = await newsApi.update({

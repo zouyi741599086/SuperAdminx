@@ -37,7 +37,7 @@ export const aesDecrypt = (data, aes_key, aes_iv) => {
             mode: CryptoJS.mode.CBC,
             padding: CryptoJS.pad.Pkcs7
         });
-        //字符串转对象                      
+        // 字符串转对象                      
         return JSON.parse(CryptoJS.enc.Utf8.stringify(bytes));
     } catch (error) {
         console.log('数据解密错误：' + error);

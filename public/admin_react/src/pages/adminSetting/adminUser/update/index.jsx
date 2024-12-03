@@ -33,18 +33,18 @@ export default ({ tableReload, updateId, setUpdateId, ...props }) => {
             open={open}
             onOpenChange={(_boolean) => {
                 setOpen(_boolean);
-                //关闭的时候干掉updateId，不然无法重复修改同一条数据
+                // 关闭的时候干掉updateId，不然无法重复修改同一条数据
                 if (_boolean === false) {
                     setUpdateId(0);
                 }
             }}
             title="修改管理员"
             width={460}
-            //第一个输入框获取焦点
+            // 第一个输入框获取焦点
             autoFocusFirstInput={true}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             //omitNil={false}
             modalProps={{
                 destroyOnClose: true,

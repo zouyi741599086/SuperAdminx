@@ -23,7 +23,7 @@ export default () => {
     const tableRef = useRef();
     const formRef = useRef();
 
-    //刷新表格数据
+    // 刷新表格数据
     const tableReload = () => {
         tableRef.current.reload();
         tableRef.current.clearSelected();
@@ -43,7 +43,7 @@ export default () => {
             }
         })
     }
-    //排序改变的时候
+    // 排序改变的时候
     const sortArrChange = (id, sort) => {
         let _sortArr = [...sortArr];
         let whether = _sortArr.some(_item => {
@@ -76,7 +76,7 @@ export default () => {
     }
 
 
-    //表格列
+    // 表格列
     const columns = [
         {
             title: '配置名称',
@@ -171,7 +171,7 @@ export default () => {
                         fullScreen: true
                     }}
                     columnsState={{
-                        //此table列设置后存储本地的唯一key
+                        // 此table列设置后存储本地的唯一key
                         persistenceKey: 'table_column_' + 'Config',
                         persistenceType: 'localStorage'
                     }}
@@ -201,14 +201,14 @@ export default () => {
                     }
                     pagination={false}
                     request={async (params = {}, sort, filter) => {
-                        //排序的时候
+                        // 排序的时候
                         let orderBy = '';
                         for (let key in sort) {
                             orderBy = key + ' ' + (sort[key] === 'descend' ? 'desc' : 'asc');
                         }
                         const result = await configApi.getList({
-                            ...params,//包含了翻页参数跟搜索参数
-                            orderBy, //排序
+                            ...params,// 包含了翻页参数跟搜索参数
+                            orderBy, // 排序
                             page: params.current,
                         });
                         return {

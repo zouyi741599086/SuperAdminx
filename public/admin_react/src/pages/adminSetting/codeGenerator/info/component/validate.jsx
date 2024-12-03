@@ -31,9 +31,9 @@ export default ({ tableName, operationFile, ...props }) => {
         }
     }, [tableName]);
 
-    //字段列表
+    // 字段列表
     const [tableColumns, setTableColumns] = useState([]);
-    const [isGetData, setIsGetData] = useState(); //数据是否已经请求完成，需要按照数据库中的表单字段排序 对 字段列表进行重新排序
+    const [isGetData, setIsGetData] = useState(); // 数据是否已经请求完成，需要按照数据库中的表单字段排序 对 字段列表进行重新排序
     const getTableColumns = () => {
         adminCodeGeneratorApi.getTableColumn({
             table_name: tableName
@@ -46,7 +46,7 @@ export default ({ tableName, operationFile, ...props }) => {
             }
         });
     }
-    //需要按照数据库中的表单字段排序 对 字段列表进行重新排序
+    // 需要按照数据库中的表单字段排序 对 字段列表进行重新排序
     useEffect(() => {
         if (data && tableColumns.length > 0) {
             const newTableColumns = [];
@@ -69,10 +69,10 @@ export default ({ tableName, operationFile, ...props }) => {
         }
     }, [isGetData])
 
-    //表设置的数据，主要是表格里面要字段名称
+    // 表设置的数据，主要是表格里面要字段名称
     const [data, setData] = useState({});
 
-    //验证规则，错误信息有变量：字段名
+    // 验证规则，错误信息有变量：字段名
     const select_rules = [
         {
             value: 'require',
@@ -415,7 +415,7 @@ export default ({ tableName, operationFile, ...props }) => {
         },
     ];
 
-    //表格列
+    // 表格列
     const columns = [
         {
             title: '排序',
@@ -477,9 +477,9 @@ export default ({ tableName, operationFile, ...props }) => {
                 <ProFormDependency name={[['validate', 'field_rules', record.Field]]}>
                     {({ validate }) => {
                         if (Array.isArray(validate?.field_rules?.[record.Field])) {
-                            //字段选择的规则，每个规则的详情配置，如配置区间
+                            // 字段选择的规则，每个规则的详情配置，如配置区间
                             let _component = validate?.field_rules?.[record.Field].map(rule_name => {
-                                //去总规则里面找，把提示、是否需要参数找出来
+                                // 去总规则里面找，把提示、是否需要参数找出来
                                 let rules_item = select_rules.find(_a => _a.value == rule_name);
                                 return <ProFormText
                                     key={rule_name}
@@ -523,11 +523,11 @@ export default ({ tableName, operationFile, ...props }) => {
             onFinish={async (values) => {
                 adminCodeGeneratorApi.generatorCode({
                     validate: {
-                        ...values.validate, //只要form中的这些值
-                        file_suffix: 'php', //生成文件的后缀名称
+                        ...values.validate, // 只要form中的这些值
+                        file_suffix: 'php', // 生成文件的后缀名称
                     },
                     table_name: tableName,
-                    code_name: 'validate', //生成的代码名称
+                    code_name: 'validate', // 生成的代码名称
                 }).then(res => {
                     if (res.code === 1) {
                         message.success(res.message);
@@ -620,11 +620,11 @@ export default ({ tableName, operationFile, ...props }) => {
                             {({ validate }) => {
                                 let tmp_select = [];
                                 for (let key in validate?.field_rules) {
-                                    //字段的中文名
+                                    // 字段的中文名
                                     let field_name = data.field_title?.[key] || key;
-                                    //规则英文+中文
+                                    // 规则英文+中文
                                     let rules_list = validate?.field_rules[key].map(rule_name => {
-                                        //去总规则里面找，把提示、是否需要参数找出来
+                                        // 去总规则里面找，把提示、是否需要参数找出来
                                         let rules_item = select_rules.find(_a => _a.value == rule_name);
                                         return {
                                             rule_name,

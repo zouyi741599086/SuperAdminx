@@ -16,7 +16,7 @@ const Tinymce = lazy(() => import('./tinymce/index'));
  */
 export default (props) => {
     const [layoutSetting] = useRecoilState(layoutSettingStore);
-    //判断是否是苹果的Safari浏览器或谷歌浏览器
+    // 判断是否是苹果的Safari浏览器或谷歌浏览器
     const isMobileSafariOrChrome = () => {
         var userAgent = navigator.userAgent;
         var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);

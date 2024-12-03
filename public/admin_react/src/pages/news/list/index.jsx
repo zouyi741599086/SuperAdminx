@@ -20,11 +20,11 @@ export default () => {
     const { message } = App.useApp();
 
     useMount(() => {
-        //加载列表数据
+        // 加载列表数据
     })
     ///////////////////////////刷新表格数据///////////////////////
     const tableReload = (clearSelected = false) => {
-        //是否清空选中项
+        // 是否清空选中项
         if (clearSelected) {
             tableRef.current.clearSelected();
         }
@@ -44,7 +44,7 @@ export default () => {
             }
         })
     }
-    //排序改变的时候
+    // 排序改变的时候
     const sortArrChange = (id, sort) => {
         let _sortArr = [...sortArr];
         let whether = _sortArr.some(_item => {
@@ -91,7 +91,7 @@ export default () => {
         })
     }
 
-    //表格列
+    // 表格列
     const columns = [
         {
             title: '标题',
@@ -100,14 +100,14 @@ export default () => {
         {
             title: '所属分类',
             dataIndex: 'news_class_id',
-            //定义搜索框类型
+            // 定义搜索框类型
             valueType: 'treeSelect',
-            //搜索框选择项
+            // 搜索框选择项
             request: async () => {
                 const result = await newsClassApi.getList();
                 return arrayToTree(result.data, null, 'children', [], false);
             },
-            //搜索框中的参数
+            // 搜索框中的参数
             fieldProps: {
                 fieldNames: {
                     label: 'title',
@@ -135,9 +135,9 @@ export default () => {
         {
             title: '状态',
             dataIndex: 'status',
-            //列增加提示
+            // 列增加提示
             tooltip: '点击可切换状态',
-            //列增加提示的同时搜索也会增加，所以要干掉搜索的提示
+            // 列增加提示的同时搜索也会增加，所以要干掉搜索的提示
             formItemProps: {
                 tooltip: ''
             },
@@ -150,9 +150,9 @@ export default () => {
                     updateStatus(record.id, record.status == 1 ? 2 : 1);
                 }}
             />,
-            //定义搜索框类型
+            // 定义搜索框类型
             valueType: 'select',
-            //订单搜索框的选择项
+            // 订单搜索框的选择项
             fieldProps: {
                 options: [
                     {
@@ -169,7 +169,7 @@ export default () => {
         {
             title: '浏览量',
             dataIndex: 'pv',
-            sorter: true, //支持排序
+            sorter: true, // 支持排序
             search: false,
             render: (_, record) => <>
                 <Typography.Text type="success">{record.pv}</Typography.Text>
@@ -178,7 +178,7 @@ export default () => {
         {
             title: '添加时间',
             dataIndex: 'create_time',
-            //定义搜索框为日期区间
+            // 定义搜索框为日期区间
             valueType: 'dateRange',
             render: (_, render) => render.create_time
         },
@@ -225,13 +225,13 @@ export default () => {
                 <ProTable
                     actionRef={tableRef}
                     rowKey="id"
-                    //列名
+                    // 列名
                     columns={columns}
-                    //滚动条
+                    // 滚动条
                     scroll={{
                         x: 1000
                     }}
-                    //左上角操作
+                    // 左上角操作
                     headerTitle={
                         <Space>
                             <NavLink to={authCheck('newsCreate') ? '' : `/news/list/create`}>
@@ -249,25 +249,25 @@ export default () => {
                             >保存排序</Button>
                         </Space>
                     }
-                    //翻页
+                    // 翻页
                     pagination={{
                         defaultPageSize: 10,
                         size: 'default',
-                        //支持跳到多少页
+                        // 支持跳到多少页
                         showQuickJumper: true,
                         showSizeChanger: true,
                         responsive: true,
                     }}
-                    //请求数据
+                    // 请求数据
                     request={async (params = {}, sort, filter) => {
-                        //排序的时候
+                        // 排序的时候
                         let orderBy = '';
                         for (let key in sort) {
                             orderBy = key + ' ' + (sort[key] === 'descend' ? 'desc' : 'asc');
                         }
                         const res = await newsApi.getList({
-                            ...params,//包含了翻页参数跟搜索参数
-                            orderBy, //排序
+                            ...params,// 包含了翻页参数跟搜索参数
+                            orderBy, // 排序
                             page: params.current,
                         });
                         return {
@@ -276,11 +276,11 @@ export default () => {
                             total: res.data.total,
                         };
                     }}
-                    //开启批量选择
+                    // 开启批量选择
                     rowSelection={{
                         preserveSelectedRowKeys: true,
                     }}
-                    //批量选择后左边操作
+                    // 批量选择后左边操作
                     tableAlertRender={({ selectedRowKeys, }) => {
                         return (
                             <Space>

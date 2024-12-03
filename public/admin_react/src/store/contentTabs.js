@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 import { storage } from '@/common/function';
 
 const storeKey = 'contentTabs';
-//默认值
+// 默认值
 const defaultValue = {
     activeName: '',
     keepAlive: [],
@@ -25,9 +25,9 @@ const defaultValue = {
  */
 export const contentTabsStore = atom({
     key: storeKey,
-    //默认值
+    // 默认值
     default: defaultValue,
-    //不需要永久存储可删除
+    // 不需要永久存储可删除
     effects_UNSTABLE: [
         ({ setSelf, onSet }) => {
             let _oldValue = storage.get(storeKey);

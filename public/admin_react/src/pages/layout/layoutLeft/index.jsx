@@ -32,12 +32,12 @@ export default () => {
     const [collapsed, setCollapsed] = useState(false);
     const [layoutSetting, setLayoutSetting] = useRecoilState(layoutSettingStore);
 
-    //导航缩所变化的时候
+    // 导航缩所变化的时候
     const onCollapse = (collapsedVal) => {
         setCollapsed(collapsedVal)
     }
 
-    //切换导航收缩
+    // 切换导航收缩
     const collapsedChange = () => {
         setCollapsed(!collapsed);
     }

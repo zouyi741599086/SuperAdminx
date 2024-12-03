@@ -42,7 +42,7 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
 
     const [fileList, setFileList] = useState([]);
     useEffect(() => {
-        //将初始值设置上，只有组件值等于空的时候在赋值，防止编辑的时候无法赋值
+        // 将初始值设置上，只有组件值等于空的时候在赋值，防止编辑的时候无法赋值
         if (fileList.length === 0 && Array.isArray(value) && value?.length > 0) {
             let tmpValue = [];
             value.map((item, index) => {
@@ -65,7 +65,7 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
             message.error('上传出错~')
         }
         if (info.file.status === 'done') {
-            //如果不是上传阿里云oss
+            // 如果不是上传阿里云oss
             if (!aliyunOss) {
                 if (info.file.response.code === 1) {
                     info.fileList.map(item => {
@@ -78,7 +78,7 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
                     message.error('上传出错~')
                 }
             }
-            //如果是上传阿里云oss
+            // 如果是上传阿里云oss
             if (aliyunOss) {
                 info.fileList.map(item => {
                     if (item.uid === info.file.uid) {
@@ -95,7 +95,7 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
 
     /////////////////////////上传前验证////////////////////
     const beforeUpload = async (file) => {
-        //获取后缀
+        // 获取后缀
         let flieArr = file.name.split(".");
         let suffix = flieArr[flieArr.length - 1];
 
@@ -154,8 +154,8 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
             OSSAccessKeyId: aliyunOssData?.accessid,
             policy: aliyunOssData?.policy,
             Signature: aliyunOssData?.signature,
-            success_action_status: 200, //让服务端返回200,不然，默认会返回204
-            callback: aliyunOssData?.callback, //上传成功后回调服务器的url
+            success_action_status: 200, // 让服务端返回200,不然，默认会返回204
+            callback: aliyunOssData?.callback, // 上传成功后回调服务器的url
         };
     };
 
@@ -165,13 +165,13 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
         name: "file",
         listType: "picture",
         fileList: fileList,
-        //如果是上传到阿里云oss则地址不同
+        // 如果是上传到阿里云oss则地址不同
         action: aliyunOss ? aliyunOssData.host : fileApi.uploadUrl,
-        //如果是上传到阿里云oss则参数不同
+        // 如果是上传到阿里云oss则参数不同
         headers: aliyunOss ? {} : {
             token: getToken()
         },
-        //如果是上传到阿里云oss则参数不同
+        // 如果是上传到阿里云oss则参数不同
         data: aliyunOss ? getExtraData : { disk },
         multiple: true,
         onChange: uploadChange,

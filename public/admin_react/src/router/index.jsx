@@ -9,7 +9,7 @@ const Layout = lazy(() => import('@/pages/layout/index'));
 const Error = lazy(() => import('@/pages/error/index'));
 const Refresh = lazy(() => import('@/pages/refresh/index'));
 
-//鉴权
+// 鉴权
 const RequireAuth = (props) => {
     const [adminUser] = useRecoilState(adminUserStore);
     let adminUserToken = storage.get(`adminUserToken`) || sessionStorage.getItem(`adminUserToken`) || null;

@@ -31,7 +31,7 @@ export default ({ tableName, operationFile, ...props }) => {
             getMysqlConfig();
         }
     }, [tableName]);
-    //获取字段列表
+    // 获取字段列表
     const [tableColumns, setTableColumns] = useState([]);
     const getTableColumns = () => {
         adminCodeGeneratorApi.getTableColumn({
@@ -45,7 +45,7 @@ export default ({ tableName, operationFile, ...props }) => {
         });
     }
 
-    //表列表
+    // 表列表
     const [tableList, setTableList] = useState([]);
     const getTableList = () => {
         adminCodeGeneratorApi.getTableList().then(res => {
@@ -57,7 +57,7 @@ export default ({ tableName, operationFile, ...props }) => {
         });
     }
 
-    //表列表，包括每张表的所有的字段
+    // 表列表，包括每张表的所有的字段
     const [tableCloumnList, setTableCloumnList] = useState([]);
     const getTableColumnList = () => {
         adminCodeGeneratorApi.getTableColumnList().then(res => {
@@ -69,7 +69,7 @@ export default ({ tableName, operationFile, ...props }) => {
         });
     }
 
-    //数据库的色合作
+    // 数据库的色合作
     const [mysqlConfig, setMysqlConfig] = useState(null);
     const getMysqlConfig = () => {
         adminCodeGeneratorApi.getMysqlConfig().then(res => {
@@ -81,22 +81,22 @@ export default ({ tableName, operationFile, ...props }) => {
         });
     }
 
-    //表设置的数据，主要是表格里面要字段名称
+    // 表设置的数据，主要是表格里面要字段名称
     const [data, setData] = useState({});
 
-    //当所有表所有字段 及 表单的数据加载回来后，程序自动找出关联的关系自动设置到form数据里面
+    // 当所有表所有字段 及 表单的数据加载回来后，程序自动找出关联的关系自动设置到form数据里面
     useEffect(() => {
         if (tableCloumnList && data && mysqlConfig && formRef) {
-            //别个有我的id，如本表是user，则计算出user_id这个字符串
+            // 别个有我的id，如本表是user，则计算出user_id这个字符串
             let index = tableName.lastIndexOf(mysqlConfig.prefix);
             let tableNameKey = tableName.slice(index + mysqlConfig.prefix.length) + '_id';
 
-            //先找出所有的关联的表
+            // 先找出所有的关联的表
             let formRelevance = data?.model?.relevance || [];
             tableCloumnList.map(item => {
-                //说明是本表，则就是我有别个的id
+                // 说明是本表，则就是我有别个的id
                 if (item.Column.indexOf('_id') !== -1 && item.Table == tableName) {
-                    //干掉_id，找出关联的表名
+                    // 干掉_id，找出关联的表名
                     let index = item.Column.lastIndexOf('_id');
                     let tmpTable = item.Column.slice(0, index) + item.Column.slice(index + '_id'.length);
                     tmpTable = mysqlConfig.prefix + tmpTable;
@@ -107,7 +107,7 @@ export default ({ tableName, operationFile, ...props }) => {
                         });
                     }
                 }
-                //说明是其它表，则就是其它表有我的id
+                // 说明是其它表，则就是其它表有我的id
                 if (item.Column == tableNameKey && item.Table != tableName) {
                     if (!formRelevance.find(tmp => tmp?.model == item.Table)) {
                         formRelevance.push({
@@ -120,7 +120,7 @@ export default ({ tableName, operationFile, ...props }) => {
         }
     }, [tableCloumnList, data, mysqlConfig, formRef])
 
-    //字段类型的选择项
+    // 字段类型的选择项
     const types = [
         {
             value: 'json',
@@ -155,7 +155,7 @@ export default ({ tableName, operationFile, ...props }) => {
             label: '时间戳/读的时候Y-m-d H:i:s',
         },
     ];
-    //是否包含附件的选择
+    // 是否包含附件的选择
     const files = [
         {
             value: '',
@@ -170,7 +170,7 @@ export default ({ tableName, operationFile, ...props }) => {
             label: '富文本中包含附件',
         },
     ];
-    //搜索器选择项
+    // 搜索器选择项
     const search_attrs = [
         {
             value: '',
@@ -221,21 +221,21 @@ export default ({ tableName, operationFile, ...props }) => {
             label: 'between',
         },
     ];
-    //修改器选择项
+    // 修改器选择项
     const set_attrs = [
         {
             value: '',
             label: '空函数',
         },
     ];
-    //获取器选择项
+    // 获取器选择项
     const get_attrs = [
         {
             value: '',
             label: '空函数',
         },
     ];
-    //关联模型的关系
+    // 关联模型的关系
     const relevances = [
         {
             value: 'hasOne',
@@ -254,7 +254,7 @@ export default ({ tableName, operationFile, ...props }) => {
             label: '多对多',
         },
     ];
-    //表格列
+    // 表格列
     const columns = [
         {
             title: '字段',
@@ -382,11 +382,11 @@ export default ({ tableName, operationFile, ...props }) => {
             onFinish={async (values) => {
                 adminCodeGeneratorApi.generatorCode({
                     model: {
-                        ...values.model, //只要form中的这些值
-                        file_suffix: 'php', //生成文件的后缀名称
+                        ...values.model, // 只要form中的这些值
+                        file_suffix: 'php', // 生成文件的后缀名称
                     },
                     table_name: tableName,
-                    code_name: 'model', //生成的代码名称
+                    code_name: 'model', // 生成的代码名称
                 }).then(res => {
                     if (res.code === 1) {
                         message.success(res.message);
@@ -484,7 +484,7 @@ export default ({ tableName, operationFile, ...props }) => {
                         {/* 多对多的时候，需要则外选择中间表 */}
                         <ProFormDependency
                             name={['type']}
-                            ignoreFormListField={false} //从全局获取关联的变量
+                            ignoreFormListField={false} // 从全局获取关联的变量
                         >
                             {({ type }) => {
                                 return <ProFormSelect

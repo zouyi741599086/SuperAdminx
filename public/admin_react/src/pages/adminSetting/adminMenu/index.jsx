@@ -18,7 +18,7 @@ const { Search } = Input;
 const Create = lazy(() => import('./create'));
 const Update = lazy(() => import('./update'));
 
-//找出多维数组的所有的父节点
+// 找出多维数组的所有的父节点
 const selectParentKey = (list) => {
     let expandedKeys = []
     list.map((item) => {
@@ -34,7 +34,7 @@ const selectParentKey = (list) => {
     return expandedKeys
 }
 
-//找出某条数据往上所有父节点，用于搜索展开
+// 找出某条数据往上所有父节点，用于搜索展开
 const getParentKey = (id, tree) => {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
@@ -62,17 +62,17 @@ export default () => {
     const { message } = App.useApp();
 
     useMount(() => {
-        //加载菜单
+        // 加载菜单
         getList();
     })
 
-    //展开指定的父节点
+    // 展开指定的父节点
     const [expandedKeys, setExpandedKeys] = useState([]);
-    //搜索的关键字
+    // 搜索的关键字
     const [searchKeywords, setSearchKeywords] = useState('');
-    //是否自动展开父节点
+    // 是否自动展开父节点
     const [autoExpandParent, setAutoExpandParent] = useState(true);
-    //搜索词发生改变的时候
+    // 搜索词发生改变的时候
     const searchKeywordsChange = (e) => {
         setSearchKeywords(e.target.value);
         if (!e.target.value) {
@@ -90,17 +90,17 @@ export default () => {
     }
 
 
-    //展开收起父节点时候
+    // 展开收起父节点时候
     const onExpand = keys => {
         setExpandedKeys(keys);
         setAutoExpandParent(false);
     }
 
-    //菜单列表 嵌套数组
+    // 菜单列表 嵌套数组
     const [menuList, setMenuList] = useState([]);
-    //菜单列表 一维数组
+    // 菜单列表 一维数组
     const [menuListArr, setMenuListArr] = useState([]);
-    //加载菜单列表
+    // 加载菜单列表
     const getList = () => {
         adminMenuApi.getList({
             hidden: 'all'
@@ -112,11 +112,11 @@ export default () => {
                         disabled: item.type === 7 // 类型为7的数据是参数设置管理里面自动同步过来的，不允许删除、编辑
                     }
                 })
-                //一维数组
+                // 一维数组
                 setMenuListArr(tmp);
-                //多维数组
+                // 多维数组
                 setMenuList(menuToTree(tmp))
-                //找出所有父节点，用于展开
+                // 找出所有父节点，用于展开
                 //setExpandedKeys(selectParentKey(menuList))
             }
         })

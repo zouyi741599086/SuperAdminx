@@ -23,7 +23,7 @@ export default ({ title = '查看', imgs = [], ...props }) => {
                     <Image.PreviewGroup
                         preview={{
                             imageRender: (e) => {
-                                //判断是否是视频
+                                // 判断是否是视频
                                 if (e.props.src) {
                                     let arr = e.props.src.split("?video_src=", 2);
                                     if (arr[1]) {

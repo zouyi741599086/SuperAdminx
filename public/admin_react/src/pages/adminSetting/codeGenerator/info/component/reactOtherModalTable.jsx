@@ -26,7 +26,7 @@ export default ({ tableName, ...props }) => {
         }
     }, [tableName]);
 
-    //获取字段列表
+    // 获取字段列表
     const [tableColumns, setTableColumns] = useState([]);
     const getTableColumns = () => {
         adminCodeGeneratorApi.getTableColumn({
@@ -41,20 +41,20 @@ export default ({ tableName, ...props }) => {
     }
 
 
-    //菜单列表 嵌套数组
+    // 菜单列表 嵌套数组
     const [menuList, setMenuList] = useState([]);
     const getMenuList = () => {
         adminMenuApi.getList({
             hidden: 'all'
         }).then(res => {
             if (res.code === 1) {
-                //多维数组
+                // 多维数组
                 setMenuList(menuToTree(res.data))
             }
         })
     }
 
-    //展示字段类型
+    // 展示字段类型
     const list_fields_types = [
         {
             value: 'text',
@@ -279,7 +279,7 @@ export default ({ tableName, ...props }) => {
                                 let _component = [];
                                 let field_type = react_other?.list_fields_type?.[record.Field];
 
-                                //如果常规文本显示，才有自动省略、是否支持复制
+                                // 如果常规文本显示，才有自动省略、是否支持复制
                                 if (field_type == 'text') {
                                     _component.push(<ProFormSelect
                                         key="ellipsis"

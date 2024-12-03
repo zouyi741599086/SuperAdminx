@@ -10,27 +10,26 @@ import tinymce from 'tinymce/tinymce';
 import { Editor } from '@tinymce/tinymce-react';
 import 'tinymce/themes/silver';
 import 'tinymce/themes/silver/theme';
-import 'tinymce/icons/default'; //引入编辑器图标icon，不引入则不显示对应图标
+import 'tinymce/icons/default'; // 引入编辑器图标icon，不引入则不显示对应图标
 import 'tinymce/models/dom'; // 这里是个坑 一定要引入
 
-//在TinyMce.vue中接着引入相关插件
 import "tinymce/plugins/table"; // 插入表格插件
 import "tinymce/plugins/lists"; // 有序列表无序列表插件
 import "tinymce/plugins/advlist"; // 有序列表无序列表插件 扩展
 import "tinymce/plugins/wordcount"; // 字数统计插件
 import "tinymce/plugins/code"; // 查看源码
-import "tinymce/plugins/fullscreen"; //全屏
-import "tinymce/plugins/anchor"; //锚点
-import "tinymce/plugins/autolink"; //自动识别插入链接
-//import "tinymce/plugins/autoresize"; //编辑器高度自动
-import "tinymce/plugins/autosave"; //刷新页面会提示内容未保存
-import "tinymce/plugins/charmap"; //插入特殊字符
-import "tinymce/plugins/codesample"; //插入代码
-import "tinymce/plugins/directionality"; //恢复上次的草稿
+import "tinymce/plugins/fullscreen"; // 全屏
+import "tinymce/plugins/anchor"; // 锚点
+import "tinymce/plugins/autolink"; // 自动识别插入链接
+//import "tinymce/plugins/autoresize"; // 编辑器高度自动
+import "tinymce/plugins/autosave"; // 刷新页面会提示内容未保存
+import "tinymce/plugins/charmap"; // 插入特殊字符
+import "tinymce/plugins/codesample"; // 插入代码
+import "tinymce/plugins/directionality"; // 恢复上次的草稿
 import "tinymce/plugins/image"; // 上传图片插件
 //import "tinymce/plugins/importcss"; //
-import "tinymce/plugins/insertdatetime"; //插入时间
-import "tinymce/plugins/link"; //插入链接
+import "tinymce/plugins/insertdatetime"; // 插入时间
+import "tinymce/plugins/link"; // 插入链接
 import "tinymce/plugins/media"; // 插入视频插件
 import "tinymce/plugins/nonbreaking"; // 插入不间断的空格
 import "tinymce/plugins/pagebreak"; // 插入分页符
@@ -39,12 +38,12 @@ import "tinymce/plugins/quickbars"; //获取焦点的时候自动弹窗图片 �
 //import "tinymce/plugins/save"; // 保存，会提示没得表单控件
 import "tinymce/plugins/searchreplace"; // 搜索替换
 //import "tinymce/plugins/template"; // 模板，用不起
-import "tinymce/plugins/visualblocks"; //显示区块边界
-import "tinymce/plugins/visualchars"; //显示不可见的字符
-//import "tinymce/plugins/help"; //显示帮助
-import "./tinymce/plugins/axupimgs"; //图片批量上传 引的是当前目录
-import "./tinymce/plugins/emoticons"; //插入表情 引的是当前目录
-import "./tinymce/plugins/indent2em"; //首行缩进 引的是当前目录
+import "tinymce/plugins/visualblocks"; // 显示区块边界
+import "tinymce/plugins/visualchars"; // 显示不可见的字符
+//import "tinymce/plugins/help"; // 显示帮助
+import "./tinymce/plugins/axupimgs"; // 图片批量上传 引的是当前目录
+import "./tinymce/plugins/emoticons"; // 插入表情 引的是当前目录
+import "./tinymce/plugins/indent2em"; // 首行缩进 引的是当前目录
 
 import './index.css';
 
@@ -60,12 +59,12 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
     const [layoutSetting] = useRecoilState(layoutSettingStore);
     const editorRef = useRef();
     const { message } = App.useApp();
-    //编辑器初始值
+    // 编辑器初始值
     const [initialValue, setInitialValue] = useState(value);
-    //编辑器的值
+    // 编辑器的值
     const [val, setVal] = useState(value);
 
-    //父组件的value不等于本组件的value的时候，就更新本组价的value
+    // 父组件的value不等于本组件的value的时候，就更新本组价的value
     useEffect(() => {
         if (val !== value) {
             setInitialValue(value);
@@ -79,21 +78,21 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
     })
 
     const init = {
-        selector: editorRef, //富文本编辑器的id,
+        selector: editorRef, // 富文本编辑器的id,
         skin_url: layoutSetting.antdThemeValue == 'dark' ? `${import.meta.env.BASE_URL}tinymce/skins/ui/oxide-dark` : `${import.meta.env.BASE_URL}tinymce/skins/ui/oxide`, // skin路径，具体路径看自己的项目
-        content_css: `${import.meta.env.BASE_URL}tinymce/skins/content/default/content.css`, //以css文件方式自定义可编辑区域的css样式，css文件需自己创建并引入
-        emoticons_database_url: `${import.meta.env.BASE_URL}tinymce/plugins/emoticons/js/emojis.js`, //表情包路劲
+        content_css: `${import.meta.env.BASE_URL}tinymce/skins/content/default/content.css`, // 以css文件方式自定义可编辑区域的css样式，css文件需自己创建并引入
+        emoticons_database_url: `${import.meta.env.BASE_URL}tinymce/plugins/emoticons/js/emojis.js`, // 表情包路劲
         language_url: `${import.meta.env.BASE_URL}tinymce/langs/zh-Hans.js`, // 语言包的路径，具体路径看自己的项目，文档后面附上中文js文件
-        language: "zh-Hans", //语言
-        height: height, //编辑器高度
-        min_height: 200, //编辑器最小高
+        language: "zh-Hans", // 语言
+        height: height, // 编辑器高度
+        min_height: 200, // 编辑器最小高
         placeholder: '请输入...',
-        branding: false, //是否禁用
-        promotion: false, //隐藏又上角升级按钮
-        menubar: true, //顶部菜单栏显示
-        autosave_interval: '5s', //编辑器每隔3秒就自动保存草稿
+        branding: false, // 是否禁用
+        promotion: false, // 隐藏又上角升级按钮
+        menubar: true, // 顶部菜单栏显示
+        autosave_interval: '5s', // 编辑器每隔3秒就自动保存草稿
         autosave_retention: '1440m', // 编辑器草稿保存的时间，单位分钟
-        convert_urls: false, //上传图片等附件后 禁止将编辑器中的图片附件等地址自动转为相对路径
+        convert_urls: false, // 上传图片等附件后 禁止将编辑器中的图片附件等地址自动转为相对路径
 
         menu: {
             //file: { title: 'File', items: 'newdocument restoredraft | preview | export print | deleteallconversations' },
@@ -106,14 +105,14 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
             // help: { title: 'Help', items: 'help' }
         },
 
-        //需要的插件，新增的插件必须先放入这
+        // 需要的插件，新增的插件必须先放入这
         plugins: 'indent2em lists advlist table wordcount code fullscreen anchor autolink autosave charmap directionality image insertdatetime link media nonbreaking pagebreak preview searchreplace visualblocks visualchars axupimgs emoticons quickbars ',
 
-        //摆在上面的编辑器的操作
+        // 摆在上面的编辑器的操作
         toolbar: toolbarDisabled ? `` : `undo redo | fontsize  styles |  forecolor backcolor |indent2em outdent indent | bullist numlist |  image axupimgs link media | code fullscreen`,
 
-        font_family_formats: 'Arial=arial,helvetica,sans-serif; 宋体=SimSun; 微软雅黑=Microsoft Yahei; Impact=impact,chicago;', //字体
-        font_size_formats: '11px 12px 14px 16px 18px 24px 36px 48px 64px 72px', //文字大小
+        font_family_formats: 'Arial=arial,helvetica,sans-serif; 宋体=SimSun; 微软雅黑=Microsoft Yahei; Impact=impact,chicago;', // 字体
+        font_size_formats: '11px 12px 14px 16px 18px 24px 36px 48px 64px 72px', // 文字大小
 
         // paste_convert_word_fake_lists: false, // 插入word文档需要该属性
         // paste_webkit_styles: "all",
@@ -122,23 +121,23 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
         // paste_auto_cleanup_on_paste: false,
         // file_picker_types: 'file',
 
-        quickbars_insert_toolbar: 'quicktable image axupimgs media link', //新的一行焦点的时候，弹出快捷操作
-        quickbars_selection_toolbar: 'bold italic underline removeformat forecolor backcolor | blocks | link', //选择一块文字的时候，弹出快捷操作
+        quickbars_insert_toolbar: 'quicktable image axupimgs media link', // 新的一行焦点的时候，弹出快捷操作
+        quickbars_selection_toolbar: 'bold italic underline removeformat forecolor backcolor | blocks | link', // 选择一块文字的时候，弹出快捷操作
 
-        content_style: "*{max-width:100% !important;}", //自定义样式，
+        content_style: "*{max-width:100% !important;}", // 自定义样式，
 
-        link_default_target: '_blank', //插入链接自动识别了后默认新窗口打开
+        link_default_target: '_blank', // 插入链接自动识别了后默认新窗口打开
 
-        image_dimensions: false, //上传图片弹出去除宽高属性
+        image_dimensions: false, // 上传图片弹出去除宽高属性
 
-        media_filter_html: false, //禁用视频弹窗中粘贴html
-        media_poster: true, //开启可以上传视频封面
-        media_alt_source: false, //关闭视频备选url
+        media_filter_html: false, // 禁用视频弹窗中粘贴html
+        media_poster: true, // 开启可以上传视频封面
+        media_alt_source: false, // 关闭视频备选url
         // 弹窗里面 上传图标里面的文件上传
         file_picker_callback: (callback, value, meta) => {
-            //点击上传附件的时候
+            // 点击上传附件的时候
             if (meta.filetype == 'file') {
-                let inputElem = document.createElement("input"); //创建文件选择
+                let inputElem = document.createElement("input"); // 创建文件选择
                 inputElem.setAttribute("type", "file");
                 inputElem.setAttribute("accept", ".pdf, .txt, .zip, .rar, .7z, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .mp3, .mp4,.mkv, .avi,.wmv, .rmvb,.mov,.mpg,.mpeg,.webm, .jpg, .jpeg, .png, .gif");
                 inputElem.click();
@@ -189,9 +188,9 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
                 });
             }
         },
-        //图片上传
+        // 图片上传
         images_upload_handler: (blobInfo) => uploadFile(blobInfo.blob(), 'img', false),
-        //多图上传后
+        // 多图上传后
         images_upload_imgs: (blobInfo, success, error) => uploadFile(blobInfo.blob(), 'img').then(file_url => {
             success(file_url, blobInfo.blob().name);
         }).catch(err => {
@@ -199,9 +198,9 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
         }),
     }
 
-    //上传前文件验证 type：img》图片，media》媒体，file》文件
+    // 上传前文件验证 type：img》图片，media》媒体，file》文件
     const uploadValidata = (file, type) => {
-        //获取后缀
+        // 获取后缀
         let flieArr = file.name.split(".");
         let suffix = flieArr[flieArr.length - 1];
 
@@ -232,10 +231,10 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
         return true;
     }
 
-    //文件上传 type：img》图片，media》媒体，file》文件，is_error:是否弹窗错误提示
+    // 文件上传 type：img》图片，media》媒体，file》文件，is_error:是否弹窗错误提示
     const uploadFile = (file, type = 'img', is_error = true) => {
         return new Promise((resolve, reject) => {
-            //上传验证文件
+            // 上传验证文件
             const validata = uploadValidata(file, type);
             if (validata !== true) {
                 if (is_error) {

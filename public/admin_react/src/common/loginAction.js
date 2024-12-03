@@ -1,6 +1,6 @@
 import { storage } from '@/common/function';
 
-//把菜单的上下级路劲改为数组
+// 把菜单的上下级路劲改为数组
 const menuPidPathNameToArr = (arr) => {
     arr.map(item => {
         item.pid_name_path = item.pid_name_path.split(",");
@@ -21,7 +21,7 @@ const menuPidPathNameToArr = (arr) => {
  */
 export const loginAction = (adminUser, setAdminUser, setMenuAuth) => {
 
-    //把首页注入到权限里面
+    // 把首页注入到权限里面
     adminUser.menu.unshift({
         id: 0,
         title: '首页',
@@ -37,21 +37,21 @@ export const loginAction = (adminUser, setAdminUser, setMenuAuth) => {
         is_params: 1,
     });
 
-    //先将所有权限节点数据清洗，把pid_path变为数组》数字
+    // 先将所有权限节点数据清洗，把pid_path变为数组》数字
     adminUser.menu = [...menuPidPathNameToArr(adminUser.menu)];
 
-    //导航菜单数据
+    // 导航菜单数据
     let menuArr = [];
-    //路由数据，包含隐藏菜单、内页路由如修改详情等
+    // 路由数据，包含隐藏菜单、内页路由如修改详情等
     let menuArrAll = [];
-    //用户拥有的所有的权限节点的name
+    // 用户拥有的所有的权限节点的name
     let actionAuthArr = [];
 
     adminUser.menu.map(item => {
         if ([1, 2, 3, 4, 7].indexOf(item.type) !== -1 && item.hidden == 1) {
             menuArr.push(item);
         }
-        //我的超级权限，把隐藏的菜单也显示出来
+        // 我的超级权限，把隐藏的菜单也显示出来
         if (adminUser.id == 1 && item.hidden == 2) {
             menuArr.push(item);
         }
@@ -61,13 +61,13 @@ export const loginAction = (adminUser, setAdminUser, setMenuAuth) => {
         actionAuthArr.push(item.name);
     })
 
-    //设置用户登录信息
+    // 设置用户登录信息
     setAdminUser(adminUser);
 
-    //存入权限验证的所有节点id
+    // 存入权限验证的所有节点id
     storage.set('actionAuthArr', actionAuthArr);
 
-    //设置用户权限节点
+    // 设置用户权限节点
     setMenuAuth((_val) => {
         return {
             ..._val,

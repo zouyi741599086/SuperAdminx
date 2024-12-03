@@ -30,9 +30,9 @@ export default ({ tableName, operationFile, ...props }) => {
             getTableList();
         }
     }, [tableName]);
-    //获取字段列表
+    // 获取字段列表
     const [tableColumns, setTableColumns] = useState([]);
-    const [isGetData, setIsGetData] = useState(); //数据是否已经请求完成，需要按照数据库中的表单字段排序 对 字段列表进行重新排序
+    const [isGetData, setIsGetData] = useState(); // 数据是否已经请求完成，需要按照数据库中的表单字段排序 对 字段列表进行重新排序
     const getTableColumns = () => {
         adminCodeGeneratorApi.getTableColumn({
             table_name: tableName
@@ -45,7 +45,7 @@ export default ({ tableName, operationFile, ...props }) => {
             }
         });
     }
-    //需要按照数据库中的表单字段排序 对 字段列表进行重新排序
+    // 需要按照数据库中的表单字段排序 对 字段列表进行重新排序
     useEffect(() => {
         if (data && tableColumns.length > 0) {
             const newTableColumns = [];
@@ -69,7 +69,7 @@ export default ({ tableName, operationFile, ...props }) => {
     }, [isGetData])
 
 
-    //表列表
+    // 表列表
     const [tableList, setTableList] = useState([]);
     const getTableList = () => {
         adminCodeGeneratorApi.getTableList().then(res => {
@@ -83,7 +83,7 @@ export default ({ tableName, operationFile, ...props }) => {
 
     const [data, setData] = useState({});
 
-    //表单字段类型
+    // 表单字段类型
     const form_fileds_types = [
         {
             value: 'Text',
@@ -207,7 +207,7 @@ export default ({ tableName, operationFile, ...props }) => {
         },
     ];
 
-    //表单字段设置 前缀
+    // 表单字段设置 前缀
     const addonBefore = (Field) => {
         return <ProFormText
             key="addonBefore"
@@ -219,7 +219,7 @@ export default ({ tableName, operationFile, ...props }) => {
             }}
         />
     };
-    //表单字段设置 后缀
+    // 表单字段设置 后缀
     const addonAfter = (Field) => {
         return <ProFormText
             key="addonAfter"
@@ -231,7 +231,7 @@ export default ({ tableName, operationFile, ...props }) => {
             }}
         />
     };
-    //表单字段设置 验证规则
+    // 表单字段设置 验证规则
     const validateRules = (Field) => {
         return <ProFormSelect
             key="validateRules"
@@ -275,7 +275,7 @@ export default ({ tableName, operationFile, ...props }) => {
             }}
         />
     };
-    //选择的数据来源 必填
+    // 选择的数据来源 必填
     const dataSource = (Field) => {
         return <ProFormSelect
             key="dataSource"
@@ -301,7 +301,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    //省市区选择才有，选择后是需要省市区的id，还是省市区的标题
+    // 省市区选择才有，选择后是需要省市区的id，还是省市区的标题
     const provinceCityAreaValueType = (Field) => {
         return <ProFormSelect
             key="provinceCityAreaValueType"
@@ -327,7 +327,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    //下拉框的时候， select的模式
+    // 下拉框的时候， select的模式
     const selectMode = (Field) => {
         return <div key="selectModeWarp">
             <ProFormSelect
@@ -377,7 +377,7 @@ export default ({ tableName, operationFile, ...props }) => {
             </ProFormDependency>
         </div>
     };
-    //树选择的时候 是否显示CheckBox
+    // 树选择的时候 是否显示CheckBox
     const treeCheckable = (Field) => {
         return <ProFormSelect
             key="treeCheckable"
@@ -399,7 +399,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    //级联选择的时候是否允许多选
+    // 级联选择的时候是否允许多选
     const cascaderMultiple = (Field) => {
         return <ProFormSelect
             key="cascaderMultiple"
@@ -421,7 +421,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    //当多tab标签的时候，某个字段归属于哪个标签里面
+    // 当多tab标签的时候，某个字段归属于哪个标签里面
     const fieldToTab = (Field) => {
         return <ProFormDependency key="field_to_tab" name={[['react_create_update', 'card_tab_list'], ['react_create_update', 'open_type']]}>
             {({ react_create_update }) => {
@@ -457,7 +457,7 @@ export default ({ tableName, operationFile, ...props }) => {
             }}
         </ProFormDependency>
     };
-    //表单字段设置 允许上传的文件后缀
+    // 表单字段设置 允许上传的文件后缀
     const fileSuffix = (Field) => {
         return <ProFormText
             key="fileSuffix"
@@ -475,7 +475,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    //表单字段设置 最大上传数量
+    // 表单字段设置 最大上传数量
     const maxUploadCount = (Field) => {
         return <ProFormDigit
             key="maxUploadCount"
@@ -489,7 +489,7 @@ export default ({ tableName, operationFile, ...props }) => {
             min={1}
         />
     };
-    //表单字段设置 最小|长度
+    // 表单字段设置 最小|长度
     const minNumber = (Field) => {
         return <ProFormDigit
             key="minNumber"
@@ -506,7 +506,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    //表单字段设置 最大|长度
+    // 表单字段设置 最大|长度
     const maxNumber = (Field) => {
         return <ProFormDigit
             key="maxNumber"
@@ -523,7 +523,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    //表单字段设置 固定长度
+    // 表单字段设置 固定长度
     const lenNumber = (Field) => {
         return <ProFormDigit
             key="lenNumber"
@@ -540,7 +540,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    //设置关联字段，选择某个字段
+    // 设置关联字段，选择某个字段
     const dependencyField = (Field) => {
         return <ProFormSelect
             key="dependencyField"
@@ -565,7 +565,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    //表单字段设置 数量来源表
+    // 表单字段设置 数量来源表
     const dataSourceTable = (Field) => {
         return <ProFormSelect
             key="dataSourceTable"
@@ -606,20 +606,20 @@ export default ({ tableName, operationFile, ...props }) => {
             onFinish={async (values) => {
                 adminCodeGeneratorApi.generatorCode({
                     react_create_update: {
-                        ...values.react_create_update, //只要form中的这些值
-                        file_name: 'index', //生成的文件名称
-                        file_suffix: 'jsx', //生成文件的后缀名称
+                        ...values.react_create_update, // 只要form中的这些值
+                        file_name: 'index', // 生成的文件名称
+                        file_suffix: 'jsx', // 生成文件的后缀名称
                     },
                     table_name: tableName,
-                    code_name: 'react_create_update', //生成的代码名称
+                    code_name: 'react_create_update', // 生成的代码名称
                 }).then(res => {
                     if (res.code === 1) {
                         message.success(res.message);
-                        //保存后有生成新的代码要 设置进去
+                        // 保存后有生成新的代码要 设置进去
                         formRef.current.setFieldValue('react_create_code', res.data.react_create_code);
-                        //修改页面的代码
+                        // 修改页面的代码
                         formRef.current.setFieldValue('react_update_code', res.data.react_update_code);
-                        //添加修改 form里面的字段 的代码，可能是多个tabs来着
+                        // 添加修改 form里面的字段 的代码，可能是多个tabs来着
                         if (res.data.react_form_code) {
                             for (let key in res.data.react_form_code) {
                                 formRef.current.setFieldValue(['react_form_code', key], res.data.react_form_code[key]);
@@ -783,20 +783,20 @@ export default ({ tableName, operationFile, ...props }) => {
                                             const formType = react_create_update?.form_fileds_type?.[record.Field];
 
                                             const _component = [];
-                                            //注入验证规则
+                                            // 注入验证规则
                                             _component.push(validateRules(record.Field))
 
-                                            //文本框或数字才有 前缀 后缀
+                                            // 文本框或数字才有 前缀 后缀
                                             if (formType == 'Text' || formType == 'Digit') {
                                                 _component.push(addonBefore(record.Field))
                                                 _component.push(addonAfter(record.Field))
                                             }
 
-                                            //选择的才有数据源
+                                            // 选择的才有数据源
                                             if (['Select', 'TreeSelect', 'Checkbox', 'Radio', 'Cascader'].indexOf(formType) !== -1) {
                                                 _component.push(dataSource(record.Field));
 
-                                                //监听数据来源 如果是api请求则选择表
+                                                // 监听数据来源 如果是api请求则选择表
                                                 _component.push(<ProFormDependency key="2" name={[['react_create_update', 'form_fields_type_config', record.Field, 'dataSource']]}>
                                                     {({ react_create_update }) => {
                                                         const dataSource = react_create_update?.form_fields_type_config?.[record.Field]?.dataSource;
@@ -807,23 +807,23 @@ export default ({ tableName, operationFile, ...props }) => {
                                                 </ProFormDependency>);
                                             }
 
-                                            //异步搜索选择某个表的id
+                                            // 异步搜索选择某个表的id
                                             if (['SelectTable'].indexOf(formType) !== -1) {
-                                                //选择某个表
+                                                // 选择某个表
                                                 _component.push(dataSourceTable(record.Field));
                                             }
 
-                                            //如果是上传文件才有 允许上传的文件
+                                            // 如果是上传文件才有 允许上传的文件
                                             if (['uploadFile', 'uploadFileAll'].indexOf(formType) !== -1) {
                                                 _component.push(fileSuffix(record.Field))
                                             }
 
-                                            //如果是上传多图或多文件，才有上传的最大数量
+                                            // 如果是上传多图或多文件，才有上传的最大数量
                                             if (['uploadImgAll', 'uploadFileAll', 'uploadImgVideoAll'].indexOf(formType) !== -1) {
                                                 _component.push(maxUploadCount(record.Field))
                                             }
 
-                                            //对验证规则设置详情参数
+                                            // 对验证规则设置详情参数
                                             _component.push(<ProFormDependency key="1" name={[['react_create_update', 'form_fields_type_config', record.Field, 'validateRules']]}>
                                                 {({ react_create_update }) => {
                                                     const validateRules = react_create_update?.form_fields_type_config?.[record.Field]?.validateRules;
@@ -846,22 +846,22 @@ export default ({ tableName, operationFile, ...props }) => {
                                                 }}
                                             </ProFormDependency>);
 
-                                            //下拉框才有，select是多选还是单选
+                                            // 下拉框才有，select是多选还是单选
                                             if (formType == 'Select') {
                                                 _component.push(selectMode(record.Field));
                                             }
 
-                                            //树选择才有，是否显示checkbox
+                                            // 树选择才有，是否显示checkbox
                                             if (formType == 'TreeSelect') {
                                                 _component.push(treeCheckable(record.Field));
                                             }
 
-                                            //级联选择才有，是否多选
+                                            // 级联选择才有，是否多选
                                             if (formType == 'Cascader') {
                                                 _component.push(cascaderMultiple(record.Field));
                                             }
 
-                                            //省市区才有，选择后需要标题还是id
+                                            // 省市区才有，选择后需要标题还是id
                                             if (['province', 'provinceCity', 'provinceCityArea'].indexOf(formType) !== -1) {
                                                 _component.push(provinceCityAreaValueType(record.Field))
                                             }
@@ -869,7 +869,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                             // 是否是关联字段，当xx字段xx的时候必填，设置xx字段是哪个字段 
                                             _component.push(dependencyField(record.Field));
 
-                                            //多top的时候，归属于哪个tab
+                                            // 多top的时候，归属于哪个tab
                                             _component.push(fieldToTab(record.Field));
 
                                             return _component;

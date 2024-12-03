@@ -23,12 +23,12 @@ export default () => {
     const { message } = App.useApp();
     const tableRef = useRef();
 
-    //要修改的数据id
+    // 要修改的数据id
     const [updateId, setUpdateId] = useState(0);
-    //要修改的权限数据id
+    // 要修改的权限数据id
     const [roleId, setRoleId] = useState(0);
 
-    //删除
+    // 删除
     const del = (id) => {
         adminRoleApi.delete({
             id
@@ -42,12 +42,12 @@ export default () => {
         })
     }
 
-    //刷新表格数据
+    // 刷新表格数据
     const tableReload = () => {
         tableRef.current.reload();
     }
 
-    //表格列
+    // 表格列
     const columns = [
         {
             title: '角色名称',
@@ -141,7 +141,7 @@ export default () => {
                         fullScreen: true
                     }}
                     columnsState={{
-                        //此table列设置后存储本地的唯一key
+                        // 此table列设置后存储本地的唯一key
                         persistenceKey: 'table_column_' + 'adminRole',
                         persistenceType: 'localStorage'
                     }}
@@ -151,14 +151,14 @@ export default () => {
                     pagination={{
                         defaultPageSize: 10,
                         size: 'default',
-                        //支持跳到多少页
+                        // 支持跳到多少页
                         showQuickJumper: true,
                         showSizeChanger: true,
                         responsive: true,
                     }}
                     request={async (params = {}, sort, filter) => {
                         const result = await adminRoleApi.getList({
-                            ...params,//包含了翻页参数跟搜索参数
+                            ...params,// 包含了翻页参数跟搜索参数
                             page: params.current,
                         });
                         return {

@@ -11,7 +11,7 @@ import {
 const Teditor = lazy(() => import('@/component/form/teditor/index'));
 const UploadImgAll = lazy(() => import('@/component/form/uploadImgAll/index'));
 
-//分类数据只要有下级就要禁用
+// 分类数据只要有下级就要禁用
 const childrenDisabled = (list) => {
     list.map(item => {
         item.disabled = item.children.length > 0 ? true : false;

@@ -43,7 +43,7 @@ export default ({ menuMode = 'inline' }) => {
     const [menuAuth, setMenuAuth] = useRecoilState(menuAuthStore);
     const [menuList, setMenuList] = useState();
 
-    //点击父菜单的时候，控制只展开当前菜单
+    // 点击父菜单的时候，控制只展开当前菜单
     const onOpenChange = (keys) => {
         setMenuAuth(_val => {
             return {
@@ -53,7 +53,7 @@ export default ({ menuMode = 'inline' }) => {
         })
     };
 
-    //监听菜单数据变化的时候，重置菜单  
+    // 监听菜单数据变化的时候，重置菜单  
     useEffect(() => {
         const _menuList = menuAuth.menuArr.map(item => {
             return {
@@ -69,12 +69,12 @@ export default ({ menuMode = 'inline' }) => {
         setMenuList(menuToTree(_menuList));
     }, [menuAuth.menuArr])
 
-    //点击菜单的时候
+    // 点击菜单的时候
     const onClick = ({ key, keyPath }) => {
-        //找出菜单进行跳转
+        // 找出菜单进行跳转
         menuAuth.menuArr.some(item => {
             if (item.name === key) {
-                //外部链接
+                // 外部链接
                 if (item.type === 3) {
                     return window.open(item.url, '_blank', '');
                 }
@@ -102,7 +102,7 @@ export default ({ menuMode = 'inline' }) => {
                 items={menuList}
                 onClick={onClick}
                 selectedKeys={menuAuth.activeMenuPath}
-                //顶部导航的时候不需要打开菜单
+                // 顶部导航的时候不需要打开菜单
                 //openKeys={menuAuth.openKeys}
                 onOpenChange={onOpenChange}
                 overflowedIndicator={

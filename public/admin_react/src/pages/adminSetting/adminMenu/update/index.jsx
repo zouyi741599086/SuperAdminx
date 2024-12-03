@@ -35,9 +35,9 @@ export default (props) => {
         <ProForm
             formRef={formRef}
             width={800}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             omitNil={false}
             initialValues={{
                 hidden: 1,

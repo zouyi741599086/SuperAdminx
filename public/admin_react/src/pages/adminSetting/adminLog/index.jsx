@@ -9,7 +9,7 @@ import { ProTable } from '@ant-design/pro-components';
  * @link https://www.superadminx.com/
  * */
 export default () => {
-    //表格列
+    // 表格列
     const columns = [
         {
             title: '姓名',
@@ -26,7 +26,7 @@ export default () => {
         {
             title: '操作时间',
             dataIndex: 'create_time',
-            //定义搜索框为日期区间
+            // 定义搜索框为日期区间
             valueType: 'dateRange',
             render: (_, render) => render.create_time,
         },
@@ -51,21 +51,21 @@ export default () => {
                         fullScreen: true
                     }}
                     columnsState={{
-                        //此table列设置后存储本地的唯一key
+                        // 此table列设置后存储本地的唯一key
                         persistenceKey: 'table_column_' + 'systemLog',
                         persistenceType: 'localStorage'
                     }}
                     pagination={{
                         defaultPageSize: 10,
                         size: 'default',
-                        //支持跳到多少页
+                        // 支持跳到多少页
                         showQuickJumper: true,
                         showSizeChanger: true,
                         responsive: true,
                     }}
                     request={async (params = {}, sort, filter) => {
                         const result = await adminLogApi.getList({
-                            ...params,//包含了翻页参数跟搜索参数
+                            ...params,// 包含了翻页参数跟搜索参数
                             page: params.current,
                         });
                         return {

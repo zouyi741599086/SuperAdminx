@@ -28,14 +28,14 @@ export default (props) => {
     return (<>
         <ProConfigProvider
             valueTypeMap={{
-                //上传图片
+                // 上传图片
                 uploadImg: {
                     render: (text) => <Image width={100} height={100} src={text} />,
                     renderFormItem: (text, props) => (
                         <Lazyload height="50"><UploadImg {...props?.fieldProps} /></Lazyload>
                     ),
                 },
-                //上传多图
+                // 上传多图
                 uploadImgAll: {
                     render: (text) => {
                         return <>
@@ -48,7 +48,7 @@ export default (props) => {
                         return <Lazyload height="50"><UploadImgAll {...props?.fieldProps} /></Lazyload>
                     },
                 },
-                //上传多个图片或视频
+                // 上传多个图片或视频
                 uploadImgVideoAll: {
                     render: (text) => {
                         return <>
@@ -61,14 +61,14 @@ export default (props) => {
                         return <Lazyload height="50"><UploadImgVideoAll {...props?.fieldProps} /></Lazyload>
                     },
                 },
-                //上传文件
+                // 上传文件
                 uploadFile: {
                     render: (text) => <Button type="link" size="small" link={`${text.url}`}>{text.name}</Button>,
                     renderFormItem: (text, props) => {
                         return <Lazyload height="50"><UploadFile {...props?.fieldProps} /></Lazyload>
                     },
                 },
-                //上传多个文件
+                // 上传多个文件
                 uploadFileAll: {
                     render: (text) => {
                         return <>
@@ -81,35 +81,35 @@ export default (props) => {
                         return <Lazyload height="50"><UploadFileAll {...props?.fieldProps} /></Lazyload>
                     },
                 },
-                //编辑器
+                // 编辑器
                 teditor: {
                     render: (text) => <PreviewTeditor content={text} />,
                     renderFormItem: (text, props) => (
                         <Lazyload height="50"><Teditor {...props?.fieldProps} /></Lazyload>
                     ),
                 },
-                //腾讯地图选择经纬度
+                // 腾讯地图选择经纬度
                 tencentMap: {
                     render: (text) => text,
                     renderFormItem: (text, props) => (
                         <Lazyload height="50"><TencentMap {...props?.fieldProps} /></Lazyload>
                     ),
                 },
-                //省选择
+                // 省选择
                 province: {
                     render: (text) => text,
                     renderFormItem: (text, props) => (
                         <Lazyload height="50"><Province {...props?.fieldProps} /></Lazyload>
                     ),
                 },
-                //省市选择
+                // 省市选择
                 provinceCity: {
                     render: (text) => text,
                     renderFormItem: (text, props) => (
                         <Lazyload height="50"><ProvinceCity {...props?.fieldProps} /></Lazyload>
                     ),
                 },
-                //省市区选择
+                // 省市区选择
                 provinceCityArea: {
                     render: (text) => text,
                     renderFormItem: (text, props) => (

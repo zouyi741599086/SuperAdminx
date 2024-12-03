@@ -35,7 +35,7 @@ export default (props) => {
             })
         }
     }, [props.updateId])
-    //判断是否需要禁用某个分类
+    // 判断是否需要禁用某个分类
     const disabledClass = (list, id) => {
         list.map(item => {
             item.disabled = item.pid_path.indexOf(id) === -1 ? false : true;
@@ -53,7 +53,7 @@ export default (props) => {
             open={open}
             onOpenChange={(_boolean) => {
                 setOpen(_boolean);
-                //关闭的时候干掉updateId，不然无法重复修改同一条数据
+                // 关闭的时候干掉updateId，不然无法重复修改同一条数据
                 if (_boolean === false) {
                     props.setUpdateId(0);
                 }
@@ -61,11 +61,11 @@ export default (props) => {
             title="修改分类"
             width={460}
             colProps={{ md: 12, xs: 24 }}
-            //第一个输入框获取焦点
+            // 第一个输入框获取焦点
             autoFocusFirstInput={true}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             omitNil={true}
             onFinish={async (values) => {
                 const result = await newsClassApi.update({

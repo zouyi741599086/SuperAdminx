@@ -6,7 +6,7 @@ import { useMount, useUpdateEffect } from 'ahooks';
 import { menuToTree } from '@/common/function';
 
 
-//找出多维数组的所有的父节点
+// 找出多维数组的所有的父节点
 const selectParentKey = (list) => {
     let expandedKeys = []
     list.map((item) => {
@@ -22,7 +22,7 @@ const selectParentKey = (list) => {
     return expandedKeys
 }
 
-//找出某条数据往上所有父节点，用户搜索展开
+// 找出某条数据往上所有父节点，用户搜索展开
 const getParentKey = (id, tree) => {
     let parentKey;
     for (let i = 0; i < tree.length; i++) {
@@ -50,11 +50,11 @@ export default (props) => {
     const [open, setOpen] = useState(false);
 
     useMount(() => {
-        //加载菜单
+        // 加载菜单
         getList();
     })
 
-    //监听修改的时候加载修改的时间
+    // 监听修改的时候加载修改的时间
     useUpdateEffect(() => {
         if (props.roleId > 0) {
             setOpen(true);
@@ -71,14 +71,14 @@ export default (props) => {
     }, [props.roleId])
 
     /////////////////////点击数据变化的时候////////////////////////////////////
-    //往选中的数据里面添加数据
+    // 往选中的数据里面添加数据
     const createRoleArr = (_roleArr, id) => {
         if (_roleArr.indexOf(id) === -1) {
             _roleArr.push(id);
         }
         return _roleArr;
     }
-    //往选中的数据里面删除数据
+    // 往选中的数据里面删除数据
     const delRoleArr = (_roleArr, id) => {
         let key = _roleArr.indexOf(id);
         if (key !== -1) {
@@ -87,29 +87,29 @@ export default (props) => {
         return _roleArr;
     }
 
-    //当某一个权限选择或选中的时候：下级全选或取消、上级pid是否该选中
+    // 当某一个权限选择或选中的时候：下级全选或取消、上级pid是否该选中
     const onCheck = (checkedKeys, { checked, node }) => {
         let _roleArr = [...roleArr];
-        //找出当前点击元素的所有下级，在判断是全部选中还是取消
+        // 找出当前点击元素的所有下级，在判断是全部选中还是取消
         let nextArr = menuListArr.filter(item => item.pid_name_path.indexOf(`,${node.name},`) !== -1 && item.id !== node.id);
         nextArr.push(node);
 
-        //如果选中，则把所有下级都选中
+        // 如果选中，则把所有下级都选中
         if (checked === true) {
             nextArr.map(item => {
                 _roleArr = createRoleArr(_roleArr, item.id)
             })
         }
-        //如果取消，则把所有下级都取消
+        // 如果取消，则把所有下级都取消
         if (checked === false) {
             nextArr.map(item => {
-                //存在就删除
+                // 存在就删除
                 _roleArr = delRoleArr(_roleArr, item.id)
             })
         }
 
-        //不管选中或取消，往上找父级，判断每个父级下面是否有选中的，有则父级就要选中，没得父级就要取消
-        //要反向循环，才能一级一级往上找
+        // 不管选中或取消，往上找父级，判断每个父级下面是否有选中的，有则父级就要选中，没得父级就要取消
+        // 要反向循环，才能一级一级往上找
         console.log(node.pid_name_path)
         for (let i = node.pid_name_path.length - 1; i >= 0; i--) {
             let pid_name = node.pid_name_path[i];
@@ -117,17 +117,17 @@ export default (props) => {
                 continue;
             }
 
-            //判断下级中是否有选中的
+            // 判断下级中是否有选中的
             let isCkecked = _roleArr.some(id => {
                 let menu = menuListArr.find(item => item.id === id && item.name != pid_name);
                 return menu ? menu.pid_name_path.indexOf(`,${pid_name},`) !== -1 : false;
             })
 
             if (isCkecked === true) {
-                //有选中的，如果没得就要添加
+                // 有选中的，如果没得就要添加
                 _roleArr = createRoleArr(_roleArr, menuListArr.find(item => item.name == pid_name).id);
             } else {
-                //没得选中的，如果有就要删除
+                // 没得选中的，如果有就要删除
                 _roleArr = delRoleArr(_roleArr, menuListArr.find(item => item.name == pid_name).id);
             }
         }
@@ -135,20 +135,20 @@ export default (props) => {
     }
 
     ////////start////////////////////////////////////////////////
-    //全选
+    // 全选
     const allSelect = () => {
         setRoleArr(roleArr.length === 0 ? menuListIdArr : [])
     }
 
 
     ///////////////////搜索/////////////////////
-    //展开指定的父节点
+    // 展开指定的父节点
     const [expandedKeys, setExpandedKeys] = useState([]);
-    //搜索的关键字
+    // 搜索的关键字
     const [searchKeywords, setSearchKeywords] = useState('');
-    //是否自动展开父节点
+    // 是否自动展开父节点
     const [autoExpandParent, setAutoExpandParent] = useState(true);
-    //监听搜索词发生改变的时候
+    // 监听搜索词发生改变的时候
     const searchKeywordsChange = (e) => {
         setSearchKeywords(e.target.value);
         if (!e.target.value) {
@@ -164,29 +164,29 @@ export default (props) => {
         setExpandedKeys(expanded);
         setAutoExpandParent(true);
     }
-    //展开收起父节点时候
+    // 展开收起父节点时候
     const onExpand = keys => {
         setExpandedKeys(keys);
         setAutoExpandParent(false);
     }
 
     ///////////////////获取数据/////////////////////
-    //菜单列表 嵌套数组
+    // 菜单列表 嵌套数组
     const [menuList, setMenuList] = useState([]);
-    //菜单列表 一维数组
+    // 菜单列表 一维数组
     const [menuListArr, setMenuListArr] = useState([]);
-    //所有权限的id，用在全选功能上
+    // 所有权限的id，用在全选功能上
     const [menuListIdArr, setMenuListIdArr] = useState([]);
-    //加载菜单列表
+    // 加载菜单列表
     const getList = () => {
         adminMenuApi.getList().then(res => {
             if (res.code === 1) {
-                //一维数组
+                // 一维数组
                 setMenuListArr(res.data);
                 setMenuListIdArr(res.data.map(item => item.id))
-                //多维数组
+                // 多维数组
                 setMenuList(menuToTree(res.data))
-                //找出所有父节点，用于展开
+                // 找出所有父节点，用于展开
                 //setExpandedKeys(selectParentKey(menuList))
             }
         })
@@ -195,7 +195,7 @@ export default (props) => {
     ///////////////////保存/////////////////////
     const [roleArr, setRoleArr] = useState([]);
     const [formLoading, setFormLoading] = useState(false);
-    //保存修改结果
+    // 保存修改结果
     const updateDataRole = () => {
         setFormLoading(true);
         adminRoleApi.updateDataMenu({

@@ -26,11 +26,11 @@ export default ({ handleCreate, ...props }) => {
                 gutter: [24, 0],
             }}
             colProps={{ md: 12, xs: 24 }}
-            //第一个输入框获取焦点
+            // 第一个输入框获取焦点
             autoFocusFirstInput={true}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             omitNil={false}
             onFinish={async (values) => {
                 handleCreate(values);

@@ -18,23 +18,23 @@ export default ({ value, onChange }) => {
     const markerRef = useRef();
     const { message } = App.useApp()
 
-    //搜索的关键字
+    // 搜索的关键字
     const [searchKeywords, setSearchKeywords] = useState(null)
     // 搜索列表
     const [searchResultList, setSearchResultList] = useState([])
-    //弹出框显示与否
+    // 弹出框显示与否
     const [open, setOpen] = useState(false)
-    //地图后端搜索服务
+    // 地图后端搜索服务
     const [suggest, setSuggest] = useState(null);
-    //被组件的值，默认经纬度
+    // 被组件的值，默认经纬度
     const [latLng, setLatLng] = useState({
         lat: value ? value.split(',')[0] : 29.552703,
         lng: value ? value.split(',')[1] : 106.549358
     })
-    //地图的中心点
+    // 地图的中心点
     const [geometries, setGeometries] = useState([]);
 
-    //本组件值被改变的时候，改变地图的marker点
+    // 本组件值被改变的时候，改变地图的marker点
     useEffect(() => {
         if (latLng.lat && latLng.lng) {
             setGeometries([
@@ -49,7 +49,7 @@ export default ({ value, onChange }) => {
         }
     }, [latLng])
 
-    //确认选择的时候
+    // 确认选择的时候
     const confirmChange = () => {
         if (!latLng) {
             message.error('请点击地图选择位置~')
@@ -59,7 +59,7 @@ export default ({ value, onChange }) => {
         setOpen(false)
     }
 
-    //点击搜索的时候
+    // 点击搜索的时候
     const mapSearch = () => {
         if (!searchKeywords) {
             return false;
@@ -87,7 +87,7 @@ export default ({ value, onChange }) => {
                 message.error(error.message)
             })
     }
-    //搜索出来的地址 点击选择的时候
+    // 搜索出来的地址 点击选择的时候
     const selectOnChange = (e) => {
         searchResultList.some((item) => {
             if (item.id == e) {
@@ -99,7 +99,7 @@ export default ({ value, onChange }) => {
             }
         })
     }
-    //输入搜索关键字的时候，防抖搜索
+    // 输入搜索关键字的时候，防抖搜索
     useThrottleEffect(
         () => {
             mapSearch()
@@ -183,19 +183,19 @@ export default ({ value, onChange }) => {
                         >
                             <MultiMarker
                                 ref={markerRef}
-                                //点的样式，是个对象可以有多个样式，然后在marker点里面应用key就行
+                                // 点的样式，是个对象可以有多个样式，然后在marker点里面应用key就行
                                 styles={{
-                                    //点的样式
+                                    // 点的样式
                                     multiMarkerStyle1: {
                                         width: 30,
                                         height: 45,
                                         anchor: { x: 15, y: 45 },
                                     }
                                 }}
-                                //marker点，是个数组，可以添加多个marker
+                                // marker点，是个数组，可以添加多个marker
                                 geometries={geometries}
                                 onClick={(e) => {
-                                    //某个marker点被点击的时候
+                                    // 某个marker点被点击的时候
                                 }}
                             />
                         </Map>

@@ -43,7 +43,7 @@ export default ({ value, onChange, UploadButton = null, accept = [], aliyunOss =
     const [tmpValue, setTmpValue] = useState([]);
     const [fileList, setFileList] = useState([]);
     useEffect(() => {
-        //将初始值设置上，只有组件值不等于父组件的值的时候
+        // 将初始值设置上，只有组件值不等于父组件的值的时候
         if (tmpValue != value && value?.name && value?.url) {
             setFileList([{
                 uid: 1,
@@ -58,7 +58,7 @@ export default ({ value, onChange, UploadButton = null, accept = [], aliyunOss =
 
     /////////////////////文件上传修改后////////////////////
     const uploadChange = info => {
-        //只是单纯的上传的时候才有
+        // 只是单纯的上传的时候才有
         if (info.file.status === "uploading" && UploadButton) {
             message.open({
                 type: 'loading',
@@ -74,7 +74,7 @@ export default ({ value, onChange, UploadButton = null, accept = [], aliyunOss =
             message.error('上传出错~')
         }
         if (info.file.status === 'done') {
-            //如果不是上传阿里云oss
+            // 如果不是上传阿里云oss
             if (!aliyunOss) {
                 if (info.file.response.code === 1) {
                     info.fileList.map(item => {
@@ -87,7 +87,7 @@ export default ({ value, onChange, UploadButton = null, accept = [], aliyunOss =
                     message.error('上传出错~')
                 }
             }
-            //如果是上传阿里云oss
+            // 如果是上传阿里云oss
             if (aliyunOss) {
                 info.fileList.map(item => {
                     if (item.uid === info.file.uid) {
@@ -104,7 +104,7 @@ export default ({ value, onChange, UploadButton = null, accept = [], aliyunOss =
 
     /////////////////////////上传前验证////////////////////
     const beforeUpload = async (file) => {
-        //获取后缀
+        // 获取后缀
         let flieArr = file.name.split(".");
         let suffix = flieArr[flieArr.length - 1];
 
@@ -174,14 +174,14 @@ export default ({ value, onChange, UploadButton = null, accept = [], aliyunOss =
         name: "file",
         listType: "picture",
         fileList: fileList,
-        //如果是上传到阿里云oss则地址不同
+        // 如果是上传到阿里云oss则地址不同
         action: aliyunOss ? aliyunOssData.host : fileApi.uploadUrl,
         showUploadList: UploadButton ? false : true,
-        //如果是上传到阿里云oss则参数不同
+        // 如果是上传到阿里云oss则参数不同
         headers: aliyunOss ? {} : {
             token: getToken()
         },
-        //如果是上传到阿里云oss则参数不同
+        // 如果是上传到阿里云oss则参数不同
         data: aliyunOss ? getExtraData : { disk },
         onChange: uploadChange,
         beforeUpload: beforeUpload,

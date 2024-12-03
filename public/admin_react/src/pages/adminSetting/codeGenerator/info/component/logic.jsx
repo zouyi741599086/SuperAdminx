@@ -22,7 +22,7 @@ export default ({ tableName, operationFile, ...props }) => {
     useEffect(() => {
     }, [tableName]);
 
-    //自定义方法里面的主体内容
+    // 自定义方法里面的主体内容
     const functionContent = [
         {
             value: 'updateAll',
@@ -33,7 +33,7 @@ export default ({ tableName, operationFile, ...props }) => {
             label: '自己写',
         },
     ];
-    //逻辑层类的类型
+    // 逻辑层类的类型
     const logicTypes = [
         {
             value: 1,
@@ -59,11 +59,11 @@ export default ({ tableName, operationFile, ...props }) => {
             onFinish={async (values) => {
                 adminCodeGeneratorApi.generatorCode({
                     logic: {
-                        ...values.logic, //只要form中的这些值
-                        file_suffix: 'php', //生成文件的后缀名称
+                        ...values.logic, // 只要form中的这些值
+                        file_suffix: 'php', // 生成文件的后缀名称
                     },
                     table_name: tableName,
-                    code_name: 'logic', //生成的代码名称
+                    code_name: 'logic', // 生成的代码名称
                 }).then(res => {
                     if (res.code === 1) {
                         message.success(res.message);
