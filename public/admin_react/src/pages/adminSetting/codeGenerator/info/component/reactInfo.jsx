@@ -29,9 +29,9 @@ export default ({ tableName, operationFile, ...props }) => {
         }
     }, [tableName]);
 
-    //获取字段列表
+    // 获取字段列表
     const [tableColumns, setTableColumns] = useState([]);
-    const [isGetData, setIsGetData] = useState(); //数据是否已经请求完成，需要按照数据库中的表单字段排序 对 字段列表进行重新排序
+    const [isGetData, setIsGetData] = useState(); // 数据是否已经请求完成，需要按照数据库中的表单字段排序 对 字段列表进行重新排序
     const getTableColumns = () => {
         adminCodeGeneratorApi.getTableColumn({
             table_name: tableName
@@ -45,7 +45,7 @@ export default ({ tableName, operationFile, ...props }) => {
         });
     }
 
-    //需要按照数据库中的表单字段排序 对 字段列表进行重新排序
+    // 需要按照数据库中的表单字段排序 对 字段列表进行重新排序
     useEffect(() => {
         if (data && tableColumns.length > 0) {
             const newTableColumns = [];
@@ -68,7 +68,7 @@ export default ({ tableName, operationFile, ...props }) => {
         }
     }, [isGetData])
 
-    //表列表
+    // 表列表
     const [tableList, setTableList] = useState([]);
     const getTableList = () => {
         adminCodeGeneratorApi.getTableList().then(res => {
@@ -82,7 +82,7 @@ export default ({ tableName, operationFile, ...props }) => {
 
     const [data, setData] = useState({});
 
-    //展示字段类型
+    // 展示字段类型
     const info_fields_types = [
         {
             value: 'text',
@@ -172,16 +172,16 @@ export default ({ tableName, operationFile, ...props }) => {
             onFinish={async (values) => {
                 adminCodeGeneratorApi.generatorCode({
                     react_info: {
-                        ...values.react_info, //只要form中的这些值
-                        file_name: 'index', //生成的文件名称
-                        file_suffix: 'jsx', //生成文件的后缀名称
+                        ...values.react_info, // 只要form中的这些值
+                        file_name: 'index', // 生成的文件名称
+                        file_suffix: 'jsx', // 生成文件的后缀名称
                     },
                     table_name: tableName,
-                    code_name: 'react_info', //生成的代码名称
+                    code_name: 'react_info', // 生成的代码名称
                 }).then(res => {
                     if (res.code === 1) {
                         message.success(res.message);
-                        //保存后有生成新的代码要 设置进去
+                        // 保存后有生成新的代码要 设置进去
                         formRef.current.setFieldValue('react_info_code', res.data.react_info_code);
                     } else {
                         message.error(res.message);
@@ -387,10 +387,6 @@ export default ({ tableName, operationFile, ...props }) => {
                         }
                     }}
                 </ProFormDependency>
-
-
-
-
 
                 <DragSortTable
                     className="generator-create-info-from"

@@ -25,7 +25,7 @@ import {
     arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
-    verticalListSortingStrategy, //排序碰撞算法，有水平、垂直等
+    verticalListSortingStrategy, // 排序碰撞算法，有水平、垂直等
 } from '@dnd-kit/sortable';
 
 const ProConfigProvider = lazy(() => import('@/component/form/proConfigProvider/index'));
@@ -42,7 +42,7 @@ export default () => {
     const { message } = App.useApp();
     const [search] = useSearchParams();
 
-    //修改的时候
+    // 修改的时候
     const [id, setId] = useState(0);
     const [type, setType] = useState('');
     useMount(() => {
@@ -69,7 +69,7 @@ export default () => {
 
     /////////////////////已选择的组件///////////////
     const [fields, setFields] = useState([]);
-    //添加组件
+    // 添加组件
     const createFields = (data) => {
         let _fields = [...fields];
         let tmp = {
@@ -78,37 +78,37 @@ export default () => {
             ...data,
             name: '',
             title: '',
-            //formItem的属性
+            // formItem的属性
             formItemProps: {
                 rules: [],
                 style: { width: '100%' }
             },
-            //formItem里面字段的属性
+            // formItem里面字段的属性
             fieldProps: {
                 style: { width: '100%' }
             },
-            //列表组件才有的
+            // 列表组件才有的
             fields: [],
-            //设置的form参数
+            // 设置的form参数
             updateFields: {},
         }
         _fields.push(tmp)
         setFields(_fields);
 
-        //添加后立即弹窗设置字段
+        // 添加后立即弹窗设置字段
         setUpdateData(tmp);
     }
-    //删除组件
+    // 删除组件
     const delFields = (id) => {
         let _fields = [...fields];
         _fields.splice(_fields.findIndex(i => i.id === id), 1);
         setFields(_fields);
     }
-    //设置组件
+    // 设置组件
     const updateFields = (data) => {
         return new Promise((resolve) => {
             let _fields = [...fields];
-            //判断字段名是否重复
+            // 判断字段名是否重复
             let _boolean = _fields.some(_item => {
                 let tmp = data.id != _item.id && _item.dataIndex === data.dataIndex
                 if (_item.id === data.id) {
@@ -124,7 +124,7 @@ export default () => {
             resolve(true);
         });
     }
-    //当前修改的组件
+    // 当前修改的组件
     const [updateData, setUpdateData] = useState({});
 
     /////////////////////////拖拽排序//////////////////////////
@@ -138,7 +138,7 @@ export default () => {
             coordinateGetter: sortableKeyboardCoordinates,
         }),
     );
-    //拖拽结束后
+    // 拖拽结束后
     const handleDragEnd = (event) => {
         const { active, over } = event;
         if (active.id !== over?.id) {

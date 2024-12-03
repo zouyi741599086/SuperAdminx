@@ -31,9 +31,9 @@ export default ({ tableName, operationFile, ...props }) => {
         }
     }, [tableName]);
 
-    //获取字段列表
+    // 获取字段列表
     const [tableColumns, setTableColumns] = useState([]);
-    const [isGetData, setIsGetData] = useState(); //数据是否已经请求完成，需要按照数据库中的表单字段排序 对 字段列表进行重新排序
+    const [isGetData, setIsGetData] = useState(); // 数据是否已经请求完成，需要按照数据库中的表单字段排序 对 字段列表进行重新排序
     const getTableColumns = () => {
         adminCodeGeneratorApi.getTableColumn({
             table_name: tableName
@@ -47,7 +47,7 @@ export default ({ tableName, operationFile, ...props }) => {
         });
     }
 
-    //需要按照数据库中的表单字段排序 对 字段列表进行重新排序
+    // 需要按照数据库中的表单字段排序 对 字段列表进行重新排序
     useEffect(() => {
         if (data && tableColumns.length > 0) {
             const newTableColumns = [];
@@ -70,7 +70,7 @@ export default ({ tableName, operationFile, ...props }) => {
         }
     }, [isGetData])
 
-    //表列表
+    // 表列表
     const [tableList, setTableList] = useState([]);
     const getTableList = () => {
         adminCodeGeneratorApi.getTableList().then(res => {
@@ -82,14 +82,14 @@ export default ({ tableName, operationFile, ...props }) => {
         });
     }
 
-    //菜单列表 嵌套数组
+    // 菜单列表 嵌套数组
     const [menuList, setMenuList] = useState([]);
     const getMenuList = () => {
         adminMenuApi.getList({
             hidden: 'all'
         }).then(res => {
             if (res.code === 1) {
-                //多维数组
+                // 多维数组
                 setMenuList(menuToTree(res.data))
             }
         })
@@ -97,7 +97,7 @@ export default ({ tableName, operationFile, ...props }) => {
 
     const [data, setData] = useState({});
 
-    //展示字段类型
+    // 展示字段类型
     const list_fields_types = [
         {
             value: 'text',
@@ -195,7 +195,7 @@ export default ({ tableName, operationFile, ...props }) => {
         },
     ];
 
-    //搜索的类型
+    // 搜索的类型
     const search_type = [
         {
             label: 'Text',
@@ -285,16 +285,16 @@ export default ({ tableName, operationFile, ...props }) => {
             onFinish={async (values) => {
                 adminCodeGeneratorApi.generatorCode({
                     react_list: {
-                        ...values.react_list, //只要form中的这些值
-                        file_name: 'index', //生成的文件名称
-                        file_suffix: 'jsx', //生成文件的后缀名称
+                        ...values.react_list, // 只要form中的这些值
+                        file_name: 'index', // 生成的文件名称
+                        file_suffix: 'jsx', // 生成文件的后缀名称
                     },
                     table_name: tableName,
-                    code_name: 'react_list', //生成的代码名称
+                    code_name: 'react_list', // 生成的代码名称
                 }).then(res => {
                     if (res.code === 1) {
                         message.success(res.message);
-                        //保存后有生成新的代码要 设置进去
+                        // 保存后有生成新的代码要 设置进去
                         formRef.current.setFieldValue('react_list_code', res.data.react_list_code);
                     } else {
                         message.error(res.message);
@@ -534,7 +534,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                                         let _component = [];
                                                         let field_type = react_list?.list_fields_type?.[record.Field];
 
-                                                        //如果常规文本显示，才有自动省略、是否支持复制
+                                                        // 如果常规文本显示，才有自动省略、是否支持复制
                                                         if (field_type == 'text') {
                                                             _component.push(<ProFormSelect
                                                                 key="ellipsis"
@@ -602,7 +602,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                                             }}
                                                         />);
 
-                                                        //是否支持搜索
+                                                        // 是否支持搜索
                                                         _component.push(<ProFormSelect
                                                             key="search"
                                                             name={['react_list', 'list_fields_type_config', `${record.Field}`, 'search']}
@@ -625,7 +625,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                                             }}
                                                         />);
 
-                                                        //搜索的类型
+                                                        // 搜索的类型
                                                         _component.push(<ProFormDependency
                                                             key="search_dependency"
                                                             name={[['react_list', 'list_fields_type_config', `${record.Field}`, 'search']]}
@@ -740,7 +740,6 @@ export default ({ tableName, operationFile, ...props }) => {
 
                                                         return _component;
                                                     }}
-
                                                 </ProFormDependency>
                                             </>
                                         },

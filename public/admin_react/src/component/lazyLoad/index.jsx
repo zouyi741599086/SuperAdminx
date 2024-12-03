@@ -16,7 +16,7 @@ const ElementLoading = ({ block = true, width = '100%', height = 400, ...props }
     </> : ''}
 </>
 
-//加载中
+// 加载中
 export default (props) => {
     return <Suspense fallback={<ElementLoading  {...props} />}>{props.children}</Suspense>
 }

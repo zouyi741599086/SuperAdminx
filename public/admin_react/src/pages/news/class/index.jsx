@@ -26,7 +26,7 @@ export default () => {
     const { message } = App.useApp();
 
     useMount(() => {
-        //加载列表数据
+        // 加载列表数据
         //getList();
     })
     /////////////////////////修改的数据////////////////////////
@@ -50,7 +50,7 @@ export default () => {
             }
         })
     }
-    //排序改变的时候
+    // 排序改变的时候
     const sortArrChange = (id, sort) => {
         let _sortArr = [...sortArr];
         let whether = _sortArr.some(_item => {
@@ -98,7 +98,7 @@ export default () => {
     }
 
 
-    //表格列
+    // 表格列
     const columns = [
         {
             title: '分类名称',
@@ -122,9 +122,9 @@ export default () => {
         {
             title: '状态',
             dataIndex: 'status',
-            //列增加提示
+            // 列增加提示
             tooltip: '点击可切换状态',
-            //列增加提示的同时搜索也会增加，所以要干掉搜索的提示
+            // 列增加提示的同时搜索也会增加，所以要干掉搜索的提示
             formItemProps: {
                 tooltip: ''
             },
@@ -137,9 +137,9 @@ export default () => {
                     updateStatus(record.id, record.status == 1 ? 2 : 1);
                 }}
             />,
-            //定义搜索框类型
+            // 定义搜索框类型
             valueType: 'select',
-            //订单搜索框的选择项
+            // 订单搜索框的选择项
             fieldProps: {
                 options: [
                     {

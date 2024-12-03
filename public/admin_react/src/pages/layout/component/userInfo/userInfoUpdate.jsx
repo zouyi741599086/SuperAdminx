@@ -29,7 +29,7 @@ export default () => {
     })
 
 
-    //提交
+    // 提交
     const formSubmit = () => {
         form.validateFields().then((values) => {
             setSubmitLoading(true);
@@ -55,7 +55,7 @@ export default () => {
         }).catch((_) => {
         });
     }
-    //头像上传前验证
+    // 头像上传前验证
     const beforeUpload = (file) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
@@ -68,7 +68,7 @@ export default () => {
         }
     };
 
-    //头像上传的时候
+    // 头像上传的时候
     const handleChange = (info) => {
         if (info.file.status === 'uploading') {
             setUploadLoading(true);

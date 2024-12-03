@@ -29,11 +29,11 @@ export default (props) => {
                 </Button>
             }
             width={800}
-            //第一个输入框获取焦点
+            // 第一个输入框获取焦点
             autoFocusFirstInput={true}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             omitNil={false}
             initialValues={{
                 hidden: 1,

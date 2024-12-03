@@ -32,25 +32,25 @@ export default (props) => {
             open={open}
             onOpenChange={(_boolean) => {
                 setOpen(_boolean);
-                //关闭的时候干掉updateId，不然无法重复修改同一条数据
+                // 关闭的时候干掉updateId，不然无法重复修改同一条数据
                 if (_boolean === false) {
                     props.setUpdateId(0);
                 }
             }}
             title="修改角色"
             width={460}
-            //第一个输入框获取焦点
+            // 第一个输入框获取焦点
             autoFocusFirstInput={true}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             omitNil={false}
             initialValues={{
                 hidden: 1,
                 sort: 0,
             }}
             modalProps={{
-                //关闭的时候销毁modal里的子元素，因为重复修改一条数据后request返回无法赋值到form里面，官方bug
+                // 关闭的时候销毁modal里的子元素，因为重复修改一条数据后request返回无法赋值到form里面，官方bug
                 destroyOnClose: true,
             }}
             params={{

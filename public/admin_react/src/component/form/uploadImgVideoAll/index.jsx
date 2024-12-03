@@ -22,7 +22,7 @@ import {
     arrayMove,
     SortableContext,
     sortableKeyboardCoordinates,
-    rectSortingStrategy, //排序碰撞算法，有水平、垂直等
+    rectSortingStrategy, // 排序碰撞算法，有水平、垂直等
 } from '@dnd-kit/sortable';
 
 
@@ -54,7 +54,7 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
 
     const [fileList, setFileList] = useState([]);
     useEffect(() => {
-        //将初始值设置上，只有组件值等于空的时候在赋值，防止编辑的时候无法赋值
+        // 将初始值设置上，只有组件值等于空的时候在赋值，防止编辑的时候无法赋值
         if (valueLength === 0 && Array.isArray(value) && value?.length > 0) {
             let _fileList = [];
             value.map(item => {
@@ -71,30 +71,30 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
         }
     }, [value])
 
-    //预览图片开关
+    // 预览图片开关
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewCurrent, setPreviewCurrent] = useState(0);
     const previewVisibleChange = () => {
         setPreviewVisible(!previewVisible);
     }
 
-    //图片上传的时候
+    // 图片上传的时候
     const uploadImg = info => {
         if (info.file.status === 'error') {
             message.error('上传出错~')
         }
         if (info.file.status === 'done') {
             if (info.file.response.code === 1) {
-                //上传成功后修改图片为正式的url
+                // 上传成功后修改图片为正式的url
                 info.fileList.some(item => {
                     if (item.uid === info.file.uid) {
-                        //如果是图片
+                        // 如果是图片
                         if (['image/jpeg', 'image/jpg', 'image/png'].indexOf(info.file.type) !== -1) {
                             item.url = info.file.response.data.img;
                             item.thumbUrl = info.file.response.data.img;
                             item.img = info.file.response.data.img;
                         }
-                        //如果是视频
+                        // 如果是视频
                         if (['audio/mp4', 'video/mp4'].indexOf(info.file.type) !== -1) {
                             item.url = info.file.response.data.img;
                             item.thumbUrl = info.file.response.data.img;
@@ -110,11 +110,11 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
         }
         setFileList(info.fileList);
         if (info.file.status === 'done' && info.file.response.code === 1) {
-            //更新父组件的值
+            // 更新父组件的值
             modelValueLastChange(info.fileList);
         }
     }
-    //图片删除的时候
+    // 图片删除的时候
     const remove = (file) => {
         let _fileList = [...fileList];
         _fileList.map((item, key) => {
@@ -128,7 +128,7 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
         return false;
     }
 
-    //图片预览的时候
+    // 图片预览的时候
     const preview = (file) => {
         fileList.some((item, key) => {
             if (item.uid === file.uid) {
@@ -139,19 +139,19 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
         previewVisibleChange();
     }
 
-    //更新父组件的值
+    // 更新父组件的值
     const [valueLength, setValueLength] = useState(0);
     const modelValueLastChange = (_fileList) => {
         let tmpList = [];
         _fileList.map(item => {
             if (item.status === 'done') {
                 let fileExtension = item.img.substring(item.img.lastIndexOf(".") + 1);
-                //类型，图片或视频
+                // 类型，图片或视频
                 let type = 'image';
                 if (['jpg', 'jpeg', 'png'].indexOf(fileExtension) == -1) {
                     type = 'video';
                 }
-                //缩略图
+                // 缩略图
                 let thumbUrl = '';
                 if (item.thumbUrl) {
                     thumbUrl = item.thumbUrl;
@@ -193,7 +193,7 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
         }),
 
     );
-    //拖拽结束后
+    // 拖拽结束后
     const handleDragEnd = (event) => {
         const { active, over } = event;
         if (active.id !== over?.id) {
@@ -241,11 +241,11 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
                             return width / height
                         }}
                         beforeCrop={(file) => {
-                            //说明上传的是视频，就不裁剪
+                            // 说明上传的是视频，就不裁剪
                             if (file.type.indexOf('image') == -1) {
                                 return false;
                             }
-                            //有宽高就不裁剪图片
+                            // 有宽高就不裁剪图片
                             if (width <= 0 || height <= 0) {
                                 return false;
                             }
@@ -263,7 +263,6 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
                             data={{
                                 width,
                                 height,
-                                videoImg: 1, //是否需要视频封面
                             }}
                             onChange={uploadImg}
                             fileList={fileList}
@@ -300,7 +299,7 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
                         onVisibleChange: previewVisibleChange,
                         current: previewCurrent,
                         imageRender: (e) => {
-                            //判断是否是视频
+                            // 判断是否是视频
                             if (e.props?.src) {
                                 let fileExtension = e.props.src.substring(e.props.src.lastIndexOf(".") + 1);
                                 if (['jpg', 'jpeg', 'png'].indexOf(fileExtension) == -1) {
@@ -317,7 +316,7 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
                             return <div key={e.props.src}>{e}</div>
                         },
                         toolbarRender: (e, a) => {
-                            //判断是否是视频
+                            // 判断是否是视频
                             let file = fileList[a.current];
                             let fileExtension = file.url.substring(file.url.lastIndexOf(".") + 1);
                             if (['jpg', 'jpeg', 'png'].indexOf(fileExtension) == -1) {

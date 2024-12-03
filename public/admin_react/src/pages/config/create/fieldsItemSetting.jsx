@@ -51,15 +51,15 @@ export default (props) => {
                 return props.data?.updateFields;
             }}
             colProps={{ md: 12, xs: 24 }}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             omitNil={false}
             onFinish={async (values) => {
                 let _data = props.data;
                 _data.updateFields = values;
 
-                //通用的
+                // 通用的
                 _data.dataIndex = values.name;
                 _data.name = values.name;
                 _data.title = values.title;
@@ -67,12 +67,12 @@ export default (props) => {
                 _data.formItemProps.extra = values.extra;
                 _data.formItemProps.rules = [];
 
-                //输入框的前缀 后缀
+                // 输入框的前缀 后缀
                 if (['text', 'digit', 'digitRange'].indexOf(props.data.valueType) !== -1) {
                     _data.fieldProps.addonBefore = values.addonBefore;
                     _data.fieldProps.addonAfter = values.addonAfter;
                 }
-                //如果必填
+                // 如果必填
                 if (values.required === 2) {
                     _data.formItemProps.rules.push({
                         required: true,
@@ -166,8 +166,7 @@ export default (props) => {
                     if (values.maxCount !== undefined) {
                         _data.fieldProps.maxCount = values.maxCount;
                     }
-                    //选择值
-
+                    // 选择值
                     _data.fieldProps.accept = values.accept ?? [];
                 }
 

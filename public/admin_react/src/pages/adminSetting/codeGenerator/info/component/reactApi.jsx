@@ -20,7 +20,7 @@ export default ({ tableName, operationFile, ...props }) => {
     useEffect(() => {
     }, [tableName]);
 
-    //后台api类的类型
+    // 后台api类的类型
     const react_api_types = [
         {
             label: '从控制器配置生成',
@@ -47,11 +47,11 @@ export default ({ tableName, operationFile, ...props }) => {
             onFinish={async (values) => {
                 adminCodeGeneratorApi.generatorCode({
                     react_api: {
-                        ...values.react_api, //只要form中的这些值
-                        file_suffix: 'js', //生成文件的后缀名称
+                        ...values.react_api, // 只要form中的这些值
+                        file_suffix: 'js', // 生成文件的后缀名称
                     },
                     table_name: tableName,
-                    code_name: 'react_api', //生成的代码名称
+                    code_name: 'react_api', // 生成的代码名称
                 }).then(res => {
                     if (res.code === 1) {
                         message.success(res.message);

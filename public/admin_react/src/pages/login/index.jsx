@@ -30,7 +30,7 @@ export default () => {
     const navigate = useNavigate();
     const [stay_login, set_stay_login] = useState(false);
 
-    //设置网页标题
+    // 设置网页标题
     document.title = `${config.projectName}-登录`;
 
     const onFinish = (values) => {
@@ -43,12 +43,12 @@ export default () => {
             if (res.code === 1) {
                 message.success(res.message);
                 loginAction(res.data, setAdminUser, setMenuAuth);
-                //设置登录标识
+                // 设置登录标识
                 if (stay_login === true) {
-                    //保存登录状态
+                    // 保存登录状态
                     storage.set(`adminUserToken`, res.data.token);
                 } else {
-                    //非保持登录状态
+                    // 非保持登录状态
                     sessionStorage.setItem(`adminUserToken`, res.data.token);
                 }
                 navigate('/index');

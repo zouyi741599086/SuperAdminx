@@ -17,7 +17,7 @@ export default ({ fields, setFields, type }) => {
     const { message } = App.useApp();
     const [search] = useSearchParams();
 
-    //修改的时候
+    // 修改的时候
     const [id, setId] = useState(0);
     useMount(() => {
         let id = search.get('id');
@@ -45,7 +45,7 @@ export default ({ fields, setFields, type }) => {
             <ProForm
                 formRef={formRef}
                 layout="vertical"
-                //不干掉null跟undefined 的数据
+                // 不干掉null跟undefined 的数据
                 omitNil={false}
                 onFinish={async (values) => {
                     if (fields.length === 0) {
@@ -64,7 +64,7 @@ export default ({ fields, setFields, type }) => {
                         ...values,
                     };
 
-                    //如果是列表
+                    // 如果是列表
                     if (type === 'list') {
                         formData.fields_config = [
                             {
@@ -76,7 +76,7 @@ export default ({ fields, setFields, type }) => {
                             }
                         ];
                     }
-                    //判断是添加还是修改
+                    // 判断是添加还是修改
                     let result = id ? await configApi.update(formData) : await configApi.create(formData);
                     if (result.code === 1) {
                         message.success(result.message)

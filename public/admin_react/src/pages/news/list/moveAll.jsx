@@ -10,7 +10,7 @@ import { arrayToTree, authCheck } from '@/common/function';
 import { newsClassApi } from '@/api/newsClass';
 import { newsApi } from '@/api/news';
 
-//分类数据只要有下级就要禁用
+// 分类数据只要有下级就要禁用
 const childrenDisabled = (list) => {
     list.map(item => {
         item.disabled = item.children.length > 0 ? true : false;
@@ -46,17 +46,17 @@ export default (props) => {
             }
             width={460}
             colProps={{ md: 12, xs: 24 }}
-            //第一个输入框获取焦点
+            // 第一个输入框获取焦点
             autoFocusFirstInput={true}
-            //可以回车提交
+            // 可以回车提交
             isKeyPressSubmit={true}
-            //不干掉null跟undefined 的数据
+            // 不干掉null跟undefined 的数据
             omitNil={false}
             onFinish={async (values) => {
                 const result = await newsApi.updateAll({
                     ...values,
                     ids: props.ids,
-                    type: 1,//1代表切换分类
+                    type: 1,// 1代表切换分类
                 });
                 if (result.code === 1) {
                     props.tableReload(true);

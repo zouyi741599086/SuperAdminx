@@ -18,11 +18,11 @@ import LazyLoad from '@/component/lazyLoad/index';
 import RenderEmpty from '@/component/renderEmpty/index';
 import { router } from './router'
 
-//导入所有的页面，异步加载，要除开component 跟 components文件夹内的
+// 导入所有的页面，异步加载，要除开component 跟 components文件夹内的
 const routeAllPathToCompMap = import.meta.glob([
     `./pages/**/*index.jsx`,
-    `!./**/components/**/*index.jsx`, //除开的此文件
-    `!./**/component/**/*index.jsx`, //除开的此文件
+    `!./**/components/**/*index.jsx`, // 除开的此文件
+    `!./**/component/**/*index.jsx`, // 除开的此文件
 ]);
 
 /**
@@ -45,7 +45,7 @@ export default () => {
     const [layoutSetting, setLayoutSetting] = useRecoilState(layoutSettingStore);
     const location = useLocation();
     const [routes, setRoutes] = useState(router);
-    //监听是否是移动端，防抖处理
+    // 监听是否是移动端，防抖处理
     const { run: debunceSettingMobile } = useDebounceFn(
         () => {
             let isMobile = isMobileFun();
@@ -53,28 +53,28 @@ export default () => {
             setLayoutSetting(_val => ({
                 ..._val,
                 isMobile,
-                //移动端就强制第一种布局
+                // 移动端就强制第一种布局
                 layoutValue: isMobile ? 'slide' : _val.layoutValue,
-                //移动端强制白色布局
+                // 移动端强制白色布局
                 antdThemeValue: isMobile ? 'default' : _val.antdThemeValue,
             }))
         },
         { wait: 300 },
     );
 
-    //组件挂载后执行
+    // 组件挂载后执行
     useMount(() => {
-        //设置页面标题
+        // 设置页面标题
         document.title = config.company;
 
-        //监听是否切换到移动端
+        // 监听是否切换到移动端
         debunceSettingMobile();
         window.addEventListener("resize", () => {
             debunceSettingMobile()
         });
 
-        //已经登录， 重新加载登录信息
-        let adminUserToken = storage.get(`adminUserToken`) || sessionStorage.getItem(`adminUserToken`); //是否保持登录状态
+        // 已经登录， 重新加载登录信息
+        let adminUserToken = storage.get(`adminUserToken`) || sessionStorage.getItem(`adminUserToken`); // 是否保持登录状态
         if (adminUserToken) {
             adminUserApi.getAdminUser().then((res) => {
                 if (res.code === 1) {
@@ -85,33 +85,33 @@ export default () => {
         }
     })
 
-    //色弱模式
+    // 色弱模式
     useEffect(() => {
         htmlClass('sa-filter', layoutSetting.bodyFilterValue === true ? 'add' : 'remove');
     }, [layoutSetting.bodyFilterValue])
 
-    //黑色主题
+    // 黑色主题
     useEffect(() => {
         htmlClass('sa-antd-dark', layoutSetting.antdThemeValue === 'dark' ? 'add' : 'remove');
     }, [layoutSetting.antdThemeValue])
 
-    //简约风格
+    // 简约风格
     useEffect(() => {
         htmlClass('sa-antd-simple', layoutSetting.themeSimple ? 'add' : 'remove');
     }, [layoutSetting.themeSimple])
 
-    //圆角风格
+    // 圆角风格
     useEffect(() => {
         htmlClass('sa-is-radius', layoutSetting.isRadius ? 'add' : 'remove');
     }, [layoutSetting.isRadius])
 
-    //用户的菜单权限改变的时候，更新路由，主要用于登录后需要重新更新路由
+    // 用户的菜单权限改变的时候，更新路由，主要用于登录后需要重新更新路由
     useEffect(() => {
         let result = [...router];
         menuAuth.menuArrAll.map(item => {
             let tmp = deepClone(item);
             if (item.type === 4) {
-                //说明是iframe页面
+                // 说明是iframe页面
                 let Elm = lazy(routeAllPathToCompMap[`./pages/iframe/index.jsx`])
                 tmp.element = <LazyLoad>
                     <Elm
@@ -119,7 +119,7 @@ export default () => {
                     />
                 </LazyLoad>;
             } else if (item.type === 7) {
-                //说明是配置页面
+                // 说明是配置页面
                 let Elm = lazy(routeAllPathToCompMap[`./pages/config/updateConfig/index.jsx`])
                 tmp.element = <LazyLoad>
                     <Elm
@@ -137,14 +137,14 @@ export default () => {
         setRoutes(result)
     }, [menuAuth.menuArrAll])
 
-    //导航钩子，监听url变化的时候
+    // 导航钩子，监听url变化的时候
     useEffect(() => {
         if (!location.pathname) {
             return;
         }
         menuAuth.menuArrAll.some(item => {
             if (location.pathname === item.path) {
-                //设置页面标题，根据当前页面的pid_name_path循环换成标题
+                // 设置页面标题，根据当前页面的pid_name_path循环换成标题
                 let page_title = '';
                 item.pid_name_path.map(_name => {
                     menuAuth.menuArrAll.some(__item => {
@@ -155,7 +155,7 @@ export default () => {
                     })
                 })
                 document.title = `${config.projectName}${page_title}`
-                //设置菜单展开、选中项
+                // 设置菜单展开、选中项
                 setMenuAuth((_val) => {
                     let tmp = item.pid_name_path.map(_name => _name.toString());
                     return {
@@ -170,7 +170,7 @@ export default () => {
         })
     }, [location])
 
-    //app样式，主要是简约风格的开关
+    // app样式，主要是简约风格的开关
     const [appStyle, setAppStyle] = useState({});
     useEffect(() => {
         if (layoutSetting.themeSimple) {

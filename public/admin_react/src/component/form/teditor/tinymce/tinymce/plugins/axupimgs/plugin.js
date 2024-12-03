@@ -1,6 +1,6 @@
 tinymce.PluginManager.add('axupimgs', function(editor, url) {
 	var pluginName='多图片上传';
-	window.axupimgs={}; //扔外部公共变量，也可以扔一个自定义的位置
+	window.axupimgs={}; // 扔外部公共变量，也可以扔一个自定义的位置
 
 	var baseURL=tinymce.baseURL;
 	

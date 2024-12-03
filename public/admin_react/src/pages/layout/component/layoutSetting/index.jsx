@@ -35,7 +35,7 @@ export default ({ placement = 'top' }) => {
             tip: '紧凑风格',
         },
     };
-    //布局切换的时候
+    // 布局切换的时候
     const antdThemeValueChange = antdThemeValue => {
         setLayoutSetting(_val => {
             return {
@@ -68,7 +68,7 @@ export default ({ placement = 'top' }) => {
             tip: '顶部混合布局',
         },
     };
-    //布局切换的时候
+    // 布局切换的时候
     const layoutListValueChange = layoutValue => {
         setLayoutSetting(_val => {
             return {
@@ -90,7 +90,7 @@ export default ({ placement = 'top' }) => {
         '#722ed1',
         "#cb00bf"
     ];
-    //主题色改变的时候
+    // 主题色改变的时候
     const primaryColorValueChange = primaryColorValue => {
         setLayoutSetting(_val => {
             return {

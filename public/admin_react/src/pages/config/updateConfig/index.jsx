@@ -38,13 +38,13 @@ export default ({ name, ...props }) => {
             if (res.code === 1) {
                 if (res.data.type === 'list') {
                     res.data.fields_config[0].fieldProps = {
-                        //一行显示4个字段，删除后就变为一行一个字段
+                        // 一行显示4个字段，删除后就变为一行一个字段
                         itemContainerRender: (doms) => {
                             return <ProForm.Group>{doms}</ProForm.Group>;
                         },
-                        //最大条数
+                        // 最大条数
                         max: res.data.list_number,
-                        //用卡片包裹每行数据
+                        // 用卡片包裹每行数据
                         itemRender: ({ listDom, action }, meta) => {
                             return (
                                 <ProCard
@@ -81,7 +81,7 @@ export default ({ name, ...props }) => {
                             );
                         }
                     }
-                    //list赋值的时候多包一层
+                    // list赋值的时候多包一层
                     res.data.content = {
                         content: res.data.content
                     }
@@ -93,14 +93,14 @@ export default ({ name, ...props }) => {
         })
     }, [name])
 
-    //重组表单的值，判断值的类型返回新值
+    // 重组表单的值，判断值的类型返回新值
     const fieldsDefaultValue = (data, val) => {
         let _val = val ?? null;
-        //数组
+        // 数组
         if (!_val && ['digitRange', 'dateRange', "dateTimeRange", "timerang", "checkbox", "uploadImgAll"].indexOf(data.valueType) !== -1) {
             _val = [];
         }
-        //下拉多选跟下拉tags
+        // 下拉多选跟下拉tags
         if (!_val && data.valueType === 'select' && ["multiple", "tags"].indexOf(data.fieldProps.mode) !== -1) {
             _val = [];
         }
@@ -147,13 +147,13 @@ export default ({ name, ...props }) => {
                                     rowProps={{
                                         gutter: [24, 0],
                                     }}
-                                    //可以回车提交
+                                    // 可以回车提交
                                     isKeyPressSubmit={true}
-                                    //form的类型
+                                    // form的类型
                                     layoutType='Form'
                                     onFinish={async (values) => {
                                         let content = {};
-                                        //如果是form表单则重组content的值，为了让空值也保留
+                                        // 如果是form表单则重组content的值，为了让空值也保留
                                         if (data.type === 'form') {
                                             data.fields_config.map(item => {
                                                 content[item['name']] = fieldsDefaultValue(item, values[item['name']]);

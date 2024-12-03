@@ -15,7 +15,7 @@ export default ({ tableName, ...props }) => {
     const tableRef = useRef();
     const formRef = useRef();
 
-    //字段列表
+    // 字段列表
     const [tableColumns, setTableColumns] = useState([]);
     useEffect(() => {
         if (tableName) {
@@ -24,7 +24,7 @@ export default ({ tableName, ...props }) => {
         }
     }, [tableName]);
 
-    //获取字段数据
+    // 获取字段数据
     const getTableColumns = () => {
         adminCodeGeneratorApi.getTableColumn({
             table_name: tableName
@@ -37,20 +37,20 @@ export default ({ tableName, ...props }) => {
         });
     }
 
-    //菜单列表 嵌套数组
+    // 菜单列表 嵌套数组
     const [menuList, setMenuList] = useState([]);
     const getMenuList = () => {
         adminMenuApi.getList({
             hidden: 'all'
         }).then(res => {
             if (res.code === 1) {
-                //多维数组
+                // 多维数组
                 setMenuList(menuToTree(res.data))
             }
         })
     }
 
-    //表格列
+    // 表格列
     const columns = [
         {
             title: '字段',

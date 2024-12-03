@@ -28,7 +28,7 @@ export default ({ value, onChange, width = 0, height = 0, UploadButton = null, .
     /////////////////////图片上传修改后////////////////////
     const [uploadLoading, setUploadLoading] = useState(false);
     const imgChange = info => {
-        //只是单纯的上传的时候才有
+        // 只是单纯的上传的时候才有
         if (info.file.status === "uploading" && UploadButton) {
             message.open({
                 type: 'loading',
@@ -120,7 +120,7 @@ export default ({ value, onChange, width = 0, height = 0, UploadButton = null, .
                         return width / height
                     }}
                     beforeCrop={() => {
-                        //有宽高就不裁剪图片
+                        // 有宽高就不裁剪图片
                         if (width <= 0 || height <= 0) {
                             return false;
                         }

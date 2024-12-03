@@ -104,7 +104,7 @@ export default ({ typeAction, ...props }) => {
             </Col>
             <ProFormDependency name={['type']}>
                 {({ type }) => {
-                    //不是菜单目录的时候才有上级
+                    // 不是菜单目录的时候才有上级
                     if ([2, 3, 4, 5, 6, 7].indexOf(type) !== -1) {
                         return <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <ProFormTreeSelect
@@ -132,7 +132,7 @@ export default ({ typeAction, ...props }) => {
             </ProFormDependency>
             <ProFormDependency name={['type']}>
                 {({ type }) => {
-                    //2》菜单，4》iframe菜单，5》内页菜单 才有访问路劲
+                    // 2》菜单，4》iframe菜单，5》内页菜单 才有访问路劲
                     if ([2, 4, 5].indexOf(type) !== -1) {
                         return <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <ProFormText
@@ -149,7 +149,7 @@ export default ({ typeAction, ...props }) => {
             </ProFormDependency>
             <ProFormDependency name={['type']}>
                 {({ type }) => {
-                    //2》菜单，5》内页菜单 才有组件路劲
+                    // 2》菜单，5》内页菜单 才有组件路劲
                     if ([2, 5].indexOf(type) !== -1) {
                         return <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                             <ProFormText
@@ -166,7 +166,7 @@ export default ({ typeAction, ...props }) => {
             </ProFormDependency>
             <ProFormDependency name={['type']}>
                 {({ type }) => {
-                    //1》菜单目录，2》菜单，3》外部链接菜单，4》iframe菜单 才有ico图标
+                    // 1》菜单目录，2》菜单，3》外部链接菜单，4》iframe菜单 才有ico图标
                     if ([1, 2, 3, 4].indexOf(type) !== -1) {
                         return <>
                             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
@@ -186,7 +186,7 @@ export default ({ typeAction, ...props }) => {
             </ProFormDependency>
             <ProFormDependency name={['type']}>
                 {({ type }) => {
-                    //3》外部链接菜单，4》iframe菜单 才有访问的url
+                    // 3》外部链接菜单，4》iframe菜单 才有访问的url
                     if ([3, 4].indexOf(type) !== -1) {
                         return <>
                             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
@@ -206,7 +206,7 @@ export default ({ typeAction, ...props }) => {
 
             <ProFormDependency name={['type']}>
                 {({ type }) => {
-                    //1》菜单目录，2》菜单，3》外部链接菜单，4》iframe菜单 才可以隐藏
+                    // 1》菜单目录，2》菜单，3》外部链接菜单，4》iframe菜单 才可以隐藏
                     if ([1, 2, 3, 4].indexOf(type) !== -1) {
                         return <>
                             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
@@ -235,7 +235,7 @@ export default ({ typeAction, ...props }) => {
             </ProFormDependency>
             <ProFormDependency name={['type']}>
                 {({ type }) => {
-                    //5》内页菜单权限，7》参数设置权限 才有参数选择
+                    // 5》内页菜单权限，7》参数设置权限 才有参数选择
                     if ([5, 7].indexOf(type) !== -1) {
                         return <>
                             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
@@ -266,7 +266,7 @@ export default ({ typeAction, ...props }) => {
             {typeAction == 'create' ? <>
                 <ProFormDependency name={['type']}>
                     {({ type }) => {
-                        //是菜单的时候，是否自动生成菜单下面的增删改查的权限节点
+                        // 是菜单的时候，是否自动生成菜单下面的增删改查的权限节点
                         if (type == 2) {
                             return <>
                                 <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
