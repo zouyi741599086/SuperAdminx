@@ -60,7 +60,7 @@ body:fullscreen {
 .pro-table-info .ant-pro-query-filter.ant-pro-query-filter{padding-left:0px;padding-right:0px;}
 .pro-table-info .ant-pro-card-body{padding-inline: 0px;}
 
-/* 简单配置表格页面的 样式，如简单分类表这种 */
+/* 简单配置页面的 样式，如简单分类表这种 */
 .list-title-item{display: inline-block;background: #eef2f5;border-radius: 6px;margin:0px 15px 15px 0px;border:1px solid #eef2f5;cursor:pointer;position: relative;width:220px;padding:10px 6px;}
 .list-title-item .item{width:100%;overflow: hidden;text-align: center;text-overflow:ellipsis;white-space:nowrap;}
 .sa-antd-dark .list-title-item{background: #333;border-color: #333;}
@@ -70,4 +70,4 @@ body:fullscreen {
 .list-title-item:hover  .hover{opacity: 1;}
 .list-title-item .hover div{display: flex;justify-content: center;width:100%;}
 .list-title-item .hover div .icon{color:#fff;font-size:16px;}
-/* 简单配置表格页面的 样式，如简单分类表这种 */
+/* 简单配置页面的 样式，如简单分类表这种 */
