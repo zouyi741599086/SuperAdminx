@@ -55,7 +55,7 @@ body:fullscreen {
 /* 页面容器 顶部加入tabs的时候，去掉边距 */
 .sa-page-container_ant-tabs .ant-tabs-nav{margin-bottom: 0px;}
 
-/* ProTable 当在详情页的Card 或 弹窗中的时候，去掉表格及搜索框的一些边距，使用的时候给ProTable加上此类就行 */
+/* ProTable 当在详情页的Card中 或 弹窗中的时候，去掉表格及搜索框的一些边距，使用的时候给ProTable加上此类就行 */
 .pro-table-info .ant-pro-table-search{margin-block-end:0px;}
 .pro-table-info .ant-pro-query-filter.ant-pro-query-filter{padding-left:0px;padding-right:0px;}
 .pro-table-info .ant-pro-card-body{padding-inline: 0px;}
