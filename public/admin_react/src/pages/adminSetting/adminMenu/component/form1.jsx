@@ -67,7 +67,6 @@ export default ({ typeAction, ...props }) => {
                 <ProFormRadio.Group
                     name="type"
                     label="类型"
-                    extra="参数设置权限：不能在这编辑或添加，必须到/config去管理，会自动同步过来"
                     options={[
                         {
                             value: 1,
@@ -93,10 +92,10 @@ export default ({ typeAction, ...props }) => {
                             value: 6,
                             label: '按钮权限',
                         },
-                        {
-                            value: 7,
-                            label: '参数设置权限',
-                        },
+                        // { // 不能新增或编辑，此类型的数据是》参数设置自动同步过来的
+                        //     value: 7,
+                        //     label: '参数设置权限',
+                        // },
                     ]}
                     rules={[
                         { required: true, message: '请选择' }
