@@ -112,11 +112,11 @@ export default () => {
                         disabled: item.type === 7 // 类型为7的数据是参数设置管理里面自动同步过来的，不允许删除、编辑
                     }
                 })
-                //一维数组
+                // 一维数组
                 setMenuListArr(tmp);
-                //多维数组
+                // 多维数组
                 setMenuList(menuToTree(tmp))
-                //找出所有父节点，用于展开
+                // 找出所有父节点，用于展开
                 //setExpandedKeys(selectParentKey(menuList))
             }
         })
