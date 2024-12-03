@@ -5,18 +5,18 @@ import { config } from '@/common/config';
  * frame的方式预览word
  * 
  * @param {String} title 弹窗标题
- * @param {String} filePath 需要预览的word的文件路劲，http://xxxx.com/xxx/xxx.docx  或 /xxx/xxx.docx
+ * @param {String} url 需要预览的word的文件路劲，http://xxxx.com/xxx/xxx.docx  或 /xxx/xxx.docx
  * @param {Component} button 是否自定义查看按钮
  * @param {String} errorMessage 错误的提示语
  * @param {int} height iframe的高度
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ title = 'Word内容', filePath = null, button = null, errorMessage = null, height = 650, ...props }) => {
+export default ({ title = 'Word内容', url = null, button = null, errorMessage = null, height = 650, ...props }) => {
     const { modal, message } = App.useApp();
 
     const preView = () => {
-        if (!filePath) {
+        if (!url) {
             return message.error(errorMessage || 'Word的链接为空，请稍后在试~');
         }
         modal.info({
@@ -53,7 +53,7 @@ export default ({ title = 'Word内容', filePath = null, button = null, errorMes
                     <iframe
                         style={{ width: '100%', height: '100%', position: 'relative', left: '-1px', top: '-1px', zIndex: 1 }}
                         frameBorder="0"
-                        src={`//view.officeapps.live.com/op/embed.aspx?src=${filePath.includes('//') ? filePath : config.url + filePath}`}
+                        src={`//view.officeapps.live.com/op/embed.aspx?src=${url.includes('//') ? url : config.url + url}`}
                     ></iframe>
                 </div>
             </>,
