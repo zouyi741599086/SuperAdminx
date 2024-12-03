@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2024-11-29 21:30:58
+Date: 2024-12-03 09:59:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -254,7 +254,7 @@ CREATE TABLE `sa_admin_user` (
 -- ----------------------------
 -- Records of sa_admin_user
 -- ----------------------------
-INSERT INTO `sa_admin_user` VALUES ('1', 'runxuekeji', '$2y$10$Sl201uURHptin.FDMWl2hORcldPVP0Gt6tc/Jxz2x/vsCIPZxsdPW', '1', '1', '邹意', '18819806503', 'https://lechuang-runxue.oss-cn-hangzhou.aliyuncs.com/2024-07-29/jpg/1722222526_43769.jpg', '1732886469', '127.0.0.1', '2023-03-22 16:04:08', '2024-11-29 21:21:10');
+INSERT INTO `sa_admin_user` VALUES ('1', 'runxuekeji', '$2y$10$Sl201uURHptin.FDMWl2hORcldPVP0Gt6tc/Jxz2x/vsCIPZxsdPW', '1', '1', '邹意', '18819806503', 'https://lechuang-runxue.oss-cn-hangzhou.aliyuncs.com/2024-07-29/jpg/1722222526_43769.jpg', '1733190694', '127.0.0.1', '2023-03-22 16:04:08', '2024-12-03 09:51:34');
 INSERT INTO `sa_admin_user` VALUES ('76', 'admin', '$2y$10$KtWHQ552b2V8.Az1XT7i5u9OVeP2WdGH/gfSmAuelL723awErKt7O', '27', '1', '邹意', '18819806503', '', '1732103765', '192.168.1.192', '2024-07-09 14:41:00', '2024-11-20 19:56:05');
 
 -- ----------------------------
@@ -288,17 +288,17 @@ INSERT INTO `sa_config` VALUES ('17', 'list', '6', 'home_banner', '首页轮播�
 DROP TABLE IF EXISTS `sa_file`;
 CREATE TABLE `sa_file` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `object` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'oss的资源路劲',
+  `object` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '阿里云oss的资源路劲',
   `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '文件的url',
   `size` int(11) DEFAULT NULL COMMENT '文件的大小',
   `suffix` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '文件的后缀',
   `count` int(11) DEFAULT '0' COMMENT '文件使用的次数',
-  `version_id` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '文件的版本id，删除需要指定版本id才能永久删除文件',
+  `version_id` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '阿里云文件的版本id，如果有开启版本控制的话',
   `disk` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '存的地方，public》本地，aliyun》阿里云oss',
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=466 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='附件表';
+) ENGINE=InnoDB AUTO_INCREMENT=468 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='附件表';
 
 -- ----------------------------
 -- Records of sa_file
@@ -4139,7 +4139,7 @@ CREATE TABLE `sa_token` (
   `token` varchar(191) DEFAULT NULL COMMENT '存的token',
   PRIMARY KEY (`id`),
   UNIQUE KEY `token_UNIQUE` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=543 DEFAULT CHARSET=utf8mb4 COMMENT='登录用户的token';
+) ENGINE=InnoDB AUTO_INCREMENT=547 DEFAULT CHARSET=utf8mb4 COMMENT='登录用户的token';
 
 -- ----------------------------
 -- Records of sa_token
@@ -4155,3 +4155,7 @@ INSERT INTO `sa_token` VALUES ('539', 'SuperAdminx_admin_pc_1', 'rIDTERtSJ1/LmW4
 INSERT INTO `sa_token` VALUES ('540', 'SuperAdminx_admin_pc_1', 'r4CBEU1UclnLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlATwmNZh44VzobAOlXZcrxXgdw');
 INSERT INTO `sa_token` VALUES ('541', 'SuperAdminx_admin_pc_1', '%4WCFkwBdVLLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlAH9kdZk44VzobAOlXZZpBvudw');
 INSERT INTO `sa_token` VALUES ('542', 'SuperAdminx_admin_pc_1', '/YXRREoAJ17LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlAD3mdhv44VzobAOlXZcpBXgdw');
+INSERT INTO `sa_token` VALUES ('543', 'SuperAdminx_admin_pc_1', 'rNOHRkoCclvLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnQbwlNhn44VzobAOlXZZrhzgdw');
+INSERT INTO `sa_token` VALUES ('544', 'SuperAdminx_admin_pc_1', '/4WCQRgCcQnLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnwfwl9hg44VzobAOlXZeoRTkdw');
+INSERT INTO `sa_token` VALUES ('545', 'SuperAdminx_admin_pc_1', '/9OAQhlWdlLLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnwb9kt1i44VzobAOlXZVoxqr');
+INSERT INTO `sa_token` VALUES ('546', 'SuperAdminx_admin_pc_1', 'oIWKRh1XIFvLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnwDykddi44VzobAOlXZeox3jdw');
