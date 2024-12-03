@@ -106,10 +106,16 @@ export default () => {
             hidden: 'all'
         }).then(res => {
             if (res.code === 1) {
+                const tmp = res.data.map(item => {
+                    return {
+                        ...item,
+                        disabled: item.type === 7 // 类型为7的数据是参数设置管理里面自动同步过来的，不允许删除、编辑
+                    }
+                })
                 //一维数组
-                setMenuListArr(res.data);
+                setMenuListArr(tmp);
                 //多维数组
-                setMenuList(menuToTree(res.data))
+                setMenuList(menuToTree(tmp))
                 //找出所有父节点，用于展开
                 //setExpandedKeys(selectParentKey(menuList))
             }
@@ -118,9 +124,6 @@ export default () => {
 
     ///////////////////修改的数据id//////////////
     const [updateId, setUpdateId] = useState([]);
-    const onSelect = (selectedKeys) => {
-        setUpdateId(selectedKeys);
-    }
 
     ////////////////删除///////////////////
     const [deleteArr, setDeleteArr] = useState([]);
@@ -189,7 +192,7 @@ export default () => {
                                     selectedKeys={updateId}
                                     expandedKeys={expandedKeys}
                                     onExpand={onExpand}
-                                    onSelect={onSelect}
+                                    onSelect={setUpdateId}
                                     onCheck={setDeleteArr}
                                     titleRender={({ title, name, id, hidden }) => {
                                         if (title.indexOf(searchKeywords) > -1) {
