@@ -14,7 +14,7 @@ use app\common\logic\AdminUserLogic;
 class AdminUser
 {
     // 此控制器是否需要登录
-    pr otected $onLogin = true;
+    protected $onLogin = true;
     //不需要登录的方法
     protected $noNeedLogin = [];
 

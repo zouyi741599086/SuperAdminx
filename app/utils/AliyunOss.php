@@ -43,7 +43,7 @@ class AliyunOss
     }
 
     /**
-     * 文件上传到阿里云，会自动删除本地文件，会添加到file表但使用次数不会加1
+     * 文件上传到阿里云，会添加到file表但使用次数不会加1
      * @param string $filePath 本地文件的路劲如 '/sotrage/2024-12-12/xxx.jpg'
      * @param bool $deleteFile 上传后是否删除本地文件
      * @return string 阿里云访问资源的url
@@ -77,7 +77,7 @@ class AliyunOss
                 $url,
                 $fileSize,
                 $ossPath,
-                $result[OssClient::OSS_HEADER_VERSION_ID]
+                $result[OssClient::OSS_HEADER_VERSION_ID] ?? null
             );
             // 删除本地的文件
             if ($deleteFile) {
@@ -95,20 +95,20 @@ class AliyunOss
     /**
      * 下载文件到本地
      * @param string $object oss中文件的路劲 如：2024-12-12/jgp/123.jpg
-     * @param string $localfile 本地文件需要保存的路劲，如 ./storage/jpg/213.jpg
+     * @param string $localfile 本地文件需要保存的路劲，如 ./storage/jpg/123.jpg
      * @return void
      */
     public static function download(string $object, string $localfile) : void
     {
         $version_id = FileModel::where('url', $object)->value('version_id');
-        if (! $version_id) {
-            abort('文件不存在');
-        }
+
         try {
             $options = [
                 OssClient::OSS_FILE_DOWNLOAD => $localfile,
-                OssClient::OSS_VERSION_ID    => $version_id
             ];
+            if ($version_id) {
+                $options[OssClient::OSS_VERSION_ID] = $version_id;
+            }
             self::initOssClient()->getObject(
                 config('superadminx.file_system.aliyun.bucket'),
                 $object,
@@ -151,10 +151,7 @@ class AliyunOss
      */
     public static function signUrl(string $object, int $timeout = 0) : string
     {
-        $version_id = FileModel::where('url', $object)->value('version_id');
-        if (! $version_id) {
-            abort('文件不存在');
-        }
+       
         try {
             // 设置文件访问的url过期时间
             if (! $timeout) {
@@ -166,10 +163,14 @@ class AliyunOss
                     $timeout = 3 * 60 * 60;
                 }
             }
-            $options = [
-                // 填写Object的versionId。
-                self::initOssClient()::OSS_VERSION_ID => $version_id
-            ];
+
+            $options = [];
+            // 填写Object的versionId。
+            $version_id = FileModel::where('url', $object)->value('version_id');
+            if ($version_id) {
+                $options[self::initOssClient()::OSS_VERSION_ID] = $version_id;
+            }
+
             // 生成签名URL。
             return self::initOssClient()->signUrl(config('superadminx.file_system.aliyun.bucket'), $object, $timeout, "GET", $options);
         } catch (OssException $e) {
@@ -246,7 +247,7 @@ class AliyunOss
             // 获取文件的元信息
             $exist = self::initOssClient()->getObjectMeta(config('superadminx.file_system.aliyun.bucket'), $post['filename']);
             // 获取文件的版本id
-            $version_id = $exist['x-oss-version-id'];
+            $version_id = $exist['x-oss-version-id'] ?? null;
 
             FileLogic::create(
                 'aliyun',
