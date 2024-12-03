@@ -15,17 +15,16 @@
 ### 安装教程
 
 **环境要求**
-- php 8+ 
-- mysql 5.6+
-- node 21+
+- php >= 8 
+- mysql >= 5.6
+- node >= 20
 
 **php需要的扩展**
 - fileinfo
 - imagemagick
 - exif
-- pdo_sqlsrv
 - xlswriter 表格导入导出用的此扩展，如导入导出换成其它逻辑可以不用安装
-- redis 非必须，如果要用消息列队或缓存
+- redis 非必须，如果要用消息列队或缓存用redis
 
 **php需要解除的禁用函数**
 - [点此查看webman官方说明](https://www.workerman.net/doc/webman/others/disable-function-check.html)
@@ -34,11 +33,11 @@
 
 1. git获取源码
 ``` sh
-git clone https://gitee.com/zouyi/super-adminx-webman-react.git
+git clone https://gitee.com/zouyi/SuperAdminx.git
 ```
 或者
 ``` sh
-git clone https://gitee.com/wolf18/EasyAdmin8-webman
+git clone https://github.com/zouyi741599086/SuperAdminx.git
 ```
 
 2. 进入项目根目录，安装依赖
