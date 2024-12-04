@@ -586,7 +586,7 @@ export default ({ tableName, operationFile, ...props }) => {
 
                 <ProFormList
                     name={['validate', 'scenes']}
-                    label="验证场景"
+                    label="验证场景（逻辑层会自动判断是否有create、update这两个验证场景并自动加上）"
                     creatorButtonProps={{
                         creatorButtonText: '添加验证场景'
                     }}

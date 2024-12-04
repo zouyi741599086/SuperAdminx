@@ -16,7 +16,7 @@ import CodeHighlight from '@/component/codeHighlight';
 import './reactInfo.css';
 
 /**
- * 生成详情页面
+ * 生成详情页面 
  */
 export default ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
@@ -192,22 +192,21 @@ export default ({ tableName, operationFile, ...props }) => {
             <Space direction="vertical" style={{ width: '100%' }}>
                 <Row gutter={[24, 0]}>
                     <Col xs={24} sm={12} md={12} lg={8} xl={6} xxl={6}>
-                        <ProFormSelect
+                        <ProFormRadio.Group
                             name={['react_info', 'info_open_type']}
-                            label="页面类型"
-                            placeholder="请选择"
-                            options={[
-                                {
-                                    value: 1,
-                                    label: '新页面打开详情'
-                                },
-                                {
-                                    value: 2,
-                                    label: '弹窗打开详情'
-                                }
-                            ]}
+                            label="打开类型"
                             rules={[
                                 { required: true, message: '请选择' }
+                            ]}
+                            options={[
+                                {
+                                    label: '新页面打开',
+                                    value: 1,
+                                },
+                                {
+                                    label: '弹窗打开',
+                                    value: 2,
+                                }
                             ]}
                         />
                     </Col>

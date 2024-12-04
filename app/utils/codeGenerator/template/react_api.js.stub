@@ -100,18 +100,6 @@ use app\utils\codeGenerator\CodeGenerator;
                 'url' => "/admin/{$tableNameToCamelCase}/exportData"           
             ];
         }
-        // 生成逻辑层的其它方法
-        if (isset($data['logic']['other_functions']) && is_array($data['logic']['other_functions'])) {
-            
-            foreach ($data['logic']['other_functions'] as $key => $value) {
-                $list[] = [
-                    'title' => $value['title'],
-                    'functoin_name' => $value['name'],
-                    'method' => $value['method'],
-                    'url' => "/admin/{$tableNameToCamelCase}/{$value['name']}"           
-                ];
-            }
-        }
         // 生成控制器的其它方法
         if (isset($data['controller']['other_functions']) && is_array($data['controller']['other_functions'])) {
             

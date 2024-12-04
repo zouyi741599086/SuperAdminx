@@ -4,7 +4,7 @@ import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
 import php from 'react-syntax-highlighter/dist/esm/languages/prism/php';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-SyntaxHighlighter.registerLanguage('javascrippt', jsx);
+SyntaxHighlighter.registerLanguage('jsx', jsx);
 SyntaxHighlighter.registerLanguage('php', php);
 
 /**
@@ -16,7 +16,7 @@ SyntaxHighlighter.registerLanguage('php', php);
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value, language = 'javascrippt', height = 500, ...props }) => {
+export default ({ value, language = 'jsx', height = 500, ...props }) => {
 
     return <>
         <div

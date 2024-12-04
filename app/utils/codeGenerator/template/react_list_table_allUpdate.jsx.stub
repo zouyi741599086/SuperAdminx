@@ -233,8 +233,6 @@ export default ({ ids, tableReload, ...props }) => {
             
             include __DIR__ . "/react_form_field.jsx.stub";
 
-
-            
         }
     }
     ?>
