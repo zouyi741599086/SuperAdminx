@@ -44,7 +44,7 @@ composer install
 ```
 
 3. 数据库
-- 新建数据库，导入根目录下 `superadminx.sql`，此sql是用navicat导出的
+- 新建数据库，编码为`utf8mb4`，导入根目录下 `superadminx.sql`，此sql是用navicat导出的
 - 修改根目录下 `.env` 里面数据库配置
 
 <br />
