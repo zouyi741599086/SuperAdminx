@@ -4,13 +4,16 @@
 *.log
 /runtime/*
 
-/plugin/*
-!/plugin/README.md
-
 /public/tmp_file/*
+!/public/tmp_file/README.md
 
 /public/admin/*
+!/public/admin/README.md
 
 /public/storage/*
+!/public/storage/README.md
+
+/plugin/*
+!/plugin/README.md
 
 /node_modules
