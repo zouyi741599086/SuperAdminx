@@ -5,7 +5,7 @@
 后端基于[workerman](https://www.workerman.net/)的[webman](https://www.workerman.net/webman)高性能HTTP框架，常用的[ThinkORM](https://doc.thinkphp.cn/@think-orm/)、[ThinkValidate](https://doc.thinkphp.cn/v8_0/validator.html)，前端基于`react`用`js`写的，主要用到的组件库是[Ant Design](https://ant.design/index-cn)、[ProComponents](https://procomponents.ant.design/)
 
 ### 使用文档
-[SuperAdminx文档](http://www.superadminx.com) [联系我们](https://www.superadminx.com/about.html)
+[SuperAdminx文档](http://www.superadminx.com) [联系我们](https://www.superadminx.com/contact.html)
 
 ### 预览
 [点此预览](http://www.superadminx.com/preview.html)
@@ -13,7 +13,7 @@
 ### 安装教程
 
 **环境要求**
-- php >= 8 
+- php >= 8
 - mysql >= 5.6
 - node >= 20
 
@@ -64,7 +64,7 @@ linux用户：调试方式运行 `php start.php start`，守护进程方式运�
 npm install
 ```
 
-6. 运行前端，即可访问`http://localhost:5200/admin/`
+6. 运行前端，即可访问`http://localhost:5200/admin/`，登录的帐号密码同[预览](https://www.superadminx.com/preview.html)
 ``` sh
 npm run dev
 ```
