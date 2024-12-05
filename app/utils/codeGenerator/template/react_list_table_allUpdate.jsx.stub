@@ -140,7 +140,7 @@ export default ({ ids, tableReload, ...props }) => {
                 <Button
                     type="link"
                     size='small'
-                    disabled={authCheck('<?php echo $tmp_table_action_all_update_auth_id ?? 0;?>')}
+                    disabled={authCheck('<?php echo $tmp_table_action_all_update_auth_id ?? '';?>')}
                     icon={<FormOutlined />}
                 >修改<?php echo $updateFiledTitle;?></Button>
             }

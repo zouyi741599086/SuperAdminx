@@ -13,4 +13,7 @@
 /public/storage/*
 !/public/storage/README.md
 
+/plugin/*
+!/plugin/README.md
+
 /node_modules
