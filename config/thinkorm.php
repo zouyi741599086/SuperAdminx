@@ -32,7 +32,7 @@ return [
                 \PDO::ATTR_TIMEOUT => 3,
             ],
             // 数据库编码默认采用utf8
-            'charset' => 'utf8mb4',
+            'charset' => getenv('DB_CHARSET'),
             // 数据库表前缀
             'prefix' => getenv('DB_PREFIX'),
             // 断线重连
