@@ -19,29 +19,29 @@ use app\process\Http;
 global $argv;
 
 return [
-    'webman' => [
-        'handler' => Http::class,
-        'listen' => 'http://0.0.0.0:8888',
-        'count' => cpu_count() * 4,
-        'user' => '',
-        'group' => '',
-        'reusePort' => false,
-        'eventLoop' => '',
-        'context' => [],
+    'webman'    => [
+        'handler'     => Http::class,
+        'listen'      => 'http://0.0.0.0:' . getenv('LISTEN_PORT'),
+        'count'       => cpu_count() * 4,
+        'user'        => '',
+        'group'       => '',
+        'reusePort'   => false,
+        'eventLoop'   => '',
+        'context'     => [],
         'constructor' => [
             'requestClass' => Request::class,
-            'logger' => Log::channel('default'),
-            'appPath' => app_path(),
-            'publicPath' => public_path()
+            'logger'       => Log::channel('default'),
+            'appPath'      => app_path(),
+            'publicPath'   => public_path()
         ]
     ],
     // File update detection and automatic reload
-    'monitor' => [
-        'handler' => app\process\Monitor::class,
-        'reloadable' => false,
+    'monitor'   => [
+        'handler'     => app\process\Monitor::class,
+        'reloadable'  => false,
         'constructor' => [
             // Monitor these directories
-            'monitorDir' => array_merge([
+            'monitorDir'        => array_merge([
                 app_path(),
                 config_path(),
                 base_path() . '/process',
@@ -53,18 +53,18 @@ return [
             'monitorExtensions' => [
                 'php', 'html', 'htm', 'env'
             ],
-            'options' => [
-                'enable_file_monitor' => !in_array('-d', $argv) && DIRECTORY_SEPARATOR === '/',
+            'options'           => [
+                'enable_file_monitor'   => ! in_array('-d', $argv) && DIRECTORY_SEPARATOR === '/',
                 'enable_memory_monitor' => DIRECTORY_SEPARATOR === '/',
             ]
         ]
     ],
     // 定时清除没使用的附件
-	'clearFile'    => [
+    'clearFile' => [
         'handler' => app\process\ClearFile::class,
     ],
     // 定时清除临时文件
-	'tmpFile'    => [
+    'tmpFile'   => [
         'handler' => app\process\TmpFile::class,
     ]
 ];
