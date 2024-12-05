@@ -64,7 +64,7 @@ linux用户：调试方式运行 `php start.php start`，守护进程方式运�
 npm install
 ```
 
-6. 运行前端，即可访问`http://localhost:5200/admin/`
+6. 运行前端，即可访问`http://localhost:5200/admin/`，登录的帐号密码同[预览](https://www.superadminx.com/preview.html)
 ``` sh
 npm run dev
 ```
