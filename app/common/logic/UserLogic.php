@@ -82,6 +82,19 @@ class UserLogic
             if (!isset($params['pid'])) {
                 $params['pid'] = null;
             }
+            // 如果前端没传上级，则更新为null
+            if (!isset($params['pid'])) {
+                $params['pid'] = null;
+            } 
+            // 如果有上级，则上级不能是自己，也不能是自己下面的人
+            if (isset($params['pid']) && $params['pid']) {
+                if ($params['pid'] == $params['id']) {
+                    abort('上级不能选择自己');
+                }
+                if (UserModel::where('id', $params['id'])->where('pid_path', 'like', "%,{$params['id']},%")->value('id')) {
+                    abort('上级不能选择自己下面的用户');
+                }
+            }
 
             UserModel::update($params);
             // 跟新上级路劲
