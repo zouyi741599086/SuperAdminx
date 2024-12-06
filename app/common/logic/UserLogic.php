@@ -77,6 +77,11 @@ class UserLogic
         Db::startTrans();
         try {
             validate(UserValidate::class)->check($params);
+            
+            // 如果前端没传上级，则更新为null
+            if (!isset($params['pid'])) {
+                $params['pid'] = null;
+            }
 
             UserModel::update($params);
             // 跟新上级路劲
