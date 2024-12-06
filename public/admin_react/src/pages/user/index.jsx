@@ -145,7 +145,12 @@ export default () => {
                         >{record.PUser?.name?.substr(0, 1)}</Avatar>
                         <div style={{ paddingLeft: '5px' }}>
                             {record.PUser?.name}<br />
-                            <Typography.Paragraph copyable>{record.PUser?.tel}</Typography.Paragraph>
+                            <Typography.Paragraph
+                                copyable
+                                style={{
+                                    margin: 0
+                                }}
+                            >{record.PUser?.tel}</Typography.Paragraph>
                         </div>
                     </div>
                 }
