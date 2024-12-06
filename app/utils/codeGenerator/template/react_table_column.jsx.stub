@@ -99,7 +99,12 @@ echo "        {{$columnsParams}
                         >{record.User?.name?.substr(0, 1)}</Avatar>
                         <div style={{ paddingLeft: '5px' }}>
                             {record.User?.name}<br />
-                            <Typography.Paragraph>{record.User?.tel}</Typography.Paragraph>
+                            <Typography.Paragraph
+                                copyable
+                                style={{
+                                    margin: 0
+                                }}
+                            >{record.User?.tel}</Typography.Paragraph>
                         </div>
                     </div>
                 }
