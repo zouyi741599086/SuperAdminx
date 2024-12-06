@@ -152,7 +152,6 @@ export default ({ tableName, ...props }) => {
                 </Row>
 
                 <CreateTableField callback={(params) => {
-                    console.log(params);
                     if (tableColumns.some(item => item.Field == params.Field)) {
                         message.error('此字段已经存在~');
                         return false;

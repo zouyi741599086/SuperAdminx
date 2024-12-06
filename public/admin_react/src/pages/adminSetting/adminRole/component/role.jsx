@@ -110,7 +110,6 @@ export default (props) => {
 
         // 不管选中或取消，往上找父级，判断每个父级下面是否有选中的，有则父级就要选中，没得父级就要取消
         // 要反向循环，才能一级一级往上找
-        console.log(node.pid_name_path)
         for (let i = node.pid_name_path.length - 1; i >= 0; i--) {
             let pid_name = node.pid_name_path[i];
             if (pid_name === node.name) {
