@@ -40,8 +40,8 @@ echo "        {{$columnsParams}
                 
 echo "        {{$columnsParams}
             render: (_, record) => <>
-                {record.xxxx}<br/>
-                <Typography.Paragraph copyable>{record.xxx ?? '-'}</Typography.Paragraph>
+                {record?.name}<br/>
+                <Typography.Paragraph copyable>{record?.tel ?? '-'}</Typography.Paragraph>
             </>
         },\n";
 
@@ -93,14 +93,13 @@ echo "        {{$columnsParams}
                     return <div style={{ display: 'flex' }}>
                         <Avatar
                             src={record.User?.img}
-                            size=\"large\"
                             style={{
                                 flexShrink: 0
                             }}
                         >{record.User?.name?.substr(0, 1)}</Avatar>
                         <div style={{ paddingLeft: '5px' }}>
                             {record.User?.name}<br />
-                            {record.User?.tel}
+                            <Typography.Paragraph>{record.User?.tel}</Typography.Paragraph>
                         </div>
                     </div>
                 }
