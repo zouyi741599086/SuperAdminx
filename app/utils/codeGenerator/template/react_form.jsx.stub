@@ -100,7 +100,7 @@ if (in_array('imgTitle',$filedsTypeArr)) echo "const ImgTitle from '@/component/
 <?php
 // 导入需要使用的异步搜索选择组件
 foreach ($selectComponents as $v) {
-echo "import Select{$v} from '@/pages/components/select{$v}';\n";
+echo "import Select{$v} from '@/components/select{$v}';\n";
 }
 ?>
 

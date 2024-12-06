@@ -100,7 +100,7 @@
 
                 // 如果是异步搜索选择某个表的id
                 if ($v['search_type'] == 'selectTable') {
-                    $tmp = "import Select{$tmp} from '@/pages/components/select{$tmp}';";
+                    $tmp = "import Select{$tmp} from '@/components/select{$tmp}';";
                     if (!in_array($tmp, $zidingyiComponent)) {
                         $zidingyiComponent[] = $tmp;
                     }
