@@ -4,17 +4,9 @@ import { userApi } from '@/api/user';
 import { ProTable } from '@ant-design/pro-components';
 import { App, Button, Typography, Space, Tooltip, Avatar, Switch, } from 'antd';
 import {
-    OrderedListOutlined,
-    QuestionCircleOutlined,
     CloudDownloadOutlined,
-    DeleteOutlined,
-    PlusOutlined,
-    EyeOutlined,
-    EyeInvisibleOutlined,
 } from '@ant-design/icons';
-import { config } from '@/common/config';
-import { NavLink } from 'react-router-dom';
-import { authCheck, arrayToTree} from '@/common/function';
+import { authCheck} from '@/common/function';
 import { fileApi } from '@/api/file';
 import Lazyload from '@/component/lazyLoad/index';
 import SelectUser from '@/components/selectUser';

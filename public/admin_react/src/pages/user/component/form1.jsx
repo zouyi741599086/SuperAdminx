@@ -1,7 +1,5 @@
-import { lazy } from 'react';
 import { ProForm, ProFormText, ProFormDigit, } from '@ant-design/pro-components';
 import { Row, Col } from 'antd';
-import { arrayToTree } from '@/common/function';
 import SelectUser from '@/components/selectUser';
 
 /**
