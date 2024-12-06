@@ -42,7 +42,6 @@ export default ({ data, preview, remove }) => {
             </> : ''}
             {data.status === 'done' ? <>
                 <div className="bg" >
-                    {console.log(data)}
                     {['jpg', 'jpeg', 'png'].indexOf(data.url.substring(data.url.lastIndexOf(".") + 1)) == -1 ? <>
                         <img src={videoImg} key={data.url} />
                     </> : <>
