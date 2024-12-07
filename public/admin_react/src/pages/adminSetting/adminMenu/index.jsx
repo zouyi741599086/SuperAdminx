@@ -10,7 +10,6 @@ import {
 import { useMount } from 'ahooks';
 import { useRecoilState } from 'recoil';
 import { layoutSettingStore } from '@/store/layoutSetting';
-import { adminUserStore } from '@/store/adminUser';
 import Lazyload from '@/component/lazyLoad/index';
 
 const { Search } = Input;
@@ -58,7 +57,6 @@ const getParentKey = (id, tree) => {
  * */
 export default () => {
     const [layoutSetting] = useRecoilState(layoutSettingStore);
-    const [adminUser] = useRecoilState(adminUserStore);
     const { message } = App.useApp();
 
     useMount(() => {
