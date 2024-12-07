@@ -65,7 +65,7 @@ class UserLogic
      */
     public static function findData(int $id)
     {
-        return UserModel::find($id);
+        return UserModel::find($id)->hidden(['password']);
     }
 
     /**
@@ -77,23 +77,29 @@ class UserLogic
         Db::startTrans();
         try {
             validate(UserValidate::class)->check($params);
-            
+
             // 如果前端没传上级，则更新为null
-            if (!isset($params['pid'])) {
+            if (! isset($params['pid'])) {
                 $params['pid'] = null;
             }
-            // 如果前端没传上级，则更新为null
-            if (!isset($params['pid'])) {
-                $params['pid'] = null;
-            } 
             // 如果有上级，则上级不能是自己，也不能是自己下面的人
             if (isset($params['pid']) && $params['pid']) {
                 if ($params['pid'] == $params['id']) {
                     abort('上级不能选择自己');
                 }
-                if (UserModel::where('id', $params['id'])->where('pid_path', 'like', "%,{$params['id']},%")->value('id')) {
+                if (
+                    UserModel::where('pid_path', 'like', "%,{$params['id']},%")
+                        ->where('id', '<>', $params['id'])
+                        ->where('id', $params['pid'])
+                        ->value('id')
+                ) {
                     abort('上级不能选择自己下面的用户');
                 }
+            }
+
+            // 没修改密码则干掉此字段
+            if (isset($params['password']) && ! $params['password']) {
+                unset($params['password']);
             }
 
             UserModel::update($params);
@@ -197,7 +203,7 @@ class UserLogic
                     $v['name'] ?? '',
                     $v['tel'] ?? '',
                     $v['status'] == 1 ? '正常' : '禁用',
-                    $v['pid'] ? "{$v['PUser']['name']}/{$v['PUser']['tel']}" : '--' ,
+                    $v['pid'] ? "{$v['PUser']['name']}/{$v['PUser']['tel']}" : '--',
                     $v['create_time'] ?? '',
                 ];
             }

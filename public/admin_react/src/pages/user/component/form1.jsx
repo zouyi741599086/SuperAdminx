@@ -9,11 +9,11 @@ import SelectUser from '@/components/selectUser';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({typeAction, ...props}) => {
+export default ({ typeAction, ...props }) => {
 
     return <>
         <Row gutter={[24, 0]}>
-            
+
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <ProFormText
                     name="name"
@@ -23,7 +23,7 @@ export default ({typeAction, ...props}) => {
                         { required: true, message: '请输入' },
                     ]}
                 />
-            </Col>    
+            </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <ProFormDigit
                     name="tel"
@@ -31,7 +31,7 @@ export default ({typeAction, ...props}) => {
                     placeholder="请输入"
                     fieldProps={{
                         precision: 0,
-                        style: {width: '100%'},
+                        style: { width: '100%' },
                     }}
                     min={0}
                     rules={[
@@ -39,7 +39,7 @@ export default ({typeAction, ...props}) => {
                         { pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号' },
                     ]}
                 />
-            </Col>    
+            </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <ProForm.Item
                     name="pid"
@@ -50,6 +50,18 @@ export default ({typeAction, ...props}) => {
                 >
                     <SelectUser />
                 </ProForm.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                <ProFormText.Password
+                    name="password"
+                    label="登录密码"
+                    placeholder="请输入"
+                    rules={[
+                        { required: typeAction === 'update' ? false : true, message: '请输入' },
+                        { min: 6, message: '最小长度6位' },
+                    ]}
+                    extra={typeAction === 'update' ? '不修改密码请留空~' : ''}
+                />
             </Col>
         </Row>
     </>

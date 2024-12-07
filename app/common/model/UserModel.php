@@ -26,6 +26,11 @@ class UserModel extends BaseModel
         'img' => '',
     ];
 
+    //密码 修改器
+    public function setPasswordAttr($value)
+    {
+        return password_hash($value, PASSWORD_DEFAULT);
+    }
 
     // 姓名 搜索器
     public function searchNameAttr($query, $value, $data)

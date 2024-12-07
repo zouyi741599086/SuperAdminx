@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2024-12-06 17:03:42
+Date: 2024-12-07 16:56:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -4097,21 +4097,22 @@ INSERT INTO `sa_token` VALUES ('553', 'SuperAdminx_admin_pc_1', '%IXQQx9SdlLLmW4
 DROP TABLE IF EXISTS `sa_user`;
 CREATE TABLE `sa_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `img` varchar(200) DEFAULT NULL COMMENT '头像',
   `name` varchar(255) DEFAULT NULL,
   `tel` varchar(255) DEFAULT NULL,
+  `img` varchar(200) DEFAULT NULL COMMENT '头像',
   `status` tinyint(1) DEFAULT '1' COMMENT '状态，1》正常，2》禁用',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码',
   `pid` int(11) DEFAULT NULL COMMENT '上级用户的id',
   `pid_path` varchar(255) DEFAULT NULL COMMENT '上级路劲，如：,1,2,',
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='用户';
 
 -- ----------------------------
 -- Records of sa_user
 -- ----------------------------
-INSERT INTO `sa_user` VALUES ('1', null, '张三1', '18819806503', '1', null, ',1,', '2024-11-29 20:42:45', '2024-12-06 16:51:11');
-INSERT INTO `sa_user` VALUES ('4', null, '李四', '13251326688', '1', '1', ',1,4,', '2024-11-29 20:56:43', '2024-12-06 16:54:00');
-INSERT INTO `sa_user` VALUES ('5', null, '发生的', '18819806532', '2', '4', ',1,4,5,', '2024-11-29 21:12:31', '2024-12-06 16:52:31');
-INSERT INTO `sa_user` VALUES ('6', null, '测试', '13996482451', '1', '5', ',1,4,5,6,', '2024-11-29 21:15:37', '2024-12-06 16:53:39');
+INSERT INTO `sa_user` VALUES ('1', '张三1', '18819806503', null, '1', null, null, ',1,', '2024-11-29 20:42:45', '2024-12-06 16:51:11');
+INSERT INTO `sa_user` VALUES ('4', '李四', '13251326688', null, '1', null, null, ',4,', '2024-11-29 20:56:43', '2024-12-06 17:07:49');
+INSERT INTO `sa_user` VALUES ('5', '发生的', '18819806532', null, '2', null, '4', ',4,5,', '2024-11-29 21:12:31', '2024-12-06 17:07:49');
+INSERT INTO `sa_user` VALUES ('6', '测试', '13996482451', null, '1', null, '5', ',4,5,6,', '2024-11-29 21:15:37', '2024-12-06 17:07:49');
