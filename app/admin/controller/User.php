@@ -87,7 +87,7 @@ class User
     }
 
     /**
-     * @log 搜索选择某条数据
+     * 搜索选择某条数据
      * @method get
      * @param string $keywords 搜索的关键字
      * @param int $id 选中的数据id
