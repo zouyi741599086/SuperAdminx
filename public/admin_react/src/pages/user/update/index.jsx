@@ -77,7 +77,7 @@ export default ({ tableReload, updateId, setUpdateId, ...props }) => {
             }}
         >
             <Lazyload height={50}>
-                <Form1 action='update' />
+                <Form1 typeAction='update' />
             </Lazyload>
         </ModalForm>
     </>;
