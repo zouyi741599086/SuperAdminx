@@ -320,7 +320,7 @@ export default ({ typeAction, ...props }) => {
                                                 </Col>);
                                             }
 
-                                            if (auto_auth.indexOf('Info')) {
+                                            if (auto_auth.indexOf('Info') !== -1) {
                                                 _component.push(<Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12} key="2">
                                                     <ProFormRadio.Group
                                                         name="auto_auth_info_type"
