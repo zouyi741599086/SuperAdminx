@@ -1,5 +1,5 @@
 {
-  "name": "superadminx/webman-react",
+  "name": "superadminx/admin",
   "type": "project",
   "keywords": [
     "high performance",
@@ -7,7 +7,7 @@
   ],
   "homepage": "http://www.superadminx.com",
   "license": "MIT",
-  "description": "High performance HTTP Service Framework.",
+  "description": "SuperAdminx基于webman的中后台开发框架",
   "authors": [
     {
       "name": "superadminx",
@@ -68,6 +68,9 @@
     ],
     "pre-package-uninstall": [
       "support\\Plugin::uninstall"
+    ],
+	"post-create-project-cmd": [
+        "composer install"
     ]
   }
 }
