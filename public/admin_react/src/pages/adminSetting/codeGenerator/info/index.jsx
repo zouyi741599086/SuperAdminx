@@ -178,17 +178,19 @@ export default () => {
                         </Descriptions>
                     </ProCard>
 
-                    <ProCard
-                        className='code-generator'
-                        tabs={{
-                            activeKey: tabsKey,
-                            items: tabsList,
-                            onChange: (key) => {
-                                setTabsKey(key);
-                            },
-                            destroyInactiveTabPane: true
-                        }}
-                    ></ProCard>
+                    {tableName ? <>
+                        <ProCard
+                            className='code-generator'
+                            tabs={{
+                                activeKey: tabsKey,
+                                items: tabsList,
+                                onChange: (key) => {
+                                    setTabsKey(key);
+                                },
+                                destroyInactiveTabPane: true
+                            }}
+                        ></ProCard>
+                    </> : null}
                 </Space>
             </PageContainer>
         </>
