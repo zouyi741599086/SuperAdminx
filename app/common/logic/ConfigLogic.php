@@ -129,6 +129,7 @@ class ConfigLogic
             if (is_null($data)) {
                 $data = ConfigModel::where('name', $name)->find();
             }
+            Cache::set("Config_{$name}", $data);
             return $data;
         }
         if ($id) {
