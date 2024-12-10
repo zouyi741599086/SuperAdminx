@@ -10,7 +10,8 @@ use Exception;
 
 class CustomException extends Exception
 {
-
+    public $dontReport = [\support\exception\PageNotFoundException::class];
+    
     public function __construct($message, $code)
     {
         parent::__construct($message, $code);
