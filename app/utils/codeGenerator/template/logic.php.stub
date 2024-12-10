@@ -441,7 +441,7 @@ class <?php echo $file_name ?? ''; ?>
             \$excel->close();
     
             return [
-                'filePath' => \$filePath,
+                'filePath' => str_replace(public_path(), '', \$filePath),
                 'fileName' => \$fileName
             ];
         } catch (\Exception \$e) {
@@ -567,7 +567,7 @@ class <?php echo $file_name ?? ''; ?>
             \$excel->close();
     
             return [
-                'filePath' => \$filePath,
+                'filePath' => str_replace(public_path(), '', \$filePath),
                 'fileName' => \$fileName
             ];
         } catch (\Exception \$e) {

@@ -220,7 +220,7 @@ class UserLogic
             $excel->close();
 
             return [
-                'filePath' => $filePath,
+                'filePath' => str_replace(public_path(), '', $filePath),
                 'fileName' => $fileName
             ];
         } catch (\Exception $e) {
