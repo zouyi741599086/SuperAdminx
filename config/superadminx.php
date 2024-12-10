@@ -35,7 +35,7 @@ return [
         //开关
         'enable'      => getenv('DE_BUG') == 'true' ? false : true,
         //不加密的url，上传接口则不加密
-        'url'         => ['/admin/File/upload', '/api/File/upload'],
+        'url'         => ['/admin/File/upload', '/api/File/upload', '/admin/File/download', '/api/File/download'],
         //数据解密私钥，左边不要有空格，百度“rsa密钥在线生成”，需2048位PKCS1格式
         'rsa_private' => <<<EOF
 -----BEGIN RSA PRIVATE KEY-----
