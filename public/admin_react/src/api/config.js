@@ -35,4 +35,8 @@ export const configApi = {
     updateSort: (params = {}) => {
         return http.post('/admin/Config/updateSort', params);
     },
+    // 获取配置
+    getConfig: (params = {}) => {
+        return http.get('/admin/Config/getConfig', params);
+    },
 }

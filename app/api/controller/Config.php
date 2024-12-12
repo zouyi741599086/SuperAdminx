@@ -21,12 +21,12 @@ class Config
     /**
      * 获取配置
      * @method get
-     * @param Request $request 
+     * @param string $name
      * @return Response
      */
-    public function getConfig($request) : Response
+    public function getConfig(string $name) : Response
     {
-        $data = ConfigLogic::getConfig($request->get('name'));
+        $data = ConfigLogic::getConfig($name);
         $data = file_url($data);
         return success($data);
     }

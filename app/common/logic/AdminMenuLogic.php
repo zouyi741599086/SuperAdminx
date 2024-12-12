@@ -74,7 +74,7 @@ class AdminMenuLogic
                     ];
                     // 如果是新页面打开
                     if (isset($params['auto_auth_create_update_type']) && $params['auto_auth_create_update_type'] == 2) {
-                        $tmp['type']           = 2;
+                        $tmp['type']           = 5;
                         $tmp['path']           = "{$params['path']}/create";
                         $tmp['component_path'] = "{$params['path']}/create";
                         $tmp['is_params']      = 1;
@@ -92,7 +92,7 @@ class AdminMenuLogic
                     ];
                     // 如果是新页面打开
                     if (isset($params['auto_auth_create_update_type']) && $params['auto_auth_create_update_type'] == 2) {
-                        $tmp['type']           = 2;
+                        $tmp['type']           = 5;
                         $tmp['path']           = "{$params['path']}/update";
                         $tmp['component_path'] = "{$params['path']}/update";
                         $tmp['is_params']      = 2;
@@ -110,7 +110,7 @@ class AdminMenuLogic
                     ];
                     // 如果是新页面打开
                     if (isset($params['auto_auth_info_type']) && $params['auto_auth_info_type'] == 2) {
-                        $tmp['type']           = 2;
+                        $tmp['type']           = 5;
                         $tmp['path']           = "{$params['path']}/info";
                         $tmp['component_path'] = "{$params['path']}/info";
                         $tmp['is_params']      = 2;

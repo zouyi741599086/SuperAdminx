@@ -1,23 +1,51 @@
 {
-  "id": "4708641",
-  "name": "海力律师函",
+  "id": "4778961",
+  "name": "superadminx",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
     {
-      "icon_id": "2480675",
-      "name": "帮助中心",
-      "font_class": "bangzhuzhongxin",
-      "unicode": "e633",
-      "unicode_decimal": 58931
+      "icon_id": "251023",
+      "name": "评价星星",
+      "font_class": "pingjiaxingxing",
+      "unicode": "e6d5",
+      "unicode_decimal": 59093
     },
     {
-      "icon_id": "4936611",
-      "name": "file-word-fill",
-      "font_class": "file-word-fill",
-      "unicode": "e858",
-      "unicode_decimal": 59480
+      "icon_id": "1126",
+      "name": "文件夹",
+      "font_class": "wenjianjia1",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "145720",
+      "name": "设置_填充",
+      "font_class": "shezhitianchong",
+      "unicode": "e68d",
+      "unicode_decimal": 59021
+    },
+    {
+      "icon_id": "315959",
+      "name": "user",
+      "font_class": "weibiaoti1",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "565981",
+      "name": "订单",
+      "font_class": "dingdan",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "577363",
+      "name": "首页-fill",
+      "font_class": "shouyefill",
+      "unicode": "e750",
+      "unicode_decimal": 59216
     },
     {
       "icon_id": "587028",
@@ -39,6 +67,13 @@
       "font_class": "tongji4",
       "unicode": "e6cf",
       "unicode_decimal": 59087
+    },
+    {
+      "icon_id": "791889",
+      "name": "商品",
+      "font_class": "goods-copy",
+      "unicode": "e64a",
+      "unicode_decimal": 58954
     },
     {
       "icon_id": "1071079",
@@ -74,6 +109,13 @@
       "font_class": "money-new",
       "unicode": "e637",
       "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "5679856",
+      "name": "推广",
+      "font_class": "tuiguang",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
     },
     {
       "icon_id": "6136974",
@@ -139,6 +181,13 @@
       "unicode_decimal": 59049
     },
     {
+      "icon_id": "11372789",
+      "name": "优惠券",
+      "font_class": "youhuiquan",
+      "unicode": "e8c8",
+      "unicode_decimal": 59592
+    },
+    {
       "icon_id": "12567180",
       "name": "插件",
       "font_class": "chajian1",
@@ -151,6 +200,13 @@
       "font_class": "rizhi",
       "unicode": "e607",
       "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "18514354",
+      "name": "会员",
+      "font_class": "huiyuan",
+      "unicode": "e731",
+      "unicode_decimal": 59185
     },
     {
       "icon_id": "21242869",
@@ -179,48 +235,6 @@
       "font_class": "shujujianguan1",
       "unicode": "e60a",
       "unicode_decimal": 58890
-    },
-    {
-      "icon_id": "2676692",
-      "name": "律师",
-      "font_class": "lvshi",
-      "unicode": "e618",
-      "unicode_decimal": 58904
-    },
-    {
-      "icon_id": "23076806",
-      "name": "律师函",
-      "font_class": "lvshihan",
-      "unicode": "e7d1",
-      "unicode_decimal": 59345
-    },
-    {
-      "icon_id": "1126",
-      "name": "文件夹",
-      "font_class": "wenjianjia1",
-      "unicode": "e602",
-      "unicode_decimal": 58882
-    },
-    {
-      "icon_id": "145720",
-      "name": "设置_填充",
-      "font_class": "shezhitianchong",
-      "unicode": "e68d",
-      "unicode_decimal": 59021
-    },
-    {
-      "icon_id": "315959",
-      "name": "user",
-      "font_class": "weibiaoti1",
-      "unicode": "e603",
-      "unicode_decimal": 58883
-    },
-    {
-      "icon_id": "577363",
-      "name": "首页-fill",
-      "font_class": "shouyefill",
-      "unicode": "e750",
-      "unicode_decimal": 59216
     }
   ]
 }

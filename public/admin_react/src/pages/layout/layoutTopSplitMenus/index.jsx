@@ -86,7 +86,7 @@ export default () => {
         let tmpMenuList = [];
         let tmpTopMenuList = [];
         menuAuth.menuArr.map(item => {
-            if (!item.pid) {
+            if (!item.pid_name) {
                 // 找出所有一级菜单
                 tmpTopMenuList.push({
                     id: item.id,
@@ -117,10 +117,10 @@ export default () => {
         setTopMenuList(tmpTopMenuList);
     })
 
-    // 用于刷新页面、获取切换主题过来的时候，把二级菜单展示出来
+    // 用于刷新页面、点击tabs切换页面、切换主题过来的时候，把二级菜单展示出来
     useEffect(() => {
         onTopMenuClick({ key: menuAuth.activeData.pid_name_path[0] }, false);
-    }, [menuList])
+    }, [menuList, menuAuth.activeData])
 
     /**
      * 顶部菜单点击的时候

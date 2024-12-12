@@ -26,7 +26,7 @@ export default ({ title = '查看图片', imgs = [], ...props }) => {
                             }) : ''}
                         </Space>
                     </Image.PreviewGroup>
-                    {Array.isArray(imgs) && imgs.length === 0 ? <>
+                    {(! imgs || (Array.isArray(imgs) && imgs.length === 0)) ? <>
                         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="无图片" />
                     </> : ''}
                 </>,

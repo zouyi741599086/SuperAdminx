@@ -108,4 +108,15 @@ class Config
         return success([], '修改成功');
     }
 
+    /**
+     * 获取配置
+     * @method post
+     * @param string $name 
+     * @return Response
+     */
+    public function getConfig(string $name) : Response
+    {
+        $config = ConfigLogic::getConfig($name);
+        return success($config);
+    }
 }

@@ -25,6 +25,8 @@ const routeAllPathToCompMap = import.meta.glob([
     `!./**/component/**/*index.jsx`, // 除开的此文件
 ]);
 
+const Error = lazy(() => import('@/pages/error/index'));
+
 /**
  * 给html标签加class
  * @param {String} className 添加或删除的class
@@ -130,6 +132,10 @@ export default () => {
                 let Elm = lazy(routeAllPathToCompMap[`./pages${item.component_path}/index.jsx`])
                 tmp.element = <LazyLoad>
                     <Elm />
+                </LazyLoad>;
+            } else {
+                tmp.element = <LazyLoad>
+                    <Error />
                 </LazyLoad>;
             }
             result[1].children.push(tmp);
