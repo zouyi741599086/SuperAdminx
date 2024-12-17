@@ -11,7 +11,7 @@
  */
 
 return [
-    'version'             => '1.0.8',
+    'version'             => '1.0.9',
     //上传文件的配置
     'file_system'         => [
         //本地》public，阿里云》aliyun
