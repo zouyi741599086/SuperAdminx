@@ -37,6 +37,7 @@ class RegionLogic
                 ->where('level', 1)
                 ->select()
                 ->toArray();
+            Cache::set('provinceList', $list);
         }
         return $list;
     }
@@ -54,6 +55,7 @@ class RegionLogic
                 ->select()
                 ->toArray();
             $list = self::arrayToTree($list);
+            Cache::set('provinceCityList', $list);
         }
         return $list;
     }
@@ -70,6 +72,7 @@ class RegionLogic
                 ->select()
                 ->toArray();
             $list = self::arrayToTree($list);
+            Cache::set('provinceCityAreaList', $list);
         }
         return $list;
     }
