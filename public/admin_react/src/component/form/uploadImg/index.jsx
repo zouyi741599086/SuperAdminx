@@ -87,7 +87,13 @@ export default ({ value, onChange, width = 0, height = 0, UploadButton = null, .
     return (
         <>
             {value ? <>
-                <Card className="uploaddan-img" size="small" bodyStyle={{ padding: '8px' }} >
+                <Card
+                    className="uploaddan-img"
+                    size="small"
+                    styles={{
+                        body: { padding: 8 }
+                    }}
+                >
                     <div className="bg">
                         <Image
                             src={`${value}`}

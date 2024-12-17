@@ -74,7 +74,13 @@ export default ({ value, onChange, width = 0, height = 0, disabled = false }) =>
     return (
         <>
             {value ? <>
-                <Card className="uploaddan-img-mini" size="small" bodyStyle={{ padding: '2px' }} >
+                <Card
+                    className="uploaddan-img-mini"
+                    size="small"
+                    styles={{
+                        body: { padding: 2 }
+                    }}
+                >
                     <div className="bg">
                         <Image
                             src={`${value}`}

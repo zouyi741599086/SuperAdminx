@@ -26,7 +26,9 @@ export default ({ data, preview, remove }) => {
         <Card
             key={data.uid}
             size="small"
-            bodyStyle={{ padding: '8px' }}
+            styles={{
+                body: {padding: 8}
+            }}
             style={style}
             ref={setNodeRef}
             hoverable={isDragging}

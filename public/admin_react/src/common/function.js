@@ -54,9 +54,36 @@ export const storage = {
  * @returns 
  */
 export const deepClone = (obj) => {
-    let _obj = JSON.stringify(obj) //  对象转成字符串
-    let objClone = JSON.parse(_obj) //  字符串转成对象
-    return objClone
+    // 处理 null 和 非对象/数组 类型
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
+    // 处理循环引用
+    if (hashMap.has(obj)) {
+        return hashMap.get(obj);
+    }
+    // 处理 Date 类型
+    if (obj instanceof Date) {
+        return new Date(obj);
+    }
+    // 处理 Array 类型
+    if (Array.isArray(obj)) {
+        const arrCopy = [];
+        hashMap.set(obj, arrCopy);
+        for (let i = 0; i < obj.length; i++) {
+            arrCopy[i] = deepClone(obj[i], hashMap);
+        }
+        return arrCopy;
+    }
+    // 处理普通对象
+    const objCopy = {};
+    hashMap.set(obj, objCopy);
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            objCopy[key] = deepClone(obj[key], hashMap);
+        }
+    }
+    return objCopy;
 }
 
 /**
