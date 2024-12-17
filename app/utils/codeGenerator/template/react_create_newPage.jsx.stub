@@ -87,7 +87,9 @@ export default () => {
             }}
         >
             <Card 
-                bodyStyle={{ paddingBottom: '40px' }}
+				styles={{
+					body: {paddingBottom: 40}
+				}}
                 bordered={false}
 <?php
                 if ($isCardTab) {
