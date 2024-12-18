@@ -25,7 +25,7 @@ class AdminCodeGenerator
      * @param Request $request 
      * @return Response
      */
-    public function getMysqlConfig($request) : Response
+    public function getMysqlConfig(Request $request) : Response
     {
         $data = [
             //'hostname' => getenv('DB_HOST'),
@@ -44,7 +44,7 @@ class AdminCodeGenerator
      * @param Request $request 
      * @return Response
      */
-    public function getTableList($request) : Response
+    public function getTableList(Request $request) : Response
     {
         $list = CodeGenerator::getTableList();
         return success($list);
@@ -56,7 +56,7 @@ class AdminCodeGenerator
      * @param Request $request 
      * @return Response
      */
-    public function getTableColumnList($request) : Response
+    public function getTableColumnList(Request $request) : Response
     {
         $list = CodeGenerator::getTableColumnList();
         return success($list);
@@ -68,7 +68,7 @@ class AdminCodeGenerator
      * @param Request $request 
      * @return Response
      */
-    public function getTableInfo($request) : Response
+    public function getTableInfo(Request $request) : Response
     {
         $data = CodeGenerator::getTableInfo($request->get('table_name'));
         return success($data);
@@ -80,7 +80,7 @@ class AdminCodeGenerator
      * @param Request $request 
      * @return Response
      */
-    public function getTableColumn($request) : Response
+    public function getTableColumn(Request $request) : Response
     {
         $list = CodeGenerator::getTableColumn($request->get('table_name'));
         return success($list);
@@ -92,7 +92,7 @@ class AdminCodeGenerator
      * @param Request $request 
      * @return Response
      */
-    public function getCodeGeneratorInfo($request) : Response
+    public function getCodeGeneratorInfo(Request $request) : Response
     {
         $data = CodeGenerator::getCodeGeneratorInfo($request->get('table_name'));
         return success($data);
@@ -104,7 +104,7 @@ class AdminCodeGenerator
      * @param Request $request 
      * @return Response
      */
-    public function updateCodeGenerator($request) : Response
+    public function updateCodeGenerator(Request $request) : Response
     {
         CodeGenerator::updateCodeGenerator($request->post());
         return success();
@@ -116,7 +116,7 @@ class AdminCodeGenerator
      * @param Request $request 
      * @return Response
      */
-    public function generatorCode($request) : Response
+    public function generatorCode(Request $request) : Response
     {
         $data = CodeGenerator::generatorCode($request->post(), $request->post('code_name'));
         return success($data);
@@ -128,7 +128,7 @@ class AdminCodeGenerator
      * @param Request $request
      * @return Response
      */
-    public function operationFile($request) : Response
+    public function operationFile(Request $request) : Response
     {
         $params = $request->all();
         CodeGenerator::operationFile($params['table_name'], $params['name'], $params['forced'] ?? false);

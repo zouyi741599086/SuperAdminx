@@ -32,7 +32,9 @@ export default () => {
                 onClose={toggleOpen}
                 closable={false}
                 width={200}
-                bodyStyle={{ padding: '0px' }}
+                styles={{
+                    body: {padding: 0}
+                }}
                 placement="left"
             >
                 <div className='mobileMenuWarp'>

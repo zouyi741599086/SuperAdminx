@@ -26,7 +26,7 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function getList($request): Response
+    public function getList(Request $request): Response
     {
         $list = AdminMenuLogic::getList($request->get());
         return success($list);
@@ -39,7 +39,7 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function create($request): Response
+    public function create(Request $request): Response
     {
         AdminMenuLogic::create($request->post());
         return success([], '添加成功');
@@ -52,7 +52,7 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function update($request): Response
+    public function update(Request $request): Response
     {
         AdminMenuLogic::update($request->post());
         return success([], '修改成功');
@@ -64,7 +64,7 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function findData($request): Response
+    public function findData(Request $request): Response
     {
         $data = AdminMenuLogic::findData(intval($request->get('id')));
         return success($data);
@@ -77,7 +77,7 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function delete($request): Response
+    public function delete(Request $request): Response
     {
         AdminMenuLogic::delete(request()->post('id'));
         return success([], '删除成功');
