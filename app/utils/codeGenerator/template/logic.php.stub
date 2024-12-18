@@ -100,6 +100,7 @@ class <?php echo $file_name ?? ''; ?>
             \$list = {$data['model']['file_name']}::order('{$orderBy}')
                 ->select()
                 ->toArray();
+			Cache::set('{$tableNameToCamelCase}', \$list);
         }
         return \$list;
     }";   
@@ -167,6 +168,7 @@ class <?php echo $file_name ?? ''; ?>
         \$data = Cache::get(\"{$tableNameToCamelCase}{\$id}\");
         if (is_null(\$data)) {
             \$data = {$data['model']['file_name']}::find(\$id);
+			Cache::set(\"{$tableNameToCamelCase}{\$id}\", \$data);
         }
         return \$data;";
 

@@ -128,8 +128,8 @@ class ConfigLogic
             $data = Cache::get("Config_{$name}");
             if (is_null($data)) {
                 $data = ConfigModel::where('name', $name)->find();
+				Cache::set("Config_{$name}", $data);
             }
-            Cache::set("Config_{$name}", $data);
             return $data;
         }
         if ($id) {
@@ -147,14 +147,13 @@ class ConfigLogic
         try {
             // 配置name
             $configName = ConfigModel::where('id', $id)->value('name');
-
-            // 修改本表的数据
-            ConfigModel::destroy($id);
-
-            // 要同步删除adminMenu的数据
+			Cache::delete("Config_{$configName}");
+			
+			// 要同步删除adminMenu的数据
             AdminMenuModel::where('name', "config_{$configName}")->delete();
 
-            Cache::delete("Config_{$configName}");
+            // 删除本表的数据
+            ConfigModel::destroy($id);
 
             Db::commit();
         } catch (\Exception $e) {
