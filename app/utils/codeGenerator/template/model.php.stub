@@ -242,7 +242,7 @@ echo "    // 软删除
         $me_id = preg_replace('/^' . preg_quote(getenv('DB_PREFIX'), '/') . '/', '', $table_name) . '_id';
         // 中间表中关联模型的键名
         $to_id = preg_replace('/^' . preg_quote(getenv('DB_PREFIX'), '/') . '/', '', $value['model']) . '_id';
-        echo "        return \$this->belongsToMany({$function_name}Model::class, {$middle_name}Model::class, '{$me_id}', '{$to_id}');";
+        echo "        return \$this->belongsToMany({$function_name}Model::class, {$middle_name}Model::class, '{$to_id}', '{$me_id}');";
     }
 
     echo "
