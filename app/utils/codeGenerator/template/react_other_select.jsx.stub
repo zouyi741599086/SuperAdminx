@@ -113,6 +113,9 @@ export default ({ value, onChange, ...props }) => {
             onSearch={setKeywords}
             onChange={componentChange}
             options={options}
+			style={{
+				width: '100%'
+			}}
         />
     </>
 }
