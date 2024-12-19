@@ -239,9 +239,9 @@ echo "    // 软删除
         // 中间表类名
         $middle_name = CodeGenerator::toCamelCase($value['middle']);
         // 中间表中当前模型键名
-        $me_id = ltrim($table_name, getenv('DB_PREFIX')) . '_id';
+        $me_id = preg_replace('/^' . preg_quote(getenv('DB_PREFIX'), '/') . '/', '', $table_name) . '_id';
         // 中间表中关联模型的键名
-        $to_id = ltrim($value['model'], getenv('DB_PREFIX')) . '_id';
+        $to_id = preg_replace('/^' . preg_quote(getenv('DB_PREFIX'), '/') . '/', '', $value['model']) . '_id';
         echo "        return \$this->belongsToMany({$function_name}Model::class, {$middle_name}Model::class, '{$me_id}', '{$to_id}');";
     }
 
