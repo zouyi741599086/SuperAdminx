@@ -36,6 +36,9 @@ export default ({ value, onChange, valueType = 'title', ...props }) => {
                     children: 'children'
                 }}
                 showSearch={true}
+                style={{
+                    width: '100%'
+                }}
             />
         </>
     )

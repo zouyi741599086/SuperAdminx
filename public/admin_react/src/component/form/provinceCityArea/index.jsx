@@ -43,6 +43,9 @@ export default ({ value, onChange, valueType = 'title', changeOnSelect = false, 
                 }}
                 showSearch={true}
                 expandTrigger={expandTrigger}
+                style={{
+                    width: '100%'
+                }}
             />
         </>
     )
