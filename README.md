@@ -29,16 +29,20 @@
 
 **开始安装**
 
-1. git获取源码
+1. 获取源码，以下3种方式任选一
 ``` sh
+# 第一种：推荐
+composer create-project superadminx/admin
+
+# 第二种Gitee获取源码
 git clone https://gitee.com/zouyi/SuperAdminx.git
-```
-或者
-``` sh
+
+# 第三种Github获取源码
 git clone https://github.com/zouyi741599086/SuperAdminx.git
+
 ```
 
-2. 进入项目根目录，安装依赖
+2. 如果通过**第一种方式则直接跳过**，第二、三通过git获取源码才需要进入项目根目录，安装依赖
 ``` sh
 composer install
 ```
