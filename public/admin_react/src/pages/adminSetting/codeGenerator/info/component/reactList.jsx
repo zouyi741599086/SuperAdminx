@@ -225,6 +225,18 @@ export default ({ tableName, operationFile, ...props }) => {
             label: '选择日期',
             value: 'date',
         },
+		{
+            label: '省选择',
+            value: 'province',
+        },
+        {
+            label: '省市选择',
+            value: 'provinceCity',
+        },
+        {
+            label: '省市区选择',
+            value: 'provinceCityArea',
+        },
         {
             label: '选择日期时间',
             value: 'dateTime',

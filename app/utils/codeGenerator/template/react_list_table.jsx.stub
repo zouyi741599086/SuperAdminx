@@ -106,6 +106,19 @@
                     }
                 }
             }
+
+            // 搜索中需要引入自定义搜索 省选择组件
+            if (isset($v['search_type']) && $v['search_type'] == 'province') {
+                $zidingyiComponent[] = "import Province from '@/component/form/province/index';";
+            }
+            // 搜索中需要引入自定义搜索 省市选择组件
+            if (isset($v['search_type']) && $v['search_type'] == 'provinceCity') {
+                $zidingyiComponent[] = "import ProvinceCity from '@/component/form/provinceCity/index';";
+            }
+            // 搜索中需要引入自定义搜索 省市区选择组件
+            if (isset($v['search_type']) && $v['search_type'] == 'provinceCityArea') {
+                $zidingyiComponent[] = "import ProvinceCityArea from '@/component/form/provinceCityArea/index';";
+            }
             
         }
     }
@@ -461,6 +474,18 @@ export default () => {
                 if ($valueType == 'selectTable' && $search_data_type == 1) {
                     $tmp = $list_fields_type_config[$field]['renderFormItem'];
                     $columnsParams .= "            renderFormItem: () => <Select{$tmp} />,\n";
+                }
+                // 省选择组件
+                if ($valueType == 'province') {
+                    $columnsParams .= "            renderFormItem: () => <Province valueType='id' />,\n";
+                }
+                // 省市选择组件
+                if ($valueType == 'provinceCity') {
+                    $columnsParams .= "            renderFormItem: () => <ProvinceCity valueType='id' />,\n";
+                }
+                // 省市区选择组件
+                if ($valueType == 'provinceCityArea') {
+                    $columnsParams .= "            renderFormItem: () => <ProvinceCityArea valueType='id' changeOnSelect={true} />,\n";
                 }
                 // api请求选择项
                 if (in_array($valueType, ['select', 'treeSelect', 'cascader', 'checkbox', 'radio']) && $search_data_type == 2) {
