@@ -785,6 +785,27 @@ echo "           {/* 查看详情 */}
                         }
                         const result = await <?php echo $apiFileName;?>Api.getList({
                             ...params,// 包含了翻页参数跟搜索参数
+                            <?php
+                                // 如果有省市区搜索选择组件
+                                if (isset($list_fields_type_config)) {
+                                    foreach ($list_fields_type_config as $k => $v) {
+                                        // 搜索中需要引入自定义搜索 省市选择组件
+                                        if (isset($v['search_type']) && $v['search_type'] == 'provinceCity') {
+                                            echo "
+                            province_id: params?.province_city_id?.[0] || null,
+                            city_id: params?.province_area_id?.[1] || null,\n";
+                                            
+                                        }
+                                        // 搜索中需要引入自定义搜索 省市区选择组件
+                                        if (isset($v['search_type']) && $v['search_type'] == 'provinceCityArea') {
+                                            echo "
+                            province_id: params?.province_city_area_id?.[0] || null,
+                            city_id: params?.province_city_area_id?.[1] || null,
+                            area_id: params?.province_city_area_id?.[2] || null,\n";
+                                        }
+                                    }
+                                }
+                            ?>
                             orderBy, // 排序
                             page: params.current,
                         });
