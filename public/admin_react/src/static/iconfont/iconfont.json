@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "19303176",
+      "name": "门店",
+      "font_class": "mendian",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
       "icon_id": "251023",
       "name": "评价星星",
       "font_class": "pingjiaxingxing",
