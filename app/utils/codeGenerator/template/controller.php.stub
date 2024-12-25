@@ -99,10 +99,11 @@ class <?php echo $file_name ?? ''; ?>
     /**
      * 获取数据
      * @method get
+	 * @param Request \$request 
      * @param int \$id 
      * @return Response
      */
-    public function findData(int \$id): Response
+    public function findData(Request \$request, int \$id): Response
     {
         \$data = {$data['logic']['file_name']}::findData(\$id);
         return success(\$data);
@@ -203,11 +204,12 @@ class <?php echo $file_name ?? ''; ?>
     /**
      * @log 修改{$data['table_title']}状态
      * @method post{$auth}
+	 * @param Request \$request 
      * @param int \$id 数据id
      * @param int \$status 数据状态 
      * @return Response
      */
-    public function updateStatus(int \$id, int \$status): Response
+    public function updateStatus(Request \$request, int \$id, int \$status): Response
     {
         {$data['logic']['file_name']}::updateStatus(\$id, \$status);
         return success();
@@ -224,11 +226,12 @@ class <?php echo $file_name ?? ''; ?>
     /**
      * 搜索选择某条数据
      * @method get
+	 * @param Request \$request 
      * @param string \$keywords 搜索的关键字
      * @param int \$id 选中的数据id
      * @return Response
      */
-    public function select{$tableNameToCamelCase}(string \$keywords = null, int \$id = null): Response
+    public function select{$tableNameToCamelCase}(Request \$request, string \$keywords = null, int \$id = null): Response
     {
         \$list = {$data['logic']['file_name']}::select{$tableNameToCamelCase}(\$keywords, \$id);
         return success(\$list);

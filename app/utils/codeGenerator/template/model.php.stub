@@ -234,7 +234,7 @@ echo "    // 软删除
     if ($value['type'] == 'belongsTo') {
         echo "        return \$this->belongsTo({$function_name}Model::class);";
     }
-    // 不等于
+    // 多对多
     if ($value['type'] == 'belongsToMany') {
         // 中间表类名
         $middle_name = CodeGenerator::toCamelCase($value['middle']);
