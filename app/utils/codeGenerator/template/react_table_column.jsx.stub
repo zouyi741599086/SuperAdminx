@@ -41,7 +41,7 @@ echo "        {{$columnsParams}
 echo "        {{$columnsParams}
             render: (_, record) => <>
                 {record?.name}<br/>
-                <Typography.Paragraph copyable>{record?.tel ?? '-'}</Typography.Paragraph>
+                <Typography.Paragraph copyable style={{ marginBottom: '0' }}>{record?.tel ?? '-'}</Typography.Paragraph>
             </>
         },\n";
 
