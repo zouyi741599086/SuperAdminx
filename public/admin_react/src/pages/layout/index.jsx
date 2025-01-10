@@ -17,19 +17,12 @@ const LayoutTopSplitMenus = lazy(() => import('./layoutTopSplitMenus/index'));
 export default () => {
     const [layoutSetting] = useRecoilState(layoutSettingStore);
 
-    if (layoutSetting.layoutValue === 'slide') {
-        return <LayoutSlide />
-    }
-    if (layoutSetting.layoutValue === 'slideSplitMenus') {
-        return <LayoutSlideSplitMenus />
-    }
-    if (layoutSetting.layoutValue === 'left') {
-        return <LayoutLeft />
-    }
-    if (layoutSetting.layoutValue === 'top') {
-        return <LayoutTop />
-    }
-    if (layoutSetting.layoutValue === 'topSplitMenus') {
-        return <LayoutTopSplitMenus />
-    }
+    return <>
+        {layoutSetting.layoutValue === 'slide' ? <LayoutSlide /> 
+        : layoutSetting.layoutValue === 'slideSplitMenus' ? <LayoutSlideSplitMenus /> 
+        : layoutSetting.layoutValue === 'left' ? <LayoutLeft /> 
+        : layoutSetting.layoutValue === 'top' ? <LayoutTop /> 
+        : layoutSetting.layoutValue === 'topSplitMenus' ? <LayoutTopSplitMenus /> 
+        : ''}
+    </>
 };

@@ -104,9 +104,6 @@ export default () => {
                         </div>
                     )}
 
-                    {!collapsed ? (
-                        <Footer />
-                    ) : ''}
                 </Sider>
 
                 <Layout className='sa-layout-content'>
@@ -114,6 +111,7 @@ export default () => {
                     <Content>
                         <Outlet />
                     </Content>
+					<Footer />
                 </Layout>
             </Layout>
         </div>
