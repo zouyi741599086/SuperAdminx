@@ -53,7 +53,7 @@ export const storage = {
  * @param {any} obj 数据
  * @returns 
  */
-export const deepClone = (obj) => {
+export const deepClone = (obj, hashMap = new WeakMap()) => {
     // 处理 null 和 非对象/数组 类型
     if (obj === null || typeof obj !== 'object') {
         return obj;
