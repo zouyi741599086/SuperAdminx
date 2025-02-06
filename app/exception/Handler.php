@@ -6,6 +6,7 @@ use Webman\Http\Response;
 use Webman\Http\Request;
 use Webman\Exception\ExceptionHandler;
 use app\exception\CustomException;
+use support\exception\PageNotFoundException;
 
 /**
  * 自定义异常处理，把父类两个方法拷过来用的，只修改了两处地方
@@ -19,7 +20,7 @@ class Handler extends ExceptionHandler
     public function report(Throwable $exception)
     {
         // 自定义异常类，专门用于终止程序并返回错误信息，不需要记录日志
-        if ($exception instanceof CustomException) {
+        if ($exception instanceof CustomException || $exception instanceof PageNotFoundException) {
             return;
         }
         if ($this->shouldntReport($exception)) {
