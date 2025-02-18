@@ -40,7 +40,9 @@
     "guzzlehttp/guzzle": "^7.9",
     "hyperf/pimple": "^2.2",
     "taoser/webman-validate": "^1.7",
-    "webman/console": "^2.1"
+    "webman/console": "^2.1",
+    "webman/redis": "^2.1",
+    "illuminate/events": "^10.48"
   },
   "suggest": {
     "ext-event": "For better performance. "
