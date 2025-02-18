@@ -20,21 +20,21 @@ namespace support;
  */
 class Request extends \Webman\Http\Request
 {
-	/**
-	 * 往post里面装数据
-	 * @param array $data
-	 */
-	public function withPost($data = [])
-	{
-		$this->_data['post'] = array_merge($this->post(), $data);
-	}
+    /**
+     * 往post里面装数据
+     * @param array $data
+     */
+    public function withPost($data = []) : void
+    {
+        $this->_data['post'] = array_merge($this->post(), $data);
+    }
 
-	/**
-	 * 往get里面装数据
-	 * @param array $data
-	 */
-	public function withGet($data = [])
-	{
-		$this->_data['get'] = array_merge($this->get(), $data);
-	}
+    /**
+     * 往get里面装数据
+     * @param array $data
+     */
+    public function withGet($data = []) : void
+    {
+        $this->_data['get'] = array_merge($this->get(), $data);
+    }
 }

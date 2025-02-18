@@ -496,7 +496,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                     fieldProps={{
                                         popupMatchSelectWidth: false,
                                         allowClear: true,
-										options={tableList}
+                                        options: tableList,
                                         fieldNames: {
                                             value: 'Name',
                                             label: 'Name',
