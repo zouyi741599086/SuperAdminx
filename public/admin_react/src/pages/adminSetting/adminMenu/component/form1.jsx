@@ -104,30 +104,27 @@ export default ({ typeAction, ...props }) => {
             </Col>
             <ProFormDependency name={['type']}>
                 {({ type }) => {
-                    // 不是菜单目录的时候才有上级
-                    if ([2, 3, 4, 5, 6, 7].indexOf(type) !== -1) {
-                        return <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
-                            <ProFormTreeSelect
-                                name="pid_name"
-                                label="所属上级"
-                                placeholder="请选择"
-                                allowClear
-                                fieldProps={{
-                                    showSearch: true,
-                                    treeData: props.menuList,
-                                    treeNodeFilterProp: 'title',
-                                    fieldNames: {
-                                        value: 'name',
-                                        label: 'title',
-                                    },
-                                }}
-                                rules={[
-                                    // 5》内页菜单权限，6》按钮操作权限，7》参数设置权限 才必填
-                                    { required: [5, 6, 7].indexOf(type) !== -1 ? true : false, message: '请选择' }
-                                ]}
-                            />
-                        </Col>
-                    }
+                    return <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+                        <ProFormTreeSelect
+                            name="pid_name"
+                            label="所属上级"
+                            placeholder="请选择"
+                            allowClear
+                            fieldProps={{
+                                showSearch: true,
+                                treeData: props.menuList,
+                                treeNodeFilterProp: 'title',
+                                fieldNames: {
+                                    value: 'name',
+                                    label: 'title',
+                                },
+                            }}
+                            rules={[
+                                // 5》内页菜单权限，6》按钮操作权限，7》参数设置权限 才必填
+                                { required: [5, 6, 7].indexOf(type) !== -1 ? true : false, message: '请选择' }
+                            ]}
+                        />
+                    </Col>
                 }}
             </ProFormDependency>
             <ProFormDependency name={['type']}>
