@@ -1,7 +1,7 @@
 <?php
 namespace app\common\model;
 
-use think\Model;
+use support\think\Model;
 use app\common\logic\FileRecordLogic;
 
 /**
