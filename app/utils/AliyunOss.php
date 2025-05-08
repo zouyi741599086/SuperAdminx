@@ -8,12 +8,12 @@ use app\common\model\FileModel;
 
 /**
  * 阿里云oss操作
- * 安装 composer require aliyuncs/oss-sdk-php oss的sdk
+ * 需要安装sdk composer require aliyuncs/oss-sdk-php
  * 阿里云oss进入到对应的Bucket,左侧的数据安全》版本控制，需要开启，上传后保存文件的版本id，删除需要指定文件的版本id才会永久删除文件
  * 
  * AliyunOss::upload($filePath) 上传文件到阿里云，返回访问连接，会删除本地的文件
  * AliyunOss::download($object, $localfile) 下载文件到本地
- * AliyunOss::delete($object, $version_id) 删除文件
+ * AliyunOss::delete($object) 删除文件
  * AliyunOss::signUrl($object, $timeout = 0) 获取文件访问的连接
  * AliyunOss::getSignature($dir = '') 客户端直接传阿里云的时候获取签名
  * AliyunOss::uploadAliyunOssCallback() 客户端直接传阿里云后的回调
@@ -122,11 +122,11 @@ class AliyunOss
     /**
      * 删除文件
      * @param string $object 删除文件的路劲名称 如：2024-12-12/jgp/123.jpg
-     * @param string $version_id 文件的版本id
      * @return void
      */
-    public static function delete(string $object, string $version_id = null) : void
+    public static function delete(string $object) : void
     {
+        $version_id = FileModel::where('url', $object)->value('version_id');
         try {
             $params = [];
             if ($version_id) {

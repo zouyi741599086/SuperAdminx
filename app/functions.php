@@ -77,11 +77,12 @@ function get_str(int $length, int $type = 0) : string
 /**
  * 保留两位小数
  * @param float $value
+ * @param int $digit 保留小数位数
  * @return float 
  */
-function d2(float $value) : float
+function d2(float $value, int $digit = 2) : float
 {
-    return floatval(sprintf("%.2f", $value));
+    return floatval(sprintf("%.{$digit}f", $value));
 }
 
 /**

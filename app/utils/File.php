@@ -6,12 +6,13 @@ use Intervention\Image\ImageManager;
 use support\Log;
 use app\common\logic\FileLogic;
 use app\utils\AliyunOss;
+use app\utils\QcloudCos;
 
 /**
  * 文件操作
  * 
- * File::upload(string $disk = '') 文件上传，数据回记录到file表
- * File::upload_public() 文件上传到本地，数据不回记录到file表
+ * File::upload(string $disk = '') 文件上传，数据会记录到file表
+ * File::uploadPublic() 文件上传到本地，数据不会记录到file表
  * 
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
@@ -26,7 +27,7 @@ class File
 
     /**
      * 文件上传，上传的数据回记录到file表进行管理
-     * @param string $disk 上传到哪，public》本地，aliyun》阿里云
+     * @param string $disk 上传到哪，public》本地，aliyun》阿里云，qcloud》腾讯云
      * @throws \Exception
      */
     public static function upload(string $disk = '')
@@ -58,6 +59,10 @@ class File
             // 阿里云的时候
             if ($disk == 'aliyun') {
                 $path = AliyunOss::upload($path);
+            }
+            // 腾讯云的时候
+            if ($disk == 'qcloud') {
+                $path = QcloudCos::upload($path);
             }
             $files[$key] = $path;
         }
@@ -155,7 +160,7 @@ class File
     {
         try {
             $path    = "public/{$path}";
-            $manager = new ImageManager(['driver' => 'imagick']);
+            $manager = new ImageManager('imagick'); // gd 或 imagick
             $image   = $manager->make($path);
             // 如果有宽无高
             if ($width && ! $height) {

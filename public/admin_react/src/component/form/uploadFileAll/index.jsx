@@ -15,17 +15,20 @@ import { useMount } from 'ahooks';
  * @param {Array} accept 允许上传的文件后缀，如['docx','jpg']
  * @param {Number} maxCount 允许上的文件数量
  * @param {Boolean} aliyunOss 是否直接上传到阿里云oss，只有上传大文件才直接传oss
- * @param {String} disk 传到哪，public》本地，aliyun》阿里云，有时候需要强制传到本地，此参数跟aliyunOss不能同时出现即aliyunOss为true的时候次参数无效
+ * @param {String} disk 传到哪，public》本地，aliyun》阿里云，qcloud》腾讯云
  * @param {Int} maxSize 最大上传多少M的附件
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = false, disk = '', maxSize = config.uploadFileMax }) => {
+export default ({ value = [], onChange, accept = [], maxCount = 10, disk = 'public', maxSize = config.uploadFileMax }) => {
     const { message } = App.useApp();
 
     useMount(() => {
-        if (aliyunOss) {
+        if (disk == 'aliyun') {
             getSignature();
+        }
+        if (disk == 'qcloud') {
+            getQcloudSignature(accept[0]);
         }
     })
 
@@ -35,6 +38,16 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
         const res = await fileApi.getSignature();
         if (res.code === 1) {
             setAliyunOssData(res.data);
+        } else {
+            message.error(res.message)
+        }
+    }
+    //////////////////获取直传腾讯云cos的签名等
+    const [qcloudData, setQcloudData] = useState({});
+    const getQcloudSignature = async (dir) => {
+        const res = await fileApi.getQcloudSignature({ dir });
+        if (res.code === 1) {
+            setQcloudData(res.data);
         } else {
             message.error(res.message)
         }
@@ -65,8 +78,8 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
             message.error('上传出错~')
         }
         if (info.file.status === 'done') {
-            // 如果不是上传阿里云oss
-            if (!aliyunOss) {
+            // 如果上传到本地
+            if (disk == 'public') {
                 if (info.file.response.code === 1) {
                     info.fileList.map(item => {
                         if (item.uid === info.file.uid) {
@@ -78,11 +91,21 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
                     message.error('上传出错~')
                 }
             }
-            // 如果是上传阿里云oss
-            if (aliyunOss) {
+            // 如果上传到阿里云
+            if (disk == 'aliyun') {
                 info.fileList.map(item => {
                     if (item.uid === info.file.uid) {
                         let url = aliyunOssData.host + '/' + info.file.url;
+                        item.value_url = url;
+                        item.url = url;
+                    }
+                })
+            }
+            // 如果上传到腾讯云
+            if (disk == 'qcloud') {
+                info.fileList.map(item => {
+                    if (item.uid === info.file.uid) {
+                        let url = qcloudData.cosHost + '/' + info.file.url;
                         item.value_url = url;
                         item.url = url;
                     }
@@ -109,12 +132,19 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
         }
 
         /////如果是上传到阿里云oss/////
-        if (aliyunOss) {
+        if (disk == 'aliyun') {
             const expire = Number(aliyunOssData.expire) * 1000;
             if (expire < Date.now()) {
                 await getSignature();
             }
             file.url = aliyunOssData.dir + suffix + '/' + Date.now() + "." + suffix;;
+            return file;
+        }
+        /////如果是上传到腾讯云cos/////
+        if (disk == 'qcloud') {
+            const date = new Date();
+            const formattedDate = date.toISOString().split('T')[0];
+            file.url = formattedDate + '/' + suffix + '/' + Date.now() + "." + suffix;
             return file;
         }
     };
@@ -147,40 +177,76 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, aliyunOss = 
         }
     }, [accept])
 
-    /////////////如果是上传到阿里云oss，则获取上传的参数
-    const getExtraData = (file) => {
-        return {
-            key: file.url,
-            OSSAccessKeyId: aliyunOssData?.accessid,
-            policy: aliyunOssData?.policy,
-            Signature: aliyunOssData?.signature,
-            success_action_status: 200, // 让服务端返回200,不然，默认会返回204
-            callback: aliyunOssData?.callback, // 上传成功后回调服务器的url
-        };
-    };
+    // 获取上传携带额外的参数
+    const getExtraData = async (file) => {
+        // 阿里云
+        if (disk == 'aliyun') {
+            return {
+                key: file.url,
+                OSSAccessKeyId: aliyunOssData?.accessid,
+                policy: aliyunOssData?.policy,
+                Signature: aliyunOssData?.signature,
+            };
+        }
+        // 腾讯云
+        if (disk == 'qcloud') {
+            // 上传前请求接口获取上传的额外参数
+            const result = await fileApi.getQcloudSignature({
+                dir: file.url,
+            });
+            return {
+                key: result.data.cosKey,
+                policy: result.data.policy,
+                success_action_status: 200,
+                'q-sign-algorithm': result.data.qSignAlgorithm,
+                'q-ak': result.data.qAk,
+                'q-key-time': result.data.qKeyTime,
+                'q-signature': result.data.qSignature,
+            };
+        }
+        // 本地
+        return {};
+    }
 
-    const uploadProps = {
-        accept: acceptValue,
-        maxCount: maxCount,
-        name: "file",
-        listType: "picture",
-        fileList: fileList,
-        // 如果是上传到阿里云oss则地址不同
-        action: aliyunOss ? aliyunOssData.host : fileApi.uploadUrl,
-        // 如果是上传到阿里云oss则参数不同
-        headers: aliyunOss ? {} : {
-            token: getToken()
-        },
-        // 如果是上传到阿里云oss则参数不同
-        data: aliyunOss ? getExtraData : { disk },
-        multiple: true,
-        onChange: uploadChange,
-        beforeUpload: beforeUpload,
-    };
+    // const uploadProps = {
+    //     accept: acceptValue,
+    //     maxCount: maxCount,
+    //     name: "file",
+    //     listType: "picture",
+    //     fileList: fileList,
+    //     // 如果是上传到阿里云oss则地址不同
+    //     action: aliyunOss ? aliyunOssData.host : fileApi.uploadUrl,
+    //     // 如果是上传到阿里云oss则参数不同
+    //     headers: aliyunOss ? {} : {
+    //         token: getToken()
+    //     },
+    //     // 如果是上传到阿里云oss则参数不同
+    //     data: aliyunOss ? getExtraData : { disk },
+    //     multiple: true,
+    //     onChange: uploadChange,
+    //     beforeUpload: beforeUpload,
+    // };
 
     return (
         <>
-            <Upload {...uploadProps}>
+            <Upload
+                accept={acceptValue}
+                maxCount={maxCount}
+                name="file"
+                listType="picture"
+                fileList={fileList}
+                // 上传的地方不同 上传的地址就不同
+                action={disk == 'aliyun' ? aliyunOssData.host : disk == 'qcloud' ? qcloudData.cosHost : fileApi.uploadUrl}
+                // 如果是上传到本地则需要携带token
+                headers={disk != 'public' ? {} : {
+                    token: getToken()
+                }}
+                // 如果是上传到阿里云oss则参数不同
+                data={getExtraData}
+                multiple={true}
+                onChange={uploadChange}
+                beforeUpload={beforeUpload}
+            >
                 {fileList.length < maxCount ? <Button icon={<UploadOutlined />}>选择文件</Button> : ''}
             </Upload>
             <div style={{ width: '100%' }}>

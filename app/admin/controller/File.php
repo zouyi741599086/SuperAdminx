@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use support\Request;
 use support\Response;
 use app\utils\AliyunOss;
+use app\utils\QcloudCos;
 use app\utils\File as FileUtils;
 
 /**
@@ -59,6 +60,19 @@ class File
     public function getSignature(Request $request) : Response
     {
         $data = AliyunOss::getSignature();
+        return result($data);
+    }
+
+    /**
+     * 前端直传腾讯云cos 获取上传的链接
+     * @method post
+     * @param Request $request 
+     * @param string $dir 上传的文件路劲
+     * @return Response
+     */
+    public function getQcloudSignature(Request $request, string $dir) : Response
+    {
+        $data = QcloudCos::getSignature($dir);
         return result($data);
     }
 

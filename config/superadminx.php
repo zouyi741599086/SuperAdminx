@@ -14,18 +14,28 @@ return [
     'version'             => '2.0.1',
     //上传文件的配置
     'file_system'         => [
-        //本地》public，阿里云》aliyun
-        'default' => 'public',
-        //阿里云
-        'aliyun'  => [
-            'AccessKeyID'     => '',
-            'AccessKeySecret' => '',
-            //阿里云oss Bucket所在地域对应的Endpoint，debug用外网，否则用内网
-            'endpoint'        => getenv('DE_BUG') == 'true' ? '//oss-cn-hangzhou.aliyuncs.com' : '//oss-cn-hangzhou-internal.aliyuncs.com',
-            //阿里云oss Bucket文件访问地址
-            'bucket_url'      => 'https://xxxx.oss-cn-hangzhou.aliyuncs.com',
-            //阿里云oss bucket的名称
-            'bucket'          => 'xxxxx',
+        //本地》public，阿里云》aliyun，腾讯云》qcloud
+        'default' => 'qcloud',
+        //阿里云，需要安装sdk composer require aliyuncs/oss-sdk-php
+        'aliyun' => [
+			'AccessKeyID' => '',
+			'AccessKeySecret' => '',
+			//阿里云oss Bucket所在地域对应的Endpoint，debug用外网，否则用内网
+			'endpoint' => getenv('DE_BUG') == 'true' ? '//oss-cn-hangzhou.aliyuncs.com' : '//oss-cn-hangzhou-internal.aliyuncs.com',
+			//阿里云oss Bucket文件访问地址
+			'bucket_url' => 'https://changxiangzhongguo.oss-cn-hangzhou.aliyuncs.com',
+			//阿里云oss bucket的名称
+			'bucket' => 'changxiangzhongguo',
+		],
+        //腾讯云，需要安装sdk composer require qcloud/cos-sdk-v5
+        'qcloud'  => [
+            'SecretId'   => '',
+            'SecretKey'  => '',
+            'region'     => 'ap-guangzhou',
+            //腾讯云cos Bucket文件访问地址也是上传地址，格式“存储桶名称.cos.所属地域.myqcloud.com”
+            'bucket_url' => '', 
+            //腾讯云cos bucket的名称
+            'bucket'     => ''
         ],
     ],
     //网站的url，上传的资源访问的url也在用
