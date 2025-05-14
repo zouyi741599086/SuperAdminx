@@ -21,10 +21,6 @@ export default () => {
     return <>
         <Tooltip
             title="请联系管理员修改密码~"
-            color="#fff"
-            overlayInnerStyle={{
-                color: '#000'
-            }}
         >
             <a>忘记密码？</a>
         </Tooltip>

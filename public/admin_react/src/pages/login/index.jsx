@@ -71,7 +71,7 @@ export default () => {
                 <img src={loginMain} alt="" />
             </div>
             <div className="login-r">
-                <Card className="card-form" bordered={true}>
+                <Card className="card-form" variant="outlined">
                     <Title
                         level={4}
                         style={{

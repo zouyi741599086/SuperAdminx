@@ -6,9 +6,11 @@ export default () => {
     return <>
         <Empty
             image={emptyImg}
-            imageStyle={{
-                height: 60,
-            }}
+            styles={{
+				image: {
+                	height: 60,
+            	}	
+			}}
         />
     </>
 }

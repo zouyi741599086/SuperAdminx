@@ -114,7 +114,7 @@ INSERT INTO `sa_admin_menu` VALUES ('10', '添加角色', '6', '', '', 'adminRol
 INSERT INTO `sa_admin_menu` VALUES ('11', '修改角色', '6', '', '', 'adminRoleUpdate', 'adminRole', ',systemSetting,adminRole,adminRoleUpdate,', '', null, '2', '1', null, '1', '2023-01-10 21:07:15', '2024-11-20 17:36:12');
 INSERT INTO `sa_admin_menu` VALUES ('12', '角色权限设置', '6', '', '', 'adminRoleAuth', 'adminRole', ',systemSetting,adminRole,adminRoleAuth,', '', null, '3', '1', null, '1', '2023-01-10 21:07:24', '2024-11-20 17:36:17');
 INSERT INTO `sa_admin_menu` VALUES ('13', '删除角色', '6', '', '', 'adminRoleDelete', 'adminRole', ',systemSetting,adminRole,adminRoleDelete,', '', null, '4', '1', null, '1', '2023-01-10 21:07:31', '2024-11-20 17:36:20');
-INSERT INTO `sa_admin_menu` VALUES ('14', '权限节点', '2', 'icon-zuzhijigou1', '/adminSetting/adminMenu', 'adminMenu', 'systemSetting', ',systemSetting,adminMenu,', '/adminSetting/adminMenu', null, '3', '2', null, '1', '2023-01-04 18:05:38', '2024-11-20 17:36:24');
+INSERT INTO `sa_admin_menu` VALUES ('14', '权限节点', '2', 'icon-zuzhijigou1', '/adminSetting/adminMenu', 'adminMfenu', 'systemSetting', ',systemSetting,adminMenu,', '/adminSetting/adminMenu', null, '3', '2', null, '1', '2023-01-04 18:05:38', '2024-11-20 17:36:24');
 INSERT INTO `sa_admin_menu` VALUES ('15', '只浏览数据', '6', '', '', 'adminMenuGetList', 'adminMenu', ',systemSetting,adminMenu,adminMenuGetList,', '', null, '0', '1', null, '1', '2024-11-20 14:50:06', '2024-11-20 17:36:27');
 INSERT INTO `sa_admin_menu` VALUES ('16', '添加', '6', '', '', 'adminMenuCreate', 'adminMenu', ',systemSetting,adminMenu,adminMenuCreate,', '', null, '1', '1', null, '1', '2024-11-20 14:50:25', '2024-11-20 17:36:30');
 INSERT INTO `sa_admin_menu` VALUES ('17', '修改', '6', '', '', 'adminMenuUpdate', 'adminMenu', ',systemSetting,adminMenu,adminMenuUpdate,', '', null, '2', '1', null, '1', '2024-11-20 14:50:40', '2024-11-20 17:36:32');
@@ -131,6 +131,13 @@ INSERT INTO `sa_admin_menu` VALUES ('55', '删除配置', '6', '', '', 'configDe
 INSERT INTO `sa_admin_menu` VALUES ('56', '修改排序', '6', '', '', 'configUpdateSort', 'config', ',configManage,config,configUpdateSort,', '', null, '4', '1', null, '1', '2024-11-20 18:24:14', '2024-11-20 19:38:57');
 INSERT INTO `sa_admin_menu` VALUES ('900', '网站参数设置', '7', 'icon-peizhi1', '/config/web_config', 'config_web_config', 'configManage', ',configManage,config_web_config,', '', null, '0', '1', '', '1', '2024-11-29 21:26:06', '2024-12-03 16:45:12');
 INSERT INTO `sa_admin_menu` VALUES ('901', '首页轮播图', '7', 'icon-peizhi1', '/config/home_banner', 'config_home_banner', 'configManage', ',configManage,config_home_banner,', '', null, '0', '1', null, '1', '2024-11-29 21:27:18', '2024-12-03 12:04:57');
+INSERT INTO `sa_admin_menu` VALUES ('1073', '用户管理', '2', 'icon-weibiaoti1', '/user', 'user', NULL, ',user,', '/user', NULL, '0', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
+INSERT INTO `sa_admin_menu` VALUES ('1074', '只浏览数据', '6', '', '', 'userGetList', 'user', ',user,userGetList,', '', NULL, '0', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
+INSERT INTO `sa_admin_menu` VALUES ('1075', '添加', '6', '', '', 'userCreate', 'user', ',user,userCreate,', '', NULL, '1', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
+INSERT INTO `sa_admin_menu` VALUES ('1076', '修改', '6', '', '', 'userUpdate', 'user', ',user,userUpdate,', '', NULL, '2', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
+INSERT INTO `sa_admin_menu` VALUES ('1077', '导出数据', '6', '', '', 'userExportData', 'user', ',user,userExportData,', '', NULL, '7', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
+INSERT INTO `sa_admin_menu` VALUES ('1078', '修改状态', '6', '', '', 'userUpdateStatus', 'user', ',user,userUpdateStatus,', '', NULL, '3', '1', NULL, '1', '2024-12-06 16:28:52', '2024-12-06 16:29:00');
+
 
 -- ----------------------------
 -- Table structure for sa_admin_role
