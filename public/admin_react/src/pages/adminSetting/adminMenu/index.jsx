@@ -107,7 +107,7 @@ export default () => {
                 const tmp = res.data.map(item => {
                     return {
                         ...item,
-                        disabled: item.type === 7 // 类型为7的数据是参数设置管理里面自动同步过来的，不允许删除、编辑
+                        //disabled: item.type === 7 // 类型为7的数据是参数设置管理里面自动同步过来的，不允许删除、编辑
                     }
                 })
                 // 一维数组

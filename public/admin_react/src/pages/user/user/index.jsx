@@ -11,7 +11,7 @@ import { fileApi } from '@/api/file';
 import Lazyload from '@/component/lazyLoad/index';
 import SelectUser from '@/components/selectUser';
 
-const Create = lazy(() => import('./create'));
+// const Create = lazy(() => import('./create'));
 const Update = lazy(() => import('./update'));
 
 /**
@@ -33,22 +33,6 @@ export default () => {
 
     // 要修改的数据
     const [updateId, setUpdateId] = useState(0);    
-
-    /////////////修改状态///////////////
-    const updateStatus = (id, status) => {
-        userApi.updateStatus({
-            id,
-            status
-        }).then(res => {
-            if (res.code === 1) {
-                message.success(res.message)
-                tableReload();
-            } else {
-                message.error(res.message)
-            }
-        })
-    }
-
 
 
     /////////////////////////导出////////////////////////
@@ -97,36 +81,6 @@ export default () => {
             valueType : 'text',
             copyable: true,
             render: (_, record) => _,
-        },
-        {
-            title: '状态',
-            dataIndex: 'status',
-            search: true,
-            valueType : 'select',
-            fieldProps: {
-                showSearch: true,
-                options: [
-                    {
-                        value: 1,
-                        label: '正常',
-                    },
-                    {
-                        value: 2,
-                        label: '禁用',
-                    },
-                ]
-            },
-            render: (_, record) => <>
-                <Switch
-                    checked={record.status === 1 ? true : false}
-                    checkedChildren="正常"
-                    unCheckedChildren="禁用"
-                    onClick={() => {
-                        updateStatus(record.id, record.status == 1 ? 2 : 1);
-                    }}
-                    disabled={authCheck('userUpdateStatus')}
-                />
-            </>
         },
         {
             title: '上级用户',
@@ -219,10 +173,6 @@ export default () => {
                     }}
                     headerTitle={
                         <Space>
-                            <Lazyload block={false}>
-                                <Create tableReload={tableReload} />
-                            </Lazyload>
-                                    
                             <Tooltip title="根据当前搜索条件导出数据~">
                                 <Button
                                     type="primary"

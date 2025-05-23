@@ -30,6 +30,10 @@ echo "use think\model\Pivot;\n";
     if ($delete_time) {
 echo "use think\model\concern\SoftDelete;\n";
     }
+    // 如果不是生成在app下，则需要引入baseModel
+    if ($table_path != "app\\") {
+echo "use app\common\model\BaseModel;\n";        
+    }
 ?>
 
 /**

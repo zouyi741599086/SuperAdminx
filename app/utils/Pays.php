@@ -16,12 +16,10 @@ class Pays
 
     /**
      * 注入配置
+     * @param string $notify_url 回调地址 如/api/Pay/notify
      */
-    public static function setConfig()
+    public static function setConfig(string $notify_url = null)
     {
-        if (self::$config) {
-            return false;
-        }
         self::$config = [
             'alipay' => [
                 'default' => [
@@ -67,7 +65,7 @@ class Pays
                     'mch_public_cert_path'    => config('superadminx.wechat_pay.mch_public_cert_path'),
                     // 必填-微信回调url
                     // 不能有参数，如?号，空格等，否则会无法正确回调
-                    'notify_url'              => config('superadminx.url') . "/api/Pay/notify",
+                    'notify_url'              => config('superadminx.url') . $notify_url,
                     // 选填-公众号 的 app_id
                     // 可在 mp.weixin.qq.com 设置与开发->基本配置->开发者ID(AppID) 查看
                     'mp_app_id'               => '',
@@ -146,12 +144,13 @@ class Pays
      *           'openid' => 'dsfs454f5s54ew54f5s',
      *      ],
      *   ];
+     * @param string $notify_url 微信支付回调地址
      * @return \Yansongda\Artful\Rocket|\Yansongda\Supports\Collection
      */
-    public static function wechatMiniPay($data)
+    public static function wechatMiniPay(array $data, string $notify_url)
     {
         // 先注入配置
-        self::setConfig();
+        self::setConfig($notify_url);
         // 发起支付
         return Pay::wechat()->mini($data);
     }
@@ -161,7 +160,7 @@ class Pays
      * 微信支付回调解密数据
      * @return array 支付回调解密的参数
      */
-    public static function wechatNotifyData() : array
+    public static function wechatNotify() : array
     {
         // 先注入配置
         self::setConfig();
@@ -180,11 +179,22 @@ class Pays
             ) {
                 return $result;
             } else {
-                abort('回调解密失败');
+                throw new \Exception('回调解密失败');
             }
         } catch (\Exception $e) {
             abort($e->getMessage());
         }
+    }
+
+    /**
+     * 微信支付回调成功
+     */
+    public static function wechatNotifySuccess()
+    {
+        // 先注入配置
+        self::setConfig();
+
+        return Pay::wechat()->success();
     }
 
     /**
@@ -207,7 +217,7 @@ class Pays
                     'currency' => 'CNY',
                 ],
             ];
-            
+
             $result = Pay::wechat()->refund($order);
             if ($result->status == 'CLOSED') {
                 throw new \Exception('退款已关闭');

@@ -40,18 +40,24 @@ export default ({ typeAction, ...props }) => {
                     extra="主要用于功能菜单搜索"
                 />
             </Col>
-            <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
-                <ProFormText
-                    name="name"
-                    label="权限英文名称"
-                    placeholder="请输入"
-                    rules={[
-                        { required: true, message: '请输入' }
-                    ]}
-                    tooltip="系统内置几个权限名称规则，表名转驼峰首字母小写，如adminUser，内置了列表页：xxx，只浏览数据：xxxGetList、新增：xxxCreate、修改：xxxUpdate、查看详情：xxxInfo、删除：xxxDelete、修改排序：xxxUpdateSort、修改状态：xxxUpdateStatus、导出数据：xxxExportData、导入数据：xxxImportData；代码生成的时候会按照此规则获取权限名称自动注入权限！"
-                    extra="须唯一，列表页用控制器名，如adminUser，其它用控制器名+方法名如adminUserGetList，设置后最好不要更改，否则要修改react里面的按钮权限及控制器中的auth注释"
-                />
-            </Col>
+            <ProFormDependency name={['type']}>
+                {({ type }) => {
+                    return <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+                        <ProFormText
+                            name="name"
+                            label="权限英文名称"
+                            placeholder="请输入"
+                            disabled={type == 7}
+                            rules={[
+                                { required: true, message: '请输入' }
+                            ]}
+                            tooltip="系统内置几个权限名称规则，表名转驼峰首字母小写，如adminUser，内置了列表页：xxx，只浏览数据：xxxGetList、新增：xxxCreate、修改：xxxUpdate、查看详情：xxxInfo、删除：xxxDelete、修改排序：xxxUpdateSort、修改状态：xxxUpdateStatus、导出数据：xxxExportData、导入数据：xxxImportData；代码生成的时候会按照此规则获取权限名称自动注入权限！"
+                            extra="须唯一，列表页用控制器名，如adminUser，其它用控制器名+方法名如adminUserGetList，设置后最好不要更改，否则要修改react里面的按钮权限及控制器中的auth注释"
+                        />
+                    </Col>
+                }}
+            </ProFormDependency>
+
             <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
                 <ProFormDigit
                     name="sort"

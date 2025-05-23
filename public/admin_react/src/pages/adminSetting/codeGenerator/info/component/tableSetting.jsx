@@ -118,6 +118,9 @@ export default ({ tableName, ...props }) => {
             params={{
                 table_name: tableName
             }}
+            initialValues={{
+                table_path: 'app\\'
+            }}
             request={async (params) => {
                 const result = await adminCodeGeneratorApi.getCodeGeneratorInfo(params);
                 return result.data || {};
@@ -144,6 +147,17 @@ export default ({ tableName, ...props }) => {
                             label="表名称"
                             placeholder="请输入"
                             extra="表的中文名称，类的注释使用"
+                            rules={[
+                                { required: true, message: '请输入' }
+                            ]}
+                        />
+                    </Col>
+                    <Col xs={24} sm={12} md={12} lg={8} xl={6} xxl={6}>
+                        <ProFormText
+                            name='table_path'
+                            label="生成目录"
+                            placeholder="请输入"
+                            extra="模型等生成的目录，只写前缀就行如 app\ 或 plugin\shop\app\"
                             rules={[
                                 { required: true, message: '请输入' }
                             ]}

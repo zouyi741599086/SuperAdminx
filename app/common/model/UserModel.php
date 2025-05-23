@@ -68,4 +68,10 @@ class UserModel extends BaseModel
         return $this->belongsTo(UserModel::class, 'pid');
     }
 
+    // 下级用户 关联模型
+    public function NextUser()
+    {
+        return $this->hasMany(UserModel::class, 'pid');
+    }
+
 }

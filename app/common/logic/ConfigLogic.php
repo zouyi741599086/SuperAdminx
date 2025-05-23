@@ -82,9 +82,9 @@ class ConfigLogic
                 'icon'          => $config->icon,
                 'path'          => "/config/{$params['name']}",
                 'name'          => "config_{$params['name']}",
-                'pid_name'      => $config->name,
-                'pid_name_path' => ",{$config->name},config_{$params['name']},",
-                'sort'          => $params['sort'] ?? 0,
+                // 'pid_name'      => $config->name,
+                // 'pid_name_path' => ",{$config->name},config_{$params['name']},",
+                //'sort'          => $params['sort'] ?? 0,
                 'desc'          => $params['description'] ?? null,
             ]);
 

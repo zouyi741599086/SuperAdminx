@@ -3,9 +3,13 @@ namespace app\api\controller;
 
 use support\Request;
 use support\Response;
+use support\think\Db;
 use app\utils\Jwt;
-use app\common\logic\UserLogic;
+use app\utils\WechatMini;
 use app\common\model\UserModel;
+use app\common\validate\UserValidate;
+
+
 
 /**
  * 小程序登录相关
@@ -22,31 +26,94 @@ class Login
 
     /**
      * @log 登录
-     * @method post
+     * @method get
      * @param Request $request 
+     * @param string $code 
      * @return Response
      * */
-    public function index(Request $request) : Response
+    public function autoLogin(Request $request, string $code)
     {
-        $tel      = $request->post('tel');
-        $password = $request->post('password');
-        // 验证参数
-        if (! $tel || ! $password) {
-            return error('用户名或密码错误');
+        $result = WechatMini::getOpenid($code);
+        if (isset($result['openid']) && $result['openid']) {
+            if ($userId = UserModel::where('mini_openid', $result['openid'])->value('id')) {
+                return success($this->resultUser($userId));
+            }
         }
+        return error("用户未注册");
+    }
 
-        // 查询用户
-        $user = UserModel::where('tel', $tel)->find();
-        // 判断用户是否存在
-        if (! $user || ! password_verify($password, $user['password_hash'])) {
-            return error('手机号或密码错误');
-        }
-        if ($user['status'] == 2) {
-            return error('帐号已被锁定');
-        }
+    /**
+     * 小程序授权获取用户手机号
+     * @method get
+     * @param Request $request 
+     * @param string $code 
+     * @return Response
+     * */
+    public function getPhoneNumber(Request $request, string $code)
+    {
+        $data = WechatMini::getPhoneNumber($code);
+        return success($data);
+    }
 
-        $user          = UserLogic::findData($user['id']);
-        $user['token'] = Jwt::generateToken('user_pc', $user);
-        return success($user, '登录成功');
+    /**
+     * 用户注册提交
+     * @method post
+     * @param Request $request 
+     * @param string $code 
+     * @return Response
+     * */
+    public function register(Request $request)
+    {
+        $data = $request->post();
+
+        Db::startTrans();
+        try {
+            validate(UserValidate::class)->check($data);
+
+            //获取openid，wxlogin的code
+            $result = WechatMini::getOpenid($data['code']);
+            if (! isset($result['openid']) || ! $result['openid']) {
+                throw new \Exception('获取用户openid错误');
+            }
+            $data['mini_openid'] = $result['openid'];
+
+            //已经注册直接返回
+            $userId = UserModel::where('mini_openid', $data['mini_openid'])->value('id');
+            if (! $userId) {
+                //如果头像图片地址里面包含url，则干掉
+                if (isset($data['img']) && strpos($data['img'], config('app.url')) !== false) {
+                    $data['img'] = str_replace(config('app.url'), '', $data['img']);
+                }
+
+                //如果有推广id
+                if (isset($data['invite_code'])) {
+                    $pid = ltrim($data['invite_code'], 'from_id_');
+                    if ($pid && $pUser = UserModel::where('id', $pid)->value('id')) {
+                        $data['pid']       = $pid;
+                        $data['pid_layer'] = $pUser['pid_layer'] + 1;
+                    }
+                }
+
+                $result = UserModel::create($data);
+                if (isset($data['pid']) && isset($pUser)) {
+                    UserModel::where('id', $result->id)->update([
+                        'pid_path' => "{$pUser['pid_path']}{$result->id},"
+                    ]);
+                }
+                $userId = $result->id;
+            }
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            abort($e->getMessage());
+        }
+        return success($this->resultUser($userId));
+    }
+
+    private function resultUser(int $userId)
+    {
+        $user          = UserModel::where('id', $userId)->find();
+        $user['token'] = Jwt::generateToken('user', $user);
+        return $user;
     }
 }

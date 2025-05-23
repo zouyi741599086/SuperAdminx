@@ -12,10 +12,6 @@ export const userApi = {
     getList: (params = {}) => {
         return http.get('/admin/User/getList',params);
     },
-    //新增
-    create: (params = {}) => {
-        return http.post('/admin/User/create',params);
-    },
     //获取数据
     findData: (params = {}) => {
         return http.get('/admin/User/findData',params);
@@ -24,10 +20,6 @@ export const userApi = {
     update: (params = {}) => {
         return http.post('/admin/User/update',params);
     },
-    //更新状态
-    updateStatus: (params = {}) => {
-        return http.post('/admin/User/updateStatus',params);
-    },
     //搜索选择某条数据
     selectUser: (params = {}) => {
         return http.get('/admin/User/selectUser',params);
@@ -35,6 +27,10 @@ export const userApi = {
     //导出数据
     exportData: (params = {}) => {
         return http.get('/admin/User/exportData',params);
+    },
+    //用户推荐关系查询
+    invitations: (params = {}) => {
+        return http.get('/admin/User/invitations',params);
     },
         
 }

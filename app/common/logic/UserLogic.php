@@ -18,8 +18,9 @@ class UserLogic
      * 列表
      * @param array $params get参数
      * @param bool $page 是否需要翻页
+     * @param bool $model 是否返回模型
      * */
-    public static function getList(array $params = [], bool $page = true)
+    public static function getList(array $params = [], bool $page = true, bool $model = false)
     {
         // 排序
         $orderBy = "id desc";
@@ -35,28 +36,10 @@ class UserLogic
             }])
             ->order($orderBy);
 
-        return $page ? $list->paginate($params['pageSize'] ?? 20) : $list->select();
-    }
-
-    /**
-     * 新增
-     * @param array $params
-     */
-    public static function create(array $params)
-    {
-        Db::startTrans();
-        try {
-            validate(UserValidate::class)->check($params);
-
-            $result = UserModel::create($params);
-            // 跟新上级路劲
-            self::updatePidPath($result->id);
-
-            Db::commit();
-        } catch (\Exception $e) {
-            Db::rollback();
-            abort($e->getMessage());
+        if ($model) {
+            return $list;
         }
+        return $page ? $list->paginate($params['pageSize'] ?? 20) : $list->select();
     }
 
     /**
@@ -97,11 +80,6 @@ class UserLogic
                 }
             }
 
-            // 没修改密码则干掉此字段
-            if (isset($params['password']) && ! $params['password']) {
-                unset($params['password']);
-            }
-
             UserModel::update($params);
             // 跟新上级路劲
             self::updatePidPath($params['id']);
@@ -119,51 +97,23 @@ class UserLogic
      */
     private static function updatePidPath(int $id)
     {
-        $data = UserModel::find($id);
-
-        // 更新我自己
-        if (! $data->pid) {
-            $data->pid_path = ",{$id},";
-        } else {
-            $pidUser        = UserModel::find($data['pid']);
-            $data->pid_path = "{$pidUser->pid_path}{$id},";
-        }
-        $data->save();
-
         // 更新我的下级
-        UserModel::where('pid_path', 'like', "%,{$data->id},%")
-            ->orderRaw("CHAR_LENGTH(pid_path) asc")
-            ->field('id,pid,pid_path')
+        UserModel::where('pid_path', 'like', "%,{$id},%")
+            ->order("pid_layer asc")
+            ->field('id,pid,pid_path,pid_layer')
             ->select()
             ->each(function ($item)
             {
                 if ($item['pid']) {
-                    $pidUser        = UserModel::field('id,pid,pid_path')->find($item['pid']);
-                    $item->pid_path = "{$pidUser->pid_path}{$item->id},";
+                    $pidUser         = UserModel::field('id,pid,pid_path,pid_layer')->find($item['pid']);
+                    $item->pid_path  = "{$pidUser->pid_path}{$item->id},";
+                    $item->pid_layer = $pidUser->pid_layer + 1;
                 } else {
-                    $item->pid_path = ",{$item->id},";
+                    $item->pid_path  = ",{$item->id},";
+                    $item->pid_layer = 1;
                 }
                 $item->save();
             });
-    }
-
-    /**
-     * 更新状态
-     * @param int|array $id
-     * @param int $status
-     */
-    public static function updateStatus(int|array $id, int $status)
-    {
-        Db::startTrans();
-        try {
-            UserModel::where('id', 'in', $id)->update([
-                'status' => $status
-            ]);
-            Db::commit();
-        } catch (\Exception $e) {
-            Db::rollback();
-            abort($e->getMessage());
-        }
     }
 
     /**
@@ -186,6 +136,32 @@ class UserLogic
     }
 
     /**
+     * 查询推广关系
+     * @param array $params 
+     */
+    public static function invitations(array $params)
+    {
+        $where = [];
+        // 第一次搜索的时候
+        if (isset($params['tel']) && $params['tel']) {
+            $where[] = ['tel', '=', $params['tel']];
+        }
+
+        // 搜索下级的时候
+        if (isset($params['pid']) && $params['pid']) {
+            $where[] = ['pid', '=', $params['pid']];
+        }
+
+        $list = UserModel::where($where)
+            ->field('id,name,tel,pid')
+            ->withCount('NextUser')
+            ->order('id desc')
+            ->select();
+
+        return $list;
+    }
+
+    /**
      * 导出数据
      * @param array $params get参数，用于导出数据的控制
      */
@@ -195,7 +171,7 @@ class UserLogic
             // 表格头
             $header = ['姓名', '手机号', '状态', '上级用户', '注册时间'];
 
-            $list    = self::getList($params, false);
+            $list    = self::getList($params, true, true)->cursor();
             $tmpList = [];
             foreach ($list as $v) {
                 // 导出的数据

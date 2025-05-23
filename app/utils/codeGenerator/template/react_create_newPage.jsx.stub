@@ -90,7 +90,6 @@ export default () => {
 				styles={{
 					body: {paddingBottom: 40}
 				}}
-                bordered={false}
 <?php
                 if ($isCardTab) {
 echo "                tabList={topList}

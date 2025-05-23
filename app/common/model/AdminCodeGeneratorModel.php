@@ -60,7 +60,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 默认类名
             'file_name' => "{$camelCaseTableName}Validate",
             // 默认存放路劲，就是命名空间
-            'file_path' => 'app\common\validate',
+            'file_path' => "{$data->table_path}common\\validate",
         ];
 
         // 模型
@@ -68,7 +68,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 默认类名
             'file_name' => "{$camelCaseTableName}Model",
             // 默认存放路劲，就是命名空间
-            'file_path' => 'app\common\model',
+            'file_path' => "{$data->table_path}common\\model",
         ];
 
         // 逻辑层
@@ -89,7 +89,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 默认类名
             'file_name'  => "{$camelCaseTableName}Logic",
             // 默认存放路劲，就是命名空间
-            'file_path'  => 'app\common\logic',
+            'file_path'  => "{$data->table_path}common\\logic",
 
             // 默认生成的方法
             'functions'  => $functions,
@@ -103,7 +103,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 默认类名
             'file_name' => $camelCaseTableName,
             // 默认存放路劲，就是命名空间
-            'file_path' => 'app\admin\controller',
+            'file_path' => "{$data->table_path}admin\\controller",
         ];
 
         // 后台api

@@ -35,19 +35,6 @@ class User
     }
 
     /**
-     * @log 新增用户
-     * @method post
-     * @auth userCreate
-     * @param Request $request 
-     * @return Response
-     */
-    public function create(Request $request): Response
-    {
-        UserLogic::create($request->post());
-        return success([], '添加成功');
-    }
-
-    /**
      * 获取数据
      * @method get
      * @param int $id 
@@ -73,20 +60,6 @@ class User
     }
 
     /**
-     * @log 修改用户状态
-     * @method post
-     * @auth userUpdateStatus
-     * @param int $id 数据id
-     * @param int $status 数据状态 
-     * @return Response
-     */
-    public function updateStatus(int $id, int $status): Response
-    {
-        UserLogic::updateStatus($id, $status);
-        return success();
-    }
-
-    /**
      * 搜索选择某条数据
      * @method get
      * @param string $keywords 搜索的关键字
@@ -109,6 +82,18 @@ class User
     public function exportData(Request $request): Response
     {
         $data = UserLogic::exportData($request->get());
+        return success($data);
+    }
+
+    /**
+     * @log 查询推广关系
+     * @method get
+     * @param Request $request 
+     * @return Response
+     */
+    public function invitations(Request $request): Response
+    {
+        $data = UserLogic::invitations($request->get());
         return success($data);
     }
 

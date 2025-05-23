@@ -108,7 +108,7 @@ class CodeGenerator
     /**
      * 字符串转驼峰会自动去掉表前缀
      * @param string $string 要转的字符串 如 sa_admin_user 转换成AdminUser
-     * @param bool $letter 首字母是否消息 如sa_admin_user 转换成 adminUser
+     * @param bool $letter 首字母是否小写 如sa_admin_user 转换成 adminUser
      * @return string
      */
     public static function toCamelCase(string $string, bool $letter = false) : string
@@ -144,6 +144,7 @@ class CodeGenerator
         $vars['table_name']   = $params['table_name']; // 表名
         $vars['field_title']  = $data->field_title; // 字段的中文名
         $vars['table_title']  = $data->table_title; // 表的中文名
+        $vars['table_path']   = $data->table_path; // 生成目录前缀
         $vars['table_column'] = self::getTableColumn($params['table_name']); // 表的列
 
         // 如果是生成前端react的新增/更新页面

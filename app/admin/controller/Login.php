@@ -6,6 +6,7 @@ use support\Response;
 use app\common\logic\AdminUserLogic;
 use app\common\model\AdminUserModel;
 use app\utils\Jwt;
+use app\utils\QcloudCos;
 
 /**
  * 后台登录
@@ -30,7 +31,6 @@ class Login
     {
         $username = $request->post('username');
         $password = $request->post('password');
-
         // 验证参数
         if (! $username || ! $password) {
             return error('用户名或密码错误');

@@ -51,7 +51,7 @@ export default ({ typeAction, ...props }) => {
                     <SelectUser />
                 </ProForm.Item>
             </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+            {/* <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                 <ProFormText.Password
                     name="password"
                     label="登录密码"
@@ -62,7 +62,7 @@ export default ({ typeAction, ...props }) => {
                     ]}
                     extra={typeAction === 'update' ? '不修改密码请留空~' : ''}
                 />
-            </Col>
+            </Col> */}
         </Row>
     </>
 }

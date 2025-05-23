@@ -23,6 +23,7 @@ CREATE TABLE `sa_admin_code_generator` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `table_name` varchar(255) DEFAULT NULL COMMENT '表名称',
   `table_title` varchar(255) DEFAULT NULL COMMENT '表的中文名称',
+  `table_path` varchar(45) DEFAULT NULL COMMENT '模型等生成的目录',
   `field_title` text COMMENT '表的字段的中文名称，存的json',
   `validate` text COMMENT '验证器的配置',
   `validate_code` text COMMENT '验证器的代码',
@@ -131,12 +132,14 @@ INSERT INTO `sa_admin_menu` VALUES ('55', '删除配置', '6', '', '', 'configDe
 INSERT INTO `sa_admin_menu` VALUES ('56', '修改排序', '6', '', '', 'configUpdateSort', 'config', ',configManage,config,configUpdateSort,', '', null, '4', '1', null, '1', '2024-11-20 18:24:14', '2024-11-20 19:38:57');
 INSERT INTO `sa_admin_menu` VALUES ('900', '网站参数设置', '7', 'icon-peizhi1', '/config/web_config', 'config_web_config', 'configManage', ',configManage,config_web_config,', '', null, '0', '1', '', '1', '2024-11-29 21:26:06', '2024-12-03 16:45:12');
 INSERT INTO `sa_admin_menu` VALUES ('901', '首页轮播图', '7', 'icon-peizhi1', '/config/home_banner', 'config_home_banner', 'configManage', ',configManage,config_home_banner,', '', null, '0', '1', null, '1', '2024-11-29 21:27:18', '2024-12-03 12:04:57');
-INSERT INTO `sa_admin_menu` VALUES ('1073', '用户管理', '2', 'icon-weibiaoti1', '/user', 'user', NULL, ',user,', '/user', NULL, '0', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
-INSERT INTO `sa_admin_menu` VALUES ('1074', '只浏览数据', '6', '', '', 'userGetList', 'user', ',user,userGetList,', '', NULL, '0', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
-INSERT INTO `sa_admin_menu` VALUES ('1075', '添加', '6', '', '', 'userCreate', 'user', ',user,userCreate,', '', NULL, '1', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
-INSERT INTO `sa_admin_menu` VALUES ('1076', '修改', '6', '', '', 'userUpdate', 'user', ',user,userUpdate,', '', NULL, '2', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
-INSERT INTO `sa_admin_menu` VALUES ('1077', '导出数据', '6', '', '', 'userExportData', 'user', ',user,userExportData,', '', NULL, '7', '1', NULL, '1', '2024-12-06 16:26:05', '2024-12-06 16:26:05');
-INSERT INTO `sa_admin_menu` VALUES ('1078', '修改状态', '6', '', '', 'userUpdateStatus', 'user', ',user,userUpdateStatus,', '', NULL, '3', '1', NULL, '1', '2024-12-06 16:28:52', '2024-12-06 16:29:00');
+INSERT INTO `sa_admin_menu` VALUES ('1073', '用户管理', '2', 'icon-weibiaoti1', '/user/user', 'user', 'users', ',users,user,', '/user/user', NULL, '0', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:35:13');
+INSERT INTO `sa_admin_menu` VALUES ('1074', '只浏览数据', '6', '', '', 'userGetList', 'user', ',users,user,userGetList,', '', NULL, '0', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1075', '添加', '6', '', '', 'userCreate', 'user', ',users,user,userCreate,', '', NULL, '1', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1076', '修改', '6', '', '', 'userUpdate', 'user', ',users,user,userUpdate,', '', NULL, '2', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1077', '导出数据', '6', '', '', 'userExportData', 'user', ',users,user,userExportData,', '', NULL, '7', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1078', '修改状态', '6', '', '', 'userUpdateStatus', 'user', ',users,user,userUpdateStatus,', '', NULL, '3', '1', NULL, '1', '2024-12-06 16:28:52', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1079', '用户管理', '1', 'icon-weibiaoti1', '', 'users', NULL, ',users,', '', NULL, '0', '1', NULL, '1', '2025-05-23 12:33:32', '2025-05-23 12:34:49');
+INSERT INTO `sa_admin_menu` VALUES ('1080', '推荐关系查询', '2', 'icon-zuzhijigou1', '/user/invitations', 'userInvitations', 'users', ',users,userInvitations,', '/user/invitations', NULL, '1', '1', NULL, '1', '2025-05-23 12:34:40', '2025-05-23 12:34:40');
 
 
 -- ----------------------------
