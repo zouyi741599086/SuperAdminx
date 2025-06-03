@@ -87,7 +87,24 @@ class ConfigLogic
                 //'sort'          => $params['sort'] ?? 0,
                 'desc'          => $params['description'] ?? null,
             ]);
-
+			
+			// 重新更新菜单权限表我下面所有数据的pid_path相关字段
+            AdminMenuModel::where('pid_name_path', 'like', "%,config_{$oldName},%")
+                ->orderRaw("CHAR_LENGTH(pid_name_path) asc")
+                ->field('id,name,pid_name,pid_name_path')
+                ->select()
+                ->each(function ($item)
+                {
+                    var_dump($item->id);
+                    if ($item['pid_name']) {
+                        $pid_data              = AdminMenuModel::where('name', $item['pid_name'])->field('id,pid_name_path')->find();
+                        $item['pid_name_path'] = "{$pid_data['pid_name_path']}{$item['name']},";
+                    } else {
+                        $item['pid_name_path'] = ",{$item['name']},";
+                    }
+                    $item->save();
+                });
+				
             Cache::delete("Config_{$oldName}");
 
             Db::commit();

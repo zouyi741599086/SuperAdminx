@@ -27,6 +27,14 @@ export default ({ name, ...props }) => {
     const formRef = useRef();
 
     const [data, setData] = useState(false);
+    // form表单的时候一行显示几个字段
+    const [colProps, setColProps] = useState({
+        xl: 6,
+        lg: 8,
+        md: 12,
+        sm: 24,
+        xs: 24
+    });
 
     useEffect(() => {
         if (!name) {
@@ -36,6 +44,7 @@ export default ({ name, ...props }) => {
             name
         }).then(res => {
             if (res.code === 1) {
+                console.log(res.data)
                 if (res.data.type === 'list') {
                     res.data.fields_config[0].fieldProps = {
                         // 一行显示4个字段，删除后就变为一行一个字段
@@ -87,6 +96,25 @@ export default ({ name, ...props }) => {
                     }
                 }
                 setData(res.data)
+
+                // form表单的时候一行显示几个字段
+                if (res.data.fields_config.length <= 2) {
+                    setColProps({
+                        xl: 12,
+                        lg: 12,
+                        md: 12,
+                        sm: 24,
+                        xs: 24
+                    })
+                } else {
+                    setColProps({
+                        xl: 6,
+                        lg: 8,
+                        md: 12,
+                        sm: 24,
+                        xs: 24
+                    })
+                }
             } else {
                 message.error(res.message)
             }
@@ -137,13 +165,7 @@ export default ({ name, ...props }) => {
                                         }
                                     }}
                                     grid={data.type === 'form'}
-                                    colProps={{
-                                        xl: 6,
-                                        lg: 8,
-                                        md: 12,
-                                        sm: 24,
-                                        xs: 24
-                                    }}
+                                    colProps={colProps}
                                     rowProps={{
                                         gutter: [24, 0],
                                     }}
