@@ -40,8 +40,7 @@ class AdminRoleModel extends BaseModel
     // 查询字段
     public function searchTitleAttr($query, $value, $data)
     {
-        $value && $query->where('title', 'like', "%{$value}%");
-        $query->where('id', '<>', 1);
+        $query->where('title', 'like', "%{$value}%");
     }
 
 }

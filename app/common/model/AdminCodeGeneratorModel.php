@@ -41,6 +41,11 @@ class AdminCodeGeneratorModel extends BaseModel
         $camelCaseTableName = CodeGenerator::toCamelCase($data->table_name);
         // 表里面所有的列
         $tableColumn = CodeGenerator::getTableColumn($data->table_name);
+		// 生成的目录
+		$classPath = "app\\common\\";
+		if ($data->plugin_name) {
+			$classPath = "plugin\\{$data->plugin_name}\\app\\common\\";
+		}
 
         // 是否有排序字段
         $isSort = false;
@@ -60,7 +65,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 默认类名
             'file_name' => "{$camelCaseTableName}Validate",
             // 默认存放路劲，就是命名空间
-            'file_path' => "{$data->table_path}common\\validate",
+            'file_path' => "{$classPath}validate",
         ];
 
         // 模型
@@ -68,7 +73,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 默认类名
             'file_name' => "{$camelCaseTableName}Model",
             // 默认存放路劲，就是命名空间
-            'file_path' => "{$data->table_path}common\\model",
+            'file_path' => "{$classPath}model",
         ];
 
         // 逻辑层
@@ -89,7 +94,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 默认类名
             'file_name'  => "{$camelCaseTableName}Logic",
             // 默认存放路劲，就是命名空间
-            'file_path'  => "{$data->table_path}common\\logic",
+            'file_path'  => "{$classPath}logic",
 
             // 默认生成的方法
             'functions'  => $functions,
@@ -103,7 +108,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 默认类名
             'file_name' => $camelCaseTableName,
             // 默认存放路劲，就是命名空间
-            'file_path' => "{$data->table_path}admin\\controller",
+            'file_path' => "{$classPath}admin//controller",
         ];
 
         // 后台api

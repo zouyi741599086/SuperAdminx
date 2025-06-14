@@ -119,7 +119,6 @@ export default ({ tableName, ...props }) => {
                 table_name: tableName
             }}
             initialValues={{
-                table_path: 'app\\'
             }}
             request={async (params) => {
                 const result = await adminCodeGeneratorApi.getCodeGeneratorInfo(params);
@@ -154,12 +153,12 @@ export default ({ tableName, ...props }) => {
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={8} xl={6} xxl={6}>
                         <ProFormText
-                            name='table_path'
-                            label="生成目录"
+                            name='plugin_name'
+                            label="插件名称"
                             placeholder="请输入"
-                            extra="模型等生成的目录，只写前缀就行如 app\ 或 plugin\shop\app\"
+                            extra="模型控制器等生成在app/common/下，如是插件则生成在plugin/xx/app/common/下"
                             rules={[
-                                { required: true, message: '请输入' }
+                                //{ required: true, message: '请输入' }
                             ]}
                         />
                     </Col>

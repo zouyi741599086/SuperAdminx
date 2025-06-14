@@ -1,10 +1,11 @@
-import { useState } from 'react'
 import { PageContainer } from '@ant-design/pro-components';
 import { ProCard } from '@ant-design/pro-components';
-import { Col, Row, Space, Avatar, Typography, Tag } from 'antd';
+import { Col, Row, Space, Avatar, Typography, Tag} from 'antd';
 import { useRecoilState } from 'recoil';
 import { adminUserStore } from '@/store/adminUser';
 import { layoutSettingStore } from '@/store/layoutSetting';
+import { useMount } from 'ahooks';
+import ShortcutMenu from './shortcutMenu';
 
 /**
  * 后台首页
@@ -15,6 +16,10 @@ import { layoutSettingStore } from '@/store/layoutSetting';
 export default () => {
     const [adminUser] = useRecoilState(adminUserStore);
     const [layoutSetting] = useRecoilState(layoutSettingStore);
+
+    useMount(() => {
+    })
+
 
     return (
         <>
@@ -65,6 +70,8 @@ export default () => {
                             </Col>
                         </Row>
                     </ProCard>
+                    
+                    <ShortcutMenu />
                 </Space>
             </PageContainer>
         </>

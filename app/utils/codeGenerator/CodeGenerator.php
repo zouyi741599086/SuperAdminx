@@ -144,7 +144,7 @@ class CodeGenerator
         $vars['table_name']   = $params['table_name']; // 表名
         $vars['field_title']  = $data->field_title; // 字段的中文名
         $vars['table_title']  = $data->table_title; // 表的中文名
-        $vars['table_path']   = $data->table_path; // 生成目录前缀
+        $vars['plugin_name']  = $data->plugin_name; // 插件名称
         $vars['table_column'] = self::getTableColumn($params['table_name']); // 表的列
 
         // 如果是生成前端react的新增/更新页面

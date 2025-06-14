@@ -22,6 +22,7 @@ class AdminUserLogic
     public static function getList(array $params)
     {
         return AdminUserModel::withSearch(['name', 'tel', 'admin_role_id', 'username', 'status'], $params)
+            ->where('id', '<>', 1)
             ->with(['AdminRole'])
             ->order('id desc')
             ->paginate($params['pageSize'] ?? 20);

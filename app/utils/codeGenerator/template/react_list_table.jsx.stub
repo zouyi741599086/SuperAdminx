@@ -358,7 +358,11 @@ export default () => {
             if (res.code === 1 && res.data.filePath && res.data.fileName) {
                 message.success('数据已生成');
                 setTimeout(() => {
-                    window.open(`\${fileApi.download}?filePath=\${res.data.filePath}&fileName=\${res.data.fileName}`);
+                    if (res.data.filePath.indexOf(\"http\") !== -1) {
+                        window.open(`\${res.data.filePath}`);
+                    } else {
+                        window.open(`\${fileApi.download}?filePath=\${res.data.filePath}&fileName=\${res.data.fileName}`);
+                    }
                 }, 1000)
             } else {
                 message.error('数据导出失败');

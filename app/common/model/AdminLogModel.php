@@ -21,22 +21,22 @@ class AdminLogModel extends BaseModel
     // 查询字段
     public function searchNameAttr($query, $value, $data)
     {
-        $value && $query->where('name', 'like', "%{$value}%");
+        $query->where('name', 'like', "%{$value}%");
     }
     // 查询字段
     public function searchTelAttr($query, $value, $data)
     {
-        $value && $query->where('tel', 'like', "%{$value}%");
+        $query->where('tel', 'like', "%{$value}%");
     }
     // 查询字段
     public function searchTitleAttr($query, $value, $data)
     {
-        $value && $query->where('title', 'like', "%{$value}%");
+        $query->where('title', 'like', "%{$value}%");
     }
     // 查询字段
     public function searchCreateTimeAttr($query, $value, $data)
     {
-        $value && $query->where('create_time', 'between', ["{$value[0]} 00:00:00", "{$value[1]} 23:59:59"]);
+        $query->where('create_time', 'between', ["{$value[0]} 00:00:00", "{$value[1]} 23:59:59"]);
     }
 
 }

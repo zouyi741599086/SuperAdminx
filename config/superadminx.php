@@ -12,6 +12,8 @@
 
 return [
     'version'             => '2.0.1',
+	// 导出的文件，存到哪，如果是分布式部署应该就要存阿里云或腾讯云等才行
+    'export_path_type'    => 'qcloud', // public》本地，aliyun》阿里云，qcloud》腾讯云
     //上传文件的配置
     'file_system'         => [
         //本地》public，阿里云》aliyun，腾讯云》qcloud

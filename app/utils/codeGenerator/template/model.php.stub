@@ -30,8 +30,8 @@ echo "use think\model\Pivot;\n";
     if ($delete_time) {
 echo "use think\model\concern\SoftDelete;\n";
     }
-    // 如果不是生成在app下，则需要引入baseModel
-    if ($table_path != "app\\") {
+    // 如果生成的是插件的文件，则需引入共用模型
+    if ($plugin_name) {
 echo "use app\common\model\BaseModel;\n";        
     }
 ?>
@@ -162,47 +162,47 @@ echo "    // 软删除
     
     // 等于
     if ($value == '=') {
-        echo "        (\$value != null) && \$query->where('{$key}', '=', \$value);";
+        echo "        \$query->where('{$key}', '=', \$value);";
     }
     // 模糊搜索
     if ($value == 'like') {
-        echo "        (\$value != null) && \$query->where('{$key}', 'like', \"%{\$value}%\");";
+        echo "        \$query->where('{$key}', 'like', \"%{\$value}%\");";
     }
     // 日期范围搜索
     if ($value == 'BETWEEN_TIME') {
-        echo "        (\$value && is_array(\$value)) && \$query->where('{$key}', 'between', [\"{\$value[0]} 00:00:00\", \"{\$value[1]} 23:59:59\"]);";
+        echo "        \$query->where('{$key}', 'between', [\"{\$value[0]} 00:00:00\", \"{\$value[1]} 23:59:59\"]);";
     }
     // 不等于
     if ($value == '<>') {
-        echo "        (\$value != null) && \$query->where('{$key}', '<>', \$value);";
+        echo "        \$query->where('{$key}', '<>', \$value);";
     }
     // 大于
     if ($value == '>') {
-        echo "        (\$value != null) && \$query->where('{$key}', '>', \$value);";
+        echo "        \$query->where('{$key}', '>', \$value);";
     }
     // 小于
     if ($value == '<') {
-        echo "        (\$value != null) && \$query->where('{$key}', '<', \$value);";
+        echo "        \$query->where('{$key}', '<', \$value);";
     }
     // 大于等于
     if ($value == '>=') {
-        echo "        (\$value != null) && \$query->where('{$key}', '>=', \$value);";
+        echo "        \$query->where('{$key}', '>=', \$value);";
     }
     // 小于等于
     if ($value == '<=') {
-        echo "        (\$value != null) && \$query->where('{$key}', '<=', \$value);";
+        echo "        \$query->where('{$key}', '<=', \$value);";
     }
     // in
     if ($value == 'in') {
-        echo "        (\$value != null) && \$query->where('{$key}', 'in', \$value);";
+        echo "        \$query->where('{$key}', 'in', \$value);";
     }
     // not in
     if ($value == 'not in') {
-        echo "        (\$value != null) && \$query->where('{$key}', 'not in', \$value);";
+        echo "        \$query->where('{$key}', 'not in', \$value);";
     }
     // not in
     if ($value == 'between') {
-        echo "        (\$value != null) && \$query->where('{$key}', 'between', \$value);";
+        echo "        \$query->where('{$key}', 'between', \$value);";
     }
 
     echo "

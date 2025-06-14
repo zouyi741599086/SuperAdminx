@@ -1,0 +1,29 @@
+.admin-user-shortcut-menu-card .ant-card-body{height:100%;height:78px;display: flex;align-items: center;justify-content: center;}
+.admin-user-shortcut-menu-card .ant-card-body .menu-title{width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;height:22px;width:68px;color:#fff;font-size:14px;}
+.admin-user-shortcut-menu-card .ant-card-body .iconfont{font-size:20px;color:#fff;}
+.admin-user-shortcut-menu-card .menu-card-item{background: linear-gradient(to bottom right, #ffaa4e, #f78621);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(1){background: linear-gradient(to bottom right, #ffaa4e, #f78621);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(2){background: linear-gradient(to bottom right, #31ca74, #2cb464);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(3){background: linear-gradient(to bottom right, #8050e9, #6837e5);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(4){background: linear-gradient(to bottom right, #db823e, #eb5816);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(5){background: linear-gradient(to bottom right, #58a6f4, #0b96f9);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(6){background: linear-gradient(to bottom right, #1cd7ba, #13b49b);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(7){background: linear-gradient(to bottom right, #866ad0, #5f32c7);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(8){background: linear-gradient(to bottom right, #f1788a, #ee4961);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(9){background: linear-gradient(to bottom right, #7a8eb7, #627cb3);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(10){background: linear-gradient(to bottom right, #80c2ee, #4ea9f1);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(11){background: linear-gradient(to bottom right, #8576d5, #715ecf);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(12){background: linear-gradient(to bottom right, #db79a7, #cf5e93);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(13){background: linear-gradient(to bottom right, #db797b, #cb6568);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(14){background: linear-gradient(to bottom right, #77b5cf, #65adcb);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(15){background: linear-gradient(to bottom right, #77cfbb, #5acab1);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(16){background: linear-gradient(to bottom right, #a4cd80, #8fca5a);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(17){background: linear-gradient(to bottom right, #cdcc80, #c0bf57);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(18){background: linear-gradient(to bottom right, #8050e9, #6837e5);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(19){background: linear-gradient(to bottom right, #db823e, #eb5816);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(20){background: linear-gradient(to bottom right, #58a6f4, #0b96f9);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(21){background: linear-gradient(to bottom right, #1cd7ba, #13b49b);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(22){background: linear-gradient(to bottom right, #866ad0, #5f32c7);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(23){background: linear-gradient(to bottom right, #f1788a, #ee4961);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(24){background: linear-gradient(to bottom right, #7a8eb7, #627cb3);} 
+.admin-user-shortcut-menu-card .menu-card-item:nth-child(25){background: linear-gradient(to bottom right, #80c2ee, #4ea9f1);}

@@ -23,7 +23,7 @@ CREATE TABLE `sa_admin_code_generator` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `table_name` varchar(255) DEFAULT NULL COMMENT '表名称',
   `table_title` varchar(255) DEFAULT NULL COMMENT '表的中文名称',
-  `table_path` varchar(45) DEFAULT NULL COMMENT '模型等生成的目录',
+  `plugin_name` varchar(45) DEFAULT NULL COMMENT '插件目录，模型等生成的目录会根据此来判断',
   `field_title` text COMMENT '表的字段的中文名称，存的json',
   `validate` text COMMENT '验证器的配置',
   `validate_code` text COMMENT '验证器的代码',
@@ -300,6 +300,23 @@ CREATE TABLE `sa_file_record` (
 -- ----------------------------
 INSERT INTO `sa_file_record` VALUES ('303', 'config', '16', '[\"后台框架\",\"110\",\"icp11110\"]', '2024-11-29 21:27:52', '2024-11-29 21:27:52');
 INSERT INTO `sa_file_record` VALUES ('304', 'config', '17', '[\"\\/storage\\/2024-11-29\\/png\\/1732886909_66745.png\",\"http:\\/\\/www.baidu.com\"]', '2024-11-29 21:28:31', '2024-11-29 21:28:54');
+
+CREATE TABLE `sa_admin_user_shortcut_menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `admin_user_id` int(11) NOT NULL,
+  `admin_menu_id` int(11) NOT NULL,
+  `admin_role_menu_id` int(11) DEFAULT NULL,
+  `sort` int(11) DEFAULT '0' COMMENT '排序',
+  PRIMARY KEY (`id`),
+  KEY `fk_sa_admin_user_shortcut_menu_sa_admin_user1_idx` (`admin_user_id`),
+  KEY `fk_sa_admin_user_shortcut_menu_sa_admin_role_menu1_idx` (`admin_role_menu_id`),
+  KEY `fk_sa_admin_user_shortcut_menu_sa_admin_menu1_idx` (`admin_menu_id`),
+  CONSTRAINT `fk_sa_admin_user_shortcut_menu_sa_admin_menu1` FOREIGN KEY (`admin_menu_id`) REFERENCES `sa_admin_menu` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sa_admin_user_shortcut_menu_sa_admin_role_menu1` FOREIGN KEY (`admin_role_menu_id`) REFERENCES `sa_admin_role_menu` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sa_admin_user_shortcut_menu_sa_admin_user1` FOREIGN KEY (`admin_user_id`) REFERENCES `sa_admin_user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8 COMMENT='用户快捷自定义菜单';
+
+
 
 -- ----------------------------
 -- Table structure for sa_region

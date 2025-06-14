@@ -41,29 +41,26 @@ class AdminUserModel extends BaseModel
     // 查询字段
     public function searchNameAttr($query, $value, $data)
     {
-        $value && $query->where('name', 'like', "%{$value}%");
-        $query->where('id', '<>', 1);
+        $query->where('name', 'like', "%{$value}%");
     }
     // 查询字段
     public function searchTelAttr($query, $value, $data)
     {
-        $value && $query->where('tel', 'like', "%{$value}%");
+        $query->where('tel', 'like', "%{$value}%");
     }
     // 查询字段
     public function searchUsernameAttr($query, $value, $data)
     {
-        $value && $query->where('username', 'like', "%{$value}%");
+        $query->where('username', 'like', "%{$value}%");
     }
     //查询字段
     public function searchAdminRoleIdAttr($query, $value, $data)
     {
-        $value && $query->where('admin_role_id', '=', $value);
+        $query->where('admin_role_id', '=', $value);
     }
     // 查询字段
     public function searchStatusAttr($query, $value, $data)
     {
-        $value && $query->where('status', '=', $value);
+        $query->where('status', '=', $value);
     }
-
-
 }

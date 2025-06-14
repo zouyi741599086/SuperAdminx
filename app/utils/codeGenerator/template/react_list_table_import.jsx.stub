@@ -52,7 +52,11 @@ export default ({ tableReload, ...props }) => {
             if (res.code === 1 && res.data.filePath && res.data.fileName) {
                 message.success('模板已生成')
                 setTimeout(() => {
-                    window.open(`${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`);
+                    if (res.data.filePath.indexOf("http") !== -1) {
+                        window.open(`${res.data.filePath}`);
+                    } else {
+                        window.open(`${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`);
+                    }
                 }, 1000)
             } else {
                 message.error('模板生成失败')

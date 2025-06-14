@@ -24,12 +24,14 @@ class AdminRoleLogic
         // 不需要翻页的时候，如添加用户的时候选择角色
         if (isset($params['isPage']) && $params['isPage'] == 'no') {
             return AdminRoleModel::withSearch(['title'], $params)
+                ->where('id', '<>', 1)
                 ->order('id desc')
                 ->select();
         }
 
         return AdminRoleModel::withSearch(['title'], $params)
             ->order('id desc')
+            ->where('id', '<>', 1)
             ->withCount([
                 'AdminUser',
                 'AdminRoleMenu',
@@ -105,9 +107,17 @@ class AdminRoleLogic
     {
         Db::startTrans();
         try {
-            AdminRoleMenuModel::where('admin_role_id', $params['id'])->delete();
-            // 权限节点
-            foreach ($params['admin_menu_id'] as $v) {
+            $oldAdminMenuId = AdminRoleMenuModel::where('admin_role_id', $params['id'])->column('admin_menu_id');
+            // 计算要删除的权限节点
+            $permissionsToDelete = array_diff($oldAdminMenuId, $params['admin_menu_id']);
+            // 计算需要插入的权限节点
+            $permissionsToInsert = array_diff($params['admin_menu_id'], $oldAdminMenuId);
+
+            // 删除不要的权限节点
+            AdminRoleMenuModel::where('admin_role_id', $params['id'])->whereIn('admin_menu_id', $permissionsToDelete)->delete();
+            
+            // 插入权限节点
+            foreach ($permissionsToInsert as $v) {
                 $admin_role_menu[] = [
                     'admin_role_id' => $params['id'],
                     'admin_menu_id' => $v,

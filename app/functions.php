@@ -1,5 +1,7 @@
 <?php
 use app\utils\DataEncryptor;
+use app\utils\QcloudCos;
+use app\utils\AliyunOss;
 
 /**
  * 生成单号
@@ -136,3 +138,54 @@ function result($data = [], int $code = 1, string $mssage = '操作成功', bool
     return json($result);
 }
 
+/**
+ * 导出数据
+ * @param array $header 表格头
+ * @param array $list 表格数据
+ * @param string $exportPathType 导出的文件放在哪，public》本地，aliyun》阿里云，qcloud》腾讯云
+ * @return array|string
+ */
+function export(array &$header, array &$list, string $exportPathType = null) : string
+{
+    // 生成的文件名
+    $fileName = rand(1, 10000) . time() . '.xlsx';
+
+    // 开始生成表格导出
+    $config   = [
+        'path' => public_path() . '/tmp_file',
+    ];
+    $excel    = new \Vtiful\Kernel\Excel($config);
+    $filePath = $excel->fileName($fileName)
+        ->header($header)
+        ->data($list)
+        ->output();
+    $excel->close();
+
+    $filePath = str_replace(public_path(), '', $filePath);
+    return export_path($filePath, $exportPathType);
+}
+
+/**
+ * 生成文件后置处理，看是否需要将文件上传到云
+ * @param string $filePath 文件在本地的url
+ * @param string $exportPathType 云存储类型，public》本地，aliyun》阿里云，qcloud》腾讯云
+ * @return void
+ */
+function export_path($filePath, $exportPathType = null)
+{
+    // 判断生成的文件存在哪
+    if (! $exportPathType) {
+        $exportPathType = config('superadminx.export_path_type');
+    }
+    if ($exportPathType == 'public') {
+        return $filePath;
+    }
+
+    if ($exportPathType == 'qcloud') {
+        return QcloudCos::upload($filePath, true);
+    }
+
+    if ($exportPathType == 'aliyun') {
+        return AliyunOss::upload($filePath, true);
+    }
+}
