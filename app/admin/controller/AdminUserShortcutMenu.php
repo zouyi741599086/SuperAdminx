@@ -59,4 +59,16 @@ class AdminUserShortcutMenu
         return success([], '修改成功');
     }
 
+    /**
+     * 修改排序
+     * @method post
+     * @param Request $request 
+     * @return Response
+     */
+    public function updateSort(Request $request): Response
+    {
+        AdminUserShortcutMenuLogic::updateSort($request->adminUser->id,$request->post());
+        return success([], '修改成功');
+    }
+
 }

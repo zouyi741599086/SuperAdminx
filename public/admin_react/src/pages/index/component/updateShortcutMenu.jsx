@@ -225,7 +225,7 @@ export default (props) => {
                     checkable={true}
                     blockNode
                     treeData={menuList}
-                    height={700}
+                    height={500}
                     fieldNames={{
                         key: 'id'
                     }}

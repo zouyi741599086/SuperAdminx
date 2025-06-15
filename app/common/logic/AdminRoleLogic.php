@@ -114,7 +114,9 @@ class AdminRoleLogic
             $permissionsToInsert = array_diff($params['admin_menu_id'], $oldAdminMenuId);
 
             // 删除不要的权限节点
-            AdminRoleMenuModel::where('admin_role_id', $params['id'])->whereIn('admin_menu_id', $permissionsToDelete)->delete();
+            if ($permissionsToDelete) {
+                AdminRoleMenuModel::where('admin_role_id', $params['id'])->whereIn('admin_menu_id', $permissionsToDelete)->delete();
+            }
             
             // 插入权限节点
             foreach ($permissionsToInsert as $v) {

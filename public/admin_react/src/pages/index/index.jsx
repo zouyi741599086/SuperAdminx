@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import { adminUserStore } from '@/store/adminUser';
 import { layoutSettingStore } from '@/store/layoutSetting';
 import { useMount } from 'ahooks';
-import ShortcutMenu from './shortcutMenu';
+import ShortcutMenu from './component/shortcutMenu';
 
 /**
  * 后台首页

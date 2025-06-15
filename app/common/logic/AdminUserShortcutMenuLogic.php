@@ -24,7 +24,7 @@ class AdminUserShortcutMenuLogic
     {
         return AdminUserShortcutMenuModel::withSearch(['admin_user_id'], $params)
         ->with(['AdminMenu'])
-        ->order('sort asc,id desc')
+        ->order('sort desc')
         ->select();
     }
 
@@ -117,7 +117,6 @@ class AdminUserShortcutMenuLogic
                     }
                 }
             }
-
             // 先删除旧数据
             AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)->delete();
             $dataAll && (new AdminUserShortcutMenuModel())->saveAll($dataAll);
@@ -126,5 +125,33 @@ class AdminUserShortcutMenuLogic
             Db::rollback();
             abort($e->getMessage());
         }
+    }
+
+    /**
+     * 修改排序
+     * @param int $adminUserId
+     * @param array $params
+     */
+    public static function updateSort(int $adminUserId, array $params)
+    {
+        Db::startTrans();
+        try {
+            $list = AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)->select();
+            foreach ($params as $k => $v) {
+                foreach ($list as $k1 => $v1) {
+                    if ($v['admin_menu_id'] == $v1->admin_menu_id) {
+                        $params[$k]['id'] = $v1->id;
+                        unset($params[$k]['admin_menu_id']);
+                        break;
+                    }
+                }
+            }
+            (new AdminUserShortcutMenuModel())->saveAll($params);
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            abort($e->getMessage());
+        }
+        return success([], '修改成功');
     }
 }
