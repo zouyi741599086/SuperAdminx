@@ -60,34 +60,48 @@ class AdminUserShortcutMenuLogic
     {
         Db::startTrans();
         try {
-            // 要插入的数据
-            $dataAll = [];
-            // 旧数据，为了插入新数据的时候要保留旧数据的排序
-            $oldDataList = AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)->select();
-
             if ($adminUserId == 1) {
-                foreach ($adminMenuIds as $v) {
-                    // 保留旧数据的排序
-                    $sort = 0;
-                    foreach ($oldDataList as $vv) {
-                        if ($vv['admin_menu_id'] == $v) {
-                            $sort = $vv['sort'];
-                            break;
-                        }
-                    }
+                $oldAdminMenuIds = AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)->column('admin_menu_id');
+                // 计算要删除的菜单
+                $permissionsToDelete = array_diff($oldAdminMenuIds, $adminMenuIds);
+                // 计算需要插入的菜单
+                $permissionsToInsert = array_diff($adminMenuIds, $oldAdminMenuIds);
 
+                // 删除不要的菜单
+                if ($permissionsToDelete) {
+                    AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)
+                    ->whereIn('admin_menu_id', $permissionsToDelete)
+                    ->delete();
+                }
+                
+                // 插入新的菜单
+                foreach ($permissionsToInsert as $v) {
                     $dataAll[] = [
                         'admin_user_id' => $adminUserId,
                         'admin_menu_id' => $v,
-                        'sort'          => $sort,
                     ];
                 }
+                isset($dataAll) && (new AdminUserShortcutMenuModel())->saveAll($dataAll);
             } else {
                 $adminUser = AdminUserModel::with([
                     'AdminRole.AdminRoleMenu'
                 ])->find($adminUserId);
 
-                foreach ($adminMenuIds as $v) {
+                $oldAdminMenuIds = AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)->column('admin_menu_id');
+                // 计算要删除的菜单
+                $permissionsToDelete = array_diff($oldAdminMenuIds, $adminMenuIds);
+                // 计算需要插入的菜单
+                $permissionsToInsert = array_diff($adminMenuIds, $oldAdminMenuIds);
+
+                // 删除不要的菜单
+                if ($permissionsToDelete) {
+                    AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)
+                    ->whereIn('admin_menu_id', $permissionsToDelete)
+                    ->delete();
+                }
+                
+                // 插入新的菜单
+                foreach ($permissionsToInsert as $v) {
                     // 找到菜单对角色的id
                     $adminRoleMenuId = 0;
                     foreach ($adminUser->AdminRole->AdminRoleMenu as $vv) {
@@ -97,29 +111,14 @@ class AdminUserShortcutMenuLogic
                         }
                     }
 
-                    // 保留旧数据的排序
-                    $sort = 0;
-                    foreach ($oldDataList as $vv) {
-                        if ($vv['admin_menu_id'] == $v) {
-                            $sort = $vv['sort'];
-                            break;
-                        }
-                    }
-
-                    if ($adminRoleMenuId) {
-                        $dataAll[] = [
-                            'admin_user_id'         => $adminUserId,
-                            'admin_role_id'         => $adminUser->admin_role_id,
-                            'admin_menu_id'         => $v,
-                            'admin_role_menu_id'    => $adminRoleMenuId,
-                            'sort'                  => $sort,
-                        ];
-                    }
+                    $dataAll[] = [
+                        'admin_user_id'         => $adminUserId,
+                        'admin_role_menu_id'    => $adminRoleMenuId,
+                        'admin_menu_id'         => $v,
+                    ];
                 }
+                isset($dataAll) && (new AdminUserShortcutMenuModel())->saveAll($dataAll);
             }
-            // 先删除旧数据
-            AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)->delete();
-            $dataAll && (new AdminUserShortcutMenuModel())->saveAll($dataAll);
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
