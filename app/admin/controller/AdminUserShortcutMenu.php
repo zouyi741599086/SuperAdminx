@@ -17,7 +17,7 @@ class AdminUserShortcutMenu
 
     // 此控制器是否需要登录
     protected $onLogin = true;
-    
+
     // 不需要登录的方法
     protected $noNeedLogin = [];
 
@@ -28,10 +28,10 @@ class AdminUserShortcutMenu
      * @param Request $request 
      * @return Response
      */
-    public function getList(Request $request): Response
+    public function getList(Request $request) : Response
     {
         $params['admin_user_id'] = $request->adminUser->id;
-        $list = AdminUserShortcutMenuLogic::getList($params);
+        $list                    = AdminUserShortcutMenuLogic::getList($params);
         return success($list);
     }
 
@@ -41,7 +41,7 @@ class AdminUserShortcutMenu
      * @param Request $request 
      * @return Response
      */
-    public function getMenuList(Request $request): Response
+    public function getMenuList(Request $request) : Response
     {
         $list = AdminUserShortcutMenuLogic::getMenuList($request->adminUser->id);
         return success($list);
@@ -53,9 +53,9 @@ class AdminUserShortcutMenu
      * @param Request $request 
      * @return Response
      */
-    public function update(Request $request): Response
+    public function update(Request $request) : Response
     {
-        AdminUserShortcutMenuLogic::update($request->adminUser->id,$request->post());
+        AdminUserShortcutMenuLogic::update($request->adminUser->id, $request->post());
         return success([], '修改成功');
     }
 
@@ -65,9 +65,9 @@ class AdminUserShortcutMenu
      * @param Request $request 
      * @return Response
      */
-    public function updateSort(Request $request): Response
+    public function updateSort(Request $request) : Response
     {
-        AdminUserShortcutMenuLogic::updateSort($request->adminUser->id,$request->post());
+        AdminUserShortcutMenuLogic::updateSort($request->adminUser->id, $request->post());
         return success([], '修改成功');
     }
 

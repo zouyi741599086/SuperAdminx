@@ -59,7 +59,7 @@ class AliyunOss
 
             // 保存的目录
             $date    = date('Y-m-d');
-            $time    = time();
+            $time    = date('YmdHis');
             $rand    = mt_rand(0, 100000);
             $ossPath = "{$date}/{$fileInfo['extension']}/{$time}_{$rand}.{$fileInfo['extension']}";
 

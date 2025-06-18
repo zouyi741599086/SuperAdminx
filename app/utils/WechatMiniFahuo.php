@@ -22,16 +22,22 @@ class WechatMiniFahuo
             return self::$app;
         }
         self::$config = [
-            'app_id'  => config('superadminx.wechat_xiaochengxu.AppID'),
-            'secret'  => config('superadminx.wechat_xiaochengxu.AppSecret'),
-            'token'   => 'easywechat',
-            'aes_key' => '',
-
+            'app_id'                  => config('superadminx.wechat_xiaochengxu.AppID'),
+            'secret'                  => config('superadminx.wechat_xiaochengxu.AppSecret'),
+            'token'                   => 'easywechat',
+            'aes_key'                 => '',
+            /**
+             * 是否使用 Stable Access Token
+             * 默认 false
+             * https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getStableAccessToken.html
+             * true 使用 false 不使用
+             */
+            'use_stable_access_token' => false,
             /**
              * 接口请求相关配置，超时时间等，具体可用参数请参考：
              * https://github.com/symfony/symfony/blob/5.3/src/Symfony/Contracts/HttpClient/HttpClientInterface.php
              */
-            'http'    => [
+            'http'                    => [
                 'throw'   => true, // 状态码非 200、300 时是否抛出异常，默认为开启
                 'timeout' => 5.0,
                 // 'base_uri' => 'https://api.weixin.qq.com/', // 如果你在国外想要覆盖默认的 url 的时候才使用，根据不同的模块配置不同的 uri
@@ -70,19 +76,19 @@ class WechatMiniFahuo
             'logistics_type' => $logistics_type,
             'delivery_mode'  => 'UNIFIED_DELIVERY',
             'shipping_list'  => [
-                    [
-                        'tracking_no'     => $tracking_no, // 快递单号
-                        'express_company' => $express_company, // 快递公司编码
-                        'item_desc'       => $goods_title, // 购买的商品名称
-                        'contact'         => [
-                                'receiver_contact' => $receiver_contact, // 收件人手机号，发顺丰必填
-                            ]
+                [
+                    'tracking_no'     => $tracking_no, // 快递单号
+                    'express_company' => $express_company, // 快递公司编码
+                    'item_desc'       => $goods_title, // 购买的商品名称
+                    'contact'         => [
+                        'receiver_contact' => $receiver_contact, // 收件人手机号，发顺丰必填
                     ]
-                ],
+                ]
+            ],
             'upload_time'    => (new \DateTime)->format(\DateTime::RFC3339),
             'payer'          => [
-                    'openid' => $openid, // 用户的openid
-                ]
+                'openid' => $openid, // 用户的openid
+            ]
         ]);
         $response = $response->toArray();
         if ($response['errcode'] != 0) {

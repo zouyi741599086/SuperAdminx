@@ -145,10 +145,10 @@ function result($data = [], int $code = 1, string $mssage = '操作成功', bool
  * @param string $exportPathType 导出的文件放在哪，public》本地，aliyun》阿里云，qcloud》腾讯云
  * @return array|string
  */
-function export(array &$header, array &$list, string $exportPathType = null) : string
+function export(array &$header, array &$list, ?string $exportPathType = null) : string
 {
     // 生成的文件名
-    $fileName = rand(1, 10000) . time() . '.xlsx';
+    $fileName = date('YmdHis') . rand(1, 10000) . '.xlsx';
 
     // 开始生成表格导出
     $config   = [

@@ -277,7 +277,7 @@ export default () => {
                     <Layout className='sa-layout-content'>
                         <ContentTabs />
                         {/* 设置高度是为了iframe能撑满高度100% */}
-                        <Content style={{ height: '1px' }}>
+                        <Content style={{ minHeight: '1px' }}>
                             <Outlet />
                         </Content>
                         <Footer />
