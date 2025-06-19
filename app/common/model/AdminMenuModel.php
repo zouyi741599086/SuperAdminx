@@ -15,8 +15,6 @@ class AdminMenuModel extends BaseModel
     // 查询字段
     public function searchHiddenAttr($query, $value, $data)
     {
-        if (! $value) {
-            $query->where('hidden', '=', 1);
-        }
+           $query->where('hidden', '=', $value);
     }
 }

@@ -178,7 +178,9 @@ export default (props) => {
     const [menuListIdArr, setMenuListIdArr] = useState([]);
     // 加载菜单列表
     const getList = () => {
-        adminMenuApi.getList().then(res => {
+        adminMenuApi.getList({
+			hidden: 1
+		}).then(res => {
             if (res.code === 1) {
                 // 一维数组
                 setMenuListArr(res.data);

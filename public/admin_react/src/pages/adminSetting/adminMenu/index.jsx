@@ -100,9 +100,7 @@ export default () => {
     const [menuListArr, setMenuListArr] = useState([]);
     // 加载菜单列表
     const getList = () => {
-        adminMenuApi.getList({
-            hidden: 'all'
-        }).then(res => {
+        adminMenuApi.getList().then(res => {
             if (res.code === 1) {
                 const tmp = res.data.map(item => {
                     return {
