@@ -30,7 +30,7 @@ class Jwt
     {
         $config = self::getConfig($app_name);
         if (! isset($user[$config['key']]) || ! $user[$config['key']]) {
-            abort("Jwt：生成token的数据中缺少必要的key>{$config['key']}");
+            throw new \Exception("Jwt：生成token的数据中缺少必要的key>{$config['key']}");
         }
 
         $user      = array_intersect_key($user, array_flip($config['field']));
@@ -73,7 +73,7 @@ class Jwt
         // 解密token获取user，user里面会多一个过期时间字段：expires_at
         $user = self::tokenEncryption($token, 'D');
         if (! is_array($user) || ! $user) {
-            abort('非法请求', -2);
+            throw new \Exception('非法请求');
         }
         $token_key = self::getTokenKey($app_name, $user[$config['key']]);
 
@@ -85,13 +85,13 @@ class Jwt
                 ['token', '=', $token]
             ])->value('id');
             if (! $id) {
-                abort('登录已失效', -2);
+                throw new \Exception('登录已失效');
             }
             // 判断是否过期
             if (time() >= $user['expires_at']) {
                 // 删除
                 Db::name('Token')->where('id', $id)->delete();
-                abort('登录已失效', -2);
+                throw new \Exception('登录已失效');
             }
         } else if ($db === 'redis') {
             // 判断token是否在redis中
@@ -105,13 +105,13 @@ class Jwt
                 }
             }
             if ($indexToDelete == -1) {
-                abort('登录已失效', -2);
+                throw new \Exception('登录已失效');
             }
             // 判断是否过期
             if (time() >= $user['expires_at']) {
                 // 删除
                 Redis::lRem($token_key, 1, $token);
-                abort('登录已失效', -2);
+                throw new \Exception('登录已失效');
             }
         }
         return $user;
@@ -144,17 +144,17 @@ class Jwt
         // 判断是否有token
         $token = $request->header(config('superadminx.jwt.header_key'));
         if (! $token) {
-            abort('非法请求', -2);
+            throw new \Exception('非法请求');
         }
 
         // rsa初次解密，前端传的token是token与time的通过rsa加密得到的
         $tmp = json_decode(DataEncryptor::rsaDecrypt($token), true);
         if (! isset($tmp['token']) || ! isset($tmp['time']) || ! $tmp['token'] || ! $tmp['time']) {
-            abort('非法请求', -2);
+            throw new \Exception('非法请求');
         }
         // 非上传的时候此次请求时间超过30秒则非法
         if (time() - intval($tmp['time'] / 1000) >= 60 && ! $request->file()) {
-            abort('请求超时', -2);
+            throw new \Exception('请求超时');
         }
         return $tmp['token'];
     }
@@ -187,7 +187,7 @@ class Jwt
             }
         }
         if (! $config) {
-            abort('Jwt：不存在的应用名称~');
+            throw new \Exception('Jwt：不存在的应用名称~');
         }
         return $config;
     }

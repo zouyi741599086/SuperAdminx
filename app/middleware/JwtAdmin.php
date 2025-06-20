@@ -26,7 +26,11 @@ class JwtAdmin implements MiddlewareInterface
         // 登录的角色
         $request->loginRole = 'admin';
         if ($this->actionIsLogin()) {
-            $request->adminUser = Jwt::getUser('admin_pc');
+            try {
+                $request->adminUser = Jwt::getUser('admin_pc');
+            } catch (\Exception $e) {
+                abort($e->getMessage(), -2);
+            }
 
             // 高并发需要关掉此处控制一下验证时机
             $request->adminUser = AdminUserModel::find($request->adminUser['id']);
@@ -105,7 +109,6 @@ class JwtAdmin implements MiddlewareInterface
                     break; // 找到后退出循环  
                 }
             }
-
             self::$controllerActionIsAuth[$key] = $auth ?: false;
         }
         return self::$controllerActionIsAuth[$key];

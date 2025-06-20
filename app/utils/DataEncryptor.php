@@ -21,11 +21,11 @@ class DataEncryptor
     public static function rsaDecrypt(?string $data) : string
     {
         if (! $data) {
-            abort('解密的数据不能为空');
+            throw new \Exception('解密数据不能为空');
         }
         $private_key = config('superadminx.api_encryptor.rsa_private');
         if (! $private_key) {
-            abort('未设置解密私钥');
+            throw new \Exception('未设置解密私钥');
         }
         try {
             $private_key = openssl_pkey_get_private($private_key);
@@ -38,7 +38,7 @@ class DataEncryptor
             }
             return $decrypted;
         } catch (\Exception $e) {
-            abort("RSA解密：{$e->getMessage()}");
+            throw new \Exception("RSA解密：{$e->getMessage()}");
         }
     }
 
@@ -56,7 +56,7 @@ class DataEncryptor
             $data = openssl_encrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
             return base64_encode($data);
         } catch (\Exception $e) {
-            abort("AES加密失败：{$e->getMessage()}");
+            throw new \Exception("AES加密失败：{$e->getMessage()}");
         }
     }
 
@@ -70,14 +70,14 @@ class DataEncryptor
     public static function aesDecrypt(?string $data, string $key, string $iv) : array
     {
         if (! $data) {
-            abort('解密的数据不能为空');
+            throw new \Exception('解密数据不能为空');
         }
         try {
             $data = base64_decode($data);
             $data = openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
             return json_decode($data, true);
         } catch (\Exception $e) {
-            abort("AES解密失败：{$e->getMessage()}");
+            throw new \Exception("AES解密失败：{$e->getMessage()}");
         }
     }
 }

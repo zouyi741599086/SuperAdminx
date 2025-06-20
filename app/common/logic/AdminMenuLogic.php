@@ -237,11 +237,9 @@ class AdminMenuLogic
      */
     public static function delete(array $ids)
     {
-        foreach ($ids as $id) {
-            // 不能删除50》参数设置，configLogic的增删除改里面要用此id同步到adminMenu表
-            if (! in_array($id, [50])) {
-                AdminMenuModel::destroy($id);
-            }
-        }
+        AdminMenuModel::where('id', 'in', $ids)
+            ->where('id', '<>', 50) // 不能删除50》参数设置，configLogic的增删除改里面要用此id同步到adminMenu表
+            ->where('name', "not like", "config_%") // 不能删除参数设置下的 设置
+            ->delete();
     }
 }
