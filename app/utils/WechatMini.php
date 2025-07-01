@@ -6,6 +6,22 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use support\Redis;
 use support\Log;
+use EasyWeChat\Kernel\Contracts\AccessToken;
+
+class MyAccessToken implements AccessToken
+{
+    public function getToken() : string
+    {
+        return (new \app\common\model\ParamTokenModel())->where('type', 'mini')->value('access_token');
+    }
+
+    public function toQuery() : array
+    {
+        return [
+            'access_token' => $this->getToken(),
+        ];
+    }
+}
 
 /**
  * 微信小程序操作
@@ -20,12 +36,8 @@ use support\Log;
  */
 class WechatMini
 {
-    private static $app;
     public static function initApp()
     {
-        if (self::$app) {
-            return self::$app;
-        }
         $config = [
             'app_id'  => config('superadminx.wechat_xiaochengxu.AppID'),
             'secret'  => config('superadminx.wechat_xiaochengxu.AppSecret'),
@@ -42,8 +54,13 @@ class WechatMini
                 'retry'   => true, // 使用默认重试配置
             ],
         ];
-		// 缓存是否使用redis
-        return self::$app = (new Application($config)); //->setCache(new Psr16Cache(new RedisAdapter(Redis::connection()->client())));
+
+        // 正式版用下面的返回
+        return (new Application($config))->setAccessToken(new MyAccessToken());
+
+        return (new Application($config))
+            // 缓存使用的redis
+            ->setCache(new Psr16Cache(new RedisAdapter(Redis::connection()->client())));
     }
 
     /**
@@ -51,7 +68,8 @@ class WechatMini
      */
     public static function getToken() : string
     {
-        return self::initApp()->getToken();
+        $accessToken = self::initApp()->getAccessToken();
+        return $accessToken->getToken();
     }
 
     /**

@@ -35,7 +35,7 @@ class JwtApi implements MiddlewareInterface
 
         // 高并发需要关掉此处控制一下验证时机
         if ($this->actionIsLogin()) {
-            $request->user = UserLogic::findData($request->user['id']);
+            $request->user = UserLogic::findData($request->user->id);
         }
         return $handler($request);
     }

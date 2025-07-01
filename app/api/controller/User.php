@@ -29,7 +29,7 @@ class User
      */
     public function updatePassword(Request $request) : Response
     {
-        UserLogic::updatePassword($request->post(), $request->user['id']);
+        UserLogic::updatePassword($request->post(), $request->user->id);
         return success([], '修改成功，请重新登录');
     }
 
@@ -41,7 +41,7 @@ class User
      */
     public function getUserInfo(Request $request) : Response
     {
-        $data = UserLogic::findData($request->user['id']);
+        $data = UserLogic::findData($request->user->id);
         return success($data);
     }
 
@@ -53,7 +53,7 @@ class User
      */
     public function updateInfo(Request $request) : Response
     {
-        UserLogic::updateInfo($request->post(), $request->user['id']);
+        UserLogic::updateInfo($request->post(), $request->user->id);
         return success([], '修改成功');
     }
 

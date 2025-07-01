@@ -33,8 +33,8 @@ class JwtAdmin implements MiddlewareInterface
             }
 
             // 高并发需要关掉此处控制一下验证时机
-            $request->adminUser = AdminUserModel::find($request->adminUser['id']);
-            if (! $request->adminUser || $request->adminUser['status'] == 2) {
+            $request->adminUser = AdminUserModel::find($request->adminUser->id);
+            if (! $request->adminUser || $request->adminUser->status == 2) {
                 abort('非法请求', -2);
             }
 

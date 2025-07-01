@@ -15,10 +15,8 @@ echo "        {{$columnsParams}
             else if ($type == 'text_link') {
                 
 echo "        {{$columnsParams}
-            render: (_, record) => <Button 
-                href={record.{$field}} 
-                disabled={authCheck('1111')}
-                //target='_blank'
+            render: (_, record) => <NavLink 
+                to={authCheck('shopOrderInfo') ? '' : `/shop/shopOrder/info?id=\${record.shop_order_id}`}
             >{record.{$field}}</NavLink>
         },\n";
 

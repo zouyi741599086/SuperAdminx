@@ -3,6 +3,7 @@ namespace app\utils;
 
 //use Intervention\Image\ImageManagerStatic as Image; // 图片处理类 https://image.intervention.io/v2
 use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
 use support\Log;
 use app\common\logic\FileLogic;
 use app\utils\AliyunOss;
@@ -26,7 +27,7 @@ class File
     public static $fileMimeType = ['image/png', 'image/jpeg', 'image/gif', 'application/x-rar-compressed', 'application/rar', 'application/zip', 'text/plain', 'audio/mpeg', 'audio/mp3', 'video/mp4', 'video/x-m4v', 'application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
     /**
-     * 文件上传，上传的数据回记录到file表进行管理
+     * 文件上传，上传的数据会记录到file表进行管理
      * @param string $disk 上传到哪，public》本地，aliyun》阿里云，qcloud》腾讯云
      * @throws \Exception
      */
@@ -127,8 +128,8 @@ class File
             if (in_array($fileSuffix, ['jpg', 'jpeg'])) {
                 $exifData = exif_read_data(public_path() . $path);
                 if (isset($exifData['Orientation'])) {
-                    $manager = new ImageManager(['driver' => 'imagick']);
-                    $image   = $manager->make("public/{$path}");
+                    $manager = new ImageManager(new Driver());
+                    $image   = $manager->read("public/{$path}");
                     // 需要逆时针90度
                     if ($exifData['Orientation'] == 6) {
                         $image->rotate(-90)->save("public/{$path}", 100);
@@ -141,7 +142,6 @@ class File
                     if ($exifData['Orientation'] == 3) {
                         $image->rotate(-180)->save("public/{$path}", 100);
                     }
-                    $image->destroy();
                 }
             }
         } catch (\Exception $e) {
@@ -160,8 +160,8 @@ class File
     {
         try {
             $path    = "public/{$path}";
-            $manager = new ImageManager('imagick'); // gd 或 imagick
-            $image   = $manager->make($path);
+            $manager = new ImageManager(new Driver()); // gd 或 imagick
+            $image   = $manager->read($path);
             // 如果有宽无高
             if ($width && ! $height) {
                 $bili   = $width / $image->width();
@@ -172,8 +172,7 @@ class File
                 $bili  = $height / $image->height();
                 $width = intval($bili * $image->width());
             }
-            $image->fit($width ?: $image->width(), $height ?: $image->height())->save($path, 100);
-            $image->destroy();
+            $image->coverDown($width ?: $image->width(), $height ?: $image->height())->save($path, 100);
         } catch (\Exception $e) {
             Log::error($e->getMessage(), []);
         }

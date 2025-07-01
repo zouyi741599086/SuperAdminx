@@ -62,11 +62,12 @@ class User
     /**
      * 搜索选择某条数据
      * @method get
+	 * @param Request $request 
      * @param string $keywords 搜索的关键字
      * @param int $id 选中的数据id
      * @return Response
      */
-    public function selectUser(string $keywords = null, int $id = null): Response
+    public function selectUser(Request $request, ?string $keywords = null, ?int $id = null): Response
     {
         $list = UserLogic::selectUser($keywords, $id);
         return success($list);

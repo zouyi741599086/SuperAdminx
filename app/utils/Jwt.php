@@ -4,6 +4,7 @@ namespace app\utils;
 use think\facade\Db;
 use support\Redis;
 use app\utils\DataEncryptor;
+use app\utils\ArrayObjectAccess;
 
 /**
  * Jwt鉴权
@@ -22,8 +23,8 @@ class Jwt
 {
     /**
      * 生成token
-     * @param array $user 生成token的数据，数组key不要太多，一般3-5个即可，太多会影响token的长度
      * @param string $app_name 给哪个应用生成token
+     * @param array $user 生成token的数据，数组key不要太多，一般3-5个即可，太多会影响token的长度
      * @return string
      */
     public static function generateToken(string $app_name, array $user) : string
@@ -62,9 +63,9 @@ class Jwt
     /**
      * 解密token获取用户
      * @param string $app_name 解密哪个应用生成token
-     * @return array 
+     * @return ArrayObjectAccess 
      */
-    public static function getUser(string $app_name) : array
+    public static function getUser(string $app_name) : ArrayObjectAccess
     {
         $config = self::getConfig($app_name);
 
@@ -114,7 +115,7 @@ class Jwt
                 throw new \Exception('登录已失效');
             }
         }
-        return $user;
+        return new ArrayObjectAccess($user);
     }
 
     /**

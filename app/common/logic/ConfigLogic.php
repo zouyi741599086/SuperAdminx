@@ -6,6 +6,7 @@ use support\Cache;
 use app\common\model\ConfigModel;
 use app\common\validate\ConfigValidate;
 use app\common\model\AdminMenuModel;
+use app\utils\ArrayObjectAccess;
 
 /**
  * 参数设置
@@ -21,7 +22,7 @@ class ConfigLogic
      */
     public static function getList()
     {
-        return ConfigModel::withoutField('content,fields_config,description')
+        return ConfigModel::withoutField('content,fields_config')
             ->order('sort asc,id desc')
             ->select();
     }
@@ -76,26 +77,25 @@ class ConfigLogic
             $config      = AdminMenuModel::find(50);
             $adminMenuId = AdminMenuModel::where('name', "config_{$oldName}")->value('id');
             AdminMenuModel::update([
-                'id'            => $adminMenuId,
-                'title'         => $params['title'],
-                'type'          => 7,
-                'icon'          => $config->icon,
-                'path'          => "/config/{$params['name']}",
-                'name'          => "config_{$params['name']}",
+                'id'    => $adminMenuId,
+                'title' => $params['title'],
+                'type'  => 7,
+                'icon'  => $config->icon,
+                'path'  => "/config/{$params['name']}",
+                'name'  => "config_{$params['name']}",
                 // 'pid_name'      => $config->name,
                 // 'pid_name_path' => ",{$config->name},config_{$params['name']},",
                 //'sort'          => $params['sort'] ?? 0,
-                'desc'          => $params['description'] ?? null,
+                'desc'  => $params['description'] ?? null,
             ]);
-			
-			// 重新更新菜单权限表我下面所有数据的pid_path相关字段
+
+            // 重新更新菜单权限表我下面所有数据的pid_path相关字段
             AdminMenuModel::where('pid_name_path', 'like', "%,config_{$oldName},%")
                 ->orderRaw("CHAR_LENGTH(pid_name_path) asc")
                 ->field('id,name,pid_name,pid_name_path')
                 ->select()
                 ->each(function ($item)
                 {
-                    var_dump($item->id);
                     if ($item['pid_name']) {
                         $pid_data              = AdminMenuModel::where('name', $item['pid_name'])->field('id,pid_name_path')->find();
                         $item['pid_name_path'] = "{$pid_data['pid_name_path']}{$item['name']},";
@@ -104,7 +104,7 @@ class ConfigLogic
                     }
                     $item->save();
                 });
-				
+
             Cache::delete("Config_{$oldName}");
 
             Db::commit();
@@ -145,7 +145,7 @@ class ConfigLogic
             $data = Cache::get("Config_{$name}");
             if (is_null($data)) {
                 $data = ConfigModel::where('name', $name)->find();
-				Cache::set("Config_{$name}", $data);
+                Cache::set("Config_{$name}", $data);
             }
             return $data;
         }
@@ -164,9 +164,9 @@ class ConfigLogic
         try {
             // 配置name
             $configName = ConfigModel::where('id', $id)->value('name');
-			Cache::delete("Config_{$configName}");
-			
-			// 要同步删除adminMenu的数据
+            Cache::delete("Config_{$configName}");
+
+            // 要同步删除adminMenu的数据
             AdminMenuModel::where('name', "config_{$configName}")->delete();
 
             // 删除本表的数据
@@ -182,11 +182,12 @@ class ConfigLogic
     /**
      * 获取配置内容
      * @param string $name
+     * @return ArrayObjectAccess
      */
-    public static function getConfig(string $name)
+    public static function getConfig(string $name) : ArrayObjectAccess
     {
         $data = self::findData(null, $name);
-        return $data['content'] ?? [];
+        return new ArrayObjectAccess($data['content'] ?? []);
     }
 
     /**

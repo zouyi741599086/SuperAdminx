@@ -231,7 +231,7 @@ class <?php echo $file_name ?? ''; ?>
      * @param int \$id 选中的数据id
      * @return Response
      */
-    public function select{$tableNameToCamelCase}(Request \$request, string \$keywords = null, int \$id = null): Response
+    public function select{$tableNameToCamelCase}(Request \$request, ?string \$keywords = null, ?int \$id = null): Response
     {
         \$list = {$data['logic']['file_name']}::select{$tableNameToCamelCase}(\$keywords, \$id);
         return success(\$list);

@@ -116,7 +116,7 @@ class Config
      */
     public function getConfig(string $name) : Response
     {
-        $config = ConfigLogic::getConfig($name);
+        $config = ConfigLogic::getConfig($name, 'array');
         return success($config);
     }
 }

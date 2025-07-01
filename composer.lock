@@ -4,53 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c83c9663b56006a75bfc17870ce46f44",
+    "content-hash": "6bb7b809d8497c6dcaa5ab57dcba08ad",
     "packages": [
-        {
-            "name": "aliyuncs/oss-sdk-php",
-            "version": "v2.7.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-                "reference": "483dd0b8bff5d47f0e4ffc99f6077a295c5ccbb5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/483dd0b8bff5d47f0e4ffc99f6077a295c5ccbb5",
-                "reference": "483dd0b8bff5d47f0e4ffc99f6077a295c5ccbb5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "php-coveralls/php-coveralls": "*",
-                "phpunit/phpunit": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "OSS\\": "src/OSS"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Aliyuncs",
-                    "homepage": "http://www.aliyun.com"
-                }
-            ],
-            "description": "Aliyun OSS SDK for PHP",
-            "homepage": "http://www.aliyun.com/product/oss/",
-            "support": {
-                "issues": "https://github.com/aliyun/aliyun-oss-php-sdk/issues",
-                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.7.2"
-            },
-            "time": "2024-10-28T10:41:12+00:00"
-        },
         {
             "name": "carbonphp/carbon-doctrine-types",
             "version": "3.2.0",
@@ -1519,16 +1474,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "3.11.1",
+            "version": "3.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "0f87254688e480fbb521e2a1ac6c11c784ca41af"
+                "reference": "d0f097b8a3fa8fb758efc9440b513aa3833cda17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/0f87254688e480fbb521e2a1ac6c11c784ca41af",
-                "reference": "0f87254688e480fbb521e2a1ac6c11c784ca41af",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/d0f097b8a3fa8fb758efc9440b513aa3833cda17",
+                "reference": "d0f097b8a3fa8fb758efc9440b513aa3833cda17",
                 "shasum": ""
             },
             "require": {
@@ -1539,7 +1494,7 @@
             "require-dev": {
                 "mockery/mockery": "^1.6",
                 "phpstan/phpstan": "^2.1",
-                "phpunit/phpunit": "^10.0 || ^11.0",
+                "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0",
                 "slevomat/coding-standard": "~8.0",
                 "squizlabs/php_codesniffer": "^3.8"
             },
@@ -1575,7 +1530,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/3.11.1"
+                "source": "https://github.com/Intervention/image/tree/3.11.3"
             },
             "funding": [
                 {
@@ -1591,7 +1546,7 @@
                     "type": "ko_fi"
                 }
             ],
-            "time": "2025-02-01T07:28:26+00:00"
+            "time": "2025-05-22T17:26:23+00:00"
         },
         {
             "name": "monolog/monolog",

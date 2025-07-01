@@ -78,7 +78,7 @@ class AdminUser
      */
     public function delete(Request $request): Response
     {
-        AdminUserLogic::delete($request->post('id'), $request->adminUser['id']);
+        AdminUserLogic::delete($request->post('id'), $request->adminUser->id);
         return success([], '删除成功');
     }
 
@@ -103,7 +103,7 @@ class AdminUser
      */
     public function updatePassword(Request $request): Response
     {
-        AdminUserLogic::updatePassword($request->post(), $request->adminUser['id']);
+        AdminUserLogic::updatePassword($request->post(), $request->adminUser->id);
         return success([], '修改成功，请重新登录');
     }
 
@@ -115,7 +115,7 @@ class AdminUser
      */
     public function getAdminUser(Request $request): Response
     {
-        $data = AdminUserLogic::getAdminUser($request->adminUser['id']);
+        $data = AdminUserLogic::getAdminUser($request->adminUser->id);
         return success($data);
     }
 
@@ -127,7 +127,7 @@ class AdminUser
      */
     public function updateInfo(Request $request): Response
     {
-        AdminUserLogic::updateInfo($request->post(), $request->adminUser['id']);
+        AdminUserLogic::updateInfo($request->post(), $request->adminUser->id);
         return success([], '修改成功');
     }
 }

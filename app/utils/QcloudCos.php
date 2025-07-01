@@ -51,7 +51,7 @@ class QcloudCos
      * @return string 腾讯云访问资源的url
      */
     public static function upload(string $filePath, bool $deleteFile = true) : string
-    {   
+    {
         try {
             $filePath = rtrim($filePath, '/');
             // 读取文件的后缀
@@ -182,11 +182,11 @@ class QcloudCos
      */
     public static function getSignature(string $dir)
     {
-        $secretId  = config('superadminx.file_system.qcloud.SecretId');
-        $secretKey = config('superadminx.file_system.qcloud.SecretKey');
-        $bucket    = config('superadminx.file_system.qcloud.bucket');
-        $region    = config('superadminx.file_system.qcloud.region');
-        $bucket_url  = config('superadminx.file_system.qcloud.bucket_url');
+        $secretId   = config('superadminx.file_system.qcloud.SecretId');
+        $secretKey  = config('superadminx.file_system.qcloud.SecretKey');
+        $bucket     = config('superadminx.file_system.qcloud.bucket');
+        $region     = config('superadminx.file_system.qcloud.region');
+        $bucket_url = config('superadminx.file_system.qcloud.bucket_url');
 
         $cosHost        = $bucket_url;
         $cosKey         = $dir;

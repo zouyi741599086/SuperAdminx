@@ -12,8 +12,8 @@ import { useMount } from 'ahooks';
  * */
 export default ({ value, onChange, ...props }) => {
     const [options, setOptions] = useState([]);
-    const [keywords, setKeywords] = useState([]);
-    const [_value, _setValue] = useState();
+    const [keywords, setKeywords] = useState(null);
+    const [_value, _setValue] = useState(null);
 
     useMount(() => {
         // 加载列表数据

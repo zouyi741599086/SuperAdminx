@@ -35,10 +35,10 @@ class AdminLogLogic
     {
         $request = request();
         $title   = $title ?: self::getMethodLog();
-        if ($title && $request->adminUser && $request->adminUser['id'] != 1) {
+        if ($title && $request->adminUser && $request->adminUser->id != 1) {
             AdminLogModel::create([
-                'name'           => $request->adminUser['name'] ?? '',
-                'tel'            => $request->adminUser['tel'] ?? '',
+                'name'           => $request->adminUser->name ?? '',
+                'tel'            => $request->adminUser->tel ?? '',
                 'title'          => $title,
                 'ip'             => $request->getRealIp(true),
                 'request_url'    => $request->fullUrl(),

@@ -26,7 +26,7 @@ class Config
      */
     public function getConfig(string $name) : Response
     {
-        $data = ConfigLogic::getConfig($name);
+        $data = ConfigLogic::getConfig($name, 'array');
         $data = file_url($data);
         return success($data);
     }
