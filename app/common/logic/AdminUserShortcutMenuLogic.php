@@ -37,14 +37,14 @@ class AdminUserShortcutMenuLogic
         if ($adminUserId == 1) {
             return AdminMenuModel::field('*')
                 ->order('sort asc,id desc')
-                ->where('type', 'in', [1, 2, 3, 4])
+                ->where('type', 'in', [1, 2, 3, 4, 7])
                 ->select();
         } else {
             $adminRoleId = AdminUserModel::where('id', $adminUserId)->value('admin_role_id');
             return AdminRoleMenuModel::alias('arm')
                 ->join('AdminMenu am', 'arm.admin_menu_id = am.id')
                 ->where('arm.admin_role_id', $adminRoleId)
-                ->where('am.type', 'in', [1, 2, 3, 4])
+                ->where('am.type', 'in', [1, 2, 3, 4, 7])
                 ->field('am.*')
                 ->order('am.sort asc,am.id desc')
                 ->select();

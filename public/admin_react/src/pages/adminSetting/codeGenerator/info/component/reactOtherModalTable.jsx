@@ -108,7 +108,14 @@ export default ({ tableName, ...props }) => {
             value: 'status_type',
             label: '多颜色状态/类型',
         },
-
+        {
+            value: 'badge_number',
+            label: '徽标-带背景色的数字',
+        },
+        {
+            value: 'badge_status',
+            label: '徽标-状态',
+        },
         {
             value: 'sort',
             label: '排序',

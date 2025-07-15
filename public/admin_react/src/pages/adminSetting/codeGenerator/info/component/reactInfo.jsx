@@ -97,6 +97,18 @@ export default ({ tableName, operationFile, ...props }) => {
             label: '状态如订单状态',
         },
         {
+            value: 'progress',
+            label: '进度条',
+        },
+        {
+            value: 'badge_number',
+            label: '徽标-带背景色的数字',
+        },
+        {
+            value: 'badge_status',
+            label: '徽标-状态',
+        },
+        {
             value: 'text_copy',
             label: '可复制文本',
         },
@@ -107,7 +119,7 @@ export default ({ tableName, operationFile, ...props }) => {
         {
             value: 'text_success',
             label: '绿色文本',
-        },
+        }, 
         {
             value: 'text_warning',
             label: '黄色文本',

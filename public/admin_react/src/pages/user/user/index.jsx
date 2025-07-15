@@ -43,7 +43,7 @@ export default () => {
             duration: 0,
             key: 'excel'
         });
-        let params = formRef.current.getFieldsValue();
+        let params = formRef.current.getFieldsFormatValue();
         userApi.exportData(params).then(res => {
             message.destroy('excel')
             if (res.code === 1 && res.data.filePath && res.data.fileName) {
@@ -52,7 +52,7 @@ export default () => {
                     window.open(`${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`);
                 }, 1000)
             } else {
-                message.error('数据导出失败');
+                message.error(res.message || '数据导出失败');
             }
         })
     }

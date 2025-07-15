@@ -49,6 +49,10 @@
                 $antdComponent[] = 'Descriptions';
                 $antdComponent[] = 'Popover';
             }
+            // 需要微标组件
+            if (($v == 'badge_number' || $v == 'badge_status') && !in_array('Badge', $antdComponent)) {
+                $antdComponent[] = 'Badge';
+            }
 
             // 弹窗查看文本
             if ($v == 'preview_text') {

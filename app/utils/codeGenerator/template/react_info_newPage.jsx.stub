@@ -71,7 +71,7 @@ foreach ($apiAll as $v) {
     echo "import { {$v}Api } from '@/api/{$v}';\n";
 }
 ?>
-import { App, Space, Row, Col, Descriptions, Typography, Affix, Flex, Timeline } from 'antd';
+import { App, Space, Row, Col, Descriptions, Typography, Affix, Flex, Timeline, Progress, Badge} from 'antd';
 import { useMount } from 'ahooks';
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Lazyload from '@/component/lazyLoad/index';
@@ -191,6 +191,58 @@ export default () => {
                     {data.{$field} === 8 ? <>
                         <Typography.Text underline>已退款</Typography.Text>
                     </> : ''}
+                </>";
+                }
+
+                // 进度条
+                if ($type == 'progress') {
+                    $children = "<>
+                    <Progress
+                        style={{ maxWidth: 150 }}
+                        percent={data.{$field}}
+                        size=\"small\"
+                        format={(val) => {
+                            return `\${val}%`
+                        }}
+                        percentPosition={{
+                            align: 'end',
+                            type: 'outer',
+                        }}
+                    />
+                </>";
+                }
+
+                // 徽标-带背景色的数字
+                if ($type == 'badge_number') {
+                    $children = "<>
+                    <Badge 
+                        count={data.{$field}} 
+                        // color=\"#faad14\" // 黄色 
+                        // color=\"#f5222d\" // 红色
+                        // color=\"#52c41a\" // 绿色
+                    />
+                </>";
+                }
+
+                // 徽标-状态
+                if ($type == 'badge_status') {
+                    $children = "<>
+                    {data.{$field} === 1 ? <>
+                        <Badge status=\"success\" text=\"待付款\" />
+                    </> : ''}
+                    {data.{$field} === 2 ? <>
+                        <Badge status=\"error\" text=\"待发货\" />
+                    </> : ''}
+                    {data.{$field} === 3 ? <>
+                        <Badge status=\"default\" text=\"待收货\" />
+                    </> : ''}
+                    {data.{$field} === 4 ? <>
+                        <Badge status=\"processing\" text=\"待评价\" />
+                    </> : ''}
+                    {data.{$field} === 5 ? <>
+                        <Badge status=\"warning\" text=\"已完成\" />
+                    </> : ''}
+                    {/* 其它颜色 <Badge color=\"pink\" text=\"状态名称\" /> pink red yellow orange cyan green blue purple geekblue magenta volcano gold lime */}
                 </>";
                 }
 
