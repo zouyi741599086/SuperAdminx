@@ -73,9 +73,13 @@ class DataEncryptor
             throw new \Exception('解密数据不能为空');
         }
         try {
-            $data = base64_decode($data);
-            $data = openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
-            return json_decode($data, true);
+            $data   = base64_decode($data);
+            $data   = openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+            $return = json_decode($data, true);
+            if (! is_array($return)) {
+                throw new \Exception('解密失败');
+            }
+            return $return;
         } catch (\Exception $e) {
             throw new \Exception("AES解密失败：{$e->getMessage()}");
         }

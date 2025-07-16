@@ -41,13 +41,16 @@ class BaseModel extends Model
      */
     public static function onAfterUpdate($data)
     {
-        $fileUrl   = self::dataSearchFile($data);
         $tableName = $data->name;
         $tableId   = ($data->toArray())['id'] ?? null;
 
         // 重新更新此条数据使用的附件
-        if ($fileUrl && $tableName && $tableId) {
-            FileRecordLogic::update($tableName, $tableId, $fileUrl);
+        if ($tableName && $tableId) {
+            $data    = $data->find($tableId); // 重新获取更新后最新的数据，不然只更新某个附件值导致其它附件字段被删除
+            $fileUrl = self::dataSearchFile($data);
+            if ($fileUrl) {
+                FileRecordLogic::update($tableName, $tableId, $fileUrl);
+            }
         }
     }
 
@@ -72,7 +75,7 @@ class BaseModel extends Model
         $fileUrl = [];
         try {
             $content = $data->toArray();
-            if (!isset($data->file) || !$data->file) {
+            if (! isset($data->file) || ! $data->file) {
                 return [];
             }
             foreach ($data->file as $k => $v) {
