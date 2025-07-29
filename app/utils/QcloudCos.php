@@ -74,13 +74,15 @@ class QcloudCos
             // 上传后访问的连接
             $url = config('superadminx.file_system.qcloud.bucket_url') . "/{$ossPath}";
             //存入file表数据库
-            FileLogic::create(
-                'qcloud',
-                $url,
-                $fileSize,
-                $ossPath,
-                $result['VersionId'] ?? null
-            );
+            if (config('superadminx.clear_file')) {
+                FileLogic::create(
+                    'qcloud',
+                    $url,
+                    $fileSize,
+                    $ossPath,
+                    $result['VersionId'] ?? null
+                );
+            }
 
             // 删除本地的文件
             if ($deleteFile) {
@@ -235,14 +237,15 @@ class QcloudCos
             $exist = self::initOssClient()->getObjectMeta(config('superadminx.file_system.qcloud.bucket'), $post['filename']);
             // 获取文件的版本id
             $version_id = $exist['x-oss-version-id'] ?? null;
-
-            FileLogic::create(
-                'qcloud',
-                config('superadminx.file_system.qcloud.bucket_url') . "/{$post['filename']}",
-                $post['size'],
-                $post['filename'],
-                $version_id
-            );
+            if (config('superadminx.clear_file')) {
+                FileLogic::create(
+                    'qcloud',
+                    config('superadminx.file_system.qcloud.bucket_url') . "/{$post['filename']}",
+                    $post['size'],
+                    $post['filename'],
+                    $version_id
+                );
+            }
         } catch (\Exception $e) {
             abort($e->getMessage());
         }

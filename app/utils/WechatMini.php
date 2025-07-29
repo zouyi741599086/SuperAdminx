@@ -6,22 +6,6 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use support\Redis;
 use support\Log;
-use EasyWeChat\Kernel\Contracts\AccessToken;
-
-class MyAccessToken implements AccessToken
-{
-    public function getToken() : string
-    {
-        return (new \app\common\model\ParamTokenModel())->where('type', 'mini')->value('access_token');
-    }
-
-    public function toQuery() : array
-    {
-        return [
-            'access_token' => $this->getToken(),
-        ];
-    }
-}
 
 /**
  * 微信小程序操作
@@ -54,9 +38,6 @@ class WechatMini
                 'retry'   => true, // 使用默认重试配置
             ],
         ];
-
-        // 正式版用下面的返回
-        return (new Application($config))->setAccessToken(new MyAccessToken());
 
         return (new Application($config))
             // 缓存使用的redis

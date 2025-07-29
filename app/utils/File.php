@@ -53,7 +53,7 @@ class File
             }
 
             // 上传到本地的时候
-            if ($disk == 'public') {
+            if ($disk == 'public' && config('superadminx.clear_file')) {
                 // 存入file表
                 FileLogic::create($disk, $path, $fileSize);
             }

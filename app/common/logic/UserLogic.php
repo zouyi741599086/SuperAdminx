@@ -97,8 +97,11 @@ class UserLogic
      */
     private static function updatePidPath(int $id)
     {
-        // 更新我的下级
-        UserModel::where('pid_path', 'like', "%,{$id},%")
+        $oldUser = UserModel::field('id,pid,pid_path,pid_layer')->find($id);
+
+        // 只更新我自己，本来这块程序如果把条件去掉则可以更新自己及自己下面所有的用户，但是如果我下面所有用户量太大则导致程序卡死，所以只能分开更新自己，在更新自己下面的人
+        UserModel::where('id', $id)
+            //->where('pid_path', 'like', "%,{$id},%") // 去掉上面个条件，放开这个则会更新所有，适合数据量小的情况
             ->order("pid_layer asc")
             ->field('id,pid,pid_path,pid_layer')
             ->select()
@@ -113,6 +116,47 @@ class UserLogic
                     $item->pid_layer = 1;
                 }
                 $item->save();
+            });
+        if (! $oldUser->pid_path) {
+            return;
+        }
+
+        $newUser = UserModel::field('id,pid,pid_path,pid_layer')->find($id);
+
+        // 开始更新我下面的用户
+        UserModel::where('pid_path', 'like', "%{$oldUser->pid_path}%")
+            ->where('id', '<>', $id)
+            ->order("pid_layer asc")
+            ->field('id,pid,pid_path,pid_layer')
+            ->chunk(1000, function ($list) use ($oldUser, $newUser)
+            {
+                // 构建 CASE WHEN 语句实现批量更新
+                $casePath  = "CASE id ";
+                $caseLayer = "CASE id ";
+                $ids       = [];
+
+                foreach ($list as $k => $v) {
+                    $id    = (int) $v['id'];
+                    $path  = str_replace($oldUser->pid_path, $newUser->pid_path, $v['pid_path']);
+                    $layer = (int) $v['pid_layer'] + ($newUser->pid_layer - $oldUser->pid_layer);
+
+                    $casePath .= "WHEN {$id} THEN '{$path}' ";
+                    $caseLayer .= "WHEN {$id} THEN {$layer} ";
+                    $ids[]     = $id;
+                }
+
+                $casePath .= "END";
+                $caseLayer .= "END";
+                $idsStr    = implode(',', $ids);
+
+                // 构建原生SQL
+                $sql = "UPDATE sa_user 
+                SET pid_path = {$casePath},
+                    pid_layer = {$caseLayer}
+                WHERE id IN ({$idsStr})";
+
+                // 执行更新
+                Db::execute($sql);
             });
     }
 

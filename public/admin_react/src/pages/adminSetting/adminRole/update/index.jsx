@@ -51,7 +51,7 @@ export default (props) => {
             }}
             modalProps={{
                 // 关闭的时候销毁modal里的子元素，因为重复修改一条数据后request返回无法赋值到form里面，官方bug
-                destroyOnClose: true,
+                destroyOnHidden: true,
             }}
             params={{
                 id: props.updateId

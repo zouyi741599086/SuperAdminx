@@ -72,13 +72,15 @@ class AliyunOss
             // 上传后访问的连接
             $url = config('superadminx.file_system.aliyun.bucket_url') . "/{$ossPath}";
             //存入file表数据库
-            FileLogic::create(
-                'aliyun',
-                $url,
-                $fileSize,
-                $ossPath,
-                $result[OssClient::OSS_HEADER_VERSION_ID] ?? null
-            );
+            if (config('superadminx.clear_file')) {
+                FileLogic::create(
+                    'aliyun',
+                    $url,
+                    $fileSize,
+                    $ossPath,
+                    $result[OssClient::OSS_HEADER_VERSION_ID] ?? null
+                );
+            }
             // 删除本地的文件
             if ($deleteFile) {
                 @unlink("./public/{$filePath}");
@@ -151,7 +153,7 @@ class AliyunOss
      */
     public static function signUrl(string $object, int $timeout = 0) : string
     {
-       
+
         try {
             // 设置文件访问的url过期时间
             if (! $timeout) {
@@ -248,14 +250,15 @@ class AliyunOss
             $exist = self::initOssClient()->getObjectMeta(config('superadminx.file_system.aliyun.bucket'), $post['filename']);
             // 获取文件的版本id
             $version_id = $exist['x-oss-version-id'] ?? null;
-
-            FileLogic::create(
-                'aliyun',
-                config('superadminx.file_system.aliyun.bucket_url') . "/{$post['filename']}",
-                $post['size'],
-                $post['filename'],
-                $version_id
-            );
+            if (config('superadminx.clear_file')) {
+                FileLogic::create(
+                    'aliyun',
+                    config('superadminx.file_system.aliyun.bucket_url') . "/{$post['filename']}",
+                    $post['size'],
+                    $post['filename'],
+                    $version_id
+                );
+            }
         } catch (OssException $e) {
             abort($e->getMessage());
         }

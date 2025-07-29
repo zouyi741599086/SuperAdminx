@@ -12,15 +12,20 @@ use Yansongda\Pay\Pay;
 class Pays
 {
 
-    public static $config;
+    protected $config;
 
+    public function __construct(?string $notify_url = null)
+    {
+        $this->setConfig($notify_url);
+    }
+    
     /**
      * 注入配置
      * @param string $notify_url 回调地址 如/api/Pay/notify
      */
-    public static function setConfig(string $notify_url = null)
+    public function setConfig(?string $notify_url = null)
     {
-        self::$config = [
+        $this->config = [
             'alipay' => [
                 'default' => [
                     // 必填-支付宝分配的 app_id
@@ -122,7 +127,6 @@ class Pays
                 // 更多配置项请参考 [Guzzle](https://guzzle-cn.readthedocs.io/zh_CN/latest/request-options.html)
             ],
         ];
-        Pay::config(self::$config);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -144,15 +148,12 @@ class Pays
      *           'openid' => 'dsfs454f5s54ew54f5s',
      *      ],
      *   ];
-     * @param string $notify_url 微信支付回调地址
      * @return \Yansongda\Artful\Rocket|\Yansongda\Supports\Collection
      */
-    public static function wechatMiniPay(array $data, string $notify_url)
+    public function wechatMiniPay(array $data)
     {
-        // 先注入配置
-        self::setConfig($notify_url);
         // 发起支付
-        return Pay::wechat()->mini($data);
+        return Pay::wechat($this->config)->mini($data);
     }
 
 
@@ -160,20 +161,15 @@ class Pays
      * 微信支付回调解密数据
      * @return array 支付回调解密的参数
      */
-    public static function wechatNotify() : array
+    public function wechatNotify() : array
     {
-        // 先注入配置
-        self::setConfig();
-
         try {
-            $result = Pay::wechat()->callback(request()->post());
+            $result = Pay::wechat($this->config)->callback(request()->post());
             $result = $result->resource['ciphertext'] ?? [];
 
             if (
                 isset($result['trade_state']) &&
                 $result['trade_state'] == 'SUCCESS' &&
-                isset($result['appid']) &&
-                $result['appid'] == config('superadminx.wechat_xiaochengxu.AppID') &&
                 isset($result['mchid']) &&
                 $result['mchid'] == config('superadminx.wechat_pay.mch_id')
             ) {
@@ -189,12 +185,9 @@ class Pays
     /**
      * 微信支付回调成功
      */
-    public static function wechatNotifySuccess()
+    public function wechatNotifySuccess()
     {
-        // 先注入配置
-        self::setConfig();
-
-        return Pay::wechat()->success();
+        return Pay::wechat($this->config)->success();
     }
 
     /**
@@ -203,10 +196,8 @@ class Pays
      * @param float 退款金额，单位：元
      * @param float 原支付订单交易的订单总金额，单位：元
      */
-    public static function wechatRefund(string $transaction_id, float $refund, float $total)
+    public function wechatRefund(string $transaction_id, float $refund, float $total)
     {
-        // 先注入配置
-        self::setConfig();
         try {
             $order = [
                 'transaction_id' => $transaction_id,
@@ -218,7 +209,7 @@ class Pays
                 ],
             ];
 
-            $result = Pay::wechat()->refund($order);
+            $result = Pay::wechat($this->config)->refund($order);
             if ($result->status == 'CLOSED') {
                 throw new \Exception('退款已关闭');
             }

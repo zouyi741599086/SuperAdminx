@@ -25,13 +25,15 @@ class BaseModel extends Model
      */
     public static function onAfterInsert($data)
     {
-        $fileUrl   = self::dataSearchFile($data);
-        $tableName = $data->name;
-        $tableId   = ($data->toArray())['id'] ?? null;
+        if (config('superadminx.clear_file')) {
+            $fileUrl   = self::dataSearchFile($data);
+            $tableName = $data->name;
+            $tableId   = ($data->toArray())['id'] ?? null;
 
-        // 记录这条数据里面所有的附件
-        if ($fileUrl && $tableName && $tableId) {
-            FileRecordLogic::create($tableName, $tableId, $fileUrl);
+            // 记录这条数据里面所有的附件
+            if ($fileUrl && $tableName && $tableId) {
+                FileRecordLogic::create($tableName, $tableId, $fileUrl);
+            }
         }
     }
 
@@ -41,15 +43,16 @@ class BaseModel extends Model
      */
     public static function onAfterUpdate($data)
     {
-        $tableName = $data->name;
-        $tableId   = ($data->toArray())['id'] ?? null;
-
-        // 重新更新此条数据使用的附件
-        if ($tableName && $tableId) {
-            $data    = $data->find($tableId); // 重新获取更新后最新的数据，不然只更新某个附件值导致其它附件字段被删除
-            $fileUrl = self::dataSearchFile($data);
-            if ($fileUrl) {
-                FileRecordLogic::update($tableName, $tableId, $fileUrl);
+        if (config('superadminx.clear_file')) {
+            $tableName = $data->name;
+            $tableId   = ($data->toArray())['id'] ?? null;
+            // 重新更新此条数据使用的附件
+            if ($tableName && $tableId) {
+                $data    = $data->find($tableId); // 重新获取更新后最新的数据，不然只更新某个附件值导致其它附件字段被删除
+                $fileUrl = self::dataSearchFile($data);
+                if ($fileUrl) {
+                    FileRecordLogic::update($tableName, $tableId, $fileUrl);
+                }
             }
         }
     }
@@ -60,11 +63,13 @@ class BaseModel extends Model
      */
     public static function onAfterDelete($data)
     {
-        $tableName = $data->name;
-        $tableId   = ($data->toArray())['id'];
+        if (config('superadminx.clear_file')) {
+            $tableName = $data->name;
+            $tableId   = ($data->toArray())['id'];
 
-        // 删除附件记录
-        FileRecordLogic::delete($tableName, $tableId);
+            // 删除附件记录
+            FileRecordLogic::delete($tableName, $tableId);
+        }
     }
 
     /**

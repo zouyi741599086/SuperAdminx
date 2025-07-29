@@ -22,7 +22,7 @@ function file_url($data)
 {
     $url = config('superadminx.url');
     if ($data && $url) {
-        if (is_array($data)) {
+        if (is_array($data) || is_object($data)) {
             foreach ($data as $k => $v) {
                 $data[$k] = file_url($v);
             }
@@ -131,11 +131,49 @@ function result($data = [], int $code = 1, string $mssage = '操作成功', bool
         'data'    => $data,
     ];
     // 判断是否需要加密
-    if (config('superadminx.api_encryptor.enable') == true && isset($result['data']) && $is_encrypt) {
+    if (
+        config('superadminx.api_encryptor.enable') == true &&
+        isset($result['data']) &&
+        $is_encrypt &&
+        ! in_array(request()->path(), config('superadminx.api_encryptor.url'))
+    ) {
         $result['encrypt_data'] = DataEncryptor::aesEncrypt($result['data'], request()->aes_key, request()->aes_iv);
         unset($result['data']);
     }
     return json($result);
+}
+
+
+/**
+ * get请求
+ * @param string $url 请求地址
+ * @param array $params 请求参数
+ * @throws \Exception
+ */
+function send_get_request(string $url, array $params = [])
+{
+    // 初始化 cURL 会话
+    $ch = curl_init();
+
+    // 设置 cURL 选项
+    curl_setopt($ch, CURLOPT_URL, $url); // 设置请求的 URL
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $params); // 设置参数
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // 将响应结果存储在变量中而不是直接输出
+    curl_setopt($ch, CURLOPT_HEADER, false); // 不包含响应头
+
+    // 执行 cURL 请求
+    $response = curl_exec($ch);
+
+    // 检查是否有错误发生
+    if (curl_errno($ch)) {
+        throw new \Exception('cURL Error: ' . curl_error($ch));
+    }
+
+    // 关闭 cURL 会话
+    curl_close($ch);
+
+    // 返回响应
+    return json_decode($response, true);
 }
 
 /**
@@ -143,7 +181,7 @@ function result($data = [], int $code = 1, string $mssage = '操作成功', bool
  * @param array $header 表格头
  * @param array $list 表格数据
  * @param string $exportPathType 导出的文件放在哪，public》本地，aliyun》阿里云，qcloud》腾讯云
- * @return array|string
+ * @return string
  */
 function export(array &$header, array &$list, ?string $exportPathType = null) : string
 {
@@ -169,16 +207,13 @@ function export(array &$header, array &$list, ?string $exportPathType = null) : 
  * 生成文件后置处理，看是否需要将文件上传到云
  * @param string $filePath 文件在本地的url
  * @param string $exportPathType 云存储类型，public》本地，aliyun》阿里云，qcloud》腾讯云
- * @return void
+ * @return string
  */
-function export_path($filePath, $exportPathType = null)
+function export_path($filePath, $exportPathType = null): string
 {
     // 判断生成的文件存在哪
     if (! $exportPathType) {
         $exportPathType = config('superadminx.export_path_type');
-    }
-    if ($exportPathType == 'public') {
-        return $filePath;
     }
 
     if ($exportPathType == 'qcloud') {
@@ -188,4 +223,5 @@ function export_path($filePath, $exportPathType = null)
     if ($exportPathType == 'aliyun') {
         return AliyunOss::upload($filePath, true);
     }
+    return $filePath;
 }

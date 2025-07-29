@@ -42,7 +42,7 @@ export default (props) => {
                 gutter: [24, 0],
             }}
             modalProps={{
-                destroyOnClose: true
+                destroyOnHidden: true
             }}
             params={{
                 id: props.data?.id

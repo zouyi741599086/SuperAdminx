@@ -29,7 +29,7 @@ export default ({ callback, ...props }) => {
             // 不干掉null跟undefined 的数据
             omitNil={false}
             modalProps={{
-                destroyOnClose: true,
+                destroyOnHidden: true,
             }}
             onFinish={async (values) => {
                 return callback(values);

@@ -356,7 +356,7 @@ export default () => {
             duration: 0,
             key: 'excel'
         });
-        let params = formRef.current.getFieldsValue();
+        let params = formRef.current.getFieldsFormatValue();
         {$apiFileName}Api.exportData(params).then(res => {
             message.destroy('excel')
             if (res.code === 1 && res.data.filePath && res.data.fileName) {

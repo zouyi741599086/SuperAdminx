@@ -58,7 +58,6 @@ class <?php echo $file_name ?? ''; ?>
      * 列表
      * @param array \$params get参数
      * @param bool \$page 是否需要翻页，不翻页则返回模型
-     * @param bool \$model 是否返回模型，此参与权限大于上面两个
      * */
     public static function getList(array \$params = [], bool \$page = true)
     {
@@ -102,7 +101,7 @@ class <?php echo $file_name ?? ''; ?>
             \$list = {$data['model']['file_name']}::order('{$orderBy}')
                 ->select()
                 ->toArray();
-			Cache::set('{$tableNameToCamelCase}', \$list);
+			Cache::set('{$tableNameToCamelCase}', \$list, 86400);
         }
         return \$list;
     }";   
@@ -170,7 +169,7 @@ class <?php echo $file_name ?? ''; ?>
         \$data = Cache::get(\"{$tableNameToCamelCase}{\$id}\");
         if (is_null(\$data)) {
             \$data = {$data['model']['file_name']}::find(\$id);
-			Cache::set(\"{$tableNameToCamelCase}{\$id}\", \$data);
+			Cache::set(\"{$tableNameToCamelCase}{\$id}\", \$data, 86400);
         }
         return \$data;";
 

@@ -19,19 +19,22 @@ class ClearFile
         // 每天的2点10执行一次，删除数据库里面一天前上传没有使用的文件
         new Crontab('10 2 * * *', function ()
         {
-            $fileIds = FileModel::where([
-                ['create_time', '<=', date('Y-m-d H:i:s', time() - 86400)],
-                ['count', '=', 0]
-            ])->column('id');
-            $fileIds && FileLogic::delete([['id', 'in', $fileIds]]);
+            if (config('superadminx.clear_file')) {
+                $fileIds = FileModel::where([
+                    ['create_time', '<=', date('Y-m-d H:i:s', time() - 86400)],
+                    ['count', '=', 0]
+                ])->column('id');
+                $fileIds && FileLogic::delete([['id', 'in', $fileIds]]);
+            }
         });
-        
+
         // 每天的3点30执行一次，删除storage目录里面的空目录
         new Crontab('30 3 * * *', function ()
         {
-            // 删除资源里面的空目录
-            $path = './public/storage';
-            $this->deleteEmptyDirs($path);
+            if (config('superadminx.clear_file')) {
+                $path = './public/storage';
+                $this->deleteEmptyDirs($path);
+            }
         });
     }
 

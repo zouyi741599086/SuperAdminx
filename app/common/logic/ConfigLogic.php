@@ -145,7 +145,7 @@ class ConfigLogic
             $data = Cache::get("Config_{$name}");
             if (is_null($data)) {
                 $data = ConfigModel::where('name', $name)->find();
-                Cache::set("Config_{$name}", $data);
+                Cache::set("Config_{$name}", $data, 86400);
             }
             return $data;
         }
