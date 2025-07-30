@@ -26,6 +26,7 @@ class Pays
     public function setConfig(?string $notify_url = null)
     {
         $this->config = [
+			'_force' => true, // 强制初始化覆盖配置信息
             'alipay' => [
                 'default' => [
                     // 必填-支付宝分配的 app_id
