@@ -30,7 +30,7 @@ class Handler extends ExceptionHandler
         if ($request = \request()) {
             $logs = $request->getRealIp() . ' ' . $request->method() . ' ' . trim($request->fullUrl(), '/');
         }
-        $this->logger->error($logs . PHP_EOL . $exception);
+        $this->logger->error($logs . PHP_EOL . $exception, array_merge(request()->get(), request()->post()));
     }
 
     public function render(Request $request, Throwable $exception) : Response

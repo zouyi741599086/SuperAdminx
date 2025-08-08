@@ -106,11 +106,11 @@ export default () => {
                     strategy={rectSortingStrategy}
                     modifiers={[restrictToParentElement]}
                 >
-                    {menuList.map(item => <>
+                    {menuList.map(item =>
                         <ShortcutMenuItem
                             item={item}
                         />
-                    </>)}
+                    )}
                 </SortableContext>
             </DndContext>
             <UpdateShortcutMenu
