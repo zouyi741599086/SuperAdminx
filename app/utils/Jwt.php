@@ -43,17 +43,21 @@ class Jwt
             // 存入数据库
             Db::name('Token')->insert([
                 'token_key' => $token_key,
-                'token'     => $token,
+                'token'     => md5($token),
             ]);
             // 删除多余的token，只保留xx条
-            $ids = Db::name('Token')->where('token_key', $token_key)->order('id desc')->limit($config['num'])->column('id');
+            $ids = Db::name('Token')
+                ->where('token_key', $token_key)
+                ->order('id desc')
+                ->limit($config['num'])
+                ->column('id');
             Db::name('Token')
                 ->where('token_key', $token_key)
                 ->where('id', 'not in', $ids)
                 ->delete();
         } else if ($db === 'redis') {
             // 存入数据库
-            Redis::lpush($token_key, $token);
+            Redis::lpush($token_key, md5($token));
             // 删除多余的token，只保留xx条
             Redis::ltrim($token_key, 0, $config['num'] - 1);
         }
@@ -83,7 +87,7 @@ class Jwt
             // 判断token是否在数据库中
             $id = Db::name('Token')->where([
                 ['token_key', '=', $token_key],
-                ['token', '=', $token]
+                ['token', '=', md5($token)]
             ])->value('id');
             if (! $id) {
                 throw new \Exception('登录已失效');
@@ -100,7 +104,7 @@ class Jwt
             $indexToDelete = -1;
             for ($i = 0; $i < $listLength; $i++) {
                 $element = Redis::lIndex($token_key, $i);
-                if ($element === $token) {
+                if ($element === md5($token)) {
                     $indexToDelete = $i;
                     break;
                 }
@@ -111,7 +115,7 @@ class Jwt
             // 判断是否过期
             if (time() >= $user['expires_at']) {
                 // 删除
-                Redis::lRem($token_key, 1, $token);
+                Redis::lRem($token_key, 1, md5($token));
                 throw new \Exception('登录已失效');
             }
         }
@@ -129,7 +133,9 @@ class Jwt
 
         $db = config('superadminx.jwt.db');
         if ($db === 'mysql') {
-            Db::name('Token')->where('token_key', $token_key)->delete();
+            Db::name('Token')
+                ->where('token_key', $token_key)
+                ->delete();
         } else if ($db === 'redis') {
             Redis::del($token_key);
         }

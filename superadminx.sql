@@ -4075,7 +4075,7 @@ DROP TABLE IF EXISTS `sa_token`;
 CREATE TABLE `sa_token` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `token_key` varchar(100) DEFAULT NULL COMMENT '应用名称',
-  `token` varchar(191) DEFAULT NULL COMMENT '存的token',
+  `token` varchar(32) DEFAULT NULL COMMENT '存的token',
   PRIMARY KEY (`id`),
   UNIQUE KEY `token_UNIQUE` (`token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=553 DEFAULT CHARSET=utf8mb4 COMMENT='登录用户的token';
@@ -4083,23 +4083,3 @@ CREATE TABLE `sa_token` (
 -- ----------------------------
 -- Records of sa_token
 -- ----------------------------
-INSERT INTO `sa_token` VALUES ('532', 'SuperAdminx_admin_pc_1', 'oNeLQU1SKljLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH1mNtj44VzobAOlXZVrhzvdw');
-INSERT INTO `sa_token` VALUES ('533', 'SuperAdminx_admin_pc_1', 'r4DWRRpVIVjLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kd5g44VzobAOlXZbohjkdw');
-INSERT INTO `sa_token` VALUES ('534', 'SuperAdminx_admin_pc_1', 'q4aEERABcQ7LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kdpj44VzobAOlXZVrx7gdw');
-INSERT INTO `sa_token` VALUES ('535', 'SuperAdminx_admin_pc_1', 'rNTTFEpbKg/LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kddg44VzobAOlXZepBjudw');
-INSERT INTO `sa_token` VALUES ('536', 'SuperAdminx_admin_pc_1', '%tfREBFVdlvLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kNxh44VzobAOlXZaohTudw');
-INSERT INTO `sa_token` VALUES ('537', 'SuperAdminx_admin_pc_1', '%oDQE0hWIQ3LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQH0kNhl44VzobAOlXZeoh/udw');
-INSERT INTO `sa_token` VALUES ('538', 'SuperAdminx_admin_pc_1', '/NXTSxAHIl/LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlQHxkdxh44VzobAOlXZfrhXhdw');
-INSERT INTO `sa_token` VALUES ('539', 'SuperAdminx_admin_pc_1', 'rIDTERtSJ1/LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlAT2ktpi44VzobAOlXZcpB7gdw');
-INSERT INTO `sa_token` VALUES ('540', 'SuperAdminx_admin_pc_1', 'r4CBEU1UclnLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlATwmNZh44VzobAOlXZcrxXgdw');
-INSERT INTO `sa_token` VALUES ('541', 'SuperAdminx_admin_pc_1', '%4WCFkwBdVLLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlAH9kdZk44VzobAOlXZZpBvudw');
-INSERT INTO `sa_token` VALUES ('542', 'SuperAdminx_admin_pc_1', '/YXRREoAJ17LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vYlAD3mdhv44VzobAOlXZcpBXgdw');
-INSERT INTO `sa_token` VALUES ('543', 'SuperAdminx_admin_pc_1', 'rNOHRkoCclvLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnQbwlNhn44VzobAOlXZZrhzgdw');
-INSERT INTO `sa_token` VALUES ('544', 'SuperAdminx_admin_pc_1', '/4WCQRgCcQnLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnwfwl9hg44VzobAOlXZeoRTkdw');
-INSERT INTO `sa_token` VALUES ('545', 'SuperAdminx_admin_pc_1', '/9OAQhlWdlLLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnwb9kt1i44VzobAOlXZVoxqr');
-INSERT INTO `sa_token` VALUES ('546', 'SuperAdminx_admin_pc_1', 'oIWKRh1XIFvLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnwDykddi44VzobAOlXZeox3jdw');
-INSERT INTO `sa_token` VALUES ('547', 'SuperAdminx_admin_pc_1', 'qoeKEEgCcVrLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnw/2ldxl44VzobAOlXZVoR6r');
-INSERT INTO `sa_token` VALUES ('548', 'SuperAdminx_admin_pc_1', '/YGLQBxWKlzLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnw/2l99u44VzobAOlXZYrhvvdw');
-INSERT INTO `sa_token` VALUES ('549', 'SuperAdminx_admin_pc_1', '%NGERRBUJF7LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZnw/2l9pi44VzobAOlXZVrhjjdw');
-INSERT INTO `sa_token` VALUES ('551', 'SuperAdminx_admin_pc_1', 'r4GFRRhWKlnLmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZngD1l99u44VzobAOlXZboRTgdw');
-INSERT INTO `sa_token` VALUES ('552', 'SuperAdminx_admin_pc_1', 'rd2FEU9XcF/LmW4uI8wLPZ1H06dmrMT69/qaTVvxxvPIYFx7pkxfl84qDAa/1yfs5LhbEM5TiulHogc2Zkmi0FFO/Wa9KUxjE/vZng/ymdlu44VzobAOlXZZoByr');

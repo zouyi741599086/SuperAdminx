@@ -111,34 +111,25 @@ export default () => {
     useEffect(() => {
         let result = [...router];
         menuAuth.menuArrAll.map(item => {
-            let tmp = deepClone(item);
+            let element = <LazyLoad><Error /></LazyLoad>;
             if (item.type === 4) {
                 // 说明是iframe页面
                 let Elm = lazy(routeAllPathToCompMap[`./pages/iframe/index.jsx`])
-                tmp.element = <LazyLoad>
-                    <Elm
-                        url={item.url}
-                    />
-                </LazyLoad>;
+                element = <LazyLoad><Elm url={item.url} /></LazyLoad>;
             } else if (item.type === 7) {
                 // 说明是配置页面
                 let Elm = lazy(routeAllPathToCompMap[`./pages/config/updateConfig/index.jsx`])
-                tmp.element = <LazyLoad>
-                    <Elm
-                        name={item.name.replace("config_", "")}
-                    />
-                </LazyLoad>;
+                element = <LazyLoad><Elm name={item.name.replace("config_", "")} /></LazyLoad>;
             } else if (routeAllPathToCompMap[`./pages${item.component_path}/index.jsx`]) {
                 let Elm = lazy(routeAllPathToCompMap[`./pages${item.component_path}/index.jsx`])
-                tmp.element = <LazyLoad>
-                    <Elm />
-                </LazyLoad>;
-            } else {
-                tmp.element = <LazyLoad>
-                    <Error />
-                </LazyLoad>;
+                element = <LazyLoad><Elm /></LazyLoad>;
             }
-            result[1].children.push(tmp);
+
+            result[1].children.push({
+                path: item.path,
+                title: item.title,
+                element: element
+            });
         })
         setRoutes(result)
     }, [menuAuth.menuArrAll])
