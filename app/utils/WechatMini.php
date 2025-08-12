@@ -154,8 +154,7 @@ class WechatMini
         string $express_company = '',
         string $receiver_contact = '',
     ) {
-        $api      = self::initApp()->getClient();
-        $response = $api->postJson('/wxa/sec/order/upload_shipping_info', [
+        $params   = [
             'order_key'      => [
                 'order_number_type' => 2, // 使用微信支付单号
                 'transaction_id'    => $transaction_id,
@@ -176,10 +175,12 @@ class WechatMini
             'payer'          => [
                 'openid' => $openid, // 用户的openid
             ]
-        ]);
+        ];
+        $api      = self::initApp()->getClient();
+        $response = $api->postJson('/wxa/sec/order/upload_shipping_info', $params);
         $response = $response->toArray();
         if ($response['errcode'] != 0) {
-            Log::error("微信订单发货：" . $response['errmsg'] ?? '订单发货失败~', $response);
+            Log::error("微信订单发货：" . $response['errmsg'] ?? '订单发货失败~', $params);
         }
     }
 

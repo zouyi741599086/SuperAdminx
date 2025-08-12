@@ -22,17 +22,35 @@ foreach ($table_column as $k => $v) {
 namespace <?php echo $file_path ?? ''; ?>;
 
 <?php
+    // 需要引入的模型
+    $useModel = [];
     // 多对多模型中间表的时候
     if (isset($is_middle) && $is_middle == true) {
-echo "use think\model\Pivot;\n";
+        $useModel[] = "use think\model\Pivot;\n";
     }
     // 软删除
     if ($delete_time) {
-echo "use think\model\concern\SoftDelete;\n";
+        $useModel[] = "use think\model\concern\SoftDelete;\n";
     }
     // 如果生成的是插件的文件，则需引入共用模型
     if ($plugin_name) {
-echo "use app\common\model\BaseModel;\n";        
+        $useModel[] = "use app\common\model\BaseModel;\n";        
+    }
+
+    // 引入关联的模型
+    if (isset($relevance) && is_array($relevance)) {
+        foreach ($relevance as $v) {
+            $function_name = CodeGenerator::toCamelCase($v['model']);
+            if (isset($v['model_plugin_name']) && $v['model_plugin_name']) {
+                $useModel[] = "use plugin\\{$v['model_plugin_name']}\app\common\model\\{$function_name}Model;\n";
+            } else {
+                $useModel[] = "use app\common\model\\{$function_name}Model;\n";
+            }
+        }
+    }
+
+    foreach ($useModel as $v) {
+echo $v;
     }
 ?>
 
