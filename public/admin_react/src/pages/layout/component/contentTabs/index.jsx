@@ -167,8 +167,6 @@ export default () => {
                 }
             })
 
-            // 重新计算keepAlive该缓存哪些页面
-            let keepAlive = [];
             // 在一个tabs的item中，任意级页面的跳转，重新计算出item中的keepAlive，该缓存多少级页面
             _list[tabsIndex].keepAlive = []; //先清空原tabs中item中的keepAlive
             menuAuth.menuArrAll.find(item => item.name === menu.name).pid_name_path?.some(menuName => {
@@ -176,22 +174,15 @@ export default () => {
                     if (menuName === _item.name) {
                         if (_item.name) {
                             _list[tabsIndex].keepAlive.push(_item.name);
-                            keepAlive.push(_item.name);
                         }
                         return true;
                     }
                 })
             })
-            // 缓存计算后删掉不要的缓存
-            contentTabs.keepAlive.map(_item => {
-                if (keepAlive.indexOf(_item) === -1) {
-                    ///////开始删除////////////
-                }
-            })
+           
 
             setContentTabs((val) => ({
                 ...val,
-                keepAlive,
                 activeName: menuTop.name,
                 list: _list
             }));
@@ -220,9 +211,13 @@ export default () => {
 
     // 更新tabs标签
     useEffect(() => {
+        // 重新计算keepAlive该缓存哪些页面
+        let keepAlive = [];
+        // tabs列表
         let _tabsList = [];
         contentTabs.list.map(item => {
             let _item = deepClone(item);
+            keepAlive = [...keepAlive, ...item.keepAlive];
             _tabsList.push({
                 ..._item,
                 key: _item.name,
@@ -236,10 +231,12 @@ export default () => {
                 />
             })
         })
+        setContentTabs((val) => ({
+            ...val,
+            keepAlive
+        }))
         setTabsList(_tabsList)
     }, [contentTabs.list])
-
-
 
     return (
         <>

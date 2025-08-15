@@ -80,21 +80,22 @@ class File
         $result  = [];
         $request = request();
         $files   = $request->file();
+        $year    = date('Y');
         $date    = date('Y-m-d');
 
         try {
             foreach ($files as $key => $file) {
                 if (! $file || ! $file->isValid()) {
-                    abort('找不到上传的文件');
+                    throw new \Exception('找不到上传的文件');
                 }
                 $mimeType = $file->getUploadMimeType();
                 $suffix   = $file->getUploadExtension();
                 $size     = $file->getSize();
                 if (! in_array($suffix, self::$fileSuffix) || ! in_array($mimeType, self::$fileMimeType)) {
-                    abort('不允许上传的文件类型');
+                    throw new \Exception('不允许上传的文件类型');
                 }
                 if ($size > config('server.max_package_size')) {
-                    abort('文件太大，超出允许上传的范围');
+                    throw new \Exception('文件太大，超出允许上传的范围');
                 }
                 $time = time();
                 $rand = mt_rand(0, 100000);
@@ -102,7 +103,7 @@ class File
                 if ($dir) {
                     $path = "{$dir}/{$time}_{$rand}.$suffix";
                 } else {
-                    $path = "/storage/{$date}/{$suffix}/{$time}_{$rand}.$suffix";
+                    $path = "/storage/{$year}/{$date}/{$suffix}/{$time}_{$rand}.$suffix";
                 }
                 $file->move(public_path() . $path);
                 $result[$key] = $path;

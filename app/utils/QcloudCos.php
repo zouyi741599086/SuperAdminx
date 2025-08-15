@@ -60,10 +60,11 @@ class QcloudCos
             $fileSize = filesize(public_path() . "/{$filePath}");
 
             // 保存的目录
+            $year    = date('Y');
             $date    = date('Y-m-d');
             $time    = date('YmdHis');
             $rand    = mt_rand(0, 100000);
-            $ossPath = "{$date}/{$fileInfo['extension']}/{$time}_{$rand}.{$fileInfo['extension']}";
+            $ossPath = "{$year}/{$date}/{$fileInfo['extension']}/{$time}_{$rand}.{$fileInfo['extension']}";
 
             $result = (self::initOssClient())->Upload(
                 config('superadminx.file_system.qcloud.bucket'),

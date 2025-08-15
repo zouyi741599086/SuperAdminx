@@ -12,6 +12,13 @@ use support\think\Db;
  */
 class Transaction
 {
+    /**
+     * 运行事务
+     *
+     * @param array $connections 需要进行事务处理的数据库连接名称
+     * @param callable $callback 事务处理回调函数
+     * @return mixed
+     */
     public static function run(array $connections, callable $callback)
     {
         return self::multiDbTransaction($connections, $callback);

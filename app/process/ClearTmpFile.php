@@ -12,7 +12,7 @@ use app\common\model\FileModel;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-class TmpFile
+class ClearTmpFile
 {
     public function onWorkerStart()
     {

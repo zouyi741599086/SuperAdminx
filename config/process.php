@@ -64,7 +64,7 @@ return [
         'handler' => app\process\ClearFile::class,
     ],
     // 定时清除临时文件
-    'tmpFile'   => [
-        'handler' => app\process\TmpFile::class,
-    ]
+    'ClearTmpFile'   => [
+         'handler' => app\process\ClearTmpFile::class,
+    ],
 ];

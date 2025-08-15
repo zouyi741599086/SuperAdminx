@@ -31,47 +31,48 @@ class ClearFile
         // 每天的3点30执行一次，删除storage目录里面的空目录
         new Crontab('30 3 * * *', function ()
         {
-            if (config('superadminx.clear_file')) {
-                $path = './public/storage';
-                $this->deleteEmptyDirs($path);
-            }
+            $path = './public/storage';
+            $this->deleteEmptyFolders($path, false);
         });
     }
 
     /**
      * 删除目录下的空目录
      * @param string $dirPath 要删除的父目录
-     * @param boolean $isDelete 是否删除此目录
+     * @param boolean $isDelete 是否删除当前根目录
      **/
-    function deleteEmptyDirs($dirPath, $isDelete = false)
+    function deleteEmptyFolders(string $dir, bool $isDelete = true)
     {
-        // 确保目录存在且为目录  
-        if (! is_dir($dirPath)) {
+        if (! is_dir($dir)) {
             return;
         }
-        // 打开目录并读取内容  
-        $items = scandir($dirPath);
 
-        $isEmpty = true;
-        foreach ($items as $item) {
-            // 排除'.'和'..'  
-            if ($item == '.' || $item == '..') {
-                continue;
-            }
-            $fullPath = $dirPath . DIRECTORY_SEPARATOR . $item;
+        $entries = scandir($dir);
+        if ($entries === false) {
+            return;
+        }
 
-            // 如果当前项是目录，则递归调用  
-            if (is_dir($fullPath)) {
-                $isEmpty = $this->deleteEmptyDirs($fullPath, true); // 递归删除空子目录，并将isRoot设置为false  
-            } else {
-                $isEmpty = false;
-                break;
+        // 过滤系统目录
+        $entries = array_diff($entries, ['.', '..']);
+
+        foreach ($entries as $entry) {
+            $path = $dir . DIRECTORY_SEPARATOR . $entry;
+
+            // 只处理目录
+            if (is_dir($path)) {
+                // 递归处理子目录
+                $this->deleteEmptyFolders($path);
             }
         }
-        if ($isEmpty && $isDelete) {
-            rmdir($dirPath);
+
+        // 重新扫描检查是否为空 (排除根目录)
+        $currentEntries = scandir($dir);
+        $currentEntries = array_diff($currentEntries, ['.', '..']);
+
+        // 删除空目录 (排除根目录)
+        if (empty($currentEntries) && $isDelete) {
+            rmdir($dir);
         }
-        return $isEmpty;
     }
 
 

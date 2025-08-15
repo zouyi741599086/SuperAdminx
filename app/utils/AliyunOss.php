@@ -58,10 +58,11 @@ class AliyunOss
             $fileSize = filesize(public_path() . "/{$filePath}");
 
             // 保存的目录
+            $year    = date('Y');
             $date    = date('Y-m-d');
             $time    = date('YmdHis');
             $rand    = mt_rand(0, 100000);
-            $ossPath = "{$date}/{$fileInfo['extension']}/{$time}_{$rand}.{$fileInfo['extension']}";
+            $ossPath = "{$year}/{$date}/{$fileInfo['extension']}/{$time}_{$rand}.{$fileInfo['extension']}";
 
             // 开始上传oss
             $result = self::initOssClient()->uploadFile(
@@ -188,8 +189,9 @@ class AliyunOss
     public static function getSignature(string $dir = '') : array
     {
         // 用户上传文件时指定的目录
-        $date = date('Y-m-d', time());
-        $dir  = $dir ?: "{$date}/";
+        $year = date('Y');
+        $date = date('Y-m-d');
+        $dir  = $dir ?: "{$year}/{$date}/";
 
         // 设置回调参数
         $url             = config('superadminx.url');
