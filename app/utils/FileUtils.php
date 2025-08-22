@@ -6,19 +6,19 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 use support\Log;
 use app\common\logic\FileLogic;
-use app\utils\AliyunOss;
-use app\utils\QcloudCos;
+use app\utils\AliyunOssUtils;
+use app\utils\QcloudCosUtils;
 
 /**
  * 文件操作
  * 
- * File::upload(string $disk = '') 文件上传，数据会记录到file表
- * File::uploadPublic() 文件上传到本地，数据不会记录到file表
+ * FileUtils::upload(string $disk = '') 文件上传，数据会记录到file表
+ * FileUtils::uploadPublic() 文件上传到本地，数据不会记录到file表
  * 
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-class File
+class FileUtils
 {
     // 允许上传的文件后缀
     public static $fileSuffix = ['png', 'jpg', 'jpeg', 'gif', 'rar', 'zip', 'txt', 'mp3', 'mp4', 'pdf', 'xlsx', 'xls', 'ppt', 'pptx', 'doc', 'docx'];
@@ -59,11 +59,11 @@ class File
             }
             // 阿里云的时候
             if ($disk == 'aliyun') {
-                $path = AliyunOss::upload($path);
+                $path = AliyunOssUtils::upload($path);
             }
             // 腾讯云的时候
             if ($disk == 'qcloud') {
-                $path = QcloudCos::upload($path);
+                $path = QcloudCosUtils::upload($path);
             }
             $files[$key] = $path;
         }
@@ -77,11 +77,10 @@ class File
      */
     public static function uploadPublic(string $dir = '') : array
     {
-        $result  = [];
-        $request = request();
-        $files   = $request->file();
-        $year    = date('Y');
-        $date    = date('Y-m-d');
+        $result   = [];
+        $request  = request();
+        $files    = $request->file();
+        $datePath = date('Y/m/d');
 
         try {
             foreach ($files as $key => $file) {
@@ -103,7 +102,7 @@ class File
                 if ($dir) {
                     $path = "{$dir}/{$time}_{$rand}.$suffix";
                 } else {
-                    $path = "/storage/{$year}/{$date}/{$suffix}/{$time}_{$rand}.$suffix";
+                    $path = "/storage/{$datePath}/{$time}_{$rand}.$suffix";
                 }
                 $file->move(public_path() . $path);
                 $result[$key] = $path;

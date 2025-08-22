@@ -4,8 +4,8 @@ namespace app\api\controller;
 use support\Request;
 use support\Response;
 use support\think\Db;
-use app\utils\Jwt;
-use app\utils\WechatMini;
+use app\utils\JwtUtils;
+use app\utils\WechatMiniUtils;
 use app\common\model\UserModel;
 use app\common\validate\UserValidate;
 
@@ -33,7 +33,7 @@ class Login
      * */
     public function autoLogin(Request $request, string $code)
     {
-        $result = WechatMini::getOpenid($code);
+        $result = WechatMiniUtils::getOpenid($code);
         if (isset($result['openid']) && $result['openid']) {
             if ($userId = UserModel::where('mini_openid', $result['openid'])->value('id')) {
                 return success($this->resultUser($userId));
@@ -51,7 +51,7 @@ class Login
      * */
     public function getPhoneNumber(Request $request, string $code)
     {
-        $data = WechatMini::getPhoneNumber($code);
+        $data = WechatMiniUtils::getPhoneNumber($code);
         return success($data);
     }
 
@@ -71,7 +71,7 @@ class Login
             validate(UserValidate::class)->check($data);
 
             //获取openid，wxlogin的code
-            $result = WechatMini::getOpenid($data['code']);
+            $result = WechatMiniUtils::getOpenid($data['code']);
             if (! isset($result['openid']) || ! $result['openid']) {
                 throw new \Exception('获取用户openid错误');
             }
@@ -113,7 +113,7 @@ class Login
     private function resultUser(int $userId)
     {
         $user          = UserModel::where('id', $userId)->find();
-        $user['token'] = Jwt::generateToken('user', $user);
+        $user['token'] = JwtUtils::generateToken('user', $user);
         return $user;
     }
 }

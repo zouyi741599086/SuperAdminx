@@ -10,12 +10,12 @@ use support\think\Db;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-class Transaction
+class TransactionUtils
 {
     /**
      * 运行事务
      *
-     * @param array $connections 需要进行事务处理的数据库连接名称
+     * @param array $connections 需要进行事务处理的数据库连接名称 如 ['default', 'db1', 'db2']
      * @param callable $callback 事务处理回调函数
      * @return mixed
      */
@@ -27,12 +27,11 @@ class Transaction
     private static function multiDbTransaction(array $connections, callable $callback)
     {
         // 确保总是包含默认连接
-        $allConnections = array_unique(array_merge(['default'], $connections));
         $connectionsMap = [];
 
         try {
             // 1. 开启所有事务
-            foreach ($allConnections as $name) {
+            foreach ($connections as $name) {
                 $conn = ($name === 'default') ? Db::connect() : Db::connect($name);
                 $conn->startTrans();
                 $connectionsMap[$name] = $conn;

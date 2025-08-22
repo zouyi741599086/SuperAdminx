@@ -3,7 +3,7 @@ namespace app\api\controller;
 
 use support\Request;
 use support\Response;
-use app\utils\File as FileUtils;
+use app\utils\FileUtils;
 
 /**
  * 文件

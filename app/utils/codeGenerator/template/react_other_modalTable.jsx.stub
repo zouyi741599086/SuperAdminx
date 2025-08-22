@@ -135,7 +135,7 @@ export default ({ tableReload, id, setId, ...props }) => {
         tableRef?.current?.reset?.();
     }
 
-    // 表格列
+    // 表格列 
     const columns = [
 <?php
     if (isset($list_fields_type)) {
@@ -144,7 +144,8 @@ export default ({ tableReload, id, setId, ...props }) => {
             $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
             
             // 列的参数
-            $columnsParams = '';
+            $columnsParams = "            title: '{$tmp_field_title}',\n";
+            $columnsParams .= "            dataIndex: '{$field}',\n";
 
             // 是否支持搜索
             if (isset($list_fields_type_config[$field]['search']) && $list_fields_type_config[$field]['search']) {

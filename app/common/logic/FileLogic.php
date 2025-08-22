@@ -2,8 +2,8 @@
 namespace app\common\logic;
 
 use app\common\model\FileModel;
-use app\utils\AliyunOss;
-use app\utils\QcloudCos;
+use app\utils\AliyunOssUtils;
+use app\utils\QcloudCosUtils;
 
 /**
  * 附件操作
@@ -92,11 +92,11 @@ class FileLogic
             }
             // 说明是阿里云oss
             if ($v['disk'] == 'aliyun') {
-                AliyunOss::delete($v['object']);
+                AliyunOssUtils::delete($v['object']);
             }
 			// 说明是腾讯云cos
             if ($v['disk'] == 'qcloud') {
-                QcloudCos::delete($v['object']);
+                QcloudCosUtils::delete($v['object']);
             }
         }
         FileModel::where($where)->delete();

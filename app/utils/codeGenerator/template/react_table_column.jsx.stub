@@ -6,9 +6,8 @@ use app\utils\codeGenerator\CodeGenerator;
             if ($type == 'text') {
                 
 echo "        {{$columnsParams}
-            render: (_, record) => _,
         },\n";
-
+ 
             }
 
             // 可点击链接

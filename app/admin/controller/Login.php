@@ -5,8 +5,7 @@ use support\Request;
 use support\Response;
 use app\common\logic\AdminUserLogic;
 use app\common\model\AdminUserModel;
-use app\utils\Jwt;
-use app\utils\QcloudCos;
+use app\utils\JwtUtils;
 
 /**
  * 后台登录
@@ -54,7 +53,7 @@ class Login
         ]);
 
         $adminUser          = AdminUserLogic::getAdminUser($adminUser['id']);
-        $adminUser['token'] = Jwt::generateToken('admin_pc', $adminUser);
+        $adminUser['token'] = JwtUtils::generateToken('admin_pc', $adminUser);
         return success($adminUser, '登录成功');
     }
 }

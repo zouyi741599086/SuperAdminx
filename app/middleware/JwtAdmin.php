@@ -5,7 +5,7 @@ use ReflectionClass;
 use Webman\MiddlewareInterface;
 use Webman\Http\Response;
 use Webman\Http\Request;
-use app\utils\Jwt;
+use app\utils\JwtUtils;
 use app\common\logic\AdminLogLogic;
 use app\common\model\AdminUserModel;
 use app\common\model\AdminMenuModel;
@@ -27,7 +27,7 @@ class JwtAdmin implements MiddlewareInterface
         $request->loginRole = 'admin';
         if ($this->actionIsLogin()) {
             try {
-                $request->adminUser = Jwt::getUser('admin_pc');
+                $request->adminUser = JwtUtils::getUser('admin_pc');
             } catch (\Exception $e) {
                 abort($e->getMessage(), -2);
             }

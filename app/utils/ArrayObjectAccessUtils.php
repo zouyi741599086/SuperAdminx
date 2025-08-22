@@ -1,7 +1,7 @@
 <?php
 namespace app\utils;
 
-class ArrayObjectAccess extends \ArrayObject
+class ArrayObjectAccessUtils extends \ArrayObject
 {
     // 构造函数：递归转换数组
     public function __construct(array $array = [])

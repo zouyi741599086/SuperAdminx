@@ -1,0 +1,3 @@
+.code-generator .ant-card-head-title{display: flex;align-items: center;}
+.code-generator .ant-card-head-title .title{margin:0px;padding-left:5px;}
+.code-generator .ant-card-body{text-overflow:ellipsis;white-space:nowrap;overflow: hidden;}

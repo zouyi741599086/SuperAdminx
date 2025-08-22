@@ -107,7 +107,9 @@ export default () => {
             tooltip: '点击可切换状态',
             // 列增加提示的同时搜索也会增加，所以要干掉搜索的提示
             formItemProps: {
-                tooltip: ''
+                tooltip: {
+                    icon: <></>
+                }
             },
             render: (_, record) => <Switch
                 checkedChildren="正常"

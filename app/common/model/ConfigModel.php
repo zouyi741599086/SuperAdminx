@@ -22,4 +22,22 @@ class ConfigModel extends BaseModel
         'content'       => 'json',
         'fields_config' => 'json',
     ];
+
+    //类型 查询字段
+    public function searchTypeAttr($query, $value, $data)
+    {
+        $query->where('type', '=', $value);
+    }
+
+    //英文名称 查询字段
+    public function searchNameAttr($query, $value, $data)
+    {
+        $query->where('name', 'like', "%{$value}%");
+    }
+
+    //配置名称 查询字段
+    public function searchTitleAttr($query, $value, $data)
+    {
+        $query->where('title', 'like', "%{$value}%");
+    }
 }

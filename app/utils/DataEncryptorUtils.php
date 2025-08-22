@@ -4,14 +4,14 @@ namespace app\utils;
 /**
  * 数据加解密相关
  * 
- * DataEncryptor::rsaDecrypt($data) rsa解密
- * DataEncryptor::aesEncrypt($data, $key, $iv) aes加密
- * DataEncryptor::aesDecrypt($data, $key, $iv) aes解密
+ * DataEncryptorUtils::rsaDecrypt($data) rsa解密
+ * DataEncryptorUtils::aesEncrypt($data, $key, $iv) aes加密
+ * DataEncryptorUtils::aesDecrypt($data, $key, $iv) aes解密
  * 
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-class DataEncryptor
+class DataEncryptorUtils
 {
     /**
      * rsa解密

@@ -6,7 +6,7 @@ use support\Cache;
 use app\common\model\ConfigModel;
 use app\common\validate\ConfigValidate;
 use app\common\model\AdminMenuModel;
-use app\utils\ArrayObjectAccess;
+use app\utils\ArrayObjectAccessUtils;
 
 /**
  * 参数设置
@@ -19,12 +19,14 @@ class ConfigLogic
 
     /**
      * 获取列表
+     * @param array $params
      */
-    public static function getList()
+    public static function getList(array $params)
     {
-        return ConfigModel::withoutField('content,fields_config')
+        return ConfigModel::withSearch(['type', 'name', 'title'], $params)
+            ->withoutField('content,fields_config')
             ->order('sort asc,id desc')
-            ->select();
+            ->paginate($params['pageSize'] ?? 20);
     }
 
     /**
@@ -182,12 +184,14 @@ class ConfigLogic
     /**
      * 获取配置内容
      * @param string $name
-     * @return ArrayObjectAccess
+     * @param string $resultType 返回结果类型 object|array
+     * @return ArrayObjectAccessUtils|array
      */
-    public static function getConfig(string $name) : ArrayObjectAccess
+    public static function getConfig(string $name, string $resultType = 'object') : ArrayObjectAccessUtils|array
     {
         $data = self::findData(null, $name);
-        return new ArrayObjectAccess($data['content'] ?? []);
+        $data = $data['content'] ?? [];
+        return $resultType == 'object' ? new ArrayObjectAccessUtils($data) : $data;
     }
 
     /**

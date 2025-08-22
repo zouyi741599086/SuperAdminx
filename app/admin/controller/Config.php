@@ -27,7 +27,7 @@ class Config
      */
     public function getList(Request $request) : Response
     {
-        $list = ConfigLogic::getList();
+        $list = ConfigLogic::getList($request->get());
         return success($list);
     }
 

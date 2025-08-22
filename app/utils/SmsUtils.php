@@ -6,18 +6,18 @@ use app\common\model\SmsCodeModel;
 /**
  * 发送短信
  * 
- * Sms::send($tel,string|array $content,$templateCode)  发送验证码，根据内容自动识别用哪个平台进行发送
- * Sms::checkTel($tel) 验证手机号格式，并验证是否发送太频繁
- * Sms::checkCode($tel, $type, $code) 验证码是否正确
- * Sms::getCode($length = 4) 随机生成验证码
- * Sms::LkSend($tel, $content) 凌凯平台发送短信
- * Sms::getLkBalance() 凌凯平台获取短信条数
- * Sms::aliyunSend($tel, array $templateParam, string $templateCode) 阿里云|小牛云 发送短信
+ * SmsUtils::send($tel,string|array $content,$templateCode)  发送验证码，根据内容自动识别用哪个平台进行发送
+ * SmsUtils::checkTel($tel) 验证手机号格式，并验证是否发送太频繁
+ * SmsUtils::checkCode($tel, $type, $code) 验证码是否正确
+ * SmsUtils::getCode($length = 4) 随机生成验证码
+ * SmsUtils::LkSend($tel, $content) 凌凯平台发送短信
+ * SmsUtils::getLkBalance() 凌凯平台获取短信条数
+ * SmsUtils::aliyunSend($tel, array $templateParam, string $templateCode) 阿里云|小牛云 发送短信
  * 
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-class Sms
+class SmsUtils
 {
     /**
      * 短信发送

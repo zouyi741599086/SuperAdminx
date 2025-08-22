@@ -3,9 +3,9 @@ namespace app\admin\controller;
 
 use support\Request;
 use support\Response;
-use app\utils\AliyunOss;
-use app\utils\QcloudCos;
-use app\utils\File as FileUtils;
+use app\utils\AliyunOssUtils;
+use app\utils\QcloudCosUtils;
+use app\utils\FileUtils;
 
 /**
  * 文件
@@ -59,7 +59,7 @@ class File
      */
     public function getSignature(Request $request) : Response
     {
-        $data = AliyunOss::getSignature();
+        $data = AliyunOssUtils::getSignature();
         return result($data);
     }
 
@@ -72,7 +72,7 @@ class File
      */
     public function getQcloudSignature(Request $request, string $dir) : Response
     {
-        $data = QcloudCos::getSignature($dir);
+        $data = QcloudCosUtils::getSignature($dir);
         return result($data);
     }
 
@@ -84,7 +84,7 @@ class File
      */
     public function uploadAliyunOssCallback(Request $request) : void
     {
-        AliyunOss::uploadAliyunOssCallback();
+        AliyunOssUtils::uploadAliyunOssCallback();
     }
 
 }

@@ -6,7 +6,7 @@ import {
     ProFormSelect,
     ProFormDependency,
 } from '@ant-design/pro-components';
-import { Row, Col, Alert} from 'antd';
+import { Row, Col, Alert } from 'antd';
 
 /**
  * 后台菜单 新增修改的form字段
@@ -17,9 +17,10 @@ import { Row, Col, Alert} from 'antd';
  * */
 export default ({ typeAction, ...props }) => {
 
+
     return <>
         <Row gutter={[24, 0]}>
-			<ProFormDependency name={['type']}>
+            <ProFormDependency name={['type']}>
                 {({ type }) => {
                     if (typeAction == 'update' && type == 7) {
                         return <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
@@ -79,45 +80,51 @@ export default ({ typeAction, ...props }) => {
                     ]}
                 />
             </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                <ProFormRadio.Group
-                    name="type"
-                    label="类型"
-                    options={[
-                        {
-                            value: 1,
-                            label: '菜单目录',
-                        },
-                        {
-                            value: 2,
-                            label: '菜单',
-                        },
-                        {
-                            value: 3,
-                            label: '外部链接菜单',
-                        },
-                        {
-                            value: 4,
-                            label: 'iframe菜单',
-                        },
-                        {
-                            value: 5,
-                            label: '内页菜单权限',
-                        },
-                        {
-                            value: 6,
-                            label: '按钮权限',
-                        },
-                        // { // 不能新增或编辑，此类型的数据是》参数设置自动同步过来的
-                        //     value: 7,
-                        //     label: '参数设置权限',
-                        // },
-                    ]}
-                    rules={[
-                        { required: true, message: '请选择' }
-                    ]}
-                />
-            </Col>
+            <ProFormDependency name={['type']}>
+                {({ type }) => {
+                    return <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
+                        <ProFormRadio.Group
+                            name="type"
+                            label="类型"
+                            options={[
+                                {
+                                    value: 1,
+                                    label: '菜单目录',
+                                },
+                                {
+                                    value: 2,
+                                    label: '菜单',
+                                },
+                                {
+                                    value: 3,
+                                    label: '外部链接菜单',
+                                },
+                                {
+                                    value: 4,
+                                    label: 'iframe菜单',
+                                },
+                                {
+                                    value: 5,
+                                    label: '内页菜单权限',
+                                },
+                                {
+                                    value: 6,
+                                    label: '按钮权限',
+                                },
+                                // { // 不能新增或编辑，此类型的数据是》参数设置自动同步过来的
+                                //     value: 7,
+                                //     label: '参数设置权限',
+                                // },
+                            ]}
+                            disabled={typeAction == 'update' && type == 7}
+                            rules={[
+                                { required: true, message: '请选择' }
+                            ]}
+                        />
+                    </Col>
+                }}
+            </ProFormDependency>
+
             <ProFormDependency name={['type']}>
                 {({ type }) => {
                     return <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
@@ -236,7 +243,7 @@ export default ({ typeAction, ...props }) => {
                                             value: 2,
                                         },
                                     ]}
-                                    extra="角色管理、菜单中都不会出现此权限"
+                                    extra="角色管理、菜单中都不会出现此权限，superadmainx账户会显示"
                                     rules={[
                                         { required: true, message: '请选择' }
                                     ]}

@@ -79,26 +79,38 @@ export default () => {
     // 表格列
     const columns = [
         {
-            title: '配置名称',
+            title: '标题',
             dataIndex: 'title',
-            search: false,
         },
         {
             title: '描述',
             dataIndex: 'description',
             ellipsis: true,
+            search: false,
         },
         {
             title: '配置名称',
             dataIndex: 'name',
-            search: false,
             copyable: true,
-            render: (_, record) => _,
         },
         {
             title: '类型',
             dataIndex: 'type',
-            search: false,
+            // 定义搜索框类型
+            valueType: 'select',
+            // 订单搜索框的选择项
+            fieldProps: {
+                options: [
+                    {
+                        value: 'list',
+                        label: 'list',
+                    },
+                    {
+                        value: 'form',
+                        label: 'form',
+                    }
+                ]
+            }
         },
         {
             title: '排序',
@@ -166,7 +178,6 @@ export default () => {
                     scroll={{
                         x: 800
                     }}
-                    search={false}
                     options={{
                         fullScreen: true
                     }}
@@ -199,7 +210,14 @@ export default () => {
                             >保存排序</Button>
                         </Space>
                     }
-                    pagination={false}
+                    pagination={{
+                        defaultPageSize: 10,
+                        size: 'default',
+                        // 支持跳到多少页
+                        showQuickJumper: true,
+                        showSizeChanger: true,
+                        responsive: true,
+                    }}
                     request={async (params = {}, sort, filter) => {
                         // 排序的时候
                         let orderBy = '';
@@ -212,9 +230,9 @@ export default () => {
                             page: params.current,
                         });
                         return {
-                            data: result.data,
+                            data: result.data.data,
                             success: true,
-                            total: result.data.length,
+                            total: result.data.total,
                         };
                     }}
 

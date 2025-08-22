@@ -9,7 +9,7 @@ use Yansongda\Pay\Pay;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-class Pays
+class PayUtils
 {
 
     protected $config;

@@ -11,17 +11,17 @@ use app\common\model\FileModel;
  * 需要安装sdk composer require aliyuncs/oss-sdk-php
  * 阿里云oss进入到对应的Bucket,左侧的数据安全》版本控制，需要开启，上传后保存文件的版本id，删除需要指定文件的版本id才会永久删除文件
  * 
- * AliyunOss::upload($filePath) 上传文件到阿里云，返回访问连接，会删除本地的文件
- * AliyunOss::download($object, $localfile) 下载文件到本地
- * AliyunOss::delete($object) 删除文件
- * AliyunOss::signUrl($object, $timeout = 0) 获取文件访问的连接
- * AliyunOss::getSignature($dir = '') 客户端直接传阿里云的时候获取签名
- * AliyunOss::uploadAliyunOssCallback() 客户端直接传阿里云后的回调
+ * AliyunOssUtils::upload($filePath) 上传文件到阿里云，返回访问连接，会删除本地的文件
+ * AliyunOssUtils::download($object, $localfile) 下载文件到本地
+ * AliyunOssUtils::delete($object) 删除文件
+ * AliyunOssUtils::signUrl($object, $timeout = 0) 获取文件访问的连接
+ * AliyunOssUtils::getSignature($dir = '') 客户端直接传阿里云的时候获取签名
+ * AliyunOssUtils::uploadAliyunOssCallback() 客户端直接传阿里云后的回调
  * 
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-class AliyunOss
+class AliyunOssUtils
 {
 
     public static $ossClient;
@@ -58,11 +58,10 @@ class AliyunOss
             $fileSize = filesize(public_path() . "/{$filePath}");
 
             // 保存的目录
-            $year    = date('Y');
-            $date    = date('Y-m-d');
-            $time    = date('YmdHis');
-            $rand    = mt_rand(0, 100000);
-            $ossPath = "{$year}/{$date}/{$fileInfo['extension']}/{$time}_{$rand}.{$fileInfo['extension']}";
+            $datePath = date('Y/m/d');
+            $time     = date('YmdHis');
+            $rand     = mt_rand(0, 100000);
+            $ossPath  = "{$datePath}/{$time}_{$rand}.{$fileInfo['extension']}";
 
             // 开始上传oss
             $result = self::initOssClient()->uploadFile(
@@ -189,9 +188,8 @@ class AliyunOss
     public static function getSignature(string $dir = '') : array
     {
         // 用户上传文件时指定的目录
-        $year = date('Y');
-        $date = date('Y-m-d');
-        $dir  = $dir ?: "{$year}/{$date}/";
+        $datePath = date('Y/m/d');
+        $dir      = $dir ?: "{$datePath}/";
 
         // 设置回调参数
         $url             = config('superadminx.url');

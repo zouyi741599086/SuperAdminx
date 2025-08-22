@@ -137,6 +137,14 @@ const formFields = [
                 valueType: 'teditor',
                 valueTypeTitle: '编辑器',
             },
+            {
+                valueType: 'group',
+                valueTypeTitle: '分组',
+            },
+            {
+                valueType: 'formList',
+                valueTypeTitle: '列表',
+            },
         ]
     },
 ];

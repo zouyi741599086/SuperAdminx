@@ -10,17 +10,17 @@ use app\common\model\FileModel;
  * 需要安装sdk composer require qcloud/cos-sdk-v5
  * 腾讯云cos进入到对应的Bucket,左侧的数据安全》版本控制，需要开启，上传后保存文件的版本id，删除需要指定文件的版本id才会永久删除文件
  * 
- * QcloudCos::upload($filePath) 上传文件到腾讯云，返回访问连接，会删除本地的文件
- * QcloudCos::download($object, $localfile) 下载文件到本地
- * QcloudCos::delete($object) 删除文件
- * QcloudCos::signUrl($object, $timeout = 0) 获取文件访问的连接
- * QcloudCos::getSignature($dir = '') 客户端直接传腾讯云的时候获取签名
- * QcloudCos::uploadQcloudOssCallback() 客户端直接传腾讯云后的回调
+ * QcloudCosUtils::upload($filePath) 上传文件到腾讯云，返回访问连接，会删除本地的文件
+ * QcloudCosUtils::download($object, $localfile) 下载文件到本地
+ * QcloudCosUtils::delete($object) 删除文件
+ * QcloudCosUtils::signUrl($object, $timeout = 0) 获取文件访问的连接
+ * QcloudCosUtils::getSignature($dir = '') 客户端直接传腾讯云的时候获取签名
+ * QcloudCosUtils::uploadQcloudOssCallback() 客户端直接传腾讯云后的回调
  * 
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-class QcloudCos
+class QcloudCosUtils
 {
 
     public static $cosClient;
@@ -60,11 +60,10 @@ class QcloudCos
             $fileSize = filesize(public_path() . "/{$filePath}");
 
             // 保存的目录
-            $year    = date('Y');
-            $date    = date('Y-m-d');
-            $time    = date('YmdHis');
-            $rand    = mt_rand(0, 100000);
-            $ossPath = "{$year}/{$date}/{$fileInfo['extension']}/{$time}_{$rand}.{$fileInfo['extension']}";
+            $datePath = date('Y/m/d');
+            $time     = date('YmdHis');
+            $rand     = mt_rand(0, 100000);
+            $ossPath  = "{$datePath}/{$time}_{$rand}.{$fileInfo['extension']}";
 
             $result = (self::initOssClient())->Upload(
                 config('superadminx.file_system.qcloud.bucket'),

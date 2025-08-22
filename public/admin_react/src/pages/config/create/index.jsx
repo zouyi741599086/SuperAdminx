@@ -69,30 +69,113 @@ export default () => {
 
     /////////////////////已选择的组件///////////////
     const [fields, setFields] = useState([]);
-    // 添加组件
-    const createFields = (data) => {
+
+    /**
+     * 添加表单组件
+     * @param {object} data  添加的表单组件
+     * @param {int} id 有就代表添加在某个分组下的表单组件
+     */
+    const createFields = (data, id = null) => {
         let _fields = [...fields];
         let tmp = {
             id: Date.now(),
             dataIndex: Date.now(),
             ...data,
-            name: '',
             title: '',
-            // formItem的属性
-            formItemProps: {
-                rules: [],
-                style: { width: '100%' }
-            },
-            // formItem里面字段的属性
-            fieldProps: {
-                style: { width: '100%' }
-            },
-            // 列表组件才有的
-            fields: [],
             // 设置的form参数
             updateFields: {},
+
+        };
+
+        // 非分组、列表的时候
+        if (['group', 'fromList'].indexOf(data.valueType) == -1) {
+            tmp = {
+                ...tmp,
+                name: '',
+                // formItem的属性
+                formItemProps: {
+                    rules: [],
+                    style: { width: '100%' }
+                },
+                // formItem里面字段的属性
+                fieldProps: {
+                    style: { width: '100%' }
+                },
+                // 列表组件才有的
+                fields: [],
+            }
         }
-        _fields.push(tmp)
+        // 分组的时候加入分组的字段
+        if (data.valueType == 'group') {
+            tmp = {
+                ...tmp,
+                columns: [],
+            }
+        }
+        // 列表的时候加入列表的字段
+        if (data.valueType == 'formList') {
+            tmp = {
+                ...tmp,
+                name: '',
+                columns: [
+                    {
+                        valueType: 'group', // 列表内要多用group包一层，这样展示的时候才能每行展示多个item
+                        colProps: {
+                            xs: 24,
+                            sm: 24,
+                        },
+                        columns: [],
+                    }
+                ],
+            }
+        }
+        // 这些字段占用一行
+        if (['uploadImgAll', 'uploadImgVideoAll', 'uploadFileAll', 'teditor', 'group', 'formList'].indexOf(data.valueType) > -1) {
+            tmp = {
+                ...tmp,
+                // 独占一行
+                colProps: {
+                    xs: 24,
+                    sm: 24,
+                },
+            }
+        }
+        // 有id 说明是子表单组件，如分组下面的组件
+        if (id) {
+            tmp = {
+                ...tmp,
+                pid: id,
+            }
+        }
+
+        // 非子组件的时候
+        if (!id) {
+            _fields.push(tmp)
+        }
+
+        // 子组件的时候
+        if (id) {
+            const field = _fields.find(item => item.id == id);
+            // 分组group子组件
+            if (field.valueType == 'group') {
+                _fields = _fields.map(item => {
+                    if (item.id == id) {
+                        item.columns.push(tmp)
+                    }
+                    return item;
+                })
+            }
+            // 列表formList子组件
+            if (field.valueType == 'formList') {
+                _fields = _fields.map(item => {
+                    if (item.id == id) {
+                        item.columns[0].columns.push(tmp)
+                    }
+                    return item;
+                })
+            }
+        }
+
         setFields(_fields);
 
         // 添加后立即弹窗设置字段
@@ -101,25 +184,118 @@ export default () => {
     // 删除组件
     const delFields = (id) => {
         let _fields = [...fields];
-        _fields.splice(_fields.findIndex(i => i.id === id), 1);
+
+        // 删除的是哪个表单组件，判断是删除一级组件，还是分组这种二级组件
+        let delLevelType; // 删除的类型，1》一级组件，2》分组group内的组件，2》列表formList内的组件
+        let delOneIndex = false; // 删除的一级索引
+        let delTwoIndex = false; // 删除的二级索引，如分组group下或列表formList下
+        fields.map((item, index) => {
+            if (item.id == id) {
+                delLevelType = 1;
+                delOneIndex = index;
+            }
+            if (item.valueType == 'group') {
+                item.columns.some((_item, _index) => {
+                    if (_item.id == id) {
+                        delLevelType = 2;
+                        delOneIndex = index;
+                        delTwoIndex = _index;
+                        return true;
+                    }
+                })
+            }
+            if (item.valueType == 'formList') {
+                item.columns[0].columns.some((_item, _index) => {
+                    if (_item.id == id) {
+                        delLevelType = 3;
+                        delOneIndex = index;
+                        delTwoIndex = _index;
+                        return true;
+                    }
+                })
+            }
+        })
+
+        // 说明是删除
+        switch (delLevelType) {
+            // 删除的是一级字段
+            case 1:
+                _fields.splice(delOneIndex, 1);
+                break;
+            // 删除分组的组件
+            case 2:
+                _fields[delOneIndex].columns.splice(delTwoIndex, 1);
+                break;
+            // 删除列表的组件
+            case 3:
+                _fields[delOneIndex].columns[0].columns.splice(delTwoIndex, 1);
+                break;
+        }
+
         setFields(_fields);
     }
     // 设置组件
     const updateFields = (data) => {
         return new Promise((resolve) => {
             let _fields = [...fields];
-            // 判断字段名是否重复
-            let _boolean = _fields.some(_item => {
-                let tmp = data.id != _item.id && _item.dataIndex === data.dataIndex
-                if (_item.id === data.id) {
-                    _item = { ...data };
+
+            // 修改
+            _fields = _fields.map(item => {
+                if (item.id === data.id) {
+                    item = { ...data };
                 }
-                return tmp;
+                // 如果是分组组件
+                if (item.valueType == 'group') {
+                    item.columns = item.columns.map(_item => {
+                        if (_item.id === data.id) {
+                            _item = { ...data };
+                        }
+                        return _item;
+                    })
+                }
+                // 如果是列表组件
+                if (item.valueType == 'formList') {
+                    item.columns[0].columns = item.columns[0].columns.map(_item => {
+                        if (_item.id === data.id) {
+                            _item = { ...data };
+                        }
+                        return _item;
+                    })
+                }
+                return item;
             })
-            if (_boolean) {
-                message.error('字段name名称重复~');
+
+            // 判断是否有重名的 字段name
+            try {
+                let nameArr = [];
+                _fields.map(item => {
+                    if (item.valueType != 'group') {
+                        nameArr.push(item.name);
+                    }
+                    if (item.valueType == 'group') {
+                        item.columns.map(_item => {
+                            nameArr.push(_item.name);
+                        })
+                    }
+                    if (item.valueType == 'formList') {
+                        let _nameArr = [];
+                        item.columns[0].columns.map(_item => {
+                            _nameArr.push(_item.name);
+                        })
+                        if (new Set(_nameArr).size !== _nameArr.length) {
+                            throw new Error('字段name名称重复');
+                        }
+                    }
+                })
+                if (new Set(nameArr).size !== nameArr.length) {
+                    throw new Error('字段name名称重复');
+                }
+            } catch (error) {
+                message.error(error.message);
                 resolve(false);
+                return;
             }
+
             setFields(_fields);
             resolve(true);
         });
@@ -157,6 +333,7 @@ export default () => {
                 data={updateData}
                 setUpdateData={setUpdateData}
                 updateFields={updateFields}
+                className="config-create-form"
             />
             <PageContainer
                 ghost
@@ -168,7 +345,11 @@ export default () => {
             >
                 <ProCard split="vertical">
                     <ProCard colSpan={{ xs: 24, sm: 6, md: 5 }}>
-                        <FormSubmit fields={fields} setFields={setFields} type={type} />
+                        <FormSubmit
+                            fields={fields}
+                            setFields={setFields}
+                            type={type}
+                        />
                     </ProCard>
 
                     <ProCard colSpan={{ xs: 24, sm: 10, md: 12 }} style={{ height: '100%' }} bodyStyle={{ display: 'flex', flexDirection: 'column' }}>
@@ -191,6 +372,9 @@ export default () => {
                                             data={item}
                                             delFields={delFields}
                                             setUpdateData={setUpdateData}
+                                            createFields={createFields}
+                                            fields={fields}
+                                            setFields={setFields}
                                         />
                                     )}
                                 </SortableContext>
@@ -205,7 +389,11 @@ export default () => {
                                     <Divider orientation="left" key={item.title}>{item.title}</Divider>
                                     <Space wrap>
                                         {item.children.map((_item, _index) => {
-                                            return <Button type="dashed" key={_index} onClick={() => createFields(_item)}>{_item.valueTypeTitle}</Button>
+                                            return <Button
+                                                type="dashed"
+                                                key={_index}
+                                                onClick={() => createFields(_item)}
+                                            >{_item.valueTypeTitle}</Button>
                                         })}
                                     </Space>
                                 </div>

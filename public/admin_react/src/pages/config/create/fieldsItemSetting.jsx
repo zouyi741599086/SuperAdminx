@@ -64,8 +64,11 @@ export default (props) => {
                 _data.name = values.name;
                 _data.title = values.title;
 
-                _data.formItemProps.extra = values.extra;
-                _data.formItemProps.rules = [];
+                _data.formItemProps = {
+                    ...props.data.formItemProps,
+                    extra: values.extra,
+                    rules: []
+                }
 
                 // 输入框的前缀 后缀
                 if (['text', 'digit', 'digitRange'].indexOf(props.data.valueType) !== -1) {
@@ -177,45 +180,68 @@ export default (props) => {
                 return res;
             }}
         >
-            <ProFormText
-                name="name"
-                label="字段name"
-                placeholder="请输入"
-                rules={[
-                    { required: true, message: '请输入' }
-                ]}
-                extra="英文、需要整个表单唯一"
-            />
-            <ProFormText
-                name="title"
-                label="字段标题"
-                placeholder="请输入"
-                rules={[
-                    { required: true, message: '请输入' }
-                ]}
-            />
-            <ProFormText
-                name="extra"
-                label="填写时候的帮助提示"
-                placeholder="请输入"
-            />
-            <ProFormRadio.Group
-                name="required"
-                label="是否必填"
-                options={[
-                    {
-                        label: '否',
-                        value: 1,
-                    },
-                    {
-                        label: '是',
-                        value: 2,
-                    },
-                ]}
-                rules={[
-                    { required: true, message: '请选择' }
-                ]}
-            />
+            {props.data.valueType == 'group' || props.data.valueType == 'formList' ? <>
+                {props.data.valueType == 'formList' ? <>
+                    <ProFormText
+                        name="name"
+                        label="字段name"
+                        placeholder="请输入"
+                        rules={[
+                            { required: true, message: '请输入' }
+                        ]}
+                        extra="英文、需要整个表单唯一"
+                    />
+                </> : ''}
+                <ProFormText
+                    name="title"
+                    label={props.data.valueType == 'group' ? '分组标题' : '列表标题'}
+                    placeholder="请输入"
+                    rules={[
+                        { required: true, message: '请输入' }
+                    ]}
+                />
+            </> : <>
+                <ProFormText
+                    name="name"
+                    label="字段name"
+                    placeholder="请输入"
+                    rules={[
+                        { required: true, message: '请输入' }
+                    ]}
+                    extra="英文、需要整个表单唯一"
+                />
+                <ProFormText
+                    name="title"
+                    label="字段标题"
+                    placeholder="请输入"
+                    rules={[
+                        { required: true, message: '请输入' }
+                    ]}
+                />
+                <ProFormText
+                    name="extra"
+                    label="填写时候的帮助提示"
+                    placeholder="请输入"
+                />
+                <ProFormRadio.Group
+                    name="required"
+                    label="是否必填"
+                    options={[
+                        {
+                            label: '否',
+                            value: 1,
+                        },
+                        {
+                            label: '是',
+                            value: 2,
+                        },
+                    ]}
+                    rules={[
+                        { required: true, message: '请选择' }
+                    ]}
+                />
+            </>}
+
 
             {/* 数字输入框的 */}
             {props.data.valueType === 'digit' ? <>

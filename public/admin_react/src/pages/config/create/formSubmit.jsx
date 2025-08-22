@@ -52,7 +52,15 @@ export default ({ fields, setFields, type }) => {
                         message.error('还没有添加表单字段~')
                         return false;
                     }
-                    if (fields.some(_item => !_item.name)) {
+                    if (fields.some(_item => {
+                        if (_item.valueType == 'group') {
+                            return _item.columns.some(_tmp => !_tmp.name);
+                        }
+                        if ( _item.valueType == 'formList') {
+                            return _item.columns[0].columns.some(_tmp => !_tmp.name);
+                        }
+                        return !_item.name;
+                    })) {
                         message.error('表单字段未设置完~')
                         return false;
                     }

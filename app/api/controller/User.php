@@ -6,7 +6,7 @@ use support\Response;
 use app\common\model\UserModel;
 use app\common\model\SmsCodeModel;
 use app\common\logic\UserLogic;
-use app\utils\Sms;
+use app\utils\SmsUtils;
 
 /**
  * 用户
@@ -71,7 +71,7 @@ class User
         }
 
         // 验证手机号格式
-        Sms::checkTel($data['tel']);
+        SmsUtils::checkTel($data['tel']);
 
         // 判断此律师是否存在 是否正常
         $user = UserModel::where('tel', $data['tel'])->find();
@@ -79,9 +79,9 @@ class User
             abort('手机号错误~');
         }
 
-        $data['code'] = Sms::getCode(4);
+        $data['code'] = SmsUtils::getCode(4);
         // 开始发送
-        //Sms::send($data['tel'], "您的验证码是：{$data['code']}，有效期5分钟。");
+        //SmsUtils::send($data['tel'], "您的验证码是：{$data['code']}，有效期5分钟。");
 
         // 添加发送记录
         $data['type'] = 1;

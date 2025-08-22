@@ -1,7 +1,7 @@
 <?php
-use app\utils\DataEncryptor;
-use app\utils\QcloudCos;
-use app\utils\AliyunOss;
+use app\utils\DataEncryptorUtils;
+use app\utils\QcloudCosUtils;
+use app\utils\AliyunOssUtils;
 
 /**
  * 生成单号
@@ -137,7 +137,7 @@ function result($data = [], int $code = 1, string $mssage = '操作成功', bool
         $is_encrypt &&
         ! in_array(request()->path(), config('superadminx.api_encryptor.url'))
     ) {
-        $result['encrypt_data'] = DataEncryptor::aesEncrypt($result['data'], request()->aes_key, request()->aes_iv);
+        $result['encrypt_data'] = DataEncryptorUtils::aesEncrypt($result['data'], request()->aes_key, request()->aes_iv);
         unset($result['data']);
     }
     return json($result);
@@ -217,11 +217,11 @@ function export_path($filePath, $exportPathType = null): string
     }
 
     if ($exportPathType == 'qcloud') {
-        return QcloudCos::upload($filePath, true);
+        return QcloudCosUtils::upload($filePath, true);
     }
 
     if ($exportPathType == 'aliyun') {
-        return AliyunOss::upload($filePath, true);
+        return AliyunOssUtils::upload($filePath, true);
     }
     return $filePath;
 }

@@ -10,15 +10,15 @@ use support\Log;
 /**
  * 微信小程序操作
  * 
- * WechatMini::getToken() 获取小程序操作的token
- * WechatMini::getWxAcodeunLimit(string $page, string $scene = '', string $path = null, int $width = 280) 生成小程序二维码
- * WechatMini::getOpenid(string $code = '') 获取小程序openid
- * WechatMini::getPhoneNumber(string $code = '') 获取用户的手机号
+ * WechatMiniUtils::getToken() 获取小程序操作的token
+ * WechatMiniUtils::getWxAcodeunLimit(string $page, string $scene = '', string $path = null, int $width = 280) 生成小程序二维码
+ * WechatMiniUtils::getOpenid(string $code = '') 获取小程序openid
+ * WechatMiniUtils::getPhoneNumber(string $code = '') 获取用户的手机号
  * 
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-class WechatMini
+class WechatMiniUtils
 {
     public static function initApp()
     {

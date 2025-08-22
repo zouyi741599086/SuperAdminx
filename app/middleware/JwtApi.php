@@ -5,7 +5,7 @@ use ReflectionClass;
 use Webman\MiddlewareInterface;
 use Webman\Http\Response;
 use Webman\Http\Request;
-use app\utils\Jwt;
+use app\utils\JwtUtils;
 use app\common\logic\UserLogic;
 use support\Log;
 
@@ -25,7 +25,7 @@ class JwtApi implements MiddlewareInterface
         $request->loginRole = 'user';
         try {
             // 不管是否需要登录都进行权限验证，因为有的接口可登录可不登录
-            $request->user = Jwt::getUser('user_pc');
+            $request->user = JwtUtils::getUser('user_pc');
         } catch (\Exception $e) {
             // 必须要登录同时验证失败了，才抛出错误
             if ($this->actionIsLogin()) {

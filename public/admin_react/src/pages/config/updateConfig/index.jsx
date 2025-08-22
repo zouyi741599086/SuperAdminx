@@ -13,6 +13,7 @@ import {
     ArrowDownOutlined,
 } from '@ant-design/icons';
 import MiniLink from './miniLink';
+import './index.css';
 
 const ProConfigProvider = lazy(() => import('@/component/form/proConfigProvider/index'));
 
@@ -44,7 +45,6 @@ export default ({ name, ...props }) => {
             name
         }).then(res => {
             if (res.code === 1) {
-                console.log(res.data)
                 if (res.data.type === 'list') {
                     res.data.fields_config[0].fieldProps = {
                         // 一行显示4个字段，删除后就变为一行一个字段
@@ -95,6 +95,7 @@ export default ({ name, ...props }) => {
                         content: res.data.content
                     }
                 }
+
                 setData(res.data)
 
                 // form表单的时候一行显示几个字段
@@ -136,7 +137,7 @@ export default ({ name, ...props }) => {
     }
     return <>
         <PageContainer
-            className="sa-page-container"
+            className="sa-page-container update-config-form"
             ghost
             header={{
                 title: data?.title || '',
@@ -177,9 +178,10 @@ export default ({ name, ...props }) => {
                                         let content = {};
                                         // 如果是form表单则重组content的值，为了让空值也保留
                                         if (data.type === 'form') {
-                                            data.fields_config.map(item => {
-                                                content[item['name']] = fieldsDefaultValue(item, values[item['name']]);
-                                            })
+                                            content = values;
+                                            // data.fields_config.map(item => {
+                                            //     content[item['name']] = fieldsDefaultValue(item, values[item['name']]);
+                                            // })
                                         }
                                         if (data.type === 'list') {
                                             content = [];

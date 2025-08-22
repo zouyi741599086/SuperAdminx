@@ -3,23 +3,23 @@ namespace app\utils;
 
 use think\facade\Db;
 use support\Redis;
-use app\utils\DataEncryptor;
-use app\utils\ArrayObjectAccess;
+use app\utils\DataEncryptorUtils;
+use app\utils\ArrayObjectAccessUtils;
 
 /**
  * Jwt鉴权
  * 生成token后会装入数据库或redis，只保留最新xx条token
  * 解密token先执行解密，成功后在到数据库中获取token（获取不到直接失败），获取到了后在判断过期时间（过期则删除）
  * 
- * Jwt::generateToken(string $app_name, array $user) 生成token
- * Jwt::getUser(string $app_name) 解密token获取登录用户
- * Jwt::logoutUser(string $app_name, int $id) 强制清退某个应用的某个用户，是清退此用户所有的终端
- * Jwt::getHeaderToken() 从header中获取当前登录用户的token
+ * JwtUtils::generateToken(string $app_name, array $user) 生成token
+ * JwtUtils::getUser(string $app_name) 解密token获取登录用户
+ * JwtUtils::logoutUser(string $app_name, int $id) 强制清退某个应用的某个用户，是清退此用户所有的终端
+ * JwtUtils::getHeaderToken() 从header中获取当前登录用户的token
  * 
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-class Jwt
+class JwtUtils
 {
     /**
      * 生成token
@@ -67,9 +67,9 @@ class Jwt
     /**
      * 解密token获取用户
      * @param string $app_name 解密哪个应用生成token
-     * @return ArrayObjectAccess 
+     * @return ArrayObjectAccessUtils 
      */
-    public static function getUser(string $app_name) : ArrayObjectAccess
+    public static function getUser(string $app_name) : ArrayObjectAccessUtils
     {
         $config = self::getConfig($app_name);
 
@@ -119,7 +119,7 @@ class Jwt
                 throw new \Exception('登录已失效');
             }
         }
-        return new ArrayObjectAccess($user);
+        return new ArrayObjectAccessUtils($user);
     }
 
     /**
@@ -155,7 +155,7 @@ class Jwt
         }
 
         // rsa初次解密，前端传的token是token与time的通过rsa加密得到的
-        $tmp = json_decode(DataEncryptor::rsaDecrypt($token), true);
+        $tmp = json_decode(DataEncryptorUtils::rsaDecrypt($token), true);
         if (! isset($tmp['token']) || ! isset($tmp['time']) || ! $tmp['token'] || ! $tmp['time']) {
             throw new \Exception('非法请求');
         }
