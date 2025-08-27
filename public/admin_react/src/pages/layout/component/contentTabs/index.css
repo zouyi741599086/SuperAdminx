@@ -6,6 +6,7 @@
 
 /**选项卡里面 标签按钮的样式 */
 .tabs-pane-btn{padding:0px 8px;border-radius: 4px;height:26px;font-size:13px;background: #fff;border:0px;display:flex;align-items: center;box-sizing: border-box;}
+.tabs-pane-btn .txt{flex:1;}
 .tabs-pane-btn .icon{transform: scale(.7);}
 .tabs-pane-btn.on{color:#fff;}
 .tabs-pane-btn.on .icon{color:#ccc;}

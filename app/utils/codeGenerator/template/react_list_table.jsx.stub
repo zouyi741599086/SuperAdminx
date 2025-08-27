@@ -425,13 +425,26 @@ export default () => {
                 $valueType = $list_fields_type_config[$field]['search_type'];
                 $columnsParams .= "            valueType : '{$valueType}',\n";
 
+                // 是否支持多选
+                $modeType = '';
+                if (
+                    in_array($valueType, ['select', 'treeSelect', 'cascader']) &&
+                    isset($list_fields_type_config[$field]['mode_type']) && $list_fields_type_config[$field]['mode_type'] == 2
+                ) {
+                    $modeType = "mode: 'multiple',
+                maxTagCount: 'responsive',\n";
+                }
+        
                 // 如果搜索的类型是下拉等选择项的时候///////////////
                 $search_data_type = $list_fields_type_config[$field]['search_data_type'] ?? 1;
                 // 自己输入选择项
                 if (in_array($valueType, ['select', 'checkbox', 'radio']) && $search_data_type == 1) {
 
+                    $tmp = $modeType;
                     // 下拉才有搜索
-                    $tmp = $valueType == 'select' ? "showSearch: true," : ""; 
+                    if ($valueType == 'select') {
+                        $tmp .= "showSearch: true,";
+                    }
                     $columnsParams .= "            fieldProps: {
                 {$tmp}
                 options: [
@@ -449,8 +462,11 @@ export default () => {
                 }
                 // 有下级数据的选择项
                 if (in_array($valueType, ['treeSelect', 'cascader']) && $search_data_type == 1) {
+                    $tmp = $modeType;
                     // 树选择才有搜索的字段配置
-                    $tmp = $valueType == 'treeSelect' ? "treeNodeFilterProp: 'label'," : "";
+                    if ($valueType == 'treeSelect') {
+                        $tmp .= "treeNodeFilterProp: 'label',";
+                    }
 
                     $columnsParams .= "            fieldProps: {
                 showSearch: true,
@@ -499,8 +515,9 @@ export default () => {
                 if (in_array($valueType, ['select', 'treeSelect', 'cascader', 'checkbox', 'radio']) && $search_data_type == 2) {
 
                     $tmp = $list_fields_type_config[$field]['dataSourceApi'];
+                    $tmp1 = $modeType;
                     // 下拉、树选择、级联选择才有搜索
-                    $tmp1 = in_array($valueType, ['select', 'treeSelect', 'cascader']) ? "showSearch: true," : "";
+                    $tmp1 .= in_array($valueType, ['select', 'treeSelect', 'cascader']) ? "showSearch: true," : "";
                     // 树选择才有搜索的字段配置
                     $tmp1 .= $valueType == 'treeSelect' ? "\n                treeNodeFilterProp: 'title'," : "";
 

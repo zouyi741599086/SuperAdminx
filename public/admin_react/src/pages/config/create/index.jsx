@@ -338,7 +338,7 @@ export default () => {
             <PageContainer
                 ghost
                 header={{
-                    title: id ? `修改${type}配置` : `添加${type}配置`,
+                    title: (id && !search.get('action')) ? `修改${type}配置` : `添加${type}配置`,
                     style: { padding: '0 24px 12px' },
                     onBack: onBack
                 }}
@@ -362,11 +362,11 @@ export default () => {
                                 onDragEnd={handleDragEnd}
                             >
                                 <SortableContext
-                                    items={fields.map(i => i.id)}
+                                    items={fields?.map(i => i.id)}
                                     strategy={verticalListSortingStrategy}
                                     modifiers={[restrictToParentElement]}
                                 >
-                                    {fields.map(item =>
+                                    {fields?.map(item =>
                                         <FieldsItem
                                             key={item.id}
                                             data={item}

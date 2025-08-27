@@ -56,7 +56,7 @@ export default ({ fields, setFields, type }) => {
                         if (_item.valueType == 'group') {
                             return _item.columns.some(_tmp => !_tmp.name);
                         }
-                        if ( _item.valueType == 'formList') {
+                        if (_item.valueType == 'formList') {
                             return _item.columns[0].columns.some(_tmp => !_tmp.name);
                         }
                         return !_item.name;
@@ -85,7 +85,14 @@ export default ({ fields, setFields, type }) => {
                         ];
                     }
                     // 判断是添加还是修改
-                    let result = id ? await configApi.update(formData) : await configApi.create(formData);
+                    let result;
+                    if (! id || (id && search.get('action') == 'copy')) {
+                        delete formData.id;
+                        result = await configApi.create(formData);
+                    } else {
+                        result = await configApi.update(formData);
+                    }
+
                     if (result.code === 1) {
                         message.success(result.message)
                         onBack();

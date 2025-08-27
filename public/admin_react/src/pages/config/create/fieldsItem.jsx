@@ -107,27 +107,29 @@ const FieldsItem = ({ data, delFields, setUpdateData, createFields, fields, setF
             {/* 分组，则复用组件本身循环展示 分组下面的字段 */}
             {data.valueType == 'group' ? <>
                 <div><b>{data.title}</b></div><br />
-                <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleDragEnd}
-                >
-                    <SortableContext
-                        items={data.columns.map(i => i.id)}
-                        strategy={verticalListSortingStrategy}
-                        modifiers={[restrictToParentElement]}
+                {data.columns?.length > 0 ? <>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
                     >
-                        {data.columns.map(item =>
-                            <FieldsItem
-                                key={item.id}
-                                data={item}
-                                delFields={delFields}
-                                setUpdateData={setUpdateData}
-                                createFields={createFields}
-                            />
-                        )}
-                    </SortableContext>
-                </DndContext>
+                        <SortableContext
+                            items={data?.columns?.map(i => i.id)}
+                            strategy={verticalListSortingStrategy}
+                            modifiers={[restrictToParentElement]}
+                        >
+                            {data?.columns?.map(item =>
+                                <FieldsItem
+                                    key={item.id}
+                                    data={item}
+                                    delFields={delFields}
+                                    setUpdateData={setUpdateData}
+                                    createFields={createFields}
+                                />
+                            )}
+                        </SortableContext>
+                    </DndContext>
+                </> : ''}
 
                 <CreateGroupItem
                     createFields={createFields}
@@ -138,27 +140,29 @@ const FieldsItem = ({ data, delFields, setUpdateData, createFields, fields, setF
             {/* 列表，则复用组件本身循环展示 列表下面的字段 */}
             {data.valueType == 'formList' ? <>
                 <div><b>{data.title}</b></div><br />
-                <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleDragEnd}
-                >
-                    <SortableContext
-                        items={data.columns[0].columns.map(i => i.id)}
-                        strategy={verticalListSortingStrategy}
-                        modifiers={[restrictToParentElement]}
+                {data?.columns?.[0]?.columns?.length > 0 ? <>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleDragEnd}
                     >
-                        {data.columns[0].columns.map(item =>
-                            <FieldsItem
-                                key={item.id}
-                                data={item}
-                                delFields={delFields}
-                                setUpdateData={setUpdateData}
-                                createFields={createFields}
-                            />
-                        )}
-                    </SortableContext>
-                </DndContext>
+                        <SortableContext
+                            items={data?.columns?.[0]?.columns?.map(i => i.id)}
+                            strategy={verticalListSortingStrategy}
+                            modifiers={[restrictToParentElement]}
+                        >
+                            {data?.columns?.[0]?.columns?.map(item =>
+                                <FieldsItem
+                                    key={item.id}
+                                    data={item}
+                                    delFields={delFields}
+                                    setUpdateData={setUpdateData}
+                                    createFields={createFields}
+                                />
+                            )}
+                        </SortableContext>
+                    </DndContext>
+                </> : ''}
 
                 <CreateGroupItem
                     createFields={createFields}

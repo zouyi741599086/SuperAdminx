@@ -182,6 +182,18 @@ echo "    // 软删除
     if ($value == '=') {
         echo "        \$query->where('{$key}', '=', \$value);";
     }
+    // 等于+in搜索
+    if ($value == '=in') {
+echo"        if (is_array(\$value)) {
+            if (count(\$value) == 1) {
+                \$query->where('{$key}', '=', \$value[0]);
+            }  else {
+                \$query->where('{$key}', 'in', \$value);
+            }
+        } else {
+            \$query->where('{$key}', '=', \$value);
+        }";
+    }
     // 模糊搜索
     if ($value == 'like') {
         echo "        \$query->where('{$key}', 'like', \"%{\$value}%\");";

@@ -37,6 +37,42 @@ export default ({ name, ...props }) => {
         xs: 24
     });
 
+    const formListItemRender = ({ listDom, action }, meta) => {
+        return (
+            <ProCard
+                size="small"
+                bordered
+                hoverable
+                extra={<>
+                    <Space>
+                        <Tooltip title="上移">
+                            <Button
+                                type="link"
+                                size="small"
+                                disabled={meta.index === 0}
+                                onClick={() => {
+                                    meta.operation.move(meta.index, meta.index - 1);
+                                }}
+                            ><ArrowUpOutlined /></Button>
+                        </Tooltip>
+                        <Tooltip title="下移">
+                            <Button type="link" size="small" onClick={() => {
+                                meta.operation.move(meta.index, meta.index + 1);
+                            }}><ArrowDownOutlined /></Button>
+                        </Tooltip>
+                        {action}
+                    </Space>
+                </>}
+                title={`第 ${meta.index + 1} 行`}
+                style={{
+                    marginBottom: 8,
+                }}
+            >
+                {listDom}
+            </ProCard>
+        );
+    };
+
     useEffect(() => {
         if (!name) {
             return false;
@@ -54,46 +90,25 @@ export default ({ name, ...props }) => {
                         // 最大条数
                         max: res.data.list_number,
                         // 用卡片包裹每行数据
-                        itemRender: ({ listDom, action }, meta) => {
-                            return (
-                                <ProCard
-                                    size="small"
-                                    bordered
-                                    hoverable
-                                    extra={<>
-                                        <Space>
-                                            <Tooltip title="上移">
-                                                <Button
-                                                    type="link"
-                                                    size="small"
-                                                    disabled={meta.index === 0}
-                                                    onClick={() => {
-                                                        meta.operation.move(meta.index, meta.index - 1);
-                                                    }}
-                                                ><ArrowUpOutlined /></Button>
-                                            </Tooltip>
-                                            <Tooltip title="下移">
-                                                <Button type="link" size="small" onClick={() => {
-                                                    meta.operation.move(meta.index, meta.index + 1);
-                                                }}><ArrowDownOutlined /></Button>
-                                            </Tooltip>
-                                            {action}
-                                        </Space>
-                                    </>}
-                                    title={`第 ${meta.index + 1} 行`}
-                                    style={{
-                                        marginBottom: 8,
-                                    }}
-                                >
-                                    {listDom}
-                                </ProCard>
-                            );
-                        }
+                        itemRender: formListItemRender
                     }
                     // list赋值的时候多包一层
                     res.data.content = {
                         content: res.data.content
                     }
+                }
+
+                if (res.data.type === 'form') {
+                    res.data.fields_config.map(item => {
+                        if (item.valueType == 'formList') {
+                            item.fieldProps = {
+                                ...item.fieldProps,
+                                // 用卡片包裹每行数据
+                                itemRender: formListItemRender
+                            }
+                        }
+                        return item;
+                    })
                 }
 
                 setData(res.data)

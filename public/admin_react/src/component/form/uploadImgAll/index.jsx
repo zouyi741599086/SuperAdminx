@@ -129,7 +129,7 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
     }
 
     const beforeUpload = file => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif';
         if (!isJpgOrPng) {
             message.error('只能上传图片~');
             return Upload.LIST_IGNORE;
@@ -201,7 +201,11 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
                         aspect={() => {
                             return width / height
                         }}
-                        beforeCrop={() => {
+                        beforeCrop={(e) => {
+                            // gif也不裁剪
+                            if (e.type === 'image/gif') {
+                                return false;
+                            }
                             // 有宽高就不裁剪图片
                             if (width <= 0 || height <= 0) {
                                 return false;

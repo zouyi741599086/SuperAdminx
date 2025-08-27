@@ -541,7 +541,7 @@ class <?php echo $file_name ?? ''; ?>
     {
         try {
             \$tmpList = [];
-            \$list    = self::getList(\$params, false, true)->cursor();
+            \$list    = self::getList(\$params, false)->cursor();
             foreach (\$list as \$v) {
                 // 导出的数据
                 \$tmpList[] = [";

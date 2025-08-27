@@ -142,6 +142,13 @@ export default () => {
                             disabled={authCheck('configUpdate')}
                         >修改</Button>
                     </NavLink>
+                    <NavLink to={authCheck('configUpdate') ? '' : `/config/create?id=${record.id}&type=${record.type}&action=copy`}>
+                        <Button
+                            type="link"
+                            size="small"
+                            disabled={authCheck('configUpdate')}
+                        >复制</Button>
+                    </NavLink>
                     <Popconfirm
                         title="确认要删除吗？"
                         onConfirm={() => {

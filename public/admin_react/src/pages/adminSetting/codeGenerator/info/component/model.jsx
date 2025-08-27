@@ -79,6 +79,10 @@ const search_attrs = [
         label: '等于',
     },
     {
+        value: '=in',
+        label: '等于+in搜索',
+    },
+    {
         value: 'like',
         label: '模糊搜索',
     },

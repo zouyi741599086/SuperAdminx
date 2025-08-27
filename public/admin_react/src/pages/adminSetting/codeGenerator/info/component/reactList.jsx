@@ -233,7 +233,7 @@ export default ({ tableName, operationFile, ...props }) => {
             label: '选择日期',
             value: 'date',
         },
-		{
+        {
             label: '省选择',
             value: 'province',
         },
@@ -671,11 +671,12 @@ export default ({ tableName, operationFile, ...props }) => {
                                                                             name={[['react_list', 'list_fields_type_config', `${record.Field}`, 'search_type']]}
                                                                         >
                                                                             {({ react_list }) => {
+                                                                                let _component = [];
                                                                                 const search_type = react_list?.list_fields_type_config?.[record.Field]?.search_type;
                                                                                 if (
                                                                                     ['select', 'treeSelect', 'cascader', 'checkbox', 'radio'].indexOf(search_type) !== -1
                                                                                 ) {
-                                                                                    return <>
+                                                                                    _component.push(<>
                                                                                         <ProFormSelect
                                                                                             key="search_data_type"
                                                                                             name={['react_list', 'list_fields_type_config', `${record.Field}`, 'search_data_type']}
@@ -694,6 +695,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                                                                                 }
                                                                                             ]}
                                                                                             fieldProps={{
+                                                                                                prefix: '选择项：',
                                                                                                 style: { margin: '2px 0px' },
                                                                                                 popupMatchSelectWidth: false,
                                                                                             }}
@@ -711,6 +713,7 @@ export default ({ tableName, operationFile, ...props }) => {
                                                                                                         options={tableList}
                                                                                                         showSearch={true}
                                                                                                         fieldProps={{
+                                                                                                            prefix: '数据表：',
                                                                                                             popupMatchSelectWidth: false,
                                                                                                             allowClear: true,
                                                                                                             style: { margin: '2px 0px' },
@@ -727,16 +730,44 @@ export default ({ tableName, operationFile, ...props }) => {
                                                                                                 }
                                                                                             }}
                                                                                         </ProFormDependency>
-                                                                                    </>
+                                                                                    </>)
+                                                                                }
+                                                                                if (
+                                                                                    ['select', 'treeSelect', 'cascader'].indexOf(search_type) !== -1
+                                                                                ) {
+                                                                                    _component.push(<ProFormSelect
+                                                                                        key="mode_type"
+                                                                                        name={['react_list', 'list_fields_type_config', `${record.Field}`, 'mode_type']}
+                                                                                        placeholder="是否支持多选"
+                                                                                        rules={[
+                                                                                            { required: true, message: '请选择' }
+                                                                                        ]}
+                                                                                        options={[
+                                                                                            {
+                                                                                                label: '否',
+                                                                                                value: 1,
+                                                                                            },
+                                                                                            {
+                                                                                                label: '是',
+                                                                                                value: 2
+                                                                                            }
+                                                                                        ]}
+                                                                                        fieldProps={{
+                                                                                            prefix: '多选：',
+                                                                                            style: { margin: '2px 0px' },
+                                                                                            popupMatchSelectWidth: false,
+                                                                                        }}
+                                                                                    />)
                                                                                 }
                                                                                 if (search_type == 'selectTable') {
-                                                                                    return <ProFormSelect
+                                                                                    _component.push(<ProFormSelect
                                                                                         key="search_data_source_table"
                                                                                         name={['react_list', 'list_fields_type_config', `${record.Field}`, `search_data_source_table`]}
                                                                                         placeholder="请选择数据来源"
                                                                                         options={tableList}
                                                                                         showSearch={true}
                                                                                         fieldProps={{
+                                                                                            prefix: '数据表：',
                                                                                             popupMatchSelectWidth: false,
                                                                                             allowClear: true,
                                                                                             style: { margin: '2px 0px' },
@@ -745,12 +776,12 @@ export default ({ tableName, operationFile, ...props }) => {
                                                                                                 label: 'Name',
                                                                                             },
                                                                                         }}
-                                                                                        extra="选择项数据来源表"
                                                                                         rules={[
                                                                                             { required: true, message: '请选择' }
                                                                                         ]}
-                                                                                    />
+                                                                                    />)
                                                                                 }
+                                                                                return _component;
                                                                             }}
                                                                         </ProFormDependency>
                                                                     </>
@@ -785,7 +816,7 @@ export default ({ tableName, operationFile, ...props }) => {
                 <ProForm.Item
                     name="react_list_code"
                 >
-                    <CodeHighlight/>
+                    <CodeHighlight />
                 </ProForm.Item>
 
             </Space>

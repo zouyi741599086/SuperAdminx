@@ -11,7 +11,7 @@
  */
 
 return [
-    'version'             => '2.0.1',
+    'version'             => '2.2.2',
 	// 导出的文件，存到哪，如果是分布式部署应该就要存阿里云或腾讯云等才行
     'export_path_type'    => 'qcloud', // public》本地，aliyun》阿里云，qcloud》腾讯云
 	// 是否清理未使用的file，参考：https://superadminx.com/webman/upload.html#%E5%88%A0%E9%99%A4%E6%B2%A1%E4%BD%BF%E7%94%A8%E7%9A%84%E6%96%87%E4%BB%B6
