@@ -668,30 +668,6 @@ export default () => {
     ];
     return (
         <>
- <?php
-    // 如果修改是弹窗修改
-    if ($updateIsModal) {
-echo "           {/* 修改表单 */}
-            <Lazyload block={false}>
-                <Update
-                    tableReload={tableReload}
-                    updateId={updateId}
-                    setUpdateId={setUpdateId}
-                />
-            </Lazyload>\n";
-    }
-
-    // 如果查看详情是弹窗查看
-    if ($infoIsModal) {
-echo "           {/* 查看详情 */}
-            <Lazyload block={false}>
-                <Info
-                    infoId={infoId}
-                    setInfoId={setInfoId}
-                />
-            </Lazyload>\n";
-    }
-?>
             <PageContainer
                 className="sa-page-container"
                 ghost
@@ -728,71 +704,97 @@ echo "           {/* 查看详情 */}
                         persistenceType: 'localStorage'
                     }}
                     headerTitle={
-                        <Space>
-                            <?php
-                                // 判断是否有新增操作
-                                if (isset($table_action_list) && in_array('create', $table_action_list)) {
-                                    // 如果有新增，同时新增是弹窗
-                                    if ($createIsModal) {
-                                    echo "<Lazyload block={false}>
-                                <Create tableReload={tableReload} />
-                            </Lazyload>
-                                    ";
-                                    } else {
-                                        // 新增的权限节点
-                                        $createAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Create';
-                                        // 列表的权限节点
-                                        $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
-                                        $getListMenuPath = AdminMenuModel::where('name', $getListAuthName)->value('path');
-                                        $create_url = $getListMenuPath . "/create";
-                                    echo "<NavLink to={authCheck('{$createAuthName}') ? '' : `{$create_url}`}>
-                                <Button
-                                    type=\"primary\"
-                                    disabled={authCheck('{$createAuthName}')}
-                                    icon={<PlusOutlined />}
-                                >添加{$table_title}</Button>
-                            </NavLink>\n";
+                        <>
+                            <Space>
+                                <?php
+                                    // 判断是否有新增操作
+                                    if (isset($table_action_list) && in_array('create', $table_action_list)) {
+                                        // 如果有新增，同时新增是弹窗
+                                        if ($createIsModal) {
+                                        echo "<Lazyload block={false}>
+                                    <Create tableReload={tableReload} />
+                                </Lazyload>
+                                        ";
+                                        } else {
+                                            // 新增的权限节点
+                                            $createAuthName = CodeGenerator::toCamelCase($table_name, true) . 'Create';
+                                            // 列表的权限节点
+                                            $getListAuthName = CodeGenerator::toCamelCase($table_name, true);
+                                            $getListMenuPath = AdminMenuModel::where('name', $getListAuthName)->value('path');
+                                            $create_url = $getListMenuPath . "/create";
+                                        echo "<NavLink to={authCheck('{$createAuthName}') ? '' : `{$create_url}`}>
+                                    <Button
+                                        type=\"primary\"
+                                        disabled={authCheck('{$createAuthName}')}
+                                        icon={<PlusOutlined />}
+                                    >添加{$table_title}</Button>
+                                </NavLink>\n";
+                                        }
                                     }
-                                }
 
-                                // 是否有导出操作
-                                if (isset($table_action_list) && in_array('export', $table_action_list)) {
-                                    $exportDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ExportData';
-                                    echo "
-                            <Tooltip title=\"根据当前搜索条件导出数据~\">
+                                    // 是否有导出操作
+                                    if (isset($table_action_list) && in_array('export', $table_action_list)) {
+                                        $exportDataAuthName = CodeGenerator::toCamelCase($table_name, true) . 'ExportData';
+                                        echo "
+                                <Tooltip title=\"根据当前搜索条件导出数据~\">
+                                    <Button
+                                        type=\"primary\"
+                                        danger
+                                        ghost
+                                        icon={<CloudDownloadOutlined />}
+                                        onClick={exportData}
+                                        disabled={authCheck('{$exportDataAuthName}')}
+                                    >导出</Button>
+                                </Tooltip>\n";
+                                    }
+                                    
+                                    // 如果有导入
+                                    if ($isImport) {
+                                        echo "
+                                <ImportData
+                                    tableReload={tableReload}
+                                />\n";
+                                    }
+
+                                    // 如果有排序
+                                    if (in_array('InputNumber', $antdComponent)) {
+                                        // 排序的权限id
+                                        $updateSortAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateSort';
+                                        echo "
                                 <Button
                                     type=\"primary\"
-                                    danger
-                                    ghost
-                                    icon={<CloudDownloadOutlined />}
-                                    onClick={exportData}
-                                    disabled={authCheck('{$exportDataAuthName}')}
-                                >导出</Button>
-                            </Tooltip>\n";
-                                }
-                                
-                                // 如果有导入
-                                if ($isImport) {
-                                    echo "
-                            <ImportData
-                                tableReload={tableReload}
-                            />\n";
-                                }
+                                    onClick={updateSort}
+                                    disabled={authCheck('{$updateSortAuthName}')}
+                                    icon={<OrderedListOutlined />}
+                                >保存排序</Button>\n";
+                                    }
+                                ?>
+                            </Space>
+<?php
+    // 如果修改是弹窗修改
+    if ($updateIsModal) {
+        echo "                            {/* 修改表单 */}
+                            <Lazyload block={false}>
+                                <Update
+                                    tableReload={tableReload}
+                                    updateId={updateId}
+                                    setUpdateId={setUpdateId}
+                                />
+                            </Lazyload>\n";
+    }
 
-                                // 如果有排序
-                                if (in_array('InputNumber', $antdComponent)) {
-                                    // 排序的权限id
-                                    $updateSortAuthName = CodeGenerator::toCamelCase($table_name, true) . 'UpdateSort';
-                                    echo "
-                            <Button
-                                type=\"primary\"
-                                onClick={updateSort}
-                                disabled={authCheck('{$updateSortAuthName}')}
-                                icon={<OrderedListOutlined />}
-                            >保存排序</Button>\n";
-                                }
-                            ?>
-                        </Space>
+    // 如果查看详情是弹窗查看
+    if ($infoIsModal) {
+        echo "                            {/* 查看详情 */}
+                            <Lazyload block={false}>
+                                <Info
+                                    infoId={infoId}
+                                    setInfoId={setInfoId}
+                                />
+                            </Lazyload>\n";
+    }
+?>
+                        <>
                     }
                     pagination={{
                         defaultPageSize: 20,

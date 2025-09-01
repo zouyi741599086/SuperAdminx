@@ -1,14 +1,7 @@
-import { useRef, lazy, useState } from 'react';
+import { useState } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { userApi } from '@/api/user';
-import { ProTable } from '@ant-design/pro-components';
-import { App, Button, Typography, Card, Space, Row, Col, Tooltip, Avatar, Tree, Input } from 'antd';
-import {
-    CloudDownloadOutlined,
-} from '@ant-design/icons';
-import { authCheck } from '@/common/function';
-import { fileApi } from '@/api/file';
-import Lazyload from '@/component/lazyLoad/index';
+import { App, Card, Row, Col, Tree } from 'antd';
 import SelectUser from '@/components/selectUser';
 const updateTreeData = (list, key, children) =>
     list.map(node => {
@@ -36,21 +29,24 @@ export default () => {
     const [treeKey, setTreeKey] = useState(new Date().getTime());
 
     // 搜索的时候
-    const onSearch = (tel) => {
-        userApi.invitations({ tel }).then(res => {
-            setTreeKey(new Date().getTime());
-            if (res.code === 1) {
-                setTreeData(res.data.map(item => {
-                    return {
-                        title: `${item.name}【${item.tel}】`,
-                        key: item.id,
-                        isLeaf: item.next_user_count > 0 ? false : true
-                    }
-                }));
-            } else {
-                message.error(res.message);
-            }
-        })
+    const onSearch = (id) => {
+        if (id) {
+            userApi.invitations({ id }).then(res => {
+                setTreeKey(new Date().getTime());
+                if (res.code === 1) {
+                    setTreeData(res.data.map(item => {
+                        return {
+                            title: `${item.name}【${item.tel}】【${item.channels_level}(${item.channels_rate}%)】`,
+                            key: item.id,
+                            isLeaf: item.next_user_count > 0 ? false : true
+                        }
+                    }));
+                } else {
+                    message.error(res.message);
+                }
+            })
+        }
+
     }
 
     // 展开的时候
@@ -60,7 +56,7 @@ export default () => {
             setTreeData(origin =>
                 updateTreeData(origin, key, result.data.map(item => {
                     return {
-                        title: `${item.name}【${item.tel}】`,
+                        title: `${item.name}【${item.tel}】【${item.channels_level}(${item.channels_rate}%)】`,
                         key: item.id,
                         isLeaf: item.next_user_count > 0 ? false : true
                     }
@@ -87,7 +83,9 @@ export default () => {
                 >
                     <Row gutter={[24, 24]}>
                         <Col xs={24} sm={24} md={12} xl={8} xxl={6}>
-                            <Input.Search placeholder="请输入完整的手机号" onSearch={onSearch} enterButton />
+                            <SelectUser
+                                onChange={onSearch}
+                            />
                         </Col>
                         <Col xs={24} sm={24} md={24} xl={24} xxl={24}>
                             <Tree

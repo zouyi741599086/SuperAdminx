@@ -202,7 +202,7 @@ export default ({ tableReload, id, setId, ...props }) => {
             width={1000}
             layout="horizontal"
             modalProps={{
-                destroyOnClose: true,
+                destroyOnHidden: true,
             }}
             submitter={false}
         >

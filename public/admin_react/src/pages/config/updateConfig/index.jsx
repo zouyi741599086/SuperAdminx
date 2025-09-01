@@ -41,7 +41,6 @@ export default ({ name, ...props }) => {
         return (
             <ProCard
                 size="small"
-                bordered
                 hoverable
                 extra={<>
                     <Space>

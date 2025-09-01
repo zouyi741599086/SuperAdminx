@@ -328,7 +328,7 @@ echo "        {{$columnsParams}
                             size=\"small\"
                             column={1}
                             style={{ maxWidth: '500px', maxHeight: '260px', overflowY: 'auto' }}
-                            bordered
+                            bordered={true}
                             labelStyle={{ width: '90px' }}
                             items={items}
                         />

@@ -347,31 +347,36 @@ class <?php echo $file_name ?? ''; ?>
         echo "
     /**
      * 搜索选择某条数据
-     * @param string \$keywords 
-     * @param int \$id
+     * @param array \$params 
      */
-    public static function select{$tableNameToCamelCase}(?string \$keywords, ?int \$id)
+    public static function select{$tableNameToCamelCase}(array \$params)
     {";
+        // 排序
+        $order = 'id desc';
         // 从表中读所有字段，判断是否有title、name、tel这三个字段，然后生成只搜索这三个字段
         $tmpFields = [];
         foreach ($tableColumn as $v) {
             if (in_array($v['Field'], ['title','name','tel'])) {
                 $tmpFields[] = $v['Field'];
             }
+            if ($v['Field'] == 'sort') {
+                $order = 'sort desc,id desc';
+            }
         }
         $tmpSearchFields = implode('|', $tmpFields);
         $tmpSelectFields = implode(',', $tmpFields);
         echo "
-        \$where = [];
-        // 搜索
-        \$keywords != null && \$where[] = ['{$tmpSearchFields}', 'like', \"%{\$keywords}%\"];
-        \$id != null && \$where[] = ['id', '=', \$id];
-
         return {$data['model']['file_name']}::field('id,{$tmpSelectFields}')
-            ->where(\$where)
-            ->order('id desc')
-            ->limit(20)
-            ->select();
+            ->when(isset(\$params['keywords']) && \$params['keywords'], function (\$query) use (\$params)
+            {
+                \$query->where('{$tmpSearchFields}', 'like', \"%{\$params['keywords']}%\");
+            })
+            ->when(isset(\$params['id']) && \$params['id'], function (\$query) use (\$params)
+            {
+                \$query->where('id', 'in', \$params['id']);
+            })
+            ->order('{$order}')
+            ->paginate(\$params['pageSize'] ?? 20);
     }";
 
     }

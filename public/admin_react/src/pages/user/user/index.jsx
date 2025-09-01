@@ -139,14 +139,6 @@ export default () => {
     ];
     return (
         <>
-            {/* 修改表单 */}
-            <Lazyload block={false}>
-                <Update
-                    tableReload={tableReload}
-                    updateId={updateId}
-                    setUpdateId={setUpdateId}
-                />
-            </Lazyload>
             <PageContainer
                 className="sa-page-container"
                 ghost
@@ -172,18 +164,28 @@ export default () => {
                         persistenceType: 'localStorage'
                     }}
                     headerTitle={
-                        <Space>
-                            <Tooltip title="根据当前搜索条件导出数据~">
-                                <Button
-                                    type="primary"
-                                    danger
-                                    ghost
-                                    icon={<CloudDownloadOutlined />}
-                                    onClick={exportData}
-                                    disabled={authCheck('userExportData')}
-                                >导出</Button>
-                            </Tooltip>
-                        </Space>
+						<>
+                            <Space>
+                                <Tooltip title="根据当前搜索条件导出数据~">
+                                    <Button
+                                        type="primary"
+                                        danger
+                                        ghost
+                                        icon={<CloudDownloadOutlined />}
+                                        onClick={exportData}
+                                        disabled={authCheck('userExportData')}
+                                    >导出</Button>
+                                </Tooltip>
+                            </Space>
+							{/* 修改表单 */}
+                            <Lazyload block={false}>
+                                <Update
+                                    tableReload={tableReload}
+                                    updateId={updateId}
+                                    setUpdateId={setUpdateId}
+                                />
+                            </Lazyload>
+						</>
                     }
                     pagination={{
                         defaultPageSize: 20,

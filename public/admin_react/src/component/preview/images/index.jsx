@@ -22,12 +22,21 @@ export default ({ title = '查看图片', imgs = [], ...props }) => {
                     <Image.PreviewGroup>
                         <Space wrap>
                             {Array.isArray(imgs) ? imgs.map((item, index) => {
-                                return <Image width={80} height={80} key={index} src={`${item}`} style={{ borderRadius: '5px' }} />
+                                return <Image
+                                    width={80}
+                                    height={80}
+                                    key={index}
+                                    src={`${item}`}
+                                    style={{ borderRadius: '5px' }}
+                                />
                             }) : ''}
                         </Space>
                     </Image.PreviewGroup>
-                    {(! imgs || (Array.isArray(imgs) && imgs.length === 0)) ? <>
-                        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="无图片" />
+                    {(!imgs || (Array.isArray(imgs) && imgs.length === 0)) ? <>
+                        <Empty
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            description="无图片"
+                        />
                     </> : ''}
                 </>,
                 maskClosable: true

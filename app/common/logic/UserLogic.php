@@ -162,21 +162,21 @@ class UserLogic
 
     /**
      * 搜索选择某条数据
-     * @param string $keywords 
-     * @param int $id
+     * @param array $params
      */
-    public static function selectUser(?string $keywords, ?int $id)
+    public static function selectUser(array $params)
     {
-        $where = [];
-        // 搜索
-        $keywords != null && $where[] = ['name|tel', 'like', "%{$keywords}%"];
-        $id != null && $where[] = ['id', '=', $id];
-
         return UserModel::field('id,name,tel')
-            ->where($where)
+            ->when(isset($params['keywords']) && $params['keywords'], function ($query) use ($params)
+            {
+                $query->where('id|name|tel', 'like', "%{$params['keywords']}%");
+            })
+            ->when(isset($params['id']) && $params['id'], function ($query) use ($params)
+            {
+                $query->where('id', $params['id']);
+            })
             ->order('id desc')
-            ->limit(20)
-            ->select();
+            ->paginate($params['pageSize'] ?? 20);
     }
 
     /**
@@ -185,24 +185,22 @@ class UserLogic
      */
     public static function invitations(array $params)
     {
-        $where = [];
-        // 第一次搜索的时候
-        if (isset($params['tel']) && $params['tel']) {
-            $where[] = ['tel', '=', $params['tel']];
-        }
-
-        // 搜索下级的时候
-        if (isset($params['pid']) && $params['pid']) {
-            $where[] = ['pid', '=', $params['pid']];
-        }
-
-        $list = UserModel::where($where)
-            ->field('id,name,tel,pid')
+        return UserModel::field('id,name,tel,pid,channels_level,channels_rate')
+            ->when(isset($params['id']) && $params['id'], function ($query) use ($params)
+            {
+                $query->where('id', '=', $params['id']);
+            })
+            ->when(isset($params['pid']) && $params['pid'], function ($query) use ($params)
+            {
+                $query->where('pid', '=', $params['pid']);
+            })
             ->withCount('NextUser')
             ->order('id desc')
-            ->select();
-
-        return $list;
+            ->select()
+            ->each(function ($item)
+            {
+                $item->channels_level = self::getChannelsLevel($item->channels_level);
+            });
     }
 
     /**

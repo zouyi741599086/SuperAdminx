@@ -43,30 +43,28 @@ export default ({ title = '查看', imgs = [], ...props }) => {
                     >
                         <Space wrap>
                             {Array.isArray(imgs) ? imgs.map((item, index) => {
-                                return <>
-                                    {['jpg', 'jpeg', 'png'].indexOf(item.substring(item.lastIndexOf(".") + 1)) == -1 ? <>
-                                        <Image
-                                            width={80}
-                                            height={80}
-                                            key={index}
-                                            src={`${videoImg}?video_src=${item}`}
-                                            video_src={item}
-                                            style={{ borderRadius: '5px' }}
-                                        />
-                                    </> : <>
-                                        <Image
-                                            width={80}
-                                            height={80}
-                                            key={index}
-                                            src={`${item}`}
-                                            style={{ borderRadius: '5px' }}
-                                        />
-                                    </>}
-                                </>
+                                if (['jpg', 'jpeg', 'png'].indexOf(item.substring(item.lastIndexOf(".") + 1)) == -1) {
+                                    return <Image
+                                        width={80}
+                                        height={80}
+                                        key={index}
+                                        src={`${videoImg}?video_src=${item}`}
+                                        video_src={item}
+                                        style={{ borderRadius: '5px' }}
+                                    />
+                                } else {
+                                    return <Image
+                                        width={80}
+                                        height={80}
+                                        key={index}
+                                        src={`${item}`}
+                                        style={{ borderRadius: '5px' }}
+                                    />
+                                }
                             }) : ''}
                         </Space>
                     </Image.PreviewGroup>
-                    {(! imgs || (Array.isArray(imgs) && imgs.length === 0)) ? <>
+                    {(!imgs || (Array.isArray(imgs) && imgs.length === 0)) ? <>
                         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="无图片" />
                     </> : ''}
                 </>,

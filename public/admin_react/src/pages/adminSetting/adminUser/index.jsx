@@ -176,14 +176,6 @@ export default () => {
     ];
     return (
         <>
-            {/* 修改表单 */}
-            <Lazyload block={false}>
-                <Update
-                    tableReload={tableReload}
-                    updateId={updateId}
-                    setUpdateId={setUpdateId}
-                />
-            </Lazyload>
             <PageContainer
                 className="sa-page-container"
                 ghost
@@ -208,7 +200,19 @@ export default () => {
                         persistenceType: 'localStorage'
                     }}
                     headerTitle={
-                        <Lazyload block={false}><Create tableReload={tableReload} /></Lazyload>
+                        <>
+                            <Lazyload block={false}>
+                                <Create tableReload={tableReload} />
+                            </Lazyload>
+                            {/* 修改表单 */}
+                            <Lazyload block={false}>
+                                <Update
+                                    tableReload={tableReload}
+                                    updateId={updateId}
+                                    setUpdateId={setUpdateId}
+                                />
+                            </Lazyload>
+                        </>
                     }
                     pagination={{
                         defaultPageSize: 10,
