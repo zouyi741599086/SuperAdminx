@@ -16,6 +16,37 @@ Date: 2024-12-05 11:09:31
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
+-- Table structure for sa_user
+-- ----------------------------
+DROP TABLE IF EXISTS `sa_user`;
+CREATE TABLE `sa_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL COMMENT '姓名',
+  `tel` varchar(255) DEFAULT NULL COMMENT '手机号',
+  `img` varchar(200) DEFAULT NULL COMMENT '头像',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态，1》正常，2》禁用',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码',
+  `pid` int(11) DEFAULT NULL COMMENT '上级用户的id',
+  `pid_layer` int(11) DEFAULT '0',
+  `pid_path` varchar(255) DEFAULT NULL COMMENT '上级路劲，如：,1,2,',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='用户';
+
+-- ----------------------------
+-- Records of sa_user
+-- ----------------------------
+INSERT INTO `sa_user` VALUES ('1', '张三1', '18819806503', null, '1', null, '6', '0', ',6,1,', '2024-11-29 20:42:45', '2024-12-07 17:09:50');
+INSERT INTO `sa_user` VALUES ('4', '李四', '13251326688', null, '1', null, '1', '0', ',6,1,4,', '2024-11-29 20:56:43', '2024-12-07 17:09:50');
+INSERT INTO `sa_user` VALUES ('5', '发生的', '18819806532', null, '2', null, '4', '0', ',6,1,4,5,', '2024-11-29 21:12:31', '2024-12-07 17:09:50');
+INSERT INTO `sa_user` VALUES ('6', '测试', '13996482451', null, '1', null, null, '0', ',6,', '2024-11-29 21:15:37', '2024-12-07 17:10:05');
+INSERT INTO `sa_user` VALUES ('7', '测试', '18819806506', null, '1', '$2y$10$Bd8kJQt5GkV1bBTkqxjdcuAlmM7.qPMREGGj.1g6mifUWuW67LU/W', null, '0', ',7,', '2024-12-07 17:11:01', '2024-12-07 17:14:46');
+INSERT INTO `sa_user` VALUES ('8', 'ces', '18819801982', null, '1', '$2y$10$ZcHf2PH2HxoF.MxN30yZOu2ZZph0kjb1YVCMtgEOchoUEoc78q1yq', null, '0', ',8,', '2025-02-18 14:33:22', '2025-02-18 14:33:22');
+INSERT INTO `sa_user` VALUES ('9', '121', '18819801983', null, '1', '$2y$10$GWsLchJjs7JmkS4BiUAmBO.k78HSzYl6pyzMR/vVPeWBBYfHzx67i', null, '0', ',9,', '2025-02-18 14:33:28', '2025-02-18 14:33:28');
+INSERT INTO `sa_user` VALUES ('10', '18819801980', '18819801981', null, '1', '$2y$10$McdZmAwJns9rXvQpWJks0.48zXUFUIRnb2eJ6AwvLiYOChJ1wNsKm', '1', '0', ',6,1,10,', '2025-02-18 14:38:35', '2025-09-04 12:37:48');
+
+-- ----------------------------
 -- Table structure for sa_admin_code_generator
 -- ----------------------------
 DROP TABLE IF EXISTS `sa_admin_code_generator`;

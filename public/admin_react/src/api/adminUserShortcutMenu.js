@@ -10,18 +10,18 @@ import { config } from '@/common/config';
 export const adminUserShortcutMenuApi = {
     //列表
     getList: (params = {}) => {
-        return http.get('/admin/AdminUserShortcutMenu/getList', params);
+        return http.get('/app/admin/admin/AdminUserShortcutMenu/getList', params);
     },
     //获取我所有的菜单
     getMenuList: (params = {}) => {
-        return http.get('/admin/AdminUserShortcutMenu/getMenuList', params);
+        return http.get('/app/admin/admin/AdminUserShortcutMenu/getMenuList', params);
     },
     //更新
     update: (params = {}) => {
-        return http.post('/admin/AdminUserShortcutMenu/update', params);
+        return http.post('/app/admin/admin/AdminUserShortcutMenu/update', params);
     },
     //更新排序
     updateSort: (params = {}) => {
-        return http.post('/admin/AdminUserShortcutMenu/updateSort', params);
+        return http.post('/app/admin/admin/AdminUserShortcutMenu/updateSort', params);
     },
 }

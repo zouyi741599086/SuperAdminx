@@ -42,6 +42,7 @@ export default ({ name, ...props }) => {
             <ProCard
                 size="small"
                 hoverable
+				bordered={true}
                 extra={<>
                     <Space>
                         <Tooltip title="上移">

@@ -17,7 +17,7 @@ export default ({ title, name, close, path, closePage, activeName, ...props }) =
             navigate(path);
         }}
     >
-        <span>{title}</span>
+        <span className="txt">{title}</span>
         {close ? <>
             <span
                 className="icon"

@@ -9,34 +9,34 @@ import { http } from '@/common/axios.js'
 export const configApi = {
     // 获取列表
     getList: (params = {}) => {
-        return http.get('/admin/Config/getList', params);
+        return http.get('/app/admin/admin/Config/getList', params);
     },
     // 添加
     create: (params = {}) => {
-        return http.post('/admin/Config/create', params);
+        return http.post('/app/admin/admin/Config/create', params);
     },
     // 获取某条数据
     findData: (params = {}) => {
-        return http.get('/admin/Config/findData', params);
+        return http.get('/app/admin/admin/Config/findData', params);
     },
     // 修改
     update: (params = {}) => {
-        return http.post('/admin/Config/update', params);
+        return http.post('/app/admin/admin/Config/update', params);
     },
     // 修改设置
     updateContent: (params = {}) => {
-        return http.post('/admin/Config/updateContent', params);
+        return http.post('/app/admin/admin/Config/updateContent', params);
     },
     // 删除
     delete: (params = {}) => {
-        return http.post('/admin/Config/delete', params);
+        return http.post('/app/admin/admin/Config/delete', params);
     },
     // 排序
     updateSort: (params = {}) => {
-        return http.post('/admin/Config/updateSort', params);
+        return http.post('/app/admin/admin/Config/updateSort', params);
     },
     // 获取配置
     getConfig: (params = {}) => {
-        return http.get('/admin/Config/getConfig', params);
+        return http.get('/app/admin/admin/Config/getConfig', params);
     },
 }

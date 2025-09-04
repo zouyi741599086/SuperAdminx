@@ -36,7 +36,7 @@ export default () => {
                 if (res.code === 1) {
                     setTreeData(res.data.map(item => {
                         return {
-                            title: `${item.name}【${item.tel}】【${item.channels_level}(${item.channels_rate}%)】`,
+                            title: `${item.name}【${item.tel}】`,
                             key: item.id,
                             isLeaf: item.next_user_count > 0 ? false : true
                         }
@@ -56,7 +56,7 @@ export default () => {
             setTreeData(origin =>
                 updateTreeData(origin, key, result.data.map(item => {
                     return {
-                        title: `${item.name}【${item.tel}】【${item.channels_level}(${item.channels_rate}%)】`,
+                        title: `${item.name}【${item.tel}】`,
                         key: item.id,
                         isLeaf: item.next_user_count > 0 ? false : true
                     }

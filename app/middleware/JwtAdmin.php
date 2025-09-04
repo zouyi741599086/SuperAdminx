@@ -6,9 +6,9 @@ use Webman\MiddlewareInterface;
 use Webman\Http\Response;
 use Webman\Http\Request;
 use app\utils\JwtUtils;
-use app\common\logic\AdminLogLogic;
-use app\common\model\AdminUserModel;
-use app\common\model\AdminMenuModel;
+use plugin\admin\app\common\logic\AdminLogLogic;
+use plugin\admin\app\common\model\AdminUserModel;
+use plugin\admin\app\common\model\AdminMenuModel;
 
 /**
  * admin模块权限验证

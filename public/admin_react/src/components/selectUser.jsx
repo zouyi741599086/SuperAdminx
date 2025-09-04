@@ -68,7 +68,10 @@ export default ({ value, onChange, ...props }) => {
         if (params.pageSize && params.pageSize > pageSize) {
             setPageSize(params.pageSize);
         }
-        userApi.selectUser(params).then(res => {
+        userApi.selectUser({
+            ...params,
+            pageSize: params.pageSize || pageSize,
+        }).then(res => {
             setLoading(false);
             setTotal(res.data?.total);
             setOptions(res.data?.data?.map(item => {

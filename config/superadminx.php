@@ -11,37 +11,9 @@
  */
 
 return [
-    'version'             => '2.2.2',
+    'version'             => '3.0.0',
 	// 导出的文件，存到哪，如果是分布式部署应该就要存阿里云或腾讯云等才行
-    'export_path_type'    => 'qcloud', // public》本地，aliyun》阿里云，qcloud》腾讯云
-	// 是否清理未使用的file，参考：https://superadminx.com/webman/upload.html#%E5%88%A0%E9%99%A4%E6%B2%A1%E4%BD%BF%E7%94%A8%E7%9A%84%E6%96%87%E4%BB%B6
-    'clear_file'          => false,
-    //上传文件的配置
-    'file_system'         => [
-        //本地》public，阿里云》aliyun，腾讯云》qcloud
-        'default' => 'qcloud',
-        //阿里云，需要安装sdk composer require aliyuncs/oss-sdk-php
-        'aliyun' => [
-			'AccessKeyID' => '',
-			'AccessKeySecret' => '',
-			//阿里云oss Bucket所在地域对应的Endpoint，debug用外网，否则用内网
-			'endpoint' => getenv('DE_BUG') == 'true' ? '//oss-cn-hangzhou.aliyuncs.com' : '//oss-cn-hangzhou-internal.aliyuncs.com',
-			//阿里云oss Bucket文件访问地址
-			'bucket_url' => 'https://changxiangzhongguo.oss-cn-hangzhou.aliyuncs.com',
-			//阿里云oss bucket的名称
-			'bucket' => 'changxiangzhongguo',
-		],
-        //腾讯云，需要安装sdk composer require qcloud/cos-sdk-v5
-        'qcloud'  => [
-            'SecretId'   => '',
-            'SecretKey'  => '',
-            'region'     => 'ap-guangzhou',
-            //腾讯云cos Bucket文件访问地址也是上传地址，格式“存储桶名称.cos.所属地域.myqcloud.com”
-            'bucket_url' => '', 
-            //腾讯云cos bucket的名称
-            'bucket'     => ''
-        ],
-    ],
+    'export_path_type'    => 'public', // public》本地，aliyun》阿里云，qcloud》腾讯云，如果分布式部署肯定不是贝蒂
     //网站的url，上传的资源访问的url也在用
     'url'                 => getenv('DE_BUG') == 'true' ? 'http://127.0.0.1:' . getenv('LISTEN_PORT') : 'https://www.superadminx.com',
     //api请求中数据是否加解密，需要跟前端的开关对应
@@ -107,17 +79,6 @@ EOF,
         // 即 API证书 CERTIFICATE，可在 账户中心->API安全->申请API证书 里获得
         // 文件名形如：apiclient_cert.pem
         'mch_public_cert_path' => './config/wechat_cert/apiclient_cert.pem',
-    ],
-    //短信配置
-    'sms'                 => [
-        //凯凌短信
-        'sms_uid'         => "",
-        'sms_password'    => "",
-        //阿里云或小牛短信
-        'type'            => 1, //类型，1》阿里云短信，2》小牛云短信
-        'accessKeyId'     => '',
-        'accessKeySecret' => '',
-        'signName'        => '' //签名
     ],
     //jwt权限验证
     'jwt'                 => [

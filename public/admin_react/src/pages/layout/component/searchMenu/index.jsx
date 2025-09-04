@@ -119,7 +119,6 @@ export default ({ placement = 'top' }) => {
         tmpMenuFun(tmpMenu);
         setList(result);
         setTmpList(result);
-
     }
 
     // 搜索的关键字

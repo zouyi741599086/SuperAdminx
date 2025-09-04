@@ -6,7 +6,7 @@ use Webman\MiddlewareInterface;
 use Webman\Http\Response;
 use Webman\Http\Request;
 use app\utils\JwtUtils;
-use app\common\logic\UserLogic;
+use plugin\user\app\common\logic\UserLogic;
 use support\Log;
 
 /**

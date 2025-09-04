@@ -9,6 +9,6 @@ import { http } from '@/common/axios.js'
 export const adminLogApi = {
     // 获取列表
     getList: (params = {}) => {
-        return http.get('/admin/AdminLog/getList', params);
+        return http.get('/app/admin/admin/AdminLog/getList', params);
     },
 }

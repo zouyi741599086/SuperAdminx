@@ -1,7 +1,7 @@
 <?php
 use app\utils\DataEncryptorUtils;
-use app\utils\QcloudCosUtils;
-use app\utils\AliyunOssUtils;
+use plugin\file\app\utils\QcloudCosUtils;
+use plugin\file\app\utils\AliyunOssUtils;
 
 /**
  * 生成单号
@@ -181,7 +181,7 @@ function send_get_request(string $url, array $params = [])
  * @param array $header 表格头
  * @param array $list 表格数据
  * @param string $exportPathType 导出的文件放在哪，public》本地，aliyun》阿里云，qcloud》腾讯云
- * @return string
+ * @return string 文件地址
  */
 function export(array &$header, array &$list, ?string $exportPathType = null) : string
 {
@@ -207,7 +207,7 @@ function export(array &$header, array &$list, ?string $exportPathType = null) : 
  * 生成文件后置处理，看是否需要将文件上传到云
  * @param string $filePath 文件在本地的url
  * @param string $exportPathType 云存储类型，public》本地，aliyun》阿里云，qcloud》腾讯云
- * @return string
+ * @return string 文件地址
  */
 function export_path($filePath, $exportPathType = null): string
 {

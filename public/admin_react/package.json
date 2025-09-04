@@ -18,7 +18,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@tinymce/tinymce-react": "^5.1.1",
     "ahooks": "^3.8.4",
-    "antd": "^5.24.9",
+    "antd": "^5.27.2",
     "antd-img-crop": "^4.24.0",
     "axios": "^1.7.9",
     "crypto-js": "^4.2.0",

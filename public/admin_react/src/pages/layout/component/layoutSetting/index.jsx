@@ -80,8 +80,8 @@ export default ({ placement = 'top' }) => {
 
     ////////////////////主题色/////////////////////
     const primaryColorList = [
-        '#1677ff',
         '#f5222d',
+        '#1677ff',
         '#13c2c2',
         '#fa541c',
         '#faad14',
