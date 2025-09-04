@@ -1,0 +1,1161 @@
+<?php
+// 整套系统所有的form的field都是这输出
+
+                // 文本输入框
+                if ($type == 'Text') {
+                    echo "    
+            {$starCol}
+                <ProFormText
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"";
+
+                    if ($fieldProps) {
+
+                    echo "
+                    fieldProps={{";
+
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}";
+                    }
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 密码输入框
+                else if ($type == 'Password') {
+                    echo "    
+            {$starCol}
+                <ProFormText.Password
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"";
+
+                    if ($fieldProps) {
+
+                    echo "
+                    fieldProps={{";
+
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}";
+
+                    }
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 多行文本输入
+                else if ($type == 'TextArea') {
+                    echo "    
+            {$starCol}
+                <ProFormTextArea
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"";
+                    if ($fieldProps) {
+
+                    echo "
+                    fieldProps={{";
+
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}";
+
+                    }
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 数字输入
+                else if ($type == 'Digit') {
+                    echo "    
+            {$starCol}
+                <ProFormDigit
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        precision: 0,
+                        style: {width: '100%'},";
+
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}
+                    min={0}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 数字区间输入
+                else if ($type == 'DigitRange') {
+                    echo "    
+            {$starCol}
+                <ProFormDigitRange 
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        precision: 0,
+                        style: {width: '100%'},";
+
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 日期选择
+                else if ($type == 'DatePicker') {
+                    echo "    
+            {$starCol}
+                <ProFormDatePicker 
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        style: {width: '100%'},";
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+                    echo "
+                    }}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 日期+时间选择
+                else if ($type == 'DateTimePicker') {
+                    echo "    
+            {$starCol}
+                <ProFormDateTimePicker 
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        style: {width: '100%'},";
+
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 日期区间选择
+                else if ($type == 'DateRangePicker') {
+                    echo "    
+            {$starCol}
+                <ProFormDateRangePicker 
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        style: {width: '100%'},";
+
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 日期+时间区间选择
+                else if ($type == 'DateTimeRangePicker') {
+                    echo "    
+            {$starCol}
+                <ProFormDateTimeRangePicker 
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        style: {width: '100%'},";
+                        
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 时间选择
+                else if ($type == 'TimePicker') {
+                    echo "    
+            {$starCol}
+                <ProFormTimePicker 
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        style: {width: '100%'},";
+
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 时间区间选择
+                else if ($type == 'TimePickerRange') {
+                    echo "    
+            {$starCol}
+                <ProFormTimePicker.RangePicker  
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        style: {width: '100%'},";
+
+                        foreach ($fieldProps as $props) {
+                        echo "
+                        $props";
+                        }
+
+                    echo "
+                    }}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 下拉
+                else if ($type == 'Select') {
+                    echo "    
+            {$starCol}
+                <ProFormSelect  
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        showSearch: true,
+                        optionFilterProp: 'label',
+                    }}";
+
+                    //是否多选
+                    if (isset($field_config['selectMode']) && $field_config['selectMode']) {
+                        echo "
+                    mode=\"{$field_config['selectMode']}\"";
+                    }
+
+                    // 多选最大数量
+                    if (isset($field_config['maxCount']) && $field_config['maxCount']) {
+                        echo "
+                    maxCount={{$field_config['maxCount']}}";
+                    }
+
+                    // 自己输入选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
+                            echo "
+                    options={[
+                        { label: '选择项1', value: 1 },
+                        { label: '选择项2', value: 2 },
+                    ]}";
+                    }
+
+                    // 从接口请求选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
+                        // 从哪个api请求
+                        $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
+                        echo "
+                    request={async () => {
+                        const res = await {$requestApi}Api.getList();
+                        return res.data.map(item => {
+                            return {
+                                label: item.title,
+                                value: item.id
+                            }
+                        });
+                    }}";
+                    }
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 树选择
+                else if ($type == 'TreeSelect') {
+                    echo "    
+            {$starCol}
+                <ProFormTreeSelect  
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        showSearch: true,
+                        allowClear: true,
+                        treeNodeFilterProp: 'label',
+                    }}";
+
+                    // 是否显示checkbox
+                    if (isset($field_config['treeCheckable']) && $field_config['treeCheckable']) {
+                        echo "
+                    treeCheckable={true}";
+                    }
+
+                    // 自己输入选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
+                            echo "
+                    request={async () => [
+                        { label: '重庆', value: 1, children: [
+                            { label: '江津区', value: 2 },
+                            { label: '南岸区', value: 3 },
+                        ]},
+                        { label: '广东', value: 4, children: [
+                            { label: '广州市', value: 5 },
+                            { label: '潮州市', value: 6 },
+                        ]},
+                    ]";
+                    }
+
+                    // 从接口请求选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
+                        // 从哪个api请求
+                        $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
+                        echo "
+                    request={async () => {
+                        const res = await {$requestApi}Api.getList();
+                        return arrayToTree(res.data.map(item => {
+                            return {
+                                label: item.title,
+                                value: item.id,
+                                pid: item.pid
+                            }
+                        }));
+                    }}";
+                    }
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // 异步搜索选择某个表的id
+                else if ($type == 'SelectTable') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <Select{$field_config['select_component_name']} />
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // Checkbox多选
+                else if ($type == 'Checkbox') {
+                    echo "    
+            {$starCol}
+                <ProFormCheckbox.Group  
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"";
+
+                    // 自己输入选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
+                            echo "
+                    options={[
+                        { label: '选择项1', value: 1},
+                        { label: '选择项2', value: 2},
+                    ]";
+                    }
+
+                    // 从接口请求选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
+                        // 从哪个api请求
+                        $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
+                        echo "
+                    request={async () => {
+                        const res = await {$requestApi}Api.getList();
+                        return res.data.map(item => {
+                            return {
+                                label: item.title,
+                                value: item.id
+                            }
+                        });
+                    }}";
+                    }
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // Radio单选
+                else if ($type == 'Radio') {
+                    echo "    
+            {$starCol}
+                <ProFormRadio.Group  
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"";
+
+                    // 自己输入选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
+                            echo "
+                    options={[
+                        { label: '选择项1', value: 1},
+                        { label: '选择项2', value: 2},
+                    ]}";
+                    }
+
+                    // 从接口请求选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
+                        // 从哪个api请求
+                        $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
+                        echo "
+                    request={async () => {
+                        const res = await {$requestApi}Api.getList();
+                        return res.data.map(item => {
+                            return {
+                                label: item.title,
+                                value: item.id
+                            }
+                        });
+                    }}";
+                    }
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // Cascaderlian级联选择
+                else if ($type == 'Cascader') {
+                    echo "    
+            {$starCol}
+                <ProFormCascader  
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    placeholder=\"{$filedTip}\"
+                    fieldProps={{
+                        showSearch: true,
+                        allowClear: true,
+                        expandTrigger:'hover',
+                    }}";
+
+                    // 是否多选
+                    if (isset($field_config['cascaderMultiple']) && $field_config['cascaderMultiple']) {
+                        echo "
+                    multiple={true}";
+                    }
+
+                    // 自己输入选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'options') {
+                            echo "
+                    request={async () => [
+                        { label: '重庆', value: 1, children: [
+                            { label: '江津区', value: 2 },
+                            { label: '南岸区', value: 3 },
+                        ]},
+                        { label: '广东', value: 4, children: [
+                            { label: '广州市', value: 5 },
+                            { label: '潮州市', value: 6 },
+                        ]},
+                    ]";
+                    }
+
+                    // 从接口请求选择项
+                    if (isset($field_config['dataSource']) && $field_config['dataSource'] == 'request') {
+                        // 从哪个api请求
+                        $requestApi = $field_config['dataSourceApi'] ?? 'xxx';
+                        echo "
+                    request={async () => {
+                        const res = await {$requestApi}Api.getList();
+                        return arrayToTree(res.data.map(item => {
+                            return {
+                                label: item.title,
+                                value: item.id,
+                                pid: item.pid,
+                                key: item.id
+                            }
+                        }));
+                    }}";
+                    }
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                    rules={[";
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+                    echo "
+                    ]}
+                />
+            {$endCol}";
+                }
+
+                // Switch开关
+                else if ($type == 'Switch') {
+                    echo "    
+            {$starCol}
+                <ProFormSwitch  
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    extra=\"{$field_config['extra']}\"
+                />
+            {$endCol}";
+                }
+
+                // 省选择
+                if ($type == 'province') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <Province ".(isset($field_config['provinceCityAreaValueType']) ? "valueType='{$field_config['provinceCityAreaValueType']}'" : '')."/>
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // 省市选择
+                else if ($type == 'provinceCity') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <ProvinceCity ".(isset($field_config['provinceCityAreaValueType']) ? "valueType='{$field_config['provinceCityAreaValueType']}'" : '')."/>
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // 省市区选择
+                else if ($type == 'provinceCityArea') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <ProvinceCityArea ".(isset($field_config['provinceCityAreaValueType']) ? "valueType='{$field_config['provinceCityAreaValueType']}'" : '')."/>
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // 富文本编辑器
+                else if ($type == 'teditor') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <Teditor />
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // 腾讯经纬度选择
+                else if ($type == 'tencentMap') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <TencentMap />
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // 上传单个文件
+                else if ($type == 'uploadFile') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <UploadFile
+                        accept={[";
+
+                        if (isset($field_config['fileSuffix']) && $field_config['fileSuffix']) {
+                            $fileSuffix =  explode(",", $field_config['fileSuffix']);
+                            foreach ($fileSuffix as $suffix) {
+                                echo "'{$suffix}',";
+                            }
+                        }
+
+                        echo "]}
+                    />
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // 上传多个文件
+                else if ($type == 'uploadFileAll') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <UploadFileAll
+                        accept={[";
+
+                        if (isset($field_config['fileSuffix']) && $field_config['fileSuffix']) {
+                            $fileSuffix =  explode(",", $field_config['fileSuffix']);
+                            foreach ($fileSuffix as $suffix) {
+                                echo "'{$suffix}',";
+                            }
+                        }
+
+                        echo "]}";
+
+                        if (isset($field_config['maxUploadCount']) && $field_config['maxUploadCount']) {
+                            echo "
+                        maxUploadCount={{$field_config['maxUploadCount']}}";
+                        }
+
+                    echo "
+                    />
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // 上传单张图片
+                else if ($type == 'uploadImg') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <UploadImg />
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // 上传多张图片
+                else if ($type == 'uploadImgAll') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <UploadImgAll ".((isset($field_config['maxUploadCount']) && $field_config['maxUploadCount']) ? "maxUploadCount={{$field_config['maxUploadCount']}}" : '')."/>
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // 上传图片或视频
+                else if ($type == 'uploadImgVideoAll') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <UploadImgVideoAll ".((isset($field_config['maxUploadCount']) && $field_config['maxUploadCount']) ? "maxUploadCount={{$field_config['maxUploadCount']}}" : '')."/>
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // tag数组
+                else if ($type == 'tagArr') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+
+                    echo "
+                >
+                    <TagArr />
+                </ProForm.Item>
+            {$endCol}";
+                }
+
+                // imgTitle数组
+                else if ($type == 'imgTitle') {
+                    echo "    
+            {$starCol}
+                <ProForm.Item
+                    name=\"{$field}\"
+                    label=\"{$tmp_field_title}\"
+                    rules={[";
+
+                        foreach ($validata as $vali) {
+                        echo "
+                        $vali";
+                        }
+
+                    echo "
+                    ]}";
+
+                    if ($field_config['extra']) {
+                    echo "
+                    extra=\"{$field_config['extra']}\"";
+                    }
+                    
+                    echo "
+                >
+                    <ImgTitle />
+                </ProForm.Item>
+            {$endCol}";
+                }
+                

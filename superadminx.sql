@@ -10,41 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2024-12-05 11:09:31
+Date: 2025-09-04 16:39:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for sa_user
--- ----------------------------
-DROP TABLE IF EXISTS `sa_user`;
-CREATE TABLE `sa_user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL COMMENT '姓名',
-  `tel` varchar(255) DEFAULT NULL COMMENT '手机号',
-  `img` varchar(200) DEFAULT NULL COMMENT '头像',
-  `status` tinyint(1) DEFAULT '1' COMMENT '状态，1》正常，2》禁用',
-  `password` varchar(255) DEFAULT NULL COMMENT '密码',
-  `pid` int(11) DEFAULT NULL COMMENT '上级用户的id',
-  `pid_layer` int(11) DEFAULT '0',
-  `pid_path` varchar(255) DEFAULT NULL COMMENT '上级路劲，如：,1,2,',
-  `create_time` datetime DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='用户';
-
--- ----------------------------
--- Records of sa_user
--- ----------------------------
-INSERT INTO `sa_user` VALUES ('1', '张三1', '18819806503', null, '1', null, '6', '0', ',6,1,', '2024-11-29 20:42:45', '2024-12-07 17:09:50');
-INSERT INTO `sa_user` VALUES ('4', '李四', '13251326688', null, '1', null, '1', '0', ',6,1,4,', '2024-11-29 20:56:43', '2024-12-07 17:09:50');
-INSERT INTO `sa_user` VALUES ('5', '发生的', '18819806532', null, '2', null, '4', '0', ',6,1,4,5,', '2024-11-29 21:12:31', '2024-12-07 17:09:50');
-INSERT INTO `sa_user` VALUES ('6', '测试', '13996482451', null, '1', null, null, '0', ',6,', '2024-11-29 21:15:37', '2024-12-07 17:10:05');
-INSERT INTO `sa_user` VALUES ('7', '测试', '18819806506', null, '1', '$2y$10$Bd8kJQt5GkV1bBTkqxjdcuAlmM7.qPMREGGj.1g6mifUWuW67LU/W', null, '0', ',7,', '2024-12-07 17:11:01', '2024-12-07 17:14:46');
-INSERT INTO `sa_user` VALUES ('8', 'ces', '18819801982', null, '1', '$2y$10$ZcHf2PH2HxoF.MxN30yZOu2ZZph0kjb1YVCMtgEOchoUEoc78q1yq', null, '0', ',8,', '2025-02-18 14:33:22', '2025-02-18 14:33:22');
-INSERT INTO `sa_user` VALUES ('9', '121', '18819801983', null, '1', '$2y$10$GWsLchJjs7JmkS4BiUAmBO.k78HSzYl6pyzMR/vVPeWBBYfHzx67i', null, '0', ',9,', '2025-02-18 14:33:28', '2025-02-18 14:33:28');
-INSERT INTO `sa_user` VALUES ('10', '18819801980', '18819801981', null, '1', '$2y$10$McdZmAwJns9rXvQpWJks0.48zXUFUIRnb2eJ6AwvLiYOChJ1wNsKm', '1', '0', ',6,1,10,', '2025-02-18 14:38:35', '2025-09-04 12:37:48');
 
 -- ----------------------------
 -- Table structure for sa_admin_code_generator
@@ -78,11 +47,13 @@ CREATE TABLE `sa_admin_code_generator` (
   `react_other` text COMMENT '生成后端其它组件的配置',
   `react_other_code` text COMMENT '生成后端其它组件的代码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COMMENT='代码生成器的配置';
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COMMENT='代码生成器的配置';
 
 -- ----------------------------
 -- Records of sa_admin_code_generator
 -- ----------------------------
+INSERT INTO `sa_admin_code_generator` VALUES ('98', 'sa_region', '省市区', 'region', '{\"title\":\"标题\",\"sort\":\"排序\"}', '{\"file_name\":\"RegionValidate\",\"file_path\":\"plugin\\\\region\\\\app\\\\common\\\\validate\"}', null, '{\"file_name\":\"RegionModel\",\"file_path\":\"plugin\\\\region\\\\app\\\\common\\\\model\"}', null, '{\"file_name\":\"RegionLogic\",\"file_path\":\"plugin\\\\region\\\\app\\\\common\\\\logic\",\"logic_type\":1,\"file_suffix\":\"php\"}', '<?php\nnamespace plugin\\region\\app\\common\\logic;\r\n\r\nuse plugin\\region\\app\\common\\model\\RegionModel;\nuse plugin\\region\\app\\common\\validate\\RegionValidate;\nuse think\\facade\\Db;\r\n\r\n/**\r\n * 省市区 逻辑层\r\n *\r\n * @author zy <741599086@qq.com>\r\n * @link https://www.superadminx.com/\r\n * */\r\nclass RegionLogic\r\n{\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n    /**\r\n     * 下载导入数据的表格模板\r\n     * @param array $params\r\n     */\r\n    public static function downloadImportExcel()\r\n    {\r\n        try {\r\n            // 表格头\r\n            $tableData = [[\'标题\', \'排序\']];\r\n\r\n            // 模板里面如果有数据，则继续网$tableData里面装 \r\n            \r\n            // 开始生成表格导出\r\n            $config    = [\r\n                \'path\' => public_path() . \'/tmp_file\',\r\n            ];\r\n            $fileName   = \"导入省市区.xlsx\";\r\n            $excel      = new \\Vtiful\\Kernel\\Excel($config);\r\n            $fileObject = $excel->fileName(rand(1, 1000000) . \'.xlsx\')->header([])->data($tableData);\r\n            $fileHandle = $fileObject->getHandle();\r\n\r\n            // 第一行合并单元格\r\n            $fileObject->mergeCells(\"A1:L1\", \"1：请按照表格录入数据\\n2：每一列都是必填项，为空将导致导入失败\");\r\n            // 第一行样式\r\n            $format1 = new \\Vtiful\\Kernel\\Format($fileHandle);\r\n            $fileObject->setRow(\"A1\", 60, $format1\r\n                ->wrap()\r\n                ->bold()\r\n                ->fontColor(\\Vtiful\\Kernel\\Format::COLOR_RED)\r\n                ->align(\\Vtiful\\Kernel\\Format::FORMAT_ALIGN_VERTICAL_CENTER)\r\n                ->toResource()\r\n            );\r\n            // 标题第二行样式\r\n            $format2 = new \\Vtiful\\Kernel\\Format($fileHandle);\r\n            $fileObject->setRow(\"A2\", 22, $format2\r\n                ->bold()\r\n                ->fontColor(\\Vtiful\\Kernel\\Format::COLOR_RED)\r\n                ->align(\\Vtiful\\Kernel\\Format::FORMAT_ALIGN_VERTICAL_CENTER)\r\n                ->toResource()\r\n            );\r\n\r\n            // 设置列的宽度\r\n            //$fileObject->setColumn(\'A1:A1000\', 10);\r\n            //$fileObject->setColumn(\'B1:B1000\', 30);\r\n\r\n            // 下拉选择，如果需要的话，下拉文字总数不能超过255，否则报错\r\n            //$typeArr = [\'选择项1\', \'选择项2\'];\r\n            //$validation = new \\Vtiful\\Kernel\\Validation();\r\n            //$validation->validationType(\\Vtiful\\Kernel\\Validation::TYPE_LIST)->valueList($typeArr);\r\n            //$fileObject->validation(\'A3:A1000\', $validation->toResource());\r\n\r\n            $filePath = $fileObject->output();\r\n            $filePath = str_replace(public_path(), \'\', $filePath);\r\n            $excel->close();\r\n    \r\n            return [\r\n                \'filePath\' => export_path($filePath),\r\n                \'fileName\' => $fileName\r\n            ];\r\n        } catch (\\Exception $e) {\r\n            abort($e->getMessage());\r\n        }\r\n    }\r\n\r\n    /**\r\n     * 导入数据\r\n     * @param string $file 上传表格文件的路劲\r\n     */\r\n    public static function importData(string $file)\r\n    {\r\n        $config = [\'path\' => public_path()];\r\n        $excel  = new \\Vtiful\\Kernel\\Excel($config);\r\n    \r\n        Db::startTrans();\r\n        try {\r\n            // 读取文件\r\n            $excel->openFile($file)->openSheet();\r\n    \r\n            $list = [];\r\n            $counter = 0;\r\n            // 游标读取每行数据减少内存消耗，此处判断请使用【!==】运算符进行判断；\r\n            // 如果使用【!=】进行判断，出现空行时，返回空数组，将导致读取中断；\r\n            while (($row = $excel->nextRow()) !== NULL) {\r\n                $counter++;\r\n                // 前面两行不导入\r\n                if ($counter < 2) {\r\n                    continue;\r\n                }\r\n                $list[] = [\r\n                    $v[\'title\'] = $row[0],\r\n                    $v[\'sort\'] = $row[1],\r\n                ];\r\n            }\r\n            $excel->close();\r\n\r\n            (new RegionModel())->saveAll($list);\r\n            Db::commit();\r\n        } catch (\\Exception $e) {\r\n            Db::rollback();\r\n            abort($e->getMessage());\r\n        }\r\n    }\r\n\r\n    /**\r\n     * 导出数据\r\n     * @param array $params get参数，用于导出数据的控制\r\n     * @return array\r\n     */\r\n    public static function exportData(array $params) : array\r\n    {\r\n        try {\r\n            $tmpList = [];\r\n            $list    = self::getList($params, false)->cursor();\r\n            foreach ($list as $v) {\r\n                // 导出的数据\r\n                $tmpList[] = [\r\n                    $v->title ?? \'\',\r\n                    $v->sort ?? \'\',\r\n                ];\r\n            }\r\n        } catch (\\Exception $e) {\r\n            abort($e->getMessage());\r\n        }\r\n\r\n        // 表格头\r\n        $header = [\'标题\', \'排序\'];\r\n        return [\r\n            \'filePath\' => export($header, $tmpList),\r\n            \'fileName\' => \"省市区.xlsx\",\r\n        ];\r\n    }\r\n\r\n}', '{\"file_name\":\"Region\",\"file_path\":\"plugin\\\\region\\\\app\\\\admin\\\\controller\",\"functions\":[\"importData\",\"exportData\"],\"file_suffix\":\"php\"}', '<?php\nnamespace plugin\\region\\app\\admin\\controller;\r\n\r\nuse support\\Request;\r\nuse support\\Response;\r\n\r\nuse plugin\\file\\app\\utils\\File as FileUtils;\nuse plugin\\region\\app\\common\\logic\\RegionLogic;\n\r\n/**\r\n * 省市区 控制器\r\n *\r\n * @author zy <741599086@qq.com>\r\n * @link https://www.superadminx.com/\r\n * */\r\nclass Region\r\n{\r\n\r\n    // 此控制器是否需要登录\r\n    protected $onLogin = true;\r\n    \r\n    // 不需要登录的方法\r\n    protected $noNeedLogin = [];\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n    /**\r\n     * 下载导入省市区数据的表格模板\r\n     * @method get\r\n     * @param Request $request \r\n     * @return Response\r\n     */\r\n    public function downloadImportExcel(Request $request): Response\r\n    {\r\n        $data = RegionLogic::downloadImportExcel();\r\n        return success($data);\r\n    }\r\n\r\n    /**\r\n     * @log 导入省市区数据\r\n     * @method post\r\n     * @param Request $request \r\n     * @return Response\r\n     */\r\n    public function importData(Request $request): Response\r\n    {\r\n        $result = FileUtils::uploadPublic(\'/tmp_file\');\r\n        if (! isset($result[\'file\']) || ! $result[\'file\']) {\r\n            abort(\'请上传导入的表格\');\r\n        }\r\n        RegionLogic::importData($result[\'file\']);\r\n        return success();\r\n    }\r\n\r\n    /**\r\n     * @log 导出省市区数据\r\n     * @method get\r\n     * @param Request $request \r\n     * @return Response\r\n     */\r\n    public function exportData(Request $request): Response\r\n    {\r\n        $data = RegionLogic::exportData($request->get());\r\n        return success($data);\r\n    }\r\n\r\n\r\n}', '{\"file_name\":\"region\",\"file_path\":\"public\\\\admin_react\\\\src\\\\api\",\"generator_type\":1}', null, '{\"open_type\":1,\"row_columns_number\":1,\"update_page\":1}', null, null, null, '{\"table_type\":1}', null, null, null, null, '{\"modal_form_file_path\":\"public\\\\admin_react\\\\src\\\\pages\\\\\",\"modal_table_file_path\":\"public\\\\admin_react\\\\src\\\\pages\\\\\"}', null);
+INSERT INTO `sa_admin_code_generator` VALUES ('99', 'sa_admin_role', '管理员角色', 'admin', '{\"title\":\"角色名称\"}', '{\"file_name\":\"AdminRoleValidate\",\"file_path\":\"plugin\\\\admin\\\\app\\\\common\\\\validate\"}', null, '{\"file_name\":\"AdminRoleModel\",\"file_path\":\"plugin\\\\admin\\\\app\\\\common\\\\model\"}', null, '{\"file_name\":\"AdminRoleLogic\",\"file_path\":\"plugin\\\\admin\\\\app\\\\common\\\\logic\",\"logic_type\":1,\"file_suffix\":\"php\"}', '<?php\nnamespace plugin\\admin\\app\\common\\logic;\r\n\r\nuse plugin\\admin\\app\\common\\model\\AdminRoleModel;\nuse plugin\\admin\\app\\common\\validate\\AdminRoleValidate;\nuse think\\facade\\Db;\r\n\r\n/**\r\n * 管理员角色 逻辑层\r\n *\r\n * @author zy <741599086@qq.com>\r\n * @link https://www.superadminx.com/\r\n * */\r\nclass AdminRoleLogic\r\n{\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n    /**\r\n     * 搜索选择某条数据\r\n     * @param array $params \r\n     */\r\n    public static function selectAdminRole(array $params)\r\n    {\r\n        return AdminRoleModel::field(\'id,title\')\r\n            ->when(isset($params[\'keywords\']) && $params[\'keywords\'], function ($query) use ($params)\r\n            {\r\n                $query->where(\'title\', \'like\', \"%{$params[\'keywords\']}%\");\r\n            })\r\n            ->when(isset($params[\'id\']) && $params[\'id\'], function ($query) use ($params)\r\n            {\r\n                $query->where(\'id\', \'in\', $params[\'id\']);\r\n            })\r\n            ->order(\'id desc\')\r\n            ->paginate($params[\'pageSize\'] ?? 20);\r\n    }\r\n\r\n\r\n\r\n\r\n}', '{\"file_name\":\"AdminRole\",\"file_path\":\"plugin\\\\admin\\\\app\\\\admin\\\\controller\",\"functions\":[\"select\"],\"file_suffix\":\"php\"}', '<?php\nnamespace plugin\\admin\\app\\admin\\controller;\r\n\r\nuse support\\Request;\r\nuse support\\Response;\r\n\r\nuse plugin\\admin\\app\\common\\logic\\AdminRoleLogic;\n\r\n/**\r\n * 管理员角色 控制器\r\n *\r\n * @author zy <741599086@qq.com>\r\n * @link https://www.superadminx.com/\r\n * */\r\nclass AdminRole\r\n{\r\n\r\n    // 此控制器是否需要登录\r\n    protected $onLogin = true;\r\n    \r\n    // 不需要登录的方法\r\n    protected $noNeedLogin = [];\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n    /**\r\n     * 搜索选择某条数据\r\n     * @method get\r\n	 * @param Request $request \r\n     * @return Response\r\n     */\r\n    public function selectAdminRole(Request $request): Response\r\n    {\r\n        $list = AdminRoleLogic::selectAdminRole($request->get());\r\n        return success($list);\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n}', '{\"file_name\":\"adminRole\",\"file_path\":\"public\\\\admin_react\\\\src\\\\api\",\"generator_type\":1,\"file_suffix\":\"js\"}', 'import { http } from \'@/common/axios.js\'\nimport { config } from \'@/common/config\';\n\n/**\n * 管理员角色 API\n *\n * @author zy <741599086@qq.com>\n * @link https://www.superadminx.com/\n * */\nexport const adminRoleApi = {\n    // 搜索选择某条数据\n    selectAdminRole: (params = {}) => {\n        return http.get(\'/app/admin/admin/AdminRole/selectAdminRole\',params);\n    },\n        \n}', '{\"open_type\":1,\"row_columns_number\":1,\"update_page\":1}', null, null, null, '{\"table_type\":1}', null, null, null, null, '{\"modal_form_file_path\":\"public\\\\admin_react\\\\src\\\\pages\\\\\",\"modal_table_file_path\":\"public\\\\admin_react\\\\src\\\\pages\\\\\",\"component_type\":\"select\",\"file_name\":\"index\",\"file_suffix\":\"jsx\"}', '\"import { useState, useEffect } from \'react\';\\r\\nimport { Select, Pagination, Divider} from \'antd\';\\r\\nimport { useThrottleEffect } from \'ahooks\';\\r\\nimport { adminRoleApi } from \'@\\/api\\/adminRole\';\\r\\nimport { useMount } from \'ahooks\';\\r\\n\\r\\n\\/**\\r\\n * 管理员角色 异步搜索选择\\r\\n *\\r\\n * @author zy <741599086@qq.com>\\r\\n * @link https:\\/\\/www.superadminx.com\\/\\r\\n * *\\/\\r\\nexport default ({ value, onChange, ...props }) => {\\r\\n    const [options, setOptions] = useState([]);\\r\\n    const [keywords, setKeywords] = useState();\\r\\n    const [_value, _setValue] = useState();\\r\\n    const [loading, setLoading] = useState(false);\\r\\n    const [page, setPage] = useState(1);\\r\\n    const [total, setTotal] = useState(0);\\r\\n    const [pageSize, setPageSize] = useState(20); \\/\\/ 每页默认条数\\r\\n\\r\\n    useMount(() => {\\r\\n        \\/\\/ 加载列表数据\\r\\n        getOptions();\\r\\n    })\\r\\n\\r\\n    \\/\\/ 父组件有值，本组件没值的时候 ajax把下拉数据请求过来\\r\\n    useEffect(() => {\\r\\n        if (!_value && value) {\\r\\n            \\/\\/ 如果有值，可能是多选，那么每页显示条数及读取的条数必须大于等于当前值的条数\\r\\n            setTimeout(()=>{\\r\\n                let _pageSize = value.length > pageSize ? value.length : pageSize;\\r\\n                getOptions({\\r\\n                    page: 1,\\r\\n                    pageSize: _pageSize,\\r\\n                    id: value\\r\\n                });\\r\\n            },500);\\r\\n        }\\r\\n    }, [value])\\r\\n\\r\\n    \\/\\/ 改变父组件及本组件的值\\r\\n    const componentChange = (e) => {\\r\\n        _setValue(e);\\r\\n        onChange?.(e);\\r\\n    }\\r\\n\\r\\n    \\/\\/ 搜索节流\\r\\n    useThrottleEffect(\\r\\n        () => {\\r\\n            if (keywords) {\\r\\n                getOptions({\\r\\n                    keywords,\\r\\n                    page: 1\\r\\n                });\\r\\n            } else {\\r\\n                getOptions();\\r\\n            }\\r\\n        },\\r\\n        [keywords],\\r\\n        {\\r\\n            wait: 500,\\r\\n        },\\r\\n    );\\r\\n\\r\\n    \\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/开始搜索\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\r\\n    const getOptions = (params = {}) => {\\r\\n        setLoading(true);\\r\\n        setPage(params.page || 1);\\r\\n        if (params.pageSize && params.pageSize > pageSize) {\\r\\n            setPageSize(params.pageSize);\\r\\n        }\\r\\n        adminRoleApi.selectAdminRole({\\r\\n            ...params,\\r\\n            pageSize: params.pageSize || pageSize,\\r\\n        }).then(res => {\\r\\n            setLoading(false);\\r\\n            setTotal(res.data?.total);\\r\\n            setOptions(res.data?.data?.map(item => {\\r\\n                return {\\r\\n                    value: item.id,\\r\\n                    label: `${item.title}`,\\r\\n                }\\r\\n            }));\\r\\n        });\\r\\n    }\\r\\n\\r\\n    return <>\\r\\n        <Select\\r\\n            showSearch\\r\\n            allowClear\\r\\n            value={value}\\r\\n            placeholder=\'输入标题搜索\'\\r\\n            \\/\\/ 是否可以多选\\r\\n            \\/\\/ mode=\\\"multiple\\\"\\r\\n            \\/\\/ 多选时做多显示多少个tag：number | responsive\\r\\n            \\/\\/ maxTagCount=\\\"responsive\\\"\\r\\n            filterOption={false}\\r\\n            onSearch={setKeywords}\\r\\n            onChange={componentChange}\\r\\n            options={options}\\r\\n            loading={loading}\\r\\n\\t\\t\\tstyle={{\\r\\n\\t\\t\\t\\twidth: \'100%\'\\r\\n\\t\\t\\t}}\\r\\n            popupRender={menu => <>\\r\\n                {menu}\\r\\n                <Divider style={{ margin: \'8px 0\' }} \\/>\\r\\n                <div\\r\\n                    style={{ paddingBottom: \'4px\' }}\\r\\n                >\\r\\n                    <Pagination\\r\\n                        align=\'end\'\\r\\n                        pageSize={pageSize}\\r\\n                        current={page}\\r\\n                        total={total}\\r\\n                        showSizeChanger={false}\\r\\n                        simple={{ readOnly: true }}\\r\\n                        onChange={(page) => {\\r\\n                            getOptions({\\r\\n                                keywords,\\r\\n                                page,\\r\\n                            });\\r\\n                        }}\\r\\n                    \\/>\\r\\n                <\\/div>\\r\\n            <\\/>}\\r\\n        \\/\\/ 自定义渲染每一行\\r\\n        \\/\\/ optionRender={e => {\\r\\n        \\/\\/ }}\\r\\n        \\/>\\r\\n    <\\/>\\r\\n}\"');
 
 -- ----------------------------
 -- Table structure for sa_admin_log
@@ -128,7 +99,7 @@ CREATE TABLE `sa_admin_menu` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1073 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台管理连接';
+) ENGINE=InnoDB AUTO_INCREMENT=1089 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台管理连接';
 
 -- ----------------------------
 -- Records of sa_admin_menu
@@ -154,7 +125,7 @@ INSERT INTO `sa_admin_menu` VALUES ('18', '删除', '6', '', '', 'adminMenuDelet
 INSERT INTO `sa_admin_menu` VALUES ('19', '操作日志', '2', 'icon-wenzhang2', '/adminSetting/adminLog', 'adminLog', 'systemSetting', ',systemSetting,adminLog,', '/adminSetting/adminLog', null, '4', '1', null, '1', '2023-02-02 15:56:15', '2024-11-20 17:36:39');
 INSERT INTO `sa_admin_menu` VALUES ('20', '代码生成', '2', 'icon-jurassic_data', '/adminSetting/codeGenerator', 'codeGenerator', 'systemSetting', ',systemSetting,codeGenerator,', '/adminSetting/codeGenerator', null, '10', '2', null, '1', '2024-09-13 14:09:38', '2024-11-20 19:53:50');
 INSERT INTO `sa_admin_menu` VALUES ('21', '详情', '5', '', '/adminSetting/codeGenerator/info', 'codeGeneratorInfo', 'codeGenerator', ',systemSetting,codeGenerator,codeGeneratorInfo,', '/adminSetting/codeGenerator/info', null, '0', '1', null, '2', '2024-09-13 14:25:32', '2024-11-20 19:53:50');
-INSERT INTO `sa_admin_menu` VALUES ('50', '参数设置', '1', 'icon-peizhi1', '', 'configManage', null, ',configManage,', '', null, '1200', '1', null, '1', '2023-03-08 16:09:11', '2024-11-20 19:38:57');
+INSERT INTO `sa_admin_menu` VALUES ('50', '参数设置', '1', 'icon-peizhi1', '', 'configManage', null, ',configManage,', '', null, '9000', '1', null, '1', '2023-03-08 16:09:11', '2025-09-04 15:31:00');
 INSERT INTO `sa_admin_menu` VALUES ('51', '设置管理', '2', 'icon-peizhi1', '/config', 'config', 'configManage', ',configManage,config,', '/config', null, '0', '2', null, '1', '2024-11-20 18:00:11', '2024-11-20 19:38:57');
 INSERT INTO `sa_admin_menu` VALUES ('52', '只浏览数据', '6', '', '', 'configGetList', 'config', ',configManage,config,configGetList,', '', null, '0', '1', null, '1', '2024-11-20 18:13:41', '2024-11-20 19:38:57');
 INSERT INTO `sa_admin_menu` VALUES ('53', '添加配置', '5', '', '/config/create', 'configCreate', 'config', ',configManage,config,configCreate,', '/config/create', null, '1', '1', null, '2', '2023-05-14 11:05:47', '2024-11-20 19:50:41');
@@ -163,15 +134,22 @@ INSERT INTO `sa_admin_menu` VALUES ('55', '删除配置', '6', '', '', 'configDe
 INSERT INTO `sa_admin_menu` VALUES ('56', '修改排序', '6', '', '', 'configUpdateSort', 'config', ',configManage,config,configUpdateSort,', '', null, '4', '1', null, '1', '2024-11-20 18:24:14', '2024-11-20 19:38:57');
 INSERT INTO `sa_admin_menu` VALUES ('900', '网站参数设置', '7', 'icon-peizhi1', '/config/web_config', 'config_web_config', 'configManage', ',configManage,config_web_config,', '', null, '0', '1', '', '1', '2024-11-29 21:26:06', '2024-12-03 16:45:12');
 INSERT INTO `sa_admin_menu` VALUES ('901', '首页轮播图', '7', 'icon-peizhi1', '/config/home_banner', 'config_home_banner', 'configManage', ',configManage,config_home_banner,', '', null, '0', '1', null, '1', '2024-11-29 21:27:18', '2024-12-03 12:04:57');
-INSERT INTO `sa_admin_menu` VALUES ('1073', '用户管理', '2', 'icon-weibiaoti1', '/user/user', 'user', 'users', ',users,user,', '/user/user', NULL, '0', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:35:13');
-INSERT INTO `sa_admin_menu` VALUES ('1074', '只浏览数据', '6', '', '', 'userGetList', 'user', ',users,user,userGetList,', '', NULL, '0', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
-INSERT INTO `sa_admin_menu` VALUES ('1075', '添加', '6', '', '', 'userCreate', 'user', ',users,user,userCreate,', '', NULL, '1', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
-INSERT INTO `sa_admin_menu` VALUES ('1076', '修改', '6', '', '', 'userUpdate', 'user', ',users,user,userUpdate,', '', NULL, '2', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
-INSERT INTO `sa_admin_menu` VALUES ('1077', '导出数据', '6', '', '', 'userExportData', 'user', ',users,user,userExportData,', '', NULL, '7', '1', NULL, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
-INSERT INTO `sa_admin_menu` VALUES ('1078', '修改状态', '6', '', '', 'userUpdateStatus', 'user', ',users,user,userUpdateStatus,', '', NULL, '3', '1', NULL, '1', '2024-12-06 16:28:52', '2025-05-23 12:33:50');
-INSERT INTO `sa_admin_menu` VALUES ('1079', '用户管理', '1', 'icon-weibiaoti1', '', 'users', NULL, ',users,', '', NULL, '0', '1', NULL, '1', '2025-05-23 12:33:32', '2025-05-23 12:34:49');
-INSERT INTO `sa_admin_menu` VALUES ('1080', '推荐关系查询', '2', 'icon-zuzhijigou1', '/user/invitations', 'userInvitations', 'users', ',users,userInvitations,', '/user/invitations', NULL, '1', '1', NULL, '1', '2025-05-23 12:34:40', '2025-05-23 12:34:40');
-
+INSERT INTO `sa_admin_menu` VALUES ('1073', '用户管理', '2', 'icon-weibiaoti1', '/user/user', 'user', 'users', ',users,user,', '/user/user', null, '0', '1', null, '1', '2024-12-06 16:26:05', '2025-05-23 12:35:13');
+INSERT INTO `sa_admin_menu` VALUES ('1074', '只浏览数据', '6', '', '', 'userGetList', 'user', ',users,user,userGetList,', '', null, '0', '1', null, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1075', '添加', '6', '', '', 'userCreate', 'user', ',users,user,userCreate,', '', null, '1', '1', null, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1076', '修改', '6', '', '', 'userUpdate', 'user', ',users,user,userUpdate,', '', null, '2', '1', null, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1077', '导出数据', '6', '', '', 'userExportData', 'user', ',users,user,userExportData,', '', null, '7', '1', null, '1', '2024-12-06 16:26:05', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1078', '修改状态', '6', '', '', 'userUpdateStatus', 'user', ',users,user,userUpdateStatus,', '', null, '3', '1', null, '1', '2024-12-06 16:28:52', '2025-05-23 12:33:50');
+INSERT INTO `sa_admin_menu` VALUES ('1079', '用户管理', '1', 'icon-weibiaoti1', '', 'users', null, ',users,', '', null, '0', '1', null, '1', '2025-05-23 12:33:32', '2025-05-23 12:34:49');
+INSERT INTO `sa_admin_menu` VALUES ('1080', '推荐关系查询', '2', 'icon-zuzhijigou1', '/user/invitations', 'userInvitations', 'users', ',users,userInvitations,', '/user/invitations', null, '1', '1', null, '1', '2025-05-23 12:34:40', '2025-05-23 12:34:40');
+INSERT INTO `sa_admin_menu` VALUES ('1081', '看广告奖励', '7', 'icon-peizhi1', '/config/ad', 'config_ad', 'configManage', ',configManage,config_ad,', '', null, '0', '1', '', '1', '2025-09-04 14:56:16', '2025-09-04 14:57:55');
+INSERT INTO `sa_admin_menu` VALUES ('1082', '统计', '1', 'icon-shujutongji1', '', 'total', null, ',total,', '', null, '8000', '1', null, '1', '2025-09-04 15:31:44', '2025-09-04 15:31:44');
+INSERT INTO `sa_admin_menu` VALUES ('1083', '用户日统计', '2', 'icon-yuefen2', '/total/userTotalDay', 'userTotalDay', 'total', ',total,userTotalDay,', '/total/userTotalDay', null, '0', '1', null, '1', '2025-09-04 15:34:23', '2025-09-04 15:34:23');
+INSERT INTO `sa_admin_menu` VALUES ('1084', '只浏览数据', '6', '', '', 'userTotalDayGetList', 'userTotalDay', ',total,userTotalDay,userTotalDayGetList,', '', null, '0', '1', null, '1', '2025-09-04 15:34:23', '2025-09-04 15:34:23');
+INSERT INTO `sa_admin_menu` VALUES ('1085', '导出数据', '6', '', '', 'userTotalDayExportData', 'userTotalDay', ',total,userTotalDay,userTotalDayExportData,', '', null, '7', '1', null, '1', '2025-09-04 15:34:23', '2025-09-04 15:34:23');
+INSERT INTO `sa_admin_menu` VALUES ('1086', '用户月统计', '2', 'icon-yuefen2', '/total/userTotalMonth', 'userTotalMonth', 'total', ',total,userTotalMonth,', '/total/userTotalMonth', null, '1', '1', null, '1', '2025-09-04 15:35:22', '2025-09-04 15:35:22');
+INSERT INTO `sa_admin_menu` VALUES ('1087', '只浏览数据', '6', '', '', 'userTotalMonthGetList', 'userTotalMonth', ',total,userTotalMonth,userTotalMonthGetList,', '', null, '0', '1', null, '1', '2025-09-04 15:35:22', '2025-09-04 15:35:22');
+INSERT INTO `sa_admin_menu` VALUES ('1088', '导出数据', '6', '', '', 'userTotalMonthExportData', 'userTotalMonth', ',total,userTotalMonth,userTotalMonthExportData,', '', null, '7', '1', null, '1', '2025-09-04 15:35:22', '2025-09-04 15:35:22');
 
 -- ----------------------------
 -- Table structure for sa_admin_role
@@ -204,7 +182,7 @@ CREATE TABLE `sa_admin_role_menu` (
   KEY `fk_rx_admin_role_link_rx_admin_link1_idx` (`admin_menu_id`),
   CONSTRAINT `fk_rx_admin_role_link_rx_admin_link1` FOREIGN KEY (`admin_menu_id`) REFERENCES `sa_admin_menu` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_rx_admin_role_link_rx_admin_role1` FOREIGN KEY (`admin_role_id`) REFERENCES `sa_admin_role` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6550 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台管理用户的角色拥有的权限节点中间表';
+) ENGINE=InnoDB AUTO_INCREMENT=6568 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台管理用户的角色拥有的权限节点中间表';
 
 -- ----------------------------
 -- Records of sa_admin_role_menu
@@ -234,6 +212,24 @@ INSERT INTO `sa_admin_role_menu` VALUES ('6538', '27', '13');
 INSERT INTO `sa_admin_role_menu` VALUES ('6539', '27', '7');
 INSERT INTO `sa_admin_role_menu` VALUES ('6548', '27', '50');
 INSERT INTO `sa_admin_role_menu` VALUES ('6549', '27', '1');
+INSERT INTO `sa_admin_role_menu` VALUES ('6550', '27', '1079');
+INSERT INTO `sa_admin_role_menu` VALUES ('6551', '27', '1074');
+INSERT INTO `sa_admin_role_menu` VALUES ('6552', '27', '1073');
+INSERT INTO `sa_admin_role_menu` VALUES ('6553', '27', '901');
+INSERT INTO `sa_admin_role_menu` VALUES ('6554', '27', '900');
+INSERT INTO `sa_admin_role_menu` VALUES ('6555', '27', '1080');
+INSERT INTO `sa_admin_role_menu` VALUES ('6556', '27', '1075');
+INSERT INTO `sa_admin_role_menu` VALUES ('6557', '27', '1076');
+INSERT INTO `sa_admin_role_menu` VALUES ('6558', '27', '1078');
+INSERT INTO `sa_admin_role_menu` VALUES ('6559', '27', '1077');
+INSERT INTO `sa_admin_role_menu` VALUES ('6560', '27', '1087');
+INSERT INTO `sa_admin_role_menu` VALUES ('6561', '27', '1084');
+INSERT INTO `sa_admin_role_menu` VALUES ('6562', '27', '1083');
+INSERT INTO `sa_admin_role_menu` VALUES ('6563', '27', '1086');
+INSERT INTO `sa_admin_role_menu` VALUES ('6564', '27', '1088');
+INSERT INTO `sa_admin_role_menu` VALUES ('6565', '27', '1085');
+INSERT INTO `sa_admin_role_menu` VALUES ('6566', '27', '1082');
+INSERT INTO `sa_admin_role_menu` VALUES ('6567', '27', '1081');
 
 -- ----------------------------
 -- Table structure for sa_admin_user
@@ -248,7 +244,7 @@ CREATE TABLE `sa_admin_user` (
   `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '真实姓名',
   `tel` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '电话',
   `img` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '头像',
-  `last_time` int(11) DEFAULT NULL COMMENT '上次登录时间',
+  `last_time` datetime DEFAULT NULL COMMENT '上次登录时间',
   `lastip` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '上次登录ip',
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
@@ -256,13 +252,37 @@ CREATE TABLE `sa_admin_user` (
   UNIQUE KEY `username_UNIQUE` (`username`),
   KEY `fk_rx_admin_user_rx_admin_role1_idx` (`admin_role_id`),
   CONSTRAINT `fk_rx_admin_user_rx_admin_role1` FOREIGN KEY (`admin_role_id`) REFERENCES `sa_admin_role` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台管理用户';
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='后台管理用户';
 
 -- ----------------------------
 -- Records of sa_admin_user
 -- ----------------------------
-INSERT INTO `sa_admin_user` VALUES ('1', 'superadminx', '$2y$10$zwGrjAyuByV4qROeJkXxt.7zO/.pafmaO3tWtb.QYWU4nLDZnP1i6', '1', '1', '邹意', '18819806503', null, '1733301478', '127.0.0.1', '2023-03-22 16:04:08', '2024-12-04 16:37:59');
-INSERT INTO `sa_admin_user` VALUES ('76', 'admin', '$2y$10$KtWHQ552b2V8.Az1XT7i5u9OVeP2WdGH/gfSmAuelL723awErKt7O', '27', '1', '邹意', '18819806503', '', '1732103765', '192.168.1.192', '2024-07-09 14:41:00', '2024-11-20 19:56:05');
+INSERT INTO `sa_admin_user` VALUES ('1', 'superadminx', '$2y$10$zwGrjAyuByV4qROeJkXxt.7zO/.pafmaO3tWtb.QYWU4nLDZnP1i6', '1', '1', '邹意', '18819806503', null, '2025-09-04 15:06:57', '127.0.0.1', '2023-03-22 16:04:08', '2025-09-04 15:06:58');
+INSERT INTO `sa_admin_user` VALUES ('76', 'admin', '$2y$10$KtWHQ552b2V8.Az1XT7i5u9OVeP2WdGH/gfSmAuelL723awErKt7O', '27', '1', '邹意', '18819806503', '', '2025-09-04 15:06:47', '127.0.0.1', '2024-07-09 14:41:00', '2025-09-04 15:06:47');
+INSERT INTO `sa_admin_user` VALUES ('82', '123456', '$2y$10$O8WtXx7ZZa/ezgLsZjugHOmnXgEvBpVdJZeck19oHYSV1skoSPF2a', '27', '1', '测试', '13996482451', '', '2025-09-04 15:06:01', '', '2025-09-04 14:47:17', '2025-09-04 14:48:24');
+
+-- ----------------------------
+-- Table structure for sa_admin_user_shortcut_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sa_admin_user_shortcut_menu`;
+CREATE TABLE `sa_admin_user_shortcut_menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `admin_user_id` int(11) NOT NULL,
+  `admin_menu_id` int(11) NOT NULL,
+  `admin_role_menu_id` int(11) DEFAULT NULL,
+  `sort` int(11) DEFAULT '0' COMMENT '排序',
+  PRIMARY KEY (`id`),
+  KEY `fk_sa_admin_user_shortcut_menu_sa_admin_user1_idx` (`admin_user_id`),
+  KEY `fk_sa_admin_user_shortcut_menu_sa_admin_role_menu1_idx` (`admin_role_menu_id`),
+  KEY `fk_sa_admin_user_shortcut_menu_sa_admin_menu1_idx` (`admin_menu_id`),
+  CONSTRAINT `fk_sa_admin_user_shortcut_menu_sa_admin_menu1` FOREIGN KEY (`admin_menu_id`) REFERENCES `sa_admin_menu` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sa_admin_user_shortcut_menu_sa_admin_role_menu1` FOREIGN KEY (`admin_role_menu_id`) REFERENCES `sa_admin_role_menu` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sa_admin_user_shortcut_menu_sa_admin_user1` FOREIGN KEY (`admin_user_id`) REFERENCES `sa_admin_user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8 COMMENT='用户快捷自定义菜单';
+
+-- ----------------------------
+-- Records of sa_admin_user_shortcut_menu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sa_config
@@ -281,13 +301,14 @@ CREATE TABLE `sa_config` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='参数设置';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='参数设置';
 
 -- ----------------------------
 -- Records of sa_config
 -- ----------------------------
 INSERT INTO `sa_config` VALUES ('16', 'form', '0', 'web_config', '网站参数设置', '', '[{\"id\":1732886738018,\"dataIndex\":\"title\",\"valueType\":\"text\",\"valueTypeTitle\":\"文本\",\"name\":\"title\",\"title\":\"网站名称\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"title\",\"title\":\"网站名称\",\"required\":1}},{\"id\":1732886745219,\"dataIndex\":\"tel\",\"valueType\":\"text\",\"valueTypeTitle\":\"文本\",\"name\":\"tel\",\"title\":\"联系电话\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"tel\",\"title\":\"联系电话\",\"required\":1}},{\"id\":1732886752271,\"dataIndex\":\"icp\",\"valueType\":\"text\",\"valueTypeTitle\":\"文本\",\"name\":\"icp\",\"title\":\"备案号\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"icp\",\"title\":\"备案号\",\"required\":1}},{\"id\":1733215375481,\"dataIndex\":\"3\",\"valueType\":\"provinceCity\",\"valueTypeTitle\":\"省市选择\",\"name\":\"3\",\"title\":\"所在城市\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"3\",\"title\":\"所在城市\",\"required\":1}},{\"id\":1733215404280,\"dataIndex\":\"4\",\"valueType\":\"provinceCityArea\",\"valueTypeTitle\":\"省市区选择\",\"name\":\"4\",\"title\":\"所在区域\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"4\",\"title\":\"所在区域\",\"required\":1}}]', '{\"title\":\"后台框架\",\"tel\":\"110\",\"icp\":\"icp11110\"}', '0', '2024-11-29 21:26:06', '2024-12-03 16:45:12');
 INSERT INTO `sa_config` VALUES ('17', 'list', '6', 'home_banner', '首页轮播图', '', '[{\"title\":\"\",\"valueType\":\"formList\",\"dataIndex\":\"content\",\"name\":\"content\",\"columns\":[{\"id\":1732886813214,\"dataIndex\":\"img\",\"valueType\":\"uploadImg\",\"valueTypeTitle\":\"单图上传\",\"name\":\"img\",\"title\":\"图片\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"width\":800,\"height\":500},\"fields\":[],\"updateFields\":{\"name\":\"img\",\"title\":\"图片\",\"required\":2,\"width\":800,\"height\":500}},{\"id\":1732886825364,\"dataIndex\":\"link\",\"valueType\":\"text\",\"valueTypeTitle\":\"文本\",\"name\":\"link\",\"title\":\"图片链接\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"updateFields\":{\"name\":\"link\",\"title\":\"图片链接\",\"required\":1}}]}]', '[{\"img\":\"\\/storage\\/2024-11-29\\/png\\/1732886909_66745.png\",\"link\":\"http:\\/\\/www.baidu.com\"}]', '0', '2024-11-29 21:27:18', '2024-11-29 21:28:54');
+INSERT INTO `sa_config` VALUES ('18', 'form', '0', 'ad', '看广告奖励', '', '[{\"id\":1756968684102,\"dataIndex\":\"integral\",\"valueType\":\"digit\",\"valueTypeTitle\":\"数字\",\"title\":\"每看一条广告奖励多少积分\",\"updateFields\":{\"name\":\"integral\",\"title\":\"每看一条广告奖励多少积分\",\"required\":2,\"min\":0},\"name\":\"integral\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"min\":0},\"fields\":[]},{\"id\":1756968808084,\"dataIndex\":\"max_number\",\"valueType\":\"digit\",\"valueTypeTitle\":\"数字\",\"title\":\"每天最多看广告多少条\",\"updateFields\":{\"name\":\"max_number\",\"title\":\"每天最多看广告多少条\",\"required\":2,\"min\":0},\"name\":\"max_number\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"min\":0},\"fields\":[]},{\"id\":1756968708709,\"valueType\":\"group\",\"valueTypeTitle\":\"分组\",\"title\":\"任务1：团员每天看xx条激励视频，团长可获得xx积分\",\"updateFields\":{\"title\":\"任务1：团员每天看xx条激励视频，团长可获得xx积分\"},\"columns\":[{\"id\":1756968851836,\"dataIndex\":\"task1_number\",\"valueType\":\"digit\",\"valueTypeTitle\":\"数字\",\"title\":\"每天团员看多少条广告\",\"updateFields\":{\"name\":\"task1_number\",\"title\":\"每天团员看多少条广告\",\"required\":2,\"min\":0},\"name\":\"task1_number\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"min\":0},\"fields\":[],\"pid\":1756968708709},{\"id\":1756968876187,\"dataIndex\":\"task1_integral\",\"valueType\":\"digit\",\"valueTypeTitle\":\"数字\",\"title\":\"奖励多少积分\",\"updateFields\":{\"name\":\"task1_integral\",\"title\":\"奖励多少积分\",\"required\":2,\"min\":0},\"name\":\"task1_integral\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"min\":0},\"fields\":[],\"pid\":1756968708709}],\"colProps\":{\"xs\":24,\"sm\":24},\"formItemProps\":{\"rules\":[]}},{\"id\":1756968899818,\"valueType\":\"group\",\"valueTypeTitle\":\"分组\",\"title\":\"任务2：团员推广的新用户每看1条广告，团长将获得xx积分，每天获得上限xx次\",\"updateFields\":{\"title\":\"任务2：团员推广的新用户每看1条广告，团长将获得xx积分，每天获得上限xx次\"},\"columns\":[{\"id\":1756968930275,\"dataIndex\":\"task2_integral\",\"valueType\":\"digit\",\"valueTypeTitle\":\"数字\",\"title\":\"获得多少积分\",\"updateFields\":{\"name\":\"task2_integral\",\"title\":\"获得多少积分\",\"required\":2,\"min\":0},\"name\":\"task2_integral\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"min\":0},\"fields\":[],\"pid\":1756968899818},{\"id\":1756968955690,\"dataIndex\":\"task2_max_number\",\"valueType\":\"digit\",\"valueTypeTitle\":\"数字\",\"title\":\"每天上限xx次\",\"updateFields\":{\"name\":\"task2_max_number\",\"title\":\"每天上限xx次\",\"required\":2,\"min\":0},\"name\":\"task2_max_number\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"min\":0},\"fields\":[],\"pid\":1756968899818}],\"colProps\":{\"xs\":24,\"sm\":24},\"formItemProps\":{\"rules\":[]}},{\"id\":1756969020424,\"dataIndex\":\"team\",\"valueType\":\"formList\",\"valueTypeTitle\":\"列表\",\"title\":\"成团看广告奖励\",\"updateFields\":{\"name\":\"team\",\"title\":\"成团看广告奖励\"},\"name\":\"team\",\"formItemProps\":{\"rules\":[],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"}},\"fields\":[],\"columns\":[{\"valueType\":\"group\",\"colProps\":{\"xs\":24,\"sm\":24},\"columns\":[{\"id\":1756969040904,\"dataIndex\":\"team_ad_number\",\"valueType\":\"digit\",\"valueTypeTitle\":\"数字\",\"title\":\"团队看满多少条广告\",\"updateFields\":{\"name\":\"team_ad_number\",\"title\":\"团队看满多少条广告\",\"required\":2,\"min\":0},\"name\":\"team_ad_number\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"min\":0},\"fields\":[],\"pid\":1756969020424},{\"id\":1756969059984,\"dataIndex\":\"integral\",\"valueType\":\"digit\",\"valueTypeTitle\":\"数字\",\"title\":\"奖励多少积分\",\"updateFields\":{\"name\":\"integral\",\"title\":\"奖励多少积分\",\"required\":2,\"min\":0},\"name\":\"integral\",\"formItemProps\":{\"rules\":[{\"required\":true,\"message\":\"必填\"}],\"style\":{\"width\":\"100%\"}},\"fieldProps\":{\"style\":{\"width\":\"100%\"},\"min\":0},\"fields\":[],\"pid\":1756969020424}]}],\"colProps\":{\"xs\":24,\"sm\":24}}]', '{\"integral\":10,\"max_number\":15,\"task1_number\":1,\"task1_integral\":8,\"task2_integral\":10,\"task2_max_number\":100,\"team\":[{\"team_ad_number\":48,\"integral\":58},{\"team_ad_number\":200,\"integral\":100},{\"team_ad_number\":500,\"integral\":300}]}', '0', '2025-09-04 14:56:16', '2025-09-04 14:58:44');
 
 -- ----------------------------
 -- Table structure for sa_file
@@ -331,23 +352,6 @@ CREATE TABLE `sa_file_record` (
 -- ----------------------------
 INSERT INTO `sa_file_record` VALUES ('303', 'config', '16', '[\"后台框架\",\"110\",\"icp11110\"]', '2024-11-29 21:27:52', '2024-11-29 21:27:52');
 INSERT INTO `sa_file_record` VALUES ('304', 'config', '17', '[\"\\/storage\\/2024-11-29\\/png\\/1732886909_66745.png\",\"http:\\/\\/www.baidu.com\"]', '2024-11-29 21:28:31', '2024-11-29 21:28:54');
-
-CREATE TABLE `sa_admin_user_shortcut_menu` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `admin_user_id` int(11) NOT NULL,
-  `admin_menu_id` int(11) NOT NULL,
-  `admin_role_menu_id` int(11) DEFAULT NULL,
-  `sort` int(11) DEFAULT '0' COMMENT '排序',
-  PRIMARY KEY (`id`),
-  KEY `fk_sa_admin_user_shortcut_menu_sa_admin_user1_idx` (`admin_user_id`),
-  KEY `fk_sa_admin_user_shortcut_menu_sa_admin_role_menu1_idx` (`admin_role_menu_id`),
-  KEY `fk_sa_admin_user_shortcut_menu_sa_admin_menu1_idx` (`admin_menu_id`),
-  CONSTRAINT `fk_sa_admin_user_shortcut_menu_sa_admin_menu1` FOREIGN KEY (`admin_menu_id`) REFERENCES `sa_admin_menu` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_sa_admin_user_shortcut_menu_sa_admin_role_menu1` FOREIGN KEY (`admin_role_menu_id`) REFERENCES `sa_admin_role_menu` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `fk_sa_admin_user_shortcut_menu_sa_admin_user1` FOREIGN KEY (`admin_user_id`) REFERENCES `sa_admin_user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8 COMMENT='用户快捷自定义菜单';
-
-
 
 -- ----------------------------
 -- Table structure for sa_region
@@ -4109,8 +4113,80 @@ CREATE TABLE `sa_token` (
   `token` varchar(32) DEFAULT NULL COMMENT '存的token',
   PRIMARY KEY (`id`),
   UNIQUE KEY `token_UNIQUE` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=553 DEFAULT CHARSET=utf8mb4 COMMENT='登录用户的token';
+) ENGINE=InnoDB AUTO_INCREMENT=556 DEFAULT CHARSET=utf8mb4 COMMENT='登录用户的token';
 
 -- ----------------------------
 -- Records of sa_token
 -- ----------------------------
+INSERT INTO `sa_token` VALUES ('553', 'SuperAdminx_admin_pc_1', 'e08343d4c7a5e9c32714cb7b91e54c76');
+INSERT INTO `sa_token` VALUES ('554', 'SuperAdminx_admin_pc_76', '0920fe7e404f3e143bf54e6342b8c429');
+INSERT INTO `sa_token` VALUES ('555', 'SuperAdminx_admin_pc_1', 'cb0b528fe8d17998e8510942a249353d');
+
+-- ----------------------------
+-- Table structure for sa_user
+-- ----------------------------
+DROP TABLE IF EXISTS `sa_user`;
+CREATE TABLE `sa_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL COMMENT '姓名',
+  `tel` varchar(255) DEFAULT NULL COMMENT '手机号',
+  `img` varchar(200) DEFAULT NULL COMMENT '头像',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态，1》正常，2》禁用',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码',
+  `pid` int(11) DEFAULT NULL COMMENT '上级用户的id',
+  `pid_layer` int(11) DEFAULT '0',
+  `pid_path` varchar(255) DEFAULT NULL COMMENT '上级路劲，如：,1,2,',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='用户';
+
+-- ----------------------------
+-- Records of sa_user
+-- ----------------------------
+INSERT INTO `sa_user` VALUES ('1', '张三1', '18819806503', null, '1', null, '6', '0', ',6,1,', '2024-11-29 20:42:45', '2024-12-07 17:09:50');
+INSERT INTO `sa_user` VALUES ('4', '李四', '13251326688', null, '1', null, '1', '0', ',6,1,4,', '2024-11-29 20:56:43', '2024-12-07 17:09:50');
+INSERT INTO `sa_user` VALUES ('5', '发生的', '18819806532', null, '2', null, '4', '0', ',6,1,4,5,', '2024-11-29 21:12:31', '2024-12-07 17:09:50');
+INSERT INTO `sa_user` VALUES ('6', '测试', '13996482451', null, '1', null, null, '0', ',6,', '2024-11-29 21:15:37', '2024-12-07 17:10:05');
+INSERT INTO `sa_user` VALUES ('7', '测试', '18819806506', null, '1', '$2y$10$Bd8kJQt5GkV1bBTkqxjdcuAlmM7.qPMREGGj.1g6mifUWuW67LU/W', null, '0', ',7,', '2024-12-07 17:11:01', '2024-12-07 17:14:46');
+INSERT INTO `sa_user` VALUES ('8', 'ces', '18819801982', null, '1', '$2y$10$ZcHf2PH2HxoF.MxN30yZOu2ZZph0kjb1YVCMtgEOchoUEoc78q1yq', null, '0', ',8,', '2025-02-18 14:33:22', '2025-02-18 14:33:22');
+INSERT INTO `sa_user` VALUES ('9', '121', '18819801983', null, '1', '$2y$10$GWsLchJjs7JmkS4BiUAmBO.k78HSzYl6pyzMR/vVPeWBBYfHzx67i', null, '0', ',9,', '2025-02-18 14:33:28', '2025-02-18 14:33:28');
+INSERT INTO `sa_user` VALUES ('10', '18819801980', '18819801981', null, '1', '$2y$10$McdZmAwJns9rXvQpWJks0.48zXUFUIRnb2eJ6AwvLiYOChJ1wNsKm', '1', '0', ',6,1,10,', '2025-02-18 14:38:35', '2025-09-04 12:37:48');
+
+-- ----------------------------
+-- Table structure for sa_user_total_day
+-- ----------------------------
+DROP TABLE IF EXISTS `sa_user_total_day`;
+CREATE TABLE `sa_user_total_day` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date DEFAULT NULL COMMENT '如 2025-04-04',
+  `count` int(11) DEFAULT '0' COMMENT '注册人数',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_user_date` (`date`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户注册日统计';
+
+-- ----------------------------
+-- Records of sa_user_total_day
+-- ----------------------------
+INSERT INTO `sa_user_total_day` VALUES ('1', '2025-09-01', '10');
+INSERT INTO `sa_user_total_day` VALUES ('2', '2025-09-02', '55');
+INSERT INTO `sa_user_total_day` VALUES ('3', '2025-09-03', '45');
+
+-- ----------------------------
+-- Table structure for sa_user_total_month
+-- ----------------------------
+DROP TABLE IF EXISTS `sa_user_total_month`;
+CREATE TABLE `sa_user_total_month` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `month` varchar(7) DEFAULT NULL COMMENT '月份',
+  `count` int(11) DEFAULT '0' COMMENT '注册人数',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_user_month` (`month`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户注册月统计';
+
+-- ----------------------------
+-- Records of sa_user_total_month
+-- ----------------------------
+INSERT INTO `sa_user_total_month` VALUES ('1', '2025-08', '1542');
+INSERT INTO `sa_user_total_month` VALUES ('2', '2025-09', '1254');
+INSERT INTO `sa_user_total_month` VALUES ('3', '2025-10', '12');

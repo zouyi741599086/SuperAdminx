@@ -1,0 +1,10 @@
+<?php
+    // 列表页是 常规列表页的时候
+    if ($table_type == 1 ) {
+        include __DIR__ . "/react_list_table.jsx.stub";
+    }
+    // 列表页 是简单的一个字段的那种配置的时候
+    if ($table_type == 2) {
+        include __DIR__ . "/react_list_cache.jsx.stub";
+    }
+?>

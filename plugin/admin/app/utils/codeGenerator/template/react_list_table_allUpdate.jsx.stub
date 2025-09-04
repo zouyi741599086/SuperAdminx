@@ -1,0 +1,242 @@
+<?php
+/**
+ * 生成批量修改字段的弹出框
+ */
+    use plugin\admin\app\utils\codeGenerator\CodeGenerator;
+    use plugin\admin\app\common\model\AdminMenuModel;
+
+    $data = CodeGenerator::getCodeGeneratorInfo($table_name);
+
+    // 引入api的文件名称
+    $apiFileName = CodeGenerator::toCamelCase($table_name);
+    $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
+
+    // 批量修改字段的中文名称
+    $updateFiledTitle = $data['field_title'][$tmp_table_action_all_update_field] ?? $tmp_table_action_all_update_field;
+
+    // 批量修改的字段，转驼峰
+    $updateFieldCamelCase = CodeGenerator::toCamelCase($tmp_table_action_all_update_field);
+
+
+    //////////////////////////下面是新增更新react_form.jsx.stub搬过来的
+    $form_fileds_type = $data['react_create_update']['form_fileds_type'];
+    $form_fields_type_config = $data['react_create_update']['form_fields_type_config'];
+    // 异步搜索选择某个表的id 需要导入的组件
+    $selectComponents = [];
+
+    // 所有的字段的类型
+    $filedsTypeArr = [];
+    if(isset($form_fileds_type)) {
+        foreach ($form_fileds_type as $k => $v) {
+            if ($k == $tmp_table_action_all_update_field) {
+                if (!in_array($v,$filedsTypeArr)) {
+                    $filedsTypeArr[] = $v;
+                }
+
+                // 如果有异步搜索选择某个表的id的字段，则把表转为驼峰当组件的名称
+                if ($v == 'SelectTable') {
+                    $tmp = CodeGenerator::toCamelCase($form_fields_type_config[$k]['dataSourceTable']);
+                    $form_fields_type_config[$k]['select_component_name'] = $tmp;
+                    if (! in_array($tmp, $selectComponents)) {
+                        $selectComponents[] = $tmp;
+                    }
+                }
+            }
+        }
+    }
+
+    // 所有需要引入的api请求
+    $apiFileArr = [$apiFileName];
+    if (isset($form_fields_type_config)) {
+        foreach ($form_fields_type_config as $k => $v) {
+            if ($k == $tmp_table_action_all_update_field) {
+                if (isset($v['dataSourceTable']) && $v['dataSourceTable'] && $form_fileds_type[$k] !== 'SelectTable') {
+                    $tmpApiFileName = CodeGenerator::toCamelCase($v['dataSourceTable']);
+                    $tmpApiFileName = strtolower($tmpApiFileName[0]) . substr($tmpApiFileName, 1);
+                    if (!in_array($tmpApiFileName, $apiFileArr)) {
+                        $apiFileArr[] = $tmpApiFileName;
+                    }
+                    
+                    $form_fields_type_config[$k]['dataSourceApi'] = $tmpApiFileName; // 字段配置里面存一份下面好用
+                }
+            }
+        }
+    }
+?>
+import { useRef } from 'react';
+import { FormOutlined } from '@ant-design/icons';
+import {
+    ModalForm, ProForm,
+    <?php
+        // 导入需要使用的字段
+        if (in_array('Text',$filedsTypeArr) || in_array('Password',$filedsTypeArr)) {
+            echo 'ProFormText, ';
+        }
+        echo in_array('TextArea',$filedsTypeArr) ? 'ProFormTextArea, ' : '';
+        echo in_array('Digit',$filedsTypeArr) ? 'ProFormDigit, ' : '';
+        echo in_array('DigitRange',$filedsTypeArr) ? 'ProFormDigitRange, ' : '';
+        echo in_array('DatePicker',$filedsTypeArr) ? 'ProFormDatePicker, ' : '';
+        echo in_array('DateTimePicker',$filedsTypeArr) ? 'ProFormDateTimePicker, ' : '';
+        echo in_array('DateRangePicker',$filedsTypeArr) ? 'ProFormDateRangePicker, ' : '';
+        echo in_array('DateTimeRangePicker',$filedsTypeArr) ? 'ProFormDateTimeRangePicker, ' : '';
+        echo in_array('TimePicker',$filedsTypeArr) ? 'ProFormTimePicker, ' : '';
+        if (in_array('TimePicker',$filedsTypeArr) || in_array('TimePickerRange',$filedsTypeArr)) {
+            echo 'ProFormTimePicker, ';
+        }
+        echo in_array('Select',$filedsTypeArr) ? 'ProFormSelect, ' : '';
+        echo in_array('TreeSelect',$filedsTypeArr) ? 'ProFormTreeSelect, ' : '';
+        echo in_array('Checkbox',$filedsTypeArr) ? 'ProFormCheckbox, ' : '';
+        echo in_array('Radio',$filedsTypeArr) ? 'ProFormRadio, ' : '';
+        echo in_array('Cascader',$filedsTypeArr) ? 'ProFormCascader, ' : '';
+        echo in_array('Switch',$filedsTypeArr) ? 'ProFormSwitch, ' : '';
+        echo in_array('ProFormDependency',$filedsTypeArr) ? 'ProFormDependency, ' : '';
+    ?>
+} from '@ant-design/pro-components';
+import { Button, App } from 'antd';
+import { authCheck } from '@/common/function';
+<?php
+    foreach ($apiFileArr as $v) {
+        echo "import {$v}Api from '@/api/{$v}';\n";
+    }
+?>
+<?php
+// 导入需要使用的自定义的字段
+if (in_array('province',$filedsTypeArr)) echo "import Province from '@/component/form/province/index';\n" ;
+if (in_array('provinceCity',$filedsTypeArr)) echo "import ProvinceCity from '@/component/form/provinceCity/index';\n";
+if (in_array('provinceCityArea',$filedsTypeArr)) echo "import ProvinceCityArea from '@/component/form/provinceCityArea/index';\n";
+if (in_array('teditor',$filedsTypeArr)) echo "import Teditor from '@/component/form/teditor/index';\n";
+if (in_array('tencentMap',$filedsTypeArr)) echo "import TencentMap from '@/component/form/tencentMap/index';\n";
+if (in_array('uploadFile',$filedsTypeArr)) echo "import UploadFile from '@/component/form/uploadFile/index';\n";
+if (in_array('uploadFileAll',$filedsTypeArr)) echo "import UploadFileAll from '@/component/form/uploadFileAll/index';\n";
+if (in_array('uploadImg',$filedsTypeArr)) echo "import UploadImg from '@/component/form/uploadImg/index';\n";
+if (in_array('uploadImgAll',$filedsTypeArr)) echo "import UploadImgAll from '@/component/form/uploadImgAll/index';\n";
+if (in_array('uploadImgVideoAll',$filedsTypeArr)) echo "import UploadImgVideoAll from '@/component/form/uploadImgVideoAll/index';\n";
+if (in_array('tagArr',$filedsTypeArr)) echo "const TagArrfrom '@/component/form/tagArr/index';\n";
+if (in_array('imgTitle',$filedsTypeArr)) echo "const ImgTitle from '@/component/form/imgTitle/index';\n";
+?>
+<?php
+// 导入需要使用的异步搜索选择组件
+foreach ($selectComponents as $v) {
+echo "import Select{$v} from '@/components/select{$v}';\n";
+}
+?>
+
+/**
+ * <?php echo $table_title ?? '';?> 批量修改<?php echo $updateFiledTitle;?>
+ * 
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+export default ({ ids, tableReload, ...props }) => {
+    const formRef = useRef();
+    const { message } = App.useApp();
+
+    return (
+        <ModalForm
+            name="updatecourseclass"
+            formRef={formRef}
+            title="批量修改<?php echo $updateFiledTitle;?>"
+            trigger={
+                <Button
+                    type="link"
+                    size='small'
+                    disabled={authCheck('<?php echo $tmp_table_action_all_update_auth_id ?? '';?>')}
+                    icon={<FormOutlined />}
+                >修改<?php echo $updateFiledTitle;?></Button>
+            }
+            width={460}
+            colProps={{ md: 12, xs: 24 }}
+            // 第一个输入框获取焦点
+            autoFocusFirstInput={true}
+            // 可以回车提交
+            isKeyPressSubmit={true}
+            // 不干掉null跟undefined 的数据
+            omitNil={false}
+            onFinish={async (values) => {
+                const result = await <?php echo $apiFileName;?>Api.update<?php echo $updateFieldCamelCase;?>({
+                    ...values,
+                    ids: ids,
+                });
+                if (result.code === 1) {
+                    tableReload();
+                    message.success(result.message)
+                    formRef.current?.resetFields?.()
+                    return true;
+                } else {
+                    message.error(result.message)
+                }
+            }}
+        >
+    <?php
+    if(isset($form_fileds_type)) {
+        foreach ($form_fileds_type as $field => $type) {
+            if ($field != $tmp_table_action_all_update_field) {
+                continue;
+            }
+            // 字段的中文名称
+            $tmp_field_title = (isset($field_title[$field]) && $field_title[$field] != '') ? $field_title[$field] : $field;
+            // 字段的配置
+            $field_config = $form_fields_type_config[$field] ?? [];
+            $field_config['extra'] = $field_config['extra'] ?? '';
+            // 字段的props 前缀 后缀
+            $fieldProps = [];
+            if (isset($field_config['addonBefore']) && $field_config['addonBefore']) {
+                $fieldProps[] = "addonBefore: '{$field_config['addonBefore']}',";
+            }
+            if (isset($field_config['addonAfter']) && $field_config['addonAfter']) {
+                $fieldProps[] = "addonAfter: '{$field_config['addonAfter']}',";
+            }
+            // 提示语是请输入还是请选择还是请上传
+            $filedTip = '请输入';
+            if (in_array($type, ['DatePicker', 'DateTimePicker', 'DateRangePicker', 'DateTimeRangePicker', 'TimePicker', 'TimePickerRange', 'Select', 'TreeSelect', 'SelectTable', 'Checkbox', 'Radio', 'Cascader', 'Switch', 'province', 'provinceCity', 'provinceCityArea', 'tencentMap'])) {
+                $filedTip = '请选择';
+            }
+            if (in_array($type, ['uploadFile', 'uploadFileAll', 'uploadImg', 'uploadImgAll', 'uploadImgVideoAll'])) {
+                $filedTip = '请输入';
+            }
+            //字段的类型 string | number | array
+            $fieldType = 'string';
+            if ($type == 'Digit') {
+                $fieldType = 'number';
+            }
+            if (in_array($type, ['Checkbox','uploadFileAll','uploadImgAll','uploadImgVideoAll'])) {
+                $fieldType = 'array';
+            }
+            // 字段的验证规则
+            $validata = [];
+            if (in_array('required', $field_config['validateRules'] ?? [])) {
+                $validata[] = "{ required: true, message: '{$filedTip}' },";
+            } else {
+                $validata[] = "//{ required: true, message: '{$filedTip}' },";
+            }
+            if (in_array('tel', $field_config['validateRules'] ?? [])) {
+                $validata[] = "{ pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号' },";
+            }
+            if (in_array('url', $field_config['validateRules'] ?? [])) {
+                $validata[] = "{ type: 'url', message: '请输入正确的URL' },";
+            }
+            if (in_array('email', $field_config['validateRules'] ?? [])) {
+                $validata[] = "{ type: 'email', message: '请输入正确的邮箱' },";
+            }
+            if (in_array('min', $field_config['validateRules'] ?? [])) {
+                $validata[] = "{ type: '{$fieldType}', min: {$field_config['minNumber']}, message: '最小".($fieldType == 'number' ? '' : '长度')."为：{$field_config['minNumber']}' },";
+            }
+            if (in_array('max', $field_config['validateRules'] ?? [])) {
+                $validata[] = "{ type: '{$fieldType}', max: {$field_config['maxNumber']}, message: '最大".($fieldType == 'number' ? '' : '长度')."为：{$field_config['maxNumber']}' },";
+            }
+            if (in_array('len', $field_config['validateRules'] ?? [])) {
+                $validata[] = "{ type: '{$fieldType}', len: {$field_config['lenNumber']}, message: '最大".($fieldType == 'number' ? '' : '长度')."为：{$field_config['maxNumber']}' },";
+            }
+
+            $starCol = "";
+            $endCol = "";
+            
+            include __DIR__ . "/react_form_field.jsx.stub";
+
+        }
+    }
+    ?>
+
+        </ModalForm>
+    );
+};

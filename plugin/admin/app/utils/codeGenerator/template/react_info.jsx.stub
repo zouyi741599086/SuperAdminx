@@ -1,0 +1,10 @@
+<?php
+    // 详情页 是新页面打开的时候
+    if ($info_open_type == 1 ) {
+        include __DIR__ . "/react_info_newPage.jsx.stub";
+    }
+    // 详情页 是弹窗打开的时候
+    if ($info_open_type == 2) {
+        include __DIR__ . "/react_info_modal.jsx.stub";
+    }
+?>

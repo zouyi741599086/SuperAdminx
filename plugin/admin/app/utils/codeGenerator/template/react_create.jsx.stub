@@ -1,0 +1,10 @@
+<?php
+    // 新增页面是弹窗打开的时候
+    if ($open_type == 1) {
+        include __DIR__ . "/react_create_modal.jsx.stub";
+    }
+    // 新增页面是 新页面打开的时候
+    if ($open_type == 2 ) {
+        include __DIR__ . "/react_create_newPage.jsx.stub";
+    }
+?>
