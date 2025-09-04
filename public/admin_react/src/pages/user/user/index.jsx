@@ -6,13 +6,14 @@ import { App, Button, Typography, Space, Tooltip, Avatar, Switch, } from 'antd';
 import {
     CloudDownloadOutlined,
 } from '@ant-design/icons';
-import { authCheck} from '@/common/function';
+import { authCheck } from '@/common/function';
 import { fileApi } from '@/api/file';
 import Lazyload from '@/component/lazyLoad/index';
 import SelectUser from '@/components/selectUser';
 
 // const Create = lazy(() => import('./create'));
 const Update = lazy(() => import('./update'));
+const PidPath = lazy(() => import('./component/pidPath'));
 
 /**
  * 用户 
@@ -32,7 +33,7 @@ export default () => {
     }
 
     // 要修改的数据
-    const [updateId, setUpdateId] = useState(0);    
+    const [updateId, setUpdateId] = useState(0);
 
 
     /////////////////////////导出////////////////////////
@@ -49,13 +50,35 @@ export default () => {
             if (res.code === 1 && res.data.filePath && res.data.fileName) {
                 message.success('数据已生成');
                 setTimeout(() => {
-                    window.open(`${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`);
+                    if (res.data.filePath.indexOf("http") !== -1) {
+                        window.open(`${res.data.filePath}`);
+                    } else {
+                        window.open(`${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`);
+                    }
                 }, 1000)
             } else {
                 message.error(res.message || '数据导出失败');
             }
         })
     }
+
+    ///////////////////////////状态修改//////////////////
+    const updateStatus = (id, status) => {
+        userApi.updateStatus({
+            id,
+            status
+        }).then(res => {
+            if (res.code === 1) {
+                message.success(res.message);
+                tableReload();
+            } else {
+                message.error(res.message);
+            }
+        })
+    }
+
+    // 查推荐路劲的用户
+    const [pidPathUserId, setPidPathUserId] = useState(null);
 
     // 表格列
     const columns = [
@@ -71,14 +94,14 @@ export default () => {
             title: '姓名',
             dataIndex: 'name',
             search: true,
-            valueType : 'text',
+            valueType: 'text',
             render: (_, record) => _,
         },
         {
             title: '手机号',
             dataIndex: 'tel',
             search: true,
-            valueType : 'text',
+            valueType: 'text',
             copyable: true,
             render: (_, record) => _,
         },
@@ -86,7 +109,7 @@ export default () => {
             title: '上级用户',
             dataIndex: 'pid',
             search: true,
-            valueType : 'selectTable',
+            valueType: 'selectTable',
             renderFormItem: () => <SelectUser />,
             render: (_, record) => {
                 if (record.PUser) {
@@ -112,10 +135,42 @@ export default () => {
             },
         },
         {
+            title: '状态',
+            tooltip: "禁用后用户将无法登录",
+            key: 'status',
+            dataIndex: 'status',
+            //定义搜索框类型
+            valueType: 'select',
+            //搜索框选择项
+            request: async () => {
+                return [
+                    {
+                        label: '正常',
+                        value: 1,
+                    },
+                    {
+                        label: '禁用',
+                        value: 2,
+                    }
+                ]
+            },
+            render: (text, record) => (
+                <Switch
+                    checked={record.status === 1 ? true : false}
+                    checkedChildren="正常"
+                    unCheckedChildren="禁用"
+                    onClick={() => {
+                        updateStatus(record.id, record.status === 1 ? 2 : 1)
+                    }}
+                    disabled={authCheck('userUpdateStatus')}
+                />
+            ),
+        },
+        {
             title: '注册时间',
             dataIndex: 'create_time',
             search: true,
-            valueType : 'dateRange',
+            valueType: 'dateRange',
             render: (_, record) => record.create_time,
         },
 
@@ -128,14 +183,22 @@ export default () => {
                     <Button
                         type="link"
                         size="small"
-                        onClick={() => { 
-                            setUpdateId(record.id) 
+                        onClick={() => {
+                            setUpdateId(record.id)
                         }}
                         disabled={authCheck('userUpdate')}
                     >修改</Button>
+                    {record.pid > 0 ? <>
+                        <Button
+                            type="link"
+                            onClick={() => {
+                                setPidPathUserId(record.id);
+                            }}
+                        >查推荐路劲</Button>
+                    </> : ''}
                 </>
             },
-        },        
+        },
     ];
     return (
         <>
@@ -146,7 +209,7 @@ export default () => {
                     title: '用户',
                     style: { padding: '0px 24px 12px' },
                 }}
-                            >
+            >
                 <ProTable
                     actionRef={tableRef}
                     formRef={formRef}
@@ -160,11 +223,11 @@ export default () => {
                     }}
                     columnsState={{
                         // 此table列设置后存储本地的唯一key
-                        persistenceKey: 'table_column_' + 'User', 
+                        persistenceKey: 'table_column_' + 'User',
                         persistenceType: 'localStorage'
                     }}
                     headerTitle={
-						<>
+                        <>
                             <Space>
                                 <Tooltip title="根据当前搜索条件导出数据~">
                                     <Button
@@ -177,15 +240,19 @@ export default () => {
                                     >导出</Button>
                                 </Tooltip>
                             </Space>
-							{/* 修改表单 */}
+                            {/* 修改表单 */}
                             <Lazyload block={false}>
                                 <Update
                                     tableReload={tableReload}
                                     updateId={updateId}
                                     setUpdateId={setUpdateId}
                                 />
+                                <PidPath
+                                    pidPathUserId={pidPathUserId}
+                                    setPidPathUserId={setPidPathUserId}
+                                />
                             </Lazyload>
-						</>
+                        </>
                     }
                     pagination={{
                         defaultPageSize: 20,
@@ -212,7 +279,7 @@ export default () => {
                             total: result.data.total,
                         };
                     }}
-                
+
                 />
             </PageContainer>
         </>

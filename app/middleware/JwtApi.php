@@ -7,6 +7,7 @@ use Webman\Http\Response;
 use Webman\Http\Request;
 use app\utils\JwtUtils;
 use plugin\user\app\common\logic\UserLogic;
+use plugin\user\app\common\model\UserModel;
 use support\Log;
 
 /**
@@ -31,7 +32,15 @@ class JwtApi implements MiddlewareInterface
             if ($this->actionIsLogin()) {
                 abort($e->getMessage(), -2);
             }
+
+            // 强制登录某个用户，需注释掉上面三行
+            //$request->user = UserModel::find(2449);
         }
+
+        // 模拟登录某个用户
+        // if (isset($request->user->id) && in_array($request->user->id, [2449,2190])) {
+        //     $request->user = UserModel::find(3320);
+        // }
 
         // 高并发需要关掉此处控制一下验证时机
         if ($this->actionIsLogin()) {

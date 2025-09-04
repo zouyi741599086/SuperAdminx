@@ -1,7 +1,7 @@
 <?php
 namespace app\utils;
 
-use think\facade\Db;
+use support\think\Db;
 use support\Redis;
 use app\utils\DataEncryptorUtils;
 use app\utils\ArrayObjectAccessUtils;
@@ -83,41 +83,44 @@ class JwtUtils
         $token_key = self::getTokenKey($app_name, $user[$config['key']]);
 
         $db = config('superadminx.jwt.db');
-        if ($db === 'mysql') {
-            // 判断token是否在数据库中
-            $id = Db::name('Token')->where([
-                ['token_key', '=', $token_key],
-                ['token', '=', md5($token)]
-            ])->value('id');
-            if (! $id) {
-                throw new \Exception('登录已失效');
-            }
-            // 判断是否过期
-            if (time() >= $user['expires_at']) {
-                // 删除
-                Db::name('Token')->where('id', $id)->delete();
-                throw new \Exception('登录已失效');
-            }
-        } else if ($db === 'redis') {
-            // 判断token是否在redis中
-            $listLength    = Redis::lLen($token_key);
-            $indexToDelete = -1;
-            for ($i = 0; $i < $listLength; $i++) {
-                $element = Redis::lIndex($token_key, $i);
-                if ($element === md5($token)) {
-                    $indexToDelete = $i;
-                    break;
+        switch ($db) {
+            case 'mysql':
+                // 判断token是否在数据库中
+                $id = Db::name('Token')->where([
+                    ['token_key', '=', $token_key],
+                    ['token', '=', md5($token)]
+                ])->value('id');
+                if (! $id) {
+                    throw new \Exception('登录已失效');
                 }
-            }
-            if ($indexToDelete == -1) {
-                throw new \Exception('登录已失效');
-            }
-            // 判断是否过期
-            if (time() >= $user['expires_at']) {
-                // 删除
-                Redis::lRem($token_key, 1, md5($token));
-                throw new \Exception('登录已失效');
-            }
+                // 判断是否过期
+                if (time() >= $user['expires_at']) {
+                    // 删除
+                    Db::name('Token')->where('id', $id)->delete();
+                    throw new \Exception('登录已失效');
+                }
+                break;
+            case 'redis':
+                // 判断token是否在redis中
+                $listLength = Redis::lLen($token_key);
+                $indexToDelete = -1;
+                for ($i = 0; $i < $listLength; $i++) {
+                    $element = Redis::lIndex($token_key, $i);
+                    if ($element === md5($token)) {
+                        $indexToDelete = $i;
+                        break;
+                    }
+                }
+                if ($indexToDelete == -1) {
+                    throw new \Exception('登录已失效');
+                }
+                // 判断是否过期
+                if (time() >= $user['expires_at']) {
+                    // 删除
+                    Redis::lRem($token_key, 1, md5($token));
+                    throw new \Exception('登录已失效');
+                }
+                break;
         }
         return new ArrayObjectAccessUtils($user);
     }
@@ -130,14 +133,16 @@ class JwtUtils
     public static function logoutUser(string $app_name, int $id)
     {
         $token_key = self::getTokenKey($app_name, $id);
-
-        $db = config('superadminx.jwt.db');
-        if ($db === 'mysql') {
-            Db::name('Token')
-                ->where('token_key', $token_key)
-                ->delete();
-        } else if ($db === 'redis') {
-            Redis::del($token_key);
+        $db        = config('superadminx.jwt.db');
+        switch ($db) {
+            case 'mysql':
+                Db::name('Token')
+                    ->where('token_key', $token_key)
+                    ->delete();
+                break;
+            case 'redis':
+                Redis::del($token_key);
+                break;
         }
     }
 

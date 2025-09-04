@@ -17,7 +17,6 @@ import { Row, Col, Alert } from 'antd';
  * */
 export default ({ typeAction, ...props }) => {
 
-
     return <>
         <Row gutter={[24, 0]}>
             <ProFormDependency name={['type']}>

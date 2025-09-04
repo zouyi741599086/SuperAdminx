@@ -1,9 +1,12 @@
+import { lazy } from 'react';
 import {
+    ProForm,
     ProFormText,
     ProFormDigit,
-    ProFormSelect,
 } from '@ant-design/pro-components';
-import { adminRoleApi } from '@/api/adminRole'; 
+import Lazyload from '@/component/lazyLoad/index';
+
+const SelectAdminRole = lazy(() => import('@/components/selectAdminRole'));
 
 /**
  * 管理员 新增修改的form字段
@@ -49,27 +52,16 @@ export default ({ action, ...props }) => {
             ]}
             extra={action === 'update' ? '不修改密码请留空~' : ''}
         />
-        <ProFormSelect
-            name="admin_role_id"
-            label="所属角色"
-            placeholder="请选择"
-            allowClear
-            request={async () => {
-                const result = await adminRoleApi.getList({
-                    isPage: 'no'
-                });
-                return result.data;
-            }}
-            fieldProps={{
-                showSearch: true,
-                fieldNames: {
-                    value: 'id',
-                    label: 'title',
-                },
-            }}
-            rules={[
-                { required: true, message: '请选择' }
-            ]}
-        />
+        <Lazyload block={false}>
+            <ProForm.Item
+                name="admin_role_id"
+                label="所属角色"
+                rules={[
+                    { required: true, message: '请选择' },
+                ]}
+            >
+                <SelectAdminRole />
+            </ProForm.Item>
+        </Lazyload>
     </>;
 };

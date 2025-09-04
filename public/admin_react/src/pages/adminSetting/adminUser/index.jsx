@@ -7,6 +7,7 @@ import { config } from '@/common/config';
 import { adminRoleApi } from '@/api/adminRole'
 import { authCheck } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
+import SelectAdminRole from '@/components/selectAdminRole';
 
 const Create = lazy(() => import('./create'));
 const Update = lazy(() => import('./update'));
@@ -79,22 +80,8 @@ export default () => {
         {
             title: '角色',
             dataIndex: 'admin_role_id',
-            // 定义搜索框类型
-            valueType: 'select',
-            // 搜索框选择项
-            request: async () => {
-                const result = await adminRoleApi.getList({
-                    isPage: 'no'
-                });
-                return result.data;
-            },
-            // 搜索框中的参数
-            fieldProps: {
-                fieldNames: {
-                    label: 'title',
-                    value: 'id'
-                }
-            },
+            renderFormItem: () => <SelectAdminRole />,
+            render: (_, record) => record.AdminRole.title,
         },
         {
             title: '登录帐号',

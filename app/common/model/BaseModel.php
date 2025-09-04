@@ -2,7 +2,7 @@
 namespace app\common\model;
 
 use support\think\Model;
-use app\common\logic\FileRecordLogic;
+use plugin\file\app\common\logic\FileRecordLogic;
 
 /**
  * 父模型，所有的模型都要继承
@@ -25,7 +25,7 @@ class BaseModel extends Model
      */
     public static function onAfterInsert($data)
     {
-        if (config('superadminx.clear_file')) {
+        if (config('plugin.file.superadminx.clear_file')) {
             $fileUrl   = self::dataSearchFile($data);
             $tableName = $data->name;
             $tableId   = ($data->toArray())['id'] ?? null;
@@ -43,7 +43,7 @@ class BaseModel extends Model
      */
     public static function onAfterUpdate($data)
     {
-        if (config('superadminx.clear_file')) {
+        if (config('plugin.file.superadminx.clear_file')) {
             $tableName = $data->name;
             $tableId   = ($data->toArray())['id'] ?? null;
             // 重新更新此条数据使用的附件
@@ -63,7 +63,7 @@ class BaseModel extends Model
      */
     public static function onAfterDelete($data)
     {
-        if (config('superadminx.clear_file')) {
+        if (config('plugin.file.superadminx.clear_file')) {
             $tableName = $data->name;
             $tableId   = ($data->toArray())['id'];
 

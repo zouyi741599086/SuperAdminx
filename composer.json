@@ -42,7 +42,8 @@
     "webman/console": "^2.1",
     "webman/redis": "^2.1",
     "illuminate/events": "^10.48",
-    "qcloud/cos-sdk-v5": "^2.6"
+    "qcloud/cos-sdk-v5": "^2.6",
+    "aliyuncs/oss-sdk-php": "^2.7"
   },
   "suggest": {
     "ext-event": "For better performance. "

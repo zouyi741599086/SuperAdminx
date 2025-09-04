@@ -35,4 +35,8 @@ export const adminRoleApi = {
     updateDataMenu: (params = {}) => {
         return http.post('/app/admin/admin/AdminRole/updateDataMenu', params);
     },
+    // 搜索选择某条数据
+    selectAdminRole: (params = {}) => {
+        return http.get('/app/admin/admin/AdminRole/selectAdminRole', params);
+    },
 }
