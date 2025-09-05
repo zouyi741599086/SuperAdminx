@@ -17,6 +17,8 @@ class Region
     protected $onLogin = false;
     // 不需要登录的方法
     protected $noNeedLogin = [];
+    // 不需要加密的方法
+    protected $noNeedEncrypt = [];
 
     /**
      * 根据上级id，获取下级

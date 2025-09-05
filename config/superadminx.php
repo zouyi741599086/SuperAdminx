@@ -12,7 +12,7 @@
 
 return [
     'version'             => '3.0.0',
-	// 导出的文件，存到哪，如果是分布式部署应该就要存阿里云或腾讯云等才行
+    // 导出的文件，存到哪，如果是分布式部署应该就要存阿里云或腾讯云等才行
     'export_path_type'    => 'public', // public》本地，aliyun》阿里云，qcloud》腾讯云，如果分布式部署肯定不是贝蒂
     //网站的url，上传的资源访问的url也在用
     'url'                 => getenv('DE_BUG') == 'true' ? 'http://127.0.0.1:' . getenv('LISTEN_PORT') : 'https://www.superadminx.com',
@@ -20,8 +20,6 @@ return [
     'api_encryptor'       => [
         //开关
         'enable'      => getenv('DE_BUG') == 'true' ? false : true,
-        //不加密的url，上传接口则不加密
-        'url'         => ['/admin/File/upload', '/api/File/upload', '/admin/File/download', '/api/File/download'],
         //数据解密私钥，左边不要有空格，百度“rsa密钥在线生成”，需2048位PKCS1格式
         'rsa_private' => <<<EOF
 -----BEGIN RSA PRIVATE KEY-----

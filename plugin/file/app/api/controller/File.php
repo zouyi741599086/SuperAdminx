@@ -17,6 +17,8 @@ class File
     protected $onLogin = true;
     // 不需要登录的方法
     protected $noNeedLogin = ['download'];
+    // 不需要加密的方法
+    protected $noNeedEncrypt = ['upload', 'download'];
 
     /**
      * 上传文件

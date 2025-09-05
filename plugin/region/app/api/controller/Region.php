@@ -16,6 +16,8 @@ class Region
 	protected $onLogin = false;
 	//不需要登录的方法，受控于上面个参数
 	protected $noNeedLogin = [];
+    // 不需要加密的方法
+    protected $noNeedEncrypt = [];
 
     /**
      * @log 根据上级获取下级

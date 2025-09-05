@@ -134,8 +134,7 @@ function result($data = [], int $code = 1, string $mssage = '操作成功', bool
     if (
         config('superadminx.api_encryptor.enable') == true &&
         isset($result['data']) &&
-        $is_encrypt &&
-        ! in_array(request()->path(), config('superadminx.api_encryptor.url'))
+        $is_encrypt
     ) {
         $result['encrypt_data'] = DataEncryptorUtils::aesEncrypt($result['data'], request()->aes_key, request()->aes_iv);
         unset($result['data']);

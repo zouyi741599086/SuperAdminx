@@ -20,6 +20,8 @@ class User
     protected $onLogin = true;
     // 不需要登录的方法
     protected $noNeedLogin = ['getResetPasswordCode', 'resetPassword'];
+    // 不需要加密的方法
+    protected $noNeedEncrypt = [];
 
     /**
      * 修改自己的登录密码
