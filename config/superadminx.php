@@ -92,7 +92,7 @@ EOF,
         'app'        => [
             [
                 //应用名称，需要唯一
-                'name'       => 'admin_pc',
+                'name'       => 'admin',
                 //生成token的数组里面能代表唯一性的字段
                 'key'        => 'id',
                 //生成token的字段
@@ -103,7 +103,7 @@ EOF,
                 'expires_at' => 24 * 60 * 60,
             ],
             [
-                'name'       => 'user_pc',
+                'name'       => 'api',
                 'key'        => 'id',
                 'field'      => ['id', 'name', 'tel'],
                 'num'        => 1,

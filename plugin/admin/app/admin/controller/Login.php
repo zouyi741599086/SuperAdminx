@@ -53,7 +53,7 @@ class Login
         ]);
 
         $adminUser          = AdminUserLogic::getAdminUser($adminUser['id']);
-        $adminUser['token'] = JwtUtils::generateToken('admin_pc', $adminUser);
+        $adminUser['token'] = JwtUtils::generateToken('admin', $adminUser);
         return success($adminUser, '登录成功');
     }
 }

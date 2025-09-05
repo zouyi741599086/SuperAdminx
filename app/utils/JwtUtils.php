@@ -35,7 +35,7 @@ class JwtUtils
         }
 
         $user      = array_intersect_key($user, array_flip($config['field']));
-        $token     = self::tokenEncryption($user, 'E', $config['expires_at']);
+        $token     = self::tokenEncryption($user, $app_name, 'E', $config['expires_at']);
         $token_key = self::getTokenKey($app_name, $user[$config['key']]);
         $db        = config('superadminx.jwt.db');
 
@@ -76,8 +76,11 @@ class JwtUtils
         // rsa初次解密
         $token = self::getHeaderToken();
         // 解密token获取user，user里面会多一个过期时间字段：expires_at
-        $user = self::tokenEncryption($token, 'D');
+        $user = self::tokenEncryption($token, $app_name, 'D');
         if (! is_array($user) || ! $user) {
+            throw new \Exception('非法请求');
+        }
+        if ($user['app_name'] != $app_name) {
             throw new \Exception('非法请求');
         }
         $token_key = self::getTokenKey($app_name, $user[$config['key']]);
@@ -207,16 +210,18 @@ class JwtUtils
     /**
      * token加解密函数
      * @param array|string $data 加密解密的数据
+     * @param string $app_name 应用名称
      * @param string $operation E加密，D解密
      * @param int $expires_at 过期时间
      * @param string $key 加密key
      * @return string|array
      */
-    private static function tokenEncryption($data, $operation = 'E', $expires_at = 3600, $key = 'superadminx.com') : string|array
+    private static function tokenEncryption($data, string $app_name, $operation = 'E', $expires_at = 3600, $key = 'superadminx.com') : string|array
     {
         if ($operation == 'E') {
             $data['expires_at'] = time() + $expires_at;
             $data['rand']       = rand(1, 10000);
+            $data['app_name']   = $app_name;
             $data               = json_encode($data);
         } else {
             $data = str_replace('%', '+', $data);

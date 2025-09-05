@@ -88,16 +88,4 @@ class User
         SmsCodeModel::create($data);
         return success([], '发送成功');
     }
-
-    /**
-     * 重设密码
-     * @method post
-     * @param Request $request 
-     * @return Response
-     */
-    public function resetPassword(Request $request) : Response
-    {
-        UserLogic::resetPassword($request->post());
-        return success([], '修改成功~');
-    }
 }

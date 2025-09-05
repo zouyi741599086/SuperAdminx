@@ -40,6 +40,23 @@ class UserLogic
     }
 
     /**
+     * 新增用户
+     * @param array $params 
+     */
+    public static function create(array $params)
+    {
+        try {
+            validate(UserValidate::class)->scene('create')->check($params);
+            $result = UserModel::create($params);
+
+            // 跟新上级路劲
+            self::updatePidPath($result->id);
+        } catch (\Exception $e) {
+            abort($e->getMessage());
+        }
+    }
+
+    /**
      * 获取数据
      * @param int $id 数据id
      */
@@ -56,8 +73,7 @@ class UserLogic
     {
         Db::startTrans();
         try {
-            var_dump($params);
-            validate(UserValidate::class)->check($params);
+            validate(UserValidate::class)->scene('create')->check($params);
 
             // 如果前端没传上级，则更新为null
             if (! isset($params['pid'])) {
@@ -174,6 +190,34 @@ class UserLogic
             foreach ($id as $v) {
                 JwtUtils::logoutUser('user', $v);
             }
+        } catch (\Exception $e) {
+            abort($e->getMessage());
+        }
+    }
+
+    /**
+     * 修改自己的登录密码
+     * @param array $data
+     * @param int $userId 当前登录用户的id
+     */
+    public static function updatePassword(array $data, int $userId)
+    {
+        try {
+            validate(UserValidate::class)->scene('update_password')->check($data);
+
+            // 判断原密码是否正确
+            $oldPassword = UserModel::where('id', $userId)->value('password');
+            if (! password_verify($data['password'], $oldPassword)) {
+                abort('原密码错误');
+            }
+            // 判断两次密码输入是否一致
+            if ($data['new_password'] != $data['confirm_password']) {
+                abort('新密码两次输入不一致');
+            }
+            UserModel::update([
+                'id'       => $userId,
+                'password' => $data['new_password']
+            ]);
         } catch (\Exception $e) {
             abort($e->getMessage());
         }

@@ -46,6 +46,19 @@ class User
     }
 
     /**
+     * @log 新增用户
+     * @method post
+     * @auth userCreate
+     * @param Request $request 
+     * @return Response
+     */
+    public function create(Request $request): Response
+    {
+        UserLogic::create($request->post());
+        return success([], '添加成功');
+    }
+
+    /**
      * @log 修改用户
      * @method post
      * @auth userUpdate

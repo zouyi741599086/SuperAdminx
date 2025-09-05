@@ -27,7 +27,7 @@ class JwtAdmin implements MiddlewareInterface
         $request->loginRole = 'admin';
         if ($this->actionIsLogin()) {
             try {
-                $request->adminUser = JwtUtils::getUser('admin_pc');
+                $request->adminUser = JwtUtils::getUser('admin');
             } catch (\Exception $e) {
                 abort($e->getMessage(), -2);
             }

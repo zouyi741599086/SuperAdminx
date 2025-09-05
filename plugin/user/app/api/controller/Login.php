@@ -158,7 +158,7 @@ class Login
         if (!$user) {
             abort('用户已禁用');
         }
-        $user['token'] = JwtUtils::generateToken('user', $user);
+        $user['token'] = JwtUtils::generateToken('api', $user);
         return $user;
     }
 }

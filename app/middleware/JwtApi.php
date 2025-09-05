@@ -26,7 +26,7 @@ class JwtApi implements MiddlewareInterface
         $request->loginRole = 'user';
         try {
             // 不管是否需要登录都进行权限验证，因为有的接口可登录可不登录
-            $request->user = JwtUtils::getUser('user_pc');
+            $request->user = JwtUtils::getUser('api');
         } catch (\Exception $e) {
             // 必须要登录同时验证失败了，才抛出错误
             if ($this->actionIsLogin()) {
@@ -45,6 +45,9 @@ class JwtApi implements MiddlewareInterface
         // 高并发需要关掉此处控制一下验证时机
         if ($this->actionIsLogin()) {
             $request->user = UserLogic::findData($request->user->id);
+            if (! $request->user || $request->user->status == 2) {
+                abort('非法请求', -2);
+            }
         }
         return $handler($request);
     }

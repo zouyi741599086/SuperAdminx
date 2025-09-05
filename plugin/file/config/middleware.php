@@ -17,5 +17,5 @@ return [
     'api' => [
         //权限验证
         app\middleware\JwtApi::class,
-    ]
+    ],
 ];
