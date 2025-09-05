@@ -16,6 +16,10 @@ export const userApi = {
     findData: (params = {}) => {
         return http.get('/app/user/admin/User/findData', params);
     },
+	// 新增
+    create: (params = {}) => {
+        return http.post('/app/user/admin/User/create', params);
+    },
     // 更新
     update: (params = {}) => {
         return http.post('/app/user/admin/User/update', params);

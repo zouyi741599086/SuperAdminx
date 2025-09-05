@@ -11,7 +11,7 @@ import { fileApi } from '@/api/file';
 import Lazyload from '@/component/lazyLoad/index';
 import SelectUser from '@/components/selectUser';
 
-// const Create = lazy(() => import('./create'));
+const Create = lazy(() => import('./create'));
 const Update = lazy(() => import('./update'));
 const PidPath = lazy(() => import('./component/pidPath'));
 
@@ -82,6 +82,10 @@ export default () => {
 
     // 表格列
     const columns = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+        },
         {
             title: '头像',
             dataIndex: 'img',
@@ -239,6 +243,12 @@ export default () => {
                                         disabled={authCheck('userExportData')}
                                     >导出</Button>
                                 </Tooltip>
+								
+								<Lazyload block={false}>
+									<Create
+										tableReload={tableReload}
+									/>
+								</Lazyload>
                             </Space>
                             {/* 修改表单 */}
                             <Lazyload block={false}>

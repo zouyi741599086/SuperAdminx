@@ -1,4 +1,4 @@
 <?php
 return [
-    'enable' => false,
+    'enable' => true,
 ];

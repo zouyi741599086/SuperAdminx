@@ -8,7 +8,6 @@ use app\utils\JwtUtils;
 use app\utils\WechatMiniUtils;
 use plugin\user\app\common\model\UserModel;
 use plugin\user\app\common\validate\UserValidate;
-use plugin\user\app\common\logic\UserTotalDayLogic;
 use support\Log;
 
 /**
@@ -137,9 +136,6 @@ class Login
                     ]);
                 }
                 $userId = $result->id;
-
-                // 日月统计
-                UserTotalDayLogic::incCount();
 
                 Db::commit();
             } catch (\Exception $e) {

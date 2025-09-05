@@ -5,6 +5,7 @@ use plugin\user\app\common\model\UserModel;
 use plugin\user\app\common\validate\UserValidate;
 use app\utils\JwtUtils;
 use support\think\Db;
+use Webman\Event\Event;
 
 /**
  * 用户 逻辑层
@@ -51,6 +52,8 @@ class UserLogic
 
             // 跟新上级路劲
             self::updatePidPath($result->id);
+            // 用户事件
+            Event::emit('user.create', $result->id);
         } catch (\Exception $e) {
             abort($e->getMessage());
         }
