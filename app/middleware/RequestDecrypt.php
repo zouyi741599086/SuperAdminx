@@ -31,19 +31,22 @@ class RequestDecrypt implements MiddlewareInterface
                 $request->aes_iv      = $superAdminxKeySecret[1];
 
                 if ($request->get()) {
-                    $data = DataEncryptorUtils::aesDecrypt($request->get('encrypt_data'), $request->aes_key, $request->aes_iv);
-                    $request->setGet(array_merge($request->get(), $data));
+                    $params = DataEncryptorUtils::aesDecrypt($request->get('encrypt_data'), $request->aes_key, $request->aes_iv);
+                    $params = array_merge($request->get(), $params);
+                    unset($params['encrypt_data']);
+                    $request->setGet($params);
                 }
                 if ($request->post()) {
-                    $data = DataEncryptorUtils::aesDecrypt($request->post('encrypt_data'), $request->aes_key, $request->aes_iv);
-                    $request->setPost(array_merge($request->post(), $data));
+                    $params = DataEncryptorUtils::aesDecrypt($request->post('encrypt_data'), $request->aes_key, $request->aes_iv);
+                    $params = array_merge($request->get(), $params);
+                    unset($params['encrypt_data']);
+                    $request->setPost($params);
                 }
             } catch (\Exception $e) {
                 abort("数据解密失败：{$e->getMessage()}");
             }
 
         }
-
         // 请求继续向洋葱芯穿越
         return $handler($request);
     }
