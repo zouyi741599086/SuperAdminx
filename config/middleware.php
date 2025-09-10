@@ -13,8 +13,8 @@
  */
 
 return [
-    //全局中间件
-    ''        => [
+    //超全局中间件
+    '@'        => [
         //跨域
         app\middleware\AccessControl::class,
         //请求数据解密

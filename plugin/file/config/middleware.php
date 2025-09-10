@@ -1,13 +1,6 @@
 <?php
 
-return [ 
-    //全局中间件
-    ''        => [
-        //跨域
-        app\middleware\AccessControl::class,
-        //请求数据解密
-        app\middleware\RequestDecrypt::class,
-    ],
+return [
     //后台管理中间件
     'admin'   => [
         //权限验证
