@@ -45,7 +45,7 @@ class SmsUtils
     public static function checkTel(string $tel)
     {
         try {
-            validate(
+            think_validate(
                 [
                     'tel' => 'require|mobile',
                 ],

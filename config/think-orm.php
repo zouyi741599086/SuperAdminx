@@ -6,9 +6,6 @@ return [
 	// 字符串则明确指定时间字段类型 支持 int timestamp datetime date
 	'auto_timestamp'  => 'datetime',
 	
-	// 时间字段取出后的默认时间格式
-	'datetime_format' => false,
-	
 	// 时间字段配置 配置格式：create_time,update_time
 	'datetime_field'  => 'create_time,update_time',
 	

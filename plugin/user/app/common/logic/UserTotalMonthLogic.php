@@ -26,7 +26,7 @@ class UserTotalMonthLogic
             $orderBy = "{$params['orderBy']},{$orderBy}";
         }
 
-        $list = UserTotalMonthModel::withSearch(['month'], $params)
+        $list = UserTotalMonthModel::withSearch(['month'], $params, true)
             //->withoutField('')
             //->with([])
             ->order($orderBy);

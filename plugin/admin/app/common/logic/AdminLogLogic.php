@@ -21,7 +21,7 @@ class AdminLogLogic
      */
     public static function getList(array $params)
     {
-        return AdminLogModel::withSearch(['name', 'tel', 'title', 'create_time'], $params)
+        return AdminLogModel::withSearch(['name', 'tel', 'title', 'create_time'], $params, true)
             ->withoutField(['request_header', 'request_get', 'request_post', 'request_url'])
             ->order('id desc')
             ->paginate($params['pageSize'] ?? 20);

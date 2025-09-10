@@ -20,7 +20,7 @@ class AdminMenuLogic
      */
     public static function getList(array $params)
     {
-        return AdminMenuModel::withSearch(['hidden'], $params)
+        return AdminMenuModel::withSearch(['hidden'], $params, true)
             ->field('*')
             ->order('sort asc,id desc')
             ->select();
@@ -34,7 +34,7 @@ class AdminMenuLogic
     {
         Db::startTrans();
         try {
-            validate(AdminMenuValidate::class)->check($params);
+            think_validate(AdminMenuValidate::class)->check($params);
 
             $result = AdminMenuModel::create($params);
             // 找出我的路劲
@@ -192,7 +192,7 @@ class AdminMenuLogic
             $params['pid_name'] = null;
         }
         try {
-            validate(AdminMenuValidate::class)->check($params);
+            think_validate(AdminMenuValidate::class)->check($params);
 
             // 原来旧的name
             $oldName = AdminMenuModel::where('id', $params['id'])->value('name');

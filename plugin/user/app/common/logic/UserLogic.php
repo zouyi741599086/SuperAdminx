@@ -29,7 +29,7 @@ class UserLogic
             $orderBy = "{$params['orderBy']},{$orderBy}";
         }
 
-        $list = UserModel::withSearch(['name', 'tel', 'status', 'pid', 'create_time'], $params)
+        $list = UserModel::withSearch(['name', 'tel', 'status', 'pid', 'create_time'], $params, true)
             ->withoutField('password')
             ->with(['PUser' => function ($query)
             {
@@ -47,7 +47,7 @@ class UserLogic
     public static function create(array $params)
     {
         try {
-            validate(UserValidate::class)->scene('create')->check($params);
+            think_validate(UserValidate::class)->scene('create')->check($params);
             $result = UserModel::create($params);
 
             // 跟新上级路劲
@@ -76,7 +76,7 @@ class UserLogic
     {
         Db::startTrans();
         try {
-            validate(UserValidate::class)->scene('create')->check($params);
+            think_validate(UserValidate::class)->scene('create')->check($params);
 
             // 如果前端没传上级，则更新为null
             if (! isset($params['pid'])) {
@@ -206,7 +206,7 @@ class UserLogic
     public static function updatePassword(array $data, int $userId)
     {
         try {
-            validate(UserValidate::class)->scene('update_password')->check($data);
+            think_validate(UserValidate::class)->scene('update_password')->check($data);
 
             // 判断原密码是否正确
             $oldPassword = UserModel::where('id', $userId)->value('password');

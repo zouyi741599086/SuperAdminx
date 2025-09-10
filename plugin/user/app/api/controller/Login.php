@@ -118,7 +118,7 @@ class Login
                 // 如果姓名为空，则用手机号
                 $data['name'] = $data['name'] ?? substr_replace($data['tel'], '****', 3, 4);
 
-                validate(UserValidate::class)->check($data);
+                think_validate(UserValidate::class)->check($data);
                 $result = UserModel::create($data);
 
                 //如果有推广id

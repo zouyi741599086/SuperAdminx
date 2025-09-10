@@ -1,7 +1,7 @@
 <?php
 namespace plugin\user\app\common\validate;
 
-use taoser\Validate;
+use superadminx\think_validate\Validate;
 
 /**
  * 用户 验证器

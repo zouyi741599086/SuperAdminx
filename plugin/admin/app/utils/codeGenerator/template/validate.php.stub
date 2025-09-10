@@ -1,6 +1,6 @@
 namespace <?php echo $file_path ?? '';?>;
 
-use taoser\Validate;
+use superadminx\think_validate\Validate;
 
 /**
  * <?php echo $table_title ?? ''?> 验证器

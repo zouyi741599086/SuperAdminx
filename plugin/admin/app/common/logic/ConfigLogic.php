@@ -23,7 +23,7 @@ class ConfigLogic
      */
     public static function getList(array $params)
     {
-        return ConfigModel::withSearch(['type', 'name', 'title'], $params)
+        return ConfigModel::withSearch(['type', 'name', 'title'], $params, true)
             ->withoutField('content,fields_config')
             ->order('sort asc,id desc')
             ->paginate($params['pageSize'] ?? 20);
@@ -37,7 +37,7 @@ class ConfigLogic
     {
         Db::startTrans();
         try {
-            validate(ConfigValidate::class)->scene('update_info')->check($params);
+            think_validate(ConfigValidate::class)->scene('update_info')->check($params);
             ConfigModel::create($params);
 
             //要同时往adminMenu表添加数据 才能注入权限管理

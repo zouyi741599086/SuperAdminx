@@ -22,7 +22,7 @@ class AdminUserShortcutMenuLogic
      * */
     public static function getList(array $params = [])
     {
-        return AdminUserShortcutMenuModel::withSearch(['admin_user_id'], $params)
+        return AdminUserShortcutMenuModel::withSearch(['admin_user_id'], $params, true)
             ->with(['AdminMenu'])
             ->order('sort desc')
             ->select();

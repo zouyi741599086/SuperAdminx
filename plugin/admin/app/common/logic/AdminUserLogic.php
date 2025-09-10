@@ -21,7 +21,7 @@ class AdminUserLogic
      */
     public static function getList(array $params)
     {
-        return AdminUserModel::withSearch(['name', 'tel', 'admin_role_id', 'username', 'status'], $params)
+        return AdminUserModel::withSearch(['name', 'tel', 'admin_role_id', 'username', 'status'], $params, true)
             ->where('id', '<>', 1)
             ->with(['AdminRole'])
             ->order('id desc')
@@ -35,7 +35,7 @@ class AdminUserLogic
     public static function create(array $params)
     {
         try {
-            validate(AdminUserValidate::class)->scene('create')->check($params);
+            think_validate(AdminUserValidate::class)->scene('create')->check($params);
 
             AdminUserModel::create($params);
         } catch (\Exception $e) {
@@ -50,7 +50,7 @@ class AdminUserLogic
     public static function udpate(array $params)
     {
         try {
-            validate(AdminUserValidate::class)->scene('update')->check($params);
+            think_validate(AdminUserValidate::class)->scene('update')->check($params);
 
             // 没修改密码则干掉此字段
             if (isset($params['password']) && ! $params['password']) {
@@ -107,7 +107,7 @@ class AdminUserLogic
     public static function updatePassword(array $data, int $adminUserId)
     {
         try {
-            validate(AdminUserValidate::class)->scene('update_password')->check($data);
+            think_validate(AdminUserValidate::class)->scene('update_password')->check($data);
 
             // 判断原密码是否正确
             $oldPassword = AdminUserModel::where('id', $adminUserId)->value('password');
@@ -135,7 +135,7 @@ class AdminUserLogic
     public static function updateInfo(array $data, int $admin_user_id)
     {
         try {
-            validate(AdminUserValidate::class)->scene('update_info')->check($data);
+            think_validate(AdminUserValidate::class)->scene('update_info')->check($data);
 
             $data['id'] = $admin_user_id;
             AdminUserModel::update($data);

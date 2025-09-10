@@ -27,7 +27,7 @@ class UserTotalDayLogic
             $orderBy = "{$params['orderBy']},{$orderBy}";
         }
 
-        $list = UserTotalDayModel::withSearch(['date'], $params)
+        $list = UserTotalDayModel::withSearch(['date'], $params, true)
             //->withoutField('')
             //->with([])
             ->order($orderBy);

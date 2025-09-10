@@ -21,7 +21,7 @@ class AdminRoleLogic
      */
     public static function getList(array $params)
     {
-        return AdminRoleModel::withSearch(['title'], $params)
+        return AdminRoleModel::withSearch(['title'], $params, true)
             ->order('id desc')
             ->where('id', '<>', 1)
             ->withCount([
@@ -38,7 +38,7 @@ class AdminRoleLogic
     public static function create(array $params)
     {
         try {
-            validate(AdminRoleValidate::class)->check($params);
+            think_validate(AdminRoleValidate::class)->check($params);
 
             AdminRoleModel::create($params);
         } catch (\Exception $e) {
@@ -53,7 +53,7 @@ class AdminRoleLogic
     public static function update($params = [])
     {
         try {
-            validate(AdminRoleValidate::class)->check($params);
+            think_validate(AdminRoleValidate::class)->check($params);
 
             AdminRoleModel::update($params);
         } catch (\Exception $e) {

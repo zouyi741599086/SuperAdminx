@@ -73,7 +73,7 @@ class <?php echo $file_name ?? ''; ?>
         if (isset($data['model']['search']) && is_array($data['model']['search'])) {
                 $searchFields = implode("', '", array_keys($data['model']['search']));
         echo "
-        \$list = {$data['model']['file_name']}::withSearch(['{$searchFields}'], \$params)
+        \$list = {$data['model']['file_name']}::withSearch(['{$searchFields}'], \$params, true)
         //->withoutField('')\n";
         } else {
         echo "
@@ -131,7 +131,7 @@ class <?php echo $file_name ?? ''; ?>
     {
         Db::startTrans();
         try {
-            validate({$data['validate']['file_name']}::class){$scenes}->check(\$params);
+            think_validate({$data['validate']['file_name']}::class){$scenes}->check(\$params);
 
             {$data['model']['file_name']}::create(\$params);";
         
@@ -208,7 +208,7 @@ class <?php echo $file_name ?? ''; ?>
     {
         Db::startTrans();
         try {
-            validate({$data['validate']['file_name']}::class){$scenes}->check(\$params);
+            think_validate({$data['validate']['file_name']}::class){$scenes}->check(\$params);
 
             {$data['model']['file_name']}::update(\$params);";
 

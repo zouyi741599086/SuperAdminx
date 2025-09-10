@@ -1,7 +1,7 @@
 <?php
 namespace plugin\admin\app\common\validate;
 
-use taoser\Validate;
+use superadminx\think_validate\Validate;
 
 /**
  * 参数设置
