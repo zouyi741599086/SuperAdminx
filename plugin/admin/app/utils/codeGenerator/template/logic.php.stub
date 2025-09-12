@@ -276,12 +276,16 @@ class <?php echo $file_name ?? ''; ?>
     {
         Db::startTrans();
         try {
+            \$updateData = [];
             foreach (\$params as \$v) {
-                {$data['model']['file_name']}::update([
+                \$updateData[] = [
                     'id' => \$v['id'],
                     'sort' => intval(\$v['sort'])
-                ]);
-            }";
+                ];
+            }
+            (new {$data['model']['file_name']}())::saveAll(\$updateData);    
+            ";
+            
 
             // 是否全表缓存
             if (isset($logic_type) && $logic_type == 2) {

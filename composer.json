@@ -43,7 +43,7 @@
     "illuminate/events": "^10.48",
     "qcloud/cos-sdk-v5": "^2.6",
     "aliyuncs/oss-sdk-php": "^2.7",
-    "superadminx/think_validate": "^0.0.2"
+    "superadminx/think_validate": "^1.0.0"
   },
   "suggest": {
     "ext-event": "For better performance. "

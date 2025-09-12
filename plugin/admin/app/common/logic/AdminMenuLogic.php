@@ -164,7 +164,7 @@ class AdminMenuLogic
                 // 导入数据
                 if (in_array('ImportData', $params['auto_auth'])) {
                     $tmp = [
-                        'title'    => '导出数据',
+                        'title'    => '导入数据',
                         'name'     => "{$params['name']}ImportData",
                         'sort'     => 8,
                         'type'     => 6,

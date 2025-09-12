@@ -17,7 +17,7 @@ use support\Response;
 <?php
     // 如果有导入数据则引入文件上传
     if (isset($functions) && in_array('importData', $functions)) {
-    echo "use plugin\\file\\app\\utils\\File as FileUtils;\n";
+    echo "use plugin\\file\\app\\utils\\FileUtils;\n";
     }
     // 引入逻辑层
     echo "use {$data['logic']['file_path']}\\{$data['logic']['file_name']};\n"; 
@@ -179,10 +179,11 @@ class <?php echo $file_name ?? ''; ?>
     /**
      * @log 更改{$data['table_title']}排序
      * @method post{$auth}
+     * @param Request \$request 
      * @param array \$list 
      * @return Response
      * */
-    public function updateSort(array \$list) : Response
+    public function updateSort(Request \$request, array \$list) : Response
     {
         {$data['logic']['file_name']}::updateSort(\$list);
         return success();
