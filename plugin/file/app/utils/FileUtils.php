@@ -31,7 +31,7 @@ class FileUtils
      * @param string $disk 上传到哪，public》本地，aliyun》阿里云，qcloud》腾讯云
      * @throws \Exception
      */
-    public static function upload(string $disk = '')
+    public static function upload(string $disk = ''): array
     {
         $disk    = $disk ?: config('plugin.file.superadminx.file_system.default');
         $request = request();

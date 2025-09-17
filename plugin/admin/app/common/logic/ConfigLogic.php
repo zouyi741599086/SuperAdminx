@@ -202,12 +202,14 @@ class ConfigLogic
     {
         Db::startTrans();
         try {
+            $updateData = [];
             foreach ($params as $v) {
-                ConfigModel::update([
+                $updateData[] = [
                     'id'   => $v['id'],
                     'sort' => $v['sort'],
-                ]);
+                ];
             }
+            (new ConfigModel())->saveAll($updateData);
 
             Db::commit();
         } catch (\Exception $e) {
