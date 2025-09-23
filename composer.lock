@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8c005e7af8893256aaa75f91fe5bf5e",
+    "content-hash": "8bccb4994628f8728028dbd02b1d825c",
     "packages": [
         {
             "name": "aliyuncs/oss-sdk-php",
@@ -3026,16 +3026,16 @@
         },
         {
             "name": "superadminx/think_validate",
-            "version": "v0.0.2",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zouyi741599086/SuperAdminx_think_validate.git",
-                "reference": "d13f818d967b1ea8373e0d756863ca84c802b95b"
+                "reference": "0292c267f70e1002169b9c44828b0764081aa075"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zouyi741599086/SuperAdminx_think_validate/zipball/d13f818d967b1ea8373e0d756863ca84c802b95b",
-                "reference": "d13f818d967b1ea8373e0d756863ca84c802b95b",
+                "url": "https://api.github.com/repos/zouyi741599086/SuperAdminx_think_validate/zipball/0292c267f70e1002169b9c44828b0764081aa075",
+                "reference": "0292c267f70e1002169b9c44828b0764081aa075",
                 "shasum": ""
             },
             "require": {
@@ -3066,9 +3066,9 @@
             "description": "think_validate",
             "support": {
                 "issues": "https://github.com/zouyi741599086/SuperAdminx_think_validate/issues",
-                "source": "https://github.com/zouyi741599086/SuperAdminx_think_validate/tree/v0.0.2"
+                "source": "https://github.com/zouyi741599086/SuperAdminx_think_validate/tree/v1.0.2"
             },
-            "time": "2025-09-10T06:55:55+00:00"
+            "time": "2025-09-11T03:46:40+00:00"
         },
         {
             "name": "symfony/cache",
