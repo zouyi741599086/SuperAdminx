@@ -794,7 +794,7 @@ export default () => {
                             </Lazyload>\n";
     }
 ?>
-                        <>
+                        </>
                     }
                     pagination={{
                         defaultPageSize: 20,
