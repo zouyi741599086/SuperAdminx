@@ -28,7 +28,7 @@ class AdminUserModel extends BaseModel
     {
         return password_hash($value, PASSWORD_DEFAULT);
     }
-
+	
     /**
      * 用户所属角色
      */
