@@ -18,11 +18,9 @@ class RequestDecrypt implements MiddlewareInterface
 
     public function process(Request $request, callable $handler) : Response
     {
-        // 数据解密
-        if (
-            config('superadminx.api_encryptor.enable') == true &&
-            ! $this->actionIsEncrypt()
-        ) {
+        // 数据是否需要解密
+        $request->dataEncrypt = config('superadminx.api_encryptor.enable') == true && ! $this->actionIsEncrypt();
+        if ($request->dataEncrypt) {
             try {
                 // 解密key iv
                 $superAdminxKeySecret = DataEncryptorUtils::rsaDecrypt($request->header('SuperAdminxKeySecret'));
@@ -31,22 +29,18 @@ class RequestDecrypt implements MiddlewareInterface
                 $request->aes_iv      = $superAdminxKeySecret[1];
 
                 if ($request->get()) {
-                    $params = DataEncryptorUtils::aesDecrypt($request->get('encrypt_data'), $request->aes_key, $request->aes_iv);
-                    $params = array_merge($request->get(), $params);
-                    unset($params['encrypt_data']);
-                    $request->setGet($params);
+                    $data = DataEncryptorUtils::aesDecrypt($request->get('encrypt_data'), $request->aes_key, $request->aes_iv);
+                    $request->setGet(array_merge($request->get(), $data));
                 }
                 if ($request->post()) {
-                    $params = DataEncryptorUtils::aesDecrypt($request->post('encrypt_data'), $request->aes_key, $request->aes_iv);
-                    $params = array_merge($request->get(), $params);
-                    unset($params['encrypt_data']);
-                    $request->setPost($params);
+                    $data = DataEncryptorUtils::aesDecrypt($request->post('encrypt_data'), $request->aes_key, $request->aes_iv);
+                    $request->setPost(array_merge($request->post(), $data));
                 }
             } catch (\Exception $e) {
                 abort("数据解密失败：{$e->getMessage()}");
             }
-
         }
+
         // 请求继续向洋葱芯穿越
         return $handler($request);
     }
