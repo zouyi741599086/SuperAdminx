@@ -118,7 +118,7 @@ class Login
                 // 如果姓名为空，则用手机号
                 $data['name'] = $data['name'] ?? substr_replace($data['tel'], '****', 3, 4);
 
-                think_validate(UserValidate::class)->check($data);
+                think_validate(UserValidate::class)->scene('create')->check($data);
                 $result = UserModel::create($data);
 
                 //如果有推广id
@@ -156,7 +156,8 @@ class Login
         if (!$user) {
             abort('用户已禁用');
         }
-        $user['token'] = JwtUtils::generateToken('api', $user);
+		$user->img = file_url($user->img);
+        $user['token'] = JwtUtils::generateToken('api', $user->toArray());
         return $user;
     }
 }

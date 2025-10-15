@@ -43,7 +43,8 @@ class User
      */
     public function getUserInfo(Request $request) : Response
     {
-        $data = UserLogic::findData($request->user->id);
+        $data 		= UserLogic::findData($request->user->id);
+		$data->img  = file_url($data->img);
         return success($data);
     }
 
@@ -75,7 +76,7 @@ class User
         // 验证手机号格式
         SmsUtils::checkTel($data['tel']);
 
-        // 判断此律师是否存在 是否正常
+        // 判断此用户是否存在 是否正常
         $user = UserModel::where('tel', $data['tel'])->find();
         if (! $user || $user['status'] == 2) {
             abort('手机号错误~');
