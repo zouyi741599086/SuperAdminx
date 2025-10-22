@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { App } from 'antd';
-import {config} from '@/common/config'
+import { config } from '@/common/config'
 import { useRecoilState } from 'recoil';
 import { layoutSettingStore } from '@/store/layoutSetting';
 import { useMount, } from 'ahooks';
-import {fileApi} from "@/api/file";
+import { fileApi } from "@/api/file";
 
 import tinymce from 'tinymce/tinymce';
 import { Editor } from '@tinymce/tinymce-react';
@@ -109,7 +109,7 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
         plugins: 'indent2em lists advlist table wordcount code fullscreen anchor autolink autosave charmap directionality image insertdatetime link media nonbreaking pagebreak preview searchreplace visualblocks visualchars axupimgs emoticons quickbars ',
 
         // 摆在上面的编辑器的操作
-        toolbar: toolbarDisabled ? `` : `undo redo | fontsize  styles |  forecolor backcolor |indent2em outdent indent | bullist numlist |  image axupimgs link media | code fullscreen`,
+        toolbar: toolbarDisabled ? `` : `undo redo | fontsize  styles |  forecolor backcolor | align indent2em outdent indent | bullist numlist |  image axupimgs link media | code fullscreen`,
 
         font_family_formats: 'Arial=arial,helvetica,sans-serif; 宋体=SimSun; 微软雅黑=Microsoft Yahei; Impact=impact,chicago;', // 字体
         font_size_formats: '11px 12px 14px 16px 18px 24px 36px 48px 64px 72px', // 文字大小
@@ -122,7 +122,7 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
         // file_picker_types: 'file',
 
         quickbars_insert_toolbar: 'quicktable image axupimgs media link', // 新的一行焦点的时候，弹出快捷操作
-        quickbars_selection_toolbar: 'bold italic underline removeformat forecolor backcolor | blocks | link', // 选择一块文字的时候，弹出快捷操作
+        quickbars_selection_toolbar: 'bold italic underline removeformat forecolor backcolor align | blocks | link', // 选择一块文字的时候，弹出快捷操作
 
         content_style: "*{max-width:100% !important;}", // 自定义样式，
 
