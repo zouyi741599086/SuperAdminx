@@ -3,8 +3,8 @@ import { Menu } from 'antd';
 import {
     EllipsisOutlined
 } from '@ant-design/icons';
-import { useRecoilState } from 'recoil';
-import { menuAuthStore } from '@/store/menuAuth';
+import { useSnapshot } from 'valtio';
+import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -40,12 +40,12 @@ export const menuToTree = (arr, pid = null, key = 'children') => {
  */
 export default ({ menuMode = 'inline' }) => {
     const navigate = useNavigate();
-    const [menuAuth, setMenuAuth] = useRecoilState(menuAuthStore);
+    const menuAuth = useSnapshot(menuAuthStore);
     const [menuList, setMenuList] = useState();
 
     // 点击父菜单的时候，控制只展开当前菜单
     const onOpenChange = (keys) => {
-        setMenuAuth(_val => {
+        setMenuAuthStore(_val => {
             return {
                 ..._val,
                 openKeys: keys

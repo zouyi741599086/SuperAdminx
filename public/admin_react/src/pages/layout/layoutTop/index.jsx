@@ -3,8 +3,8 @@ import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
 import logo from '@/static/logo.png';
 import './index.css'
-import { useRecoilState } from 'recoil';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import { config } from '@/common/config'
 
 const Message = lazy(() => import('./../component/message'));
@@ -25,7 +25,7 @@ const { Header, Content, } = Layout;
  * @link https://www.superadminx.com/
  */
 export default () => {
-    const [layoutSetting] = useRecoilState(layoutSettingStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
 
     return (
         <div

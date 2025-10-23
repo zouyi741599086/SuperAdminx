@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { proxy } from 'valtio';
 import { storage } from '@/common/function';
 
 const storeKey = 'contentTabs';
@@ -23,20 +23,24 @@ const defaultValue = {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export const contentTabsStore = atom({
-    key: storeKey,
-    // 默认值
-    default: defaultValue,
-    // 不需要永久存储可删除
-    effects_UNSTABLE: [
-        ({ setSelf, onSet }) => {
-            let _oldValue = storage.get(storeKey);
-            if (_oldValue) {
-                setSelf(_oldValue)
-            }
-            onSet(_newValue => {
-                storage.set(storeKey, _newValue);
-            })
-        }
-    ],
-});
+export const contentTabsStore = proxy(
+    storage.get(storeKey) || defaultValue
+)
+
+/**
+ * 更新状态
+ * 
+ * @param {object|function} updater 
+ */
+export const setContentTabsStore = (updater) => {
+    if (typeof updater === 'function') {
+        // 函数式更新
+        const newState = updater(contentTabsStore);
+        Object.assign(contentTabsStore, newState);
+    } else {
+        // 直接对象赋值
+        Object.assign(contentTabsStore, updater);
+    }
+    // 持久化到存储
+    storage.set(storeKey, contentTabsStore);
+}

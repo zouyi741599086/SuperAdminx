@@ -29,9 +29,9 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.29.0",
     "react-syntax-highlighter": "^15.6.1",
-    "recoil": "^0.7.7",
     "tinymce": "^7.6.1",
-    "tlbs-map-react": "^1.0.1"
+    "tlbs-map-react": "^1.0.1",
+    "valtio": "^2.1.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

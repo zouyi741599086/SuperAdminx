@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { Alert } from 'antd';
-import { useRecoilState } from 'recoil';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 
 const Tinymce = lazy(() => import('./tinymce/index'));
 
@@ -15,7 +15,7 @@ const Tinymce = lazy(() => import('./tinymce/index'));
  * @link https://www.superadminx.com/
  */
 export default (props) => {
-    const [layoutSetting] = useRecoilState(layoutSettingStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
     // 判断是否是苹果的Safari浏览器或谷歌浏览器
     const isMobileSafariOrChrome = () => {
         var userAgent = navigator.userAgent;

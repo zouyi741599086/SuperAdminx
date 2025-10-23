@@ -1,6 +1,6 @@
 import { lazy } from 'react';
-import { useRecoilState } from 'recoil';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 
 const LayoutSlide = lazy(() => import('./layoutSlide/index'));
 const LayoutSlideSplitMenus = lazy(() => import('./layoutSlideSplitMenus/index'));
@@ -15,7 +15,7 @@ const LayoutTopSplitMenus = lazy(() => import('./layoutTopSplitMenus/index'));
  * @link https://www.superadminx.com/
  */
 export default () => {
-    const [layoutSetting] = useRecoilState(layoutSettingStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
 
     return <>
         {layoutSetting.layoutValue === 'slide' ? <LayoutSlide /> 

@@ -16,10 +16,10 @@ const menuPidPathNameToArr = (arr) => {
 /**
  * 登录后的操作
  * @param {object} adminUser 登录成功后后台返回的用户数据
- * @param {function} setAdminUser 设置store用户信息的方法
- * @param {function} setMenuAuth 设置store菜单权限数据的方法
+ * @param {function} setAdminUserStore 设置store用户信息的方法
+ * @param {function} setMenuAuthStore 设置store菜单权限数据的方法
  */
-export const loginAction = (adminUser, setAdminUser, setMenuAuth) => {
+export const loginAction = (adminUser, setAdminUserStore, setMenuAuthStore) => {
 
     // 把首页注入到权限里面
     adminUser.menu.unshift({
@@ -62,13 +62,13 @@ export const loginAction = (adminUser, setAdminUser, setMenuAuth) => {
     })
 
     // 设置用户登录信息
-    setAdminUser(adminUser);
+    setAdminUserStore(adminUser);
 
     // 存入权限验证的所有节点id
     storage.set('actionAuthArr', actionAuthArr);
 
     // 设置用户权限节点
-    setMenuAuth((_val) => {
+    setMenuAuthStore((_val) => {
         return {
             ..._val,
             menu: adminUser.menu,

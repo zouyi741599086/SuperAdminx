@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Card } from 'antd';
-import { useRecoilState } from 'recoil';
-import { menuAuthStore } from '@/store/menuAuth';
+import { useSnapshot } from 'valtio';
+import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 import { useNavigate } from 'react-router-dom';
 import './shortcutMenu.css'
 import { useSortable } from '@dnd-kit/sortable';
@@ -14,7 +14,7 @@ import { CSS } from '@dnd-kit/utilities';
  * @link https://www.superadminx.com/
  */
 export default ({ item, ...props }) => {
-    const [menuAuth] = useRecoilState(menuAuthStore);
+    const menuAuth = useSnapshot(menuAuthStore);
     const navigate = useNavigate();
 
     const {

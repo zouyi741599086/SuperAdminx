@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 import { App } from 'antd';
 import { config } from '@/common/config'
-import { useRecoilState } from 'recoil';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import { useMount, } from 'ahooks';
 import { fileApi } from "@/api/file";
 
@@ -56,7 +56,7 @@ import './index.css';
  * @parrm {height} Int 编辑器高度
  */
 export default ({ value = '', onChange, disabled = false, toolbarDisabled = false, height = 400 }) => {
-    const [layoutSetting] = useRecoilState(layoutSettingStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
     const editorRef = useRef();
     const { message } = App.useApp();
     // 编辑器初始值

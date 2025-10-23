@@ -10,8 +10,8 @@ import {
 import { useDebounceFn } from 'ahooks';
 import { deepClone } from '@/common/function';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { menuAuthStore } from '@/store/menuAuth';
+import { useSnapshot } from 'valtio';
+import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 
 const { Search } = Input;
 
@@ -65,7 +65,7 @@ const upSearchPath = (pid_name_path, arr) => {
 export default ({ placement = 'top' }) => {
     const { message } = App.useApp();
     const navigate = useNavigate();
-    const [menuAuth] = useRecoilState(menuAuthStore);
+    const menuAuth = useSnapshot(menuAuthStore);
     const [open, setOpen] = useState(false);
 
     // 原始是所有数据

@@ -4,10 +4,10 @@ import { deepClone, isMobileFun, storage, colorHsb } from '@/common/function';
 import { ConfigProvider, theme, App } from 'antd';
 import './App.css';
 import '@/static/iconfont/iconfont.css'
-import { useRecoilState } from 'recoil';
-import { adminUserStore } from '@/store/adminUser';
-import { menuAuthStore } from '@/store/menuAuth';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
+import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import { adminUserApi } from '@/api/adminUser'
 import { loginAction } from '@/common/loginAction';
 import { useMount, useDebounceFn } from 'ahooks';
@@ -42,9 +42,9 @@ const htmlClass = (className, type = 'add') => {
 }
 
 export default () => {
-    const [adminUser, setAdminUser] = useRecoilState(adminUserStore);
-    const [menuAuth, setMenuAuth] = useRecoilState(menuAuthStore);
-    const [layoutSetting, setLayoutSetting] = useRecoilState(layoutSettingStore);
+    const adminUser = useSnapshot(adminUserStore);
+    const menuAuth = useSnapshot(menuAuthStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
     const location = useLocation();
     const [routes, setRoutes] = useState(router);
     // 监听是否是移动端，防抖处理
@@ -52,7 +52,7 @@ export default () => {
         () => {
             let isMobile = isMobileFun();
             htmlClass('sa-mobile', isMobile === true ? 'add' : 'remove');
-            setLayoutSetting(_val => ({
+            setLayoutSettingStore(_val => ({
                 ..._val,
                 isMobile,
                 // 移动端就强制第一种布局
@@ -80,7 +80,7 @@ export default () => {
         if (adminUserToken) {
             adminUserApi.getAdminUser().then((res) => {
                 if (res.code === 1) {
-                    loginAction(res.data, setAdminUser, setMenuAuth)
+                    loginAction(res.data, setAdminUserStore, setMenuAuthStore)
                 }
             }).catch(err => {
             });
@@ -153,7 +153,7 @@ export default () => {
                 })
                 document.title = `${config.projectName}${page_title}`
                 // 设置菜单展开、选中项
-                setMenuAuth((_val) => {
+                setMenuAuthStore((_val) => {
                     let tmp = item.pid_name_path.map(_name => _name.toString());
                     return {
                         ..._val,

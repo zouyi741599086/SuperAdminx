@@ -1,9 +1,9 @@
 import { PageContainer } from '@ant-design/pro-components';
 import { ProCard } from '@ant-design/pro-components';
 import { Col, Row, Space, Avatar, Typography, Tag} from 'antd';
-import { useRecoilState } from 'recoil';
-import { adminUserStore } from '@/store/adminUser';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import { useMount } from 'ahooks';
 import ShortcutMenu from './component/shortcutMenu';
 
@@ -14,8 +14,8 @@ import ShortcutMenu from './component/shortcutMenu';
  * @link https://www.superadminx.com/
  */
 export default () => {
-    const [adminUser] = useRecoilState(adminUserStore);
-    const [layoutSetting] = useRecoilState(layoutSettingStore);
+    const adminUser = useSnapshot(adminUserStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
 
     useMount(() => {
     })

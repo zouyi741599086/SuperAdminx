@@ -4,8 +4,8 @@ import {
 } from '@ant-design/icons';
 import { Typography, Space, Tooltip, Drawer, Switch, Alert } from 'antd';
 import { useBoolean } from 'ahooks';
-import { useRecoilState } from 'recoil';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import './index.css'
 
 const { Text } = Typography;
@@ -18,7 +18,7 @@ const { Text } = Typography;
  */
 export default ({ placement = 'top' }) => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);
-    const [layoutSetting, setLayoutSetting] = useRecoilState(layoutSettingStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
 
     //////////////////主题////////////////////////////////
     const antdThemeList = {
@@ -37,7 +37,7 @@ export default ({ placement = 'top' }) => {
     };
     // 布局切换的时候
     const antdThemeValueChange = antdThemeValue => {
-        setLayoutSetting(_val => {
+        setLayoutSettingStore(_val => {
             return {
                 ..._val,
                 antdThemeValue,
@@ -70,7 +70,7 @@ export default ({ placement = 'top' }) => {
     };
     // 布局切换的时候
     const layoutListValueChange = layoutValue => {
-        setLayoutSetting(_val => {
+        setLayoutSettingStore(_val => {
             return {
                 ..._val,
                 layoutValue,
@@ -92,7 +92,7 @@ export default ({ placement = 'top' }) => {
     ];
     // 主题色改变的时候
     const primaryColorValueChange = primaryColorValue => {
-        setLayoutSetting(_val => {
+        setLayoutSettingStore(_val => {
             return {
                 ..._val,
                 primaryColorValue,
@@ -102,7 +102,7 @@ export default ({ placement = 'top' }) => {
 
     /////////////////////色弱模式开关/////////////////////
     const bodyFilterValueChange = (bodyFilterValue) => {
-        setLayoutSetting(_val => {
+        setLayoutSettingStore(_val => {
             return {
                 ..._val,
                 bodyFilterValue,
@@ -112,7 +112,7 @@ export default ({ placement = 'top' }) => {
 
     /////////////////////简约风格开关/////////////////////
     const themeSimpleChange = (themeSimple) => {
-        setLayoutSetting(_val => {
+        setLayoutSettingStore(_val => {
             return {
                 ..._val,
                 themeSimple,
@@ -122,7 +122,7 @@ export default ({ placement = 'top' }) => {
 
     /////////////////////圆角开关/////////////////////
     const isRadiusChange = (isRadius) => {
-        setLayoutSetting(_val => {
+        setLayoutSettingStore(_val => {
             return {
                 ..._val,
                 isRadius,
@@ -132,7 +132,7 @@ export default ({ placement = 'top' }) => {
 
     /////////////////////页面定宽/////////////////////
     const isWidthChange = (isWidth) => {
-        setLayoutSetting(_val => {
+        setLayoutSettingStore(_val => {
             return {
                 ..._val,
                 isWidth,

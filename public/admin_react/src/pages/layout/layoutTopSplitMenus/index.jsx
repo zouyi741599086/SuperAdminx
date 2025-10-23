@@ -8,9 +8,9 @@ import { Layout, Menu, Button } from 'antd';
 import { Outlet } from 'react-router-dom';
 import logo from '@/static/logo.png';
 import './index.css'
-import { useRecoilState } from 'recoil';
-import { layoutSettingStore } from '@/store/layoutSetting';
-import { menuAuthStore } from '@/store/menuAuth';
+import { useSnapshot } from 'valtio';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
+import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 import { useNavigate } from 'react-router-dom';
 import { useMount } from 'ahooks';
 import { config } from '@/common/config'
@@ -60,8 +60,8 @@ export const arrayToTree = (arr, pid = null, pid_name_path = []) => {
 export default () => {
     const navigate = useNavigate();
 
-    const [layoutSetting, setLayoutSetting] = useRecoilState(layoutSettingStore);
-    const [menuAuth, setMenuAuth] = useRecoilState(menuAuthStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
+    const menuAuth = useSnapshot(menuAuthStore);
     // 侧边栏开关
     const [collapsed, setCollapsed] = useState(false);
     // 所有的菜单
@@ -73,7 +73,7 @@ export default () => {
 
     // 点击父菜单的时候，控制只展开当前菜单
     const onOpenChange = (keys) => {
-        setMenuAuth(_val => {
+        setMenuAuthStore(_val => {
             return {
                 ..._val,
                 openKeys: keys

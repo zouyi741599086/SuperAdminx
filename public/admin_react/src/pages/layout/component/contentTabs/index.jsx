@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { menuAuthStore } from '@/store/menuAuth';
-import { useRecoilState } from 'recoil';
-import { contentTabsStore } from '@/store/contentTabs';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
+import { useSnapshot } from 'valtio';
+import { contentTabsStore, setContentTabsStore } from '@/store/contentTabs';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import { Layout, Dropdown, Button, Tabs } from 'antd';
 import { deepClone } from '@/common/function';
 import {
@@ -52,9 +52,9 @@ const routerParent = (pageName, menuArrAll) => {
  * @link https://www.superadminx.com/
  */
 export default () => {
-    const [layoutSetting] = useRecoilState(layoutSettingStore);
-    const [contentTabs, setContentTabs] = useRecoilState(contentTabsStore);
-    const [menuAuth] = useRecoilState(menuAuthStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
+    const contentTabs = useSnapshot(contentTabsStore);
+    const menuAuth = useSnapshot(menuAuthStore);
     const location = useLocation();
     const navigate = useNavigate();
     // 设置tabs的数据
@@ -124,7 +124,7 @@ export default () => {
             })
         }
 
-        setContentTabs((val) => ({
+        setContentTabsStore((val) => ({
             ...val,
             activeName,
             list: retainArr,
@@ -181,7 +181,7 @@ export default () => {
             })
            
 
-            setContentTabs((val) => ({
+            setContentTabsStore((val) => ({
                 ...val,
                 activeName: menuTop.name,
                 list: _list
@@ -202,7 +202,7 @@ export default () => {
                 }
             })
         }
-        setContentTabs((val) => ({
+        setContentTabsStore((val) => ({
             ...val,
             activeName,
             list: contentTabs.list.filter(item => item.name != name)
@@ -231,7 +231,7 @@ export default () => {
                 />
             })
         })
-        setContentTabs((val) => ({
+        setContentTabsStore((val) => ({
             ...val,
             keepAlive
         }))

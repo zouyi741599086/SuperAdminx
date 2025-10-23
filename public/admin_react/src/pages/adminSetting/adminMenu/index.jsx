@@ -8,8 +8,8 @@ import {
     DeleteOutlined,
 } from '@ant-design/icons';
 import { useMount } from 'ahooks';
-import { useRecoilState } from 'recoil';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import Lazyload from '@/component/lazyLoad/index';
 
 const { Search } = Input;
@@ -56,7 +56,7 @@ const getParentKey = (id, tree) => {
  * @link https://www.superadminx.com/
  * */
 export default () => {
-    const [layoutSetting] = useRecoilState(layoutSettingStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
     const { message } = App.useApp();
 
     useMount(() => {

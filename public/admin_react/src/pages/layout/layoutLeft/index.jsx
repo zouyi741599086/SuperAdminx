@@ -7,8 +7,8 @@ import { Layout, Tooltip, Divider, Button } from 'antd';
 import { Outlet } from 'react-router-dom';
 import logo from '@/static/logo.png';
 import './index.css'
-import { useRecoilState } from 'recoil';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { useSnapshot } from 'valtio';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import { config } from '@/common/config'
 
 const Message = lazy(() => import('./../component/message'));
@@ -30,7 +30,7 @@ const { Content, Sider } = Layout;
  */
 export default () => {
     const [collapsed, setCollapsed] = useState(false);
-    const [layoutSetting, setLayoutSetting] = useRecoilState(layoutSettingStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
 
     // 导航缩所变化的时候
     const onCollapse = (collapsedVal) => {

@@ -1,12 +1,12 @@
-import { atom } from 'recoil';
+import { proxy } from 'valtio';
 import { storage } from '@/common/function';
 
 const storeKey = 'layoutSetting';
 // 默认值
-const defaultValue = {
+const defaultValue = storage.get(storeKey) || {
     layoutValue: "slide", // 布局方式
     antdThemeValue: 'default', // 整体主题 default dark compact
-    primaryColorValue: "#1677ff", // 主题色
+    primaryColorValue: "#f5222d", // 主题色
     bodyFilterValue: false, // 色弱模式
     themeSimple: false, // 简约风，就是没得背景
     isRadius: false, // 导航、顶部等是否圆角
@@ -20,20 +20,24 @@ const defaultValue = {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export const layoutSettingStore = atom({
-    key: storeKey,
-    // 默认值
-    default: defaultValue,
-    // 不需要永久存储可删除
-    effects_UNSTABLE: [
-        ({ setSelf, onSet }) => {
-            let _oldValue = storage.get(storeKey);
-            if (_oldValue) {
-                setSelf(_oldValue)
-            }
-            onSet(_newValue => {
-                storage.set(storeKey, _newValue);
-            })
-        }
-    ],
-});
+export const layoutSettingStore = proxy(
+    storage.get(storeKey) || defaultValue
+)
+
+/**
+ * 更新状态
+ * 
+ * @param {object|function} updater 
+ */
+export const setLayoutSettingStore = (updater) => {
+    if (typeof updater === 'function') {
+        // 函数式更新
+        const newState = updater(layoutSettingStore);
+        Object.assign(layoutSettingStore, newState);
+    } else {
+        // 直接对象赋值
+        Object.assign(layoutSettingStore, updater);
+    }
+    // 持久化到存储
+    storage.set(storeKey, layoutSettingStore);
+}

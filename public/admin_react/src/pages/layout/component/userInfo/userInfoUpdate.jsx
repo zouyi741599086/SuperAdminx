@@ -11,13 +11,13 @@ import { adminUserApi } from '@/api/adminUser';
 import { fileApi } from '@/api/file';
 import { config } from '@/common/config'
 import { getToken } from '@/common/function'
-import { useRecoilState } from 'recoil';
-import { adminUserStore } from '@/store/adminUser';
+import { useSnapshot } from 'valtio';
+import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
 import ImgCrop from 'antd-img-crop';
 
 export default () => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);
-    const [adminUser, setAdminUser] = useRecoilState(adminUserStore);
+    const adminUser = useSnapshot(adminUserStore);
     const [submitLoading, setSubmitLoading] = useState(false);
     const [uploadLoading, setUploadLoading] = useState(false);
     const [form] = Form.useForm();
@@ -40,7 +40,7 @@ export default () => {
             adminUserApi.updateInfo(params).then(res => {
                 if (res.code === 1) {
                     message.success(res.message)
-                    setAdminUser((_val) => {
+                    setAdminUserStore((_val) => {
                         return {
                             ..._val,
                             ...params
