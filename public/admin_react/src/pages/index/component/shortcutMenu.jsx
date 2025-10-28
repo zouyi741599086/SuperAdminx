@@ -109,6 +109,7 @@ export default () => {
                     {menuList.map(item =>
                         <ShortcutMenuItem
                             item={item}
+							key={item.id}
                         />
                     )}
                 </SortableContext>

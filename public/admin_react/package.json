@@ -20,7 +20,7 @@
     "ahooks": "^3.8.4",
     "antd": "^5.27.2",
     "antd-img-crop": "^4.24.0",
-    "axios": "^1.7.9",
+    "axios": "^1.13.0",
     "crypto-js": "^4.2.0",
     "jsencrypt": "^3.3.2",
     "lockr": "^0.9.0-beta.2",
