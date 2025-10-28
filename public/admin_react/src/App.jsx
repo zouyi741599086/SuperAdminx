@@ -21,8 +21,7 @@ import { router } from './router'
 // 导入所有的页面，异步加载，要除开component 跟 components文件夹内的
 const routeAllPathToCompMap = import.meta.glob([
     `./pages/**/*index.jsx`,
-    `!./**/components/**/*index.jsx`, // 除开的此文件
-    `!./**/component/**/*index.jsx`, // 除开的此文件
+    `!./pages/layout/component/*`, // 除开的此文件
 ]);
 
 const Error = lazy(() => import('@/pages/error/index'));
