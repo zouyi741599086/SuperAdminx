@@ -236,7 +236,7 @@ export default () => {
             keepAlive
         }))
         setTabsList(_tabsList)
-    }, [contentTabs.list])
+    }, [contentTabs.list, contentTabs.activeName])
 
     return (
         <>

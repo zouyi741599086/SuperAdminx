@@ -1,6 +1,7 @@
 import { PageContainer } from '@ant-design/pro-components';
 import { adminLogApi } from '@/api/adminLog';
 import { ProTable } from '@ant-design/pro-components';
+import { App } from 'antd';
 
 /**
  * 操作日志
@@ -9,6 +10,8 @@ import { ProTable } from '@ant-design/pro-components';
  * @link https://www.superadminx.com/
  * */
 export default () => {
+    const { message } = App.useApp();
+
     // 表格列
     const columns = [
         {
@@ -68,6 +71,9 @@ export default () => {
                             ...params,// 包含了翻页参数跟搜索参数
                             page: params.current,
                         });
+                        if (result.code !== 1) {
+                            message.error(result.message);
+                        }
                         return {
                             data: result.data.data,
                             success: true,

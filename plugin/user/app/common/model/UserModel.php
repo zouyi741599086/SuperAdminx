@@ -11,21 +11,21 @@ use app\common\model\BaseModel;
  * */
 class UserModel extends BaseModel
 {
-
-    // 表名
-    protected $name = 'user';
-
-    // 自动时间戳
-    protected $autoWriteTimestamp = true;
-
-    // 字段类型转换
-    protected $type = [
-    ];
-
-    // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
-    protected $file = [
-        'img' => '',
-    ];
+    /**
+     * 模型参数
+     * @return array
+     */
+    protected function getOptions() : array
+    {
+        return [
+            'name'               => 'user',
+            'autoWriteTimestamp' => true,
+            'type'               => [],
+            'file'               => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
+                'img' => '',
+            ],
+        ];
+    }
 
     //密码 修改器
     public function setPasswordAttr($value)

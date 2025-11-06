@@ -68,57 +68,56 @@ class <?php echo $file_name ?? ''; ?> extends <?php echo (isset($is_middle) && $
 echo "    use SoftDelete;\n";
     }
 ?>
-
-    // 表名
-    protected $name = '<?php echo substr($table_name, strlen(getenv('DB_PREFIX'))); ?>';
-<?php
-    if ($delete_time) {
-echo "    // 软删除
-    protected \$deleteTime = 'delete_time';";
-    }
-?>
-
-    // 自动时间戳
+    /**
+    * 模型参数
+    * @return array
+    */
+    protected function getOptions() : array
+    {
+        return [
+            'name' => '<?php echo substr($table_name, strlen(getenv('DB_PREFIX'))); ?>',
 <?php
     if ($create_time == false && $update_time == false) {
-    echo "    protected \$autoWriteTimestamp = false;\n";
+        echo "            'autoWriteTimestamp' => false,\n";
     }
     if ($create_time == true && $update_time == true) {
-    echo "    protected \$autoWriteTimestamp = true;\n";  
+        echo "            'autoWriteTimestamp' => true,\n";  
     }
     if ($create_time == false && $update_time == true) {
-    echo "    protected \$createTime = false;\n";  
+        echo "            'createTime' => false,\n";  
     }
     if ($create_time == true && $update_time == false) {
-    echo "    protected \$updateTime = false;\n";  
+        echo "            'updateTime' => false,\n";  
+    }
+    // 如果有软删除字段
+    if ($delete_time) {
+        echo "            'deleteTime' = 'delete_time',\n";
     }
 ?>
-
-    // 字段类型转换
-    protected $type = [
+            'type' => [
 <?php
     // 字段类型
     if (isset($type) && is_array($type)) {     
         foreach ($type as $key => $value) {
-            echo "        '{$key}' => '{$value}',
+            echo "                '{$key}' => '{$value}',
 ";
         }
     }
 ?>
-    ];
-
-    // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
-    protected $file = [
+            ],
+            'file' => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
 <?php
     // 包含附件的字段
     if (isset($file) && is_array($file)) {      
         foreach ($file as $key => $value) {
-            echo "        '{$key}' => '{$value}',
+            echo "                '{$key}' => '{$value}',
 ";
         }
     }
 ?>
-    ];
+            ],
+        ];
+    }
 
 <?php
     // 修改器

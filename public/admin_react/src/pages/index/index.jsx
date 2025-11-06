@@ -1,9 +1,9 @@
 import { PageContainer } from '@ant-design/pro-components';
 import { ProCard } from '@ant-design/pro-components';
-import { Col, Row, Space, Avatar, Typography, Tag} from 'antd';
+import { Col, Row, Space, Avatar, Typography, Tag } from 'antd';
 import { useSnapshot } from 'valtio';
-import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
-import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
+import { adminUserStore } from '@/store/adminUser';
+import { layoutSettingStore } from '@/store/layoutSetting';
 import { useMount } from 'ahooks';
 import ShortcutMenu from './component/shortcutMenu';
 
@@ -19,7 +19,6 @@ export default () => {
 
     useMount(() => {
     })
-
 
     return (
         <>
@@ -66,11 +65,10 @@ export default () => {
                                         src={`//i.tianqi.com/index.php?c=code&id=12&icon=1&num=5&site=12${layoutSetting.antdThemeValue == 'dark' ? '&color=%23FFFFFF' : ''}`}
                                     ></iframe>
                                 </> : ''}
-
                             </Col>
                         </Row>
                     </ProCard>
-                    
+
                     <ShortcutMenu />
                 </Space>
             </PageContainer>

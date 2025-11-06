@@ -11,6 +11,17 @@ use support\think\Model;
  * */
 class FileModel extends Model
 {
-    // 表名
-    protected $name = 'file';
+    /**
+     * 模型参数
+     * @return array
+     */
+    protected function getOptions() : array
+    {
+        return [
+            'name'               => 'file',
+            'autoWriteTimestamp' => true,
+            'type'               => [
+            ],
+        ];
+    }
 }

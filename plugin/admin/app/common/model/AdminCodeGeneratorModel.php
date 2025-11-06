@@ -12,28 +12,34 @@ use app\common\model\BaseModel;
  * */
 class AdminCodeGeneratorModel extends BaseModel
 {
-    // 自动时间戳
-    protected $autoWriteTimestamp = false;
-
-    // 表名
-    protected $name = 'admin_code_generator';
-
-    // 字段类型转换
-    protected $type = [
-        'field_title'               => 'json',
-        'validate'                  => 'json',
-        'model'                     => 'json',
-        'logic'                     => 'json',
-        'controller'                => 'json',
-        'react_api'                 => 'json',
-        'react_create_update'       => 'json',
-        'react_form_code'           => 'json',
-        'react_info'                => 'json',
-        'react_list'                => 'json',
-        'react_list_component_code' => 'json',
-        'react_other'               => 'json',
-        'react_other_code'          => 'json',
-    ];
+    /**
+     * 模型参数
+     * @return array
+     */
+    protected function getOptions() : array
+    {
+        return [
+            'name'               => 'admin_code_generator',
+            'autoWriteTimestamp' => false,
+            'type'               => [
+                'field_title'               => 'json',
+                'validate'                  => 'json',
+                'model'                     => 'json',
+                'logic'                     => 'json',
+                'controller'                => 'json',
+                'react_api'                 => 'json',
+                'react_create_update'       => 'json',
+                'react_form_code'           => 'json',
+                'react_info'                => 'json',
+                'react_list'                => 'json',
+                'react_list_component_code' => 'json',
+                'react_other'               => 'json',
+                'react_other_code'          => 'json',
+            ],
+            'fileField'          => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
+            ],
+        ];
+    }
 
     // 新增前，自动写入一些数据
     public static function onBeforeInsert($data)
@@ -42,11 +48,11 @@ class AdminCodeGeneratorModel extends BaseModel
         $camelCaseTableName = CodeGenerator::toCamelCase($data->table_name);
         // 表里面所有的列
         $tableColumn = CodeGenerator::getTableColumn($data->table_name);
-		// 生成的目录
-		$classPath = "app\\";
-		if ($data->plugin_name) {
-			$classPath = "plugin\\{$data->plugin_name}\\app\\";
-		}
+        // 生成的目录
+        $classPath = "app\\";
+        if ($data->plugin_name) {
+            $classPath = "plugin\\{$data->plugin_name}\\app\\";
+        }
 
         // 是否有排序字段
         $isSort = false;
@@ -143,7 +149,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 默认 不引入右边时间轴
             'right_timeline' => 1,
             // 默认 不引入card
-            'is_card'        => 1
+            'is_card'        => 1,
         ];
 
         // 列表页面
@@ -155,7 +161,7 @@ class AdminCodeGeneratorModel extends BaseModel
         // 后端其它组件
         $data->react_other = [
             // 弹窗form生成的目录
-            'modal_form_file_path' => "public\admin_react\src\pages\\",
+            'modal_form_file_path'  => "public\admin_react\src\pages\\",
             // 弹窗table生成的目录
             'modal_table_file_path' => "public\admin_react\src\pages\\",
         ];

@@ -11,22 +11,22 @@ use app\common\model\BaseModel;
  * */
 class UserTotalMonthModel extends BaseModel
 {
-
-    // 表名
-    protected $name = 'user_total_month';
-
-    // 自动时间戳
-    protected $autoWriteTimestamp = false;
-
-    // 字段类型转换
-    protected $type = [
-        'count' => 'integer',
-    ];
-
-    // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
-    protected $file = [
-    ];
-
+    /**
+     * 模型参数
+     * @return array
+     */
+    protected function getOptions() : array
+    {
+        return [
+            'name'               => 'user_total_month',
+            'autoWriteTimestamp' => false,
+            'type'               => [
+                'count' => 'integer',
+            ],
+            'file'               => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
+            ],
+        ];
+    }
 
     // 月份 搜索器
     public function searchMonthAttr($query, $value, $data)

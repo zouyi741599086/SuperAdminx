@@ -11,12 +11,21 @@ use support\think\Model;
  * */
 class FileRecordModel extends Model
 {
-    // 表名
-    protected $name = 'file_record';
-
-    // 字段类型转换
-    protected $type = [
-        'files' => 'json',
-    ];
+    /**
+     * 模型参数
+     * @return array
+     */
+    protected function getOptions() : array
+    {
+        return [
+            'name'               => 'file_record',
+            'autoWriteTimestamp' => true,
+            'type'               => [
+                'files' => 'json',
+            ],
+            'fileField'          => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
+            ],
+        ];
+    }
 
 }

@@ -12,20 +12,22 @@ use app\common\model\BaseModel;
 class AdminUserShortcutMenuModel extends BaseModel
 {
 
-    // 表名
-    protected $name = 'admin_user_shortcut_menu';
-
-    // 自动时间戳
-    protected $autoWriteTimestamp = false;
-
-    // 字段类型转换
-    protected $type = [
-    ];
-
-    // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
-    protected $file = [
-    ];
-
+    /**
+     * 模型参数
+     * @return array
+     */
+    protected function getOptions() : array
+    {
+        return [
+            'name'               => 'admin_user_shortcut_menu',
+            'autoWriteTimestamp' => false,
+            'type'               => [
+            ],
+            'fileField'          => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
+                'img' => '',
+            ],
+        ];
+    }
 
     // admin_user_id 搜索器
     public function searchAdminUserIdAttr($query, $value, $data)

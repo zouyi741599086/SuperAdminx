@@ -2,9 +2,7 @@ import { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { configApi } from '@/api/config';
 import { ProTable } from '@ant-design/pro-components';
-import {
-    App, Button, Popconfirm, Space, InputNumber,
-} from 'antd';
+import { App, Button, Popconfirm, Space, InputNumber } from 'antd';
 import {
     OrderedListOutlined,
     PlusOutlined,
@@ -236,6 +234,9 @@ export default () => {
                             orderBy, // 排序
                             page: params.current,
                         });
+                        if (result.code !== 1) {
+                            message.error(result.message);
+                        }
                         return {
                             data: result.data.data,
                             success: true,

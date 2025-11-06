@@ -243,12 +243,12 @@ export default () => {
                                         disabled={authCheck('userExportData')}
                                     >导出</Button>
                                 </Tooltip>
-								
-								<Lazyload block={false}>
-									<Create
-										tableReload={tableReload}
-									/>
-								</Lazyload>
+
+                                <Lazyload block={false}>
+                                    <Create
+                                        tableReload={tableReload}
+                                    />
+                                </Lazyload>
                             </Space>
                             {/* 修改表单 */}
                             <Lazyload block={false}>
@@ -283,6 +283,9 @@ export default () => {
                             orderBy, // 排序
                             page: params.current,
                         });
+                        if (result.code !== 1) {
+                            message.error(result.message);
+                        }
                         return {
                             data: result.data.data,
                             success: true,

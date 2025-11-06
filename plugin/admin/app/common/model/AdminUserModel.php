@@ -11,24 +11,29 @@ use app\common\model\BaseModel;
  * */
 class AdminUserModel extends BaseModel
 {
-    // 表名
-    protected $name = 'admin_user';
-
-    protected $type       = [
-    ];
-
-
-    // 包含附件的字段，key是字段名称，value是如何取值里面的图片的路劲
-    public $file = [
-        'img' => '',
-    ];
+    /**
+     * 模型参数
+     * @return array
+     */
+    protected function getOptions() : array
+    {
+        return [
+            'name'               => 'admin_user',
+            'autoWriteTimestamp' => true,
+            'type'               => [
+            ],
+            'fileField'          => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
+                'img' => '',
+            ],
+        ];
+    }
 
     // 修改器
     public function setPasswordAttr($value)
     {
         return password_hash($value, PASSWORD_DEFAULT);
     }
-	
+
     /**
      * 用户所属角色
      */

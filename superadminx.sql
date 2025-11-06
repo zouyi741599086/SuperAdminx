@@ -4087,23 +4087,6 @@ INSERT INTO `sa_region` VALUES ('3710', '路凼城', '3707', '0', '3706,3707,371
 INSERT INTO `sa_region` VALUES ('3711', '路环', '3707', '0', '3706,3707,3711', '澳门特别行政区-澳门特别行政区-路环', '3', 'l', '22.19875', '113.54913');
 
 -- ----------------------------
--- Table structure for sa_sms_code
--- ----------------------------
-DROP TABLE IF EXISTS `sa_sms_code`;
-CREATE TABLE `sa_sms_code` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tel` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '手机号',
-  `code` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '验证码',
-  `type` tinyint(1) DEFAULT NULL COMMENT '类型，1》律师忘记密码重设密码',
-  `create_time` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='短信验证码发送记录';
-
--- ----------------------------
--- Records of sa_sms_code
--- ----------------------------
-
--- ----------------------------
 -- Table structure for sa_token
 -- ----------------------------
 DROP TABLE IF EXISTS `sa_token`;
