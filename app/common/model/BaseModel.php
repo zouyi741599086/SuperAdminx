@@ -26,9 +26,10 @@ class BaseModel extends Model
     public static function onAfterInsert($data)
     {
         if (config('plugin.file.superadminx.clear_file')) {
-            $fileUrl   = self::dataSearchFile($data);
-            $tableName = $data->name;
-            $tableId   = ($data->toArray())['id'] ?? null;
+            $fileUrl      = self::dataSearchFile($data);
+            $modelOptions = $data->getOptions();
+            $tableName    = $modelOptions['name'];
+            $tableId      = ($data->toArray())['id'] ?? null;
 
             // 记录这条数据里面所有的附件
             if ($fileUrl && $tableName && $tableId) {
@@ -44,15 +45,14 @@ class BaseModel extends Model
     public static function onAfterUpdate($data)
     {
         if (config('plugin.file.superadminx.clear_file')) {
-            $tableName = $data->name;
-            $tableId   = ($data->toArray())['id'] ?? null;
+            $modelOptions = $data->getOptions();
+            $tableName    = $modelOptions['name'];
+            $tableId      = ($data->toArray())['id'] ?? null;
             // 重新更新此条数据使用的附件
             if ($tableName && $tableId) {
                 $data    = $data->find($tableId); // 重新获取更新后最新的数据，不然只更新某个附件值导致其它附件字段被删除
                 $fileUrl = self::dataSearchFile($data);
-                if ($fileUrl) {
-                    FileRecordLogic::update($tableName, $tableId, $fileUrl);
-                }
+                FileRecordLogic::update($tableName, $tableId, $fileUrl);
             }
         }
     }
@@ -64,9 +64,9 @@ class BaseModel extends Model
     public static function onAfterDelete($data)
     {
         if (config('plugin.file.superadminx.clear_file')) {
-            $tableName = $data->name;
-            $tableId   = ($data->toArray())['id'];
-
+            $modelOptions = $data->getOptions();
+            $tableName    = $modelOptions['name'];
+            $tableId      = ($data->toArray())['id'];
             // 删除附件记录
             FileRecordLogic::delete($tableName, $tableId);
         }
@@ -79,11 +79,12 @@ class BaseModel extends Model
     {
         $fileUrl = [];
         try {
-            $content = $data->toArray();
-            if (! isset($data->file) || ! $data->file) {
+            $content      = $data->toArray();
+            $modelOptions = $data->getOptions();
+            if (! isset($modelOptions['fileField']) || ! $modelOptions['fileField']) {
                 return [];
             }
-            foreach ($data->file as $k => $v) {
+            foreach ($modelOptions['fileField'] as $k => $v) {
                 if (isset($content[$k]) && $content[$k]) {
                     // 直接等于
                     if (($v == '' || ! $v) && isset($content[$k]) && $content[$k]) {
