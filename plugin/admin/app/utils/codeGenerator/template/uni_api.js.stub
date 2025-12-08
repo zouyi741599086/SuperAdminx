@@ -24,7 +24,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '列表',
                 'functoin_name' => 'getList',
                 'method' => 'get',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/getList"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/getList"           
             ];
         }
         if (isset($data['controller_api']['functions']) && in_array('create', $data['controller_api']['functions'])) {
@@ -32,7 +32,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '新增',
                 'functoin_name' => 'create',
                 'method' => 'post',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/create"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/create"           
             ];
         }
         if (isset($data['controller_api']['functions']) && in_array('findData', $data['controller_api']['functions'])) {
@@ -40,7 +40,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '获取数据',
                 'functoin_name' => 'findData',
                 'method' => 'get',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/findData"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/findData"           
             ];
         }
         if (isset($data['controller_api']['functions']) && in_array('update', $data['controller_api']['functions'])) {
@@ -48,7 +48,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '更新',
                 'functoin_name' => 'update',
                 'method' => 'post',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/update"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/update"           
             ];
         }
         if (isset($data['controller_api']['functions']) && in_array('delete', $data['controller_api']['functions'])) {
@@ -56,7 +56,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '删除',
                 'functoin_name' => 'delete',
                 'method' => 'post',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/delete"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/delete"           
             ];
         }
         if (isset($data['controller_api']['functions']) && in_array('updateSort', $data['controller_api']['functions'])) {
@@ -64,7 +64,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '更新排序',
                 'functoin_name' => 'updateSort',
                 'method' => 'post',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/updateSort"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/updateSort"           
             ];
         }
         if (isset($data['controller_api']['functions']) && in_array('updateStatus', $data['controller_api']['functions'])) {
@@ -72,7 +72,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '更新状态',
                 'functoin_name' => 'updateStatus',
                 'method' => 'post',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/updateStatus"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/updateStatus"           
             ];
         }
         if (isset($data['controller_api']['functions']) && in_array('select', $data['controller_api']['functions'])) {
@@ -80,7 +80,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '搜索选择某条数据',
                 'functoin_name' => "select{$tableNameToCamelCase}",
                 'method' => 'get',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/select{$tableNameToCamelCase}"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/select{$tableNameToCamelCase}"           
             ];
         }
         if (isset($data['controller_api']['functions']) && in_array('importData', $data['controller_api']['functions'])) {
@@ -89,12 +89,12 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '下载导入数据的表格模板',
                 'functoin_name' => 'downloadImportExcel',
                 'method' => 'get',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/downloadImportExcel"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/downloadImportExcel"           
             ];
             // 如果是导入数据，则不一样，是直接返回上传文件的地址
             $list[] = [
                 'title' => '导入数据',
-                'content' => "importData: `\${config.url}/admin/{$tableNameToCamelCase}/importData`,"       
+                'content' => "importData: `\${config.url}/api/{$tableNameToCamelCase}/importData`,"       
             ];
         }
         if (isset($data['controller_api']['functions']) && in_array('exportData', $data['controller_api']['functions'])) {
@@ -102,7 +102,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                 'title' => '导出数据',
                 'functoin_name' => 'exportData',
                 'method' => 'get',
-                'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/exportData"           
+                'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/exportData"           
             ];
         }
         // 生成控制器的其它方法
@@ -113,7 +113,7 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
                     'title' => $value['title'],
                     'functoin_name' => $value['name'],
                     'method' => $value['method'],
-                    'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/{$value['name']}"           
+                    'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/{$value['name']}"           
                 ];
             }
         }
@@ -129,14 +129,14 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
             if ($m->name == 'importData') {
                 $list[] = [
                     'title' => '导入数据',
-                    'content' => "importData: `\${config.url}/admin/{$tableNameToCamelCase}/importData`,"       
+                    'content' => "importData: `\${config.url}/api/{$tableNameToCamelCase}/importData`,"       
                 ];
             } else {
                 $list[] = [
                     'title' => CodeGenerator::getMethodsDocComment($docComment, 'title'),
                     'functoin_name' => $m->name,
                     'method' => CodeGenerator::getMethodsDocComment($docComment, 'method'),
-                    'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/{$m->name}"           
+                    'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/{$m->name}"           
                 ];
             }
         }
