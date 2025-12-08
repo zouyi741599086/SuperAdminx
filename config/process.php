@@ -18,7 +18,7 @@ use app\process\Http;
 
 global $argv;
 
-return [
+$result = [
     'webman'    => [
         'handler'     => Http::class,
         'listen'      => 'http://0.0.0.0:' . getenv('LISTEN_PORT'),
@@ -26,7 +26,12 @@ return [
         'user'        => '',
         'group'       => '',
         'reusePort'   => false,
-        'eventLoop'   => '',
+        'eventLoop'   => match(env('EVENT_LOOP', 'swoole')) {
+            'Swoole' => Workerman\Events\Swoole::class,
+            'Swow' => Workerman\Events\Swow::class,
+            'Fiber' => Workerman\Events\Fiber::class,
+            default => ''
+        },
         'context'     => [],
         'constructor' => [
             'requestClass' => Request::class,
@@ -60,3 +65,10 @@ return [
         ]
     ],
 ];
+
+if (getenv('CRONTAB') == 'true') {
+    $result = array_merge($result, [
+        // 新的定时任务
+    ]);
+}
+return $result;

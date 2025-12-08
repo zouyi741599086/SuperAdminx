@@ -1,10 +1,10 @@
 <?php
 $result = [
-    // 定时清除没使用的附件
+    // 瀹氭椂娓呴櫎娌′娇鐢ㄧ殑闄勪欢
     'clearFile' => [
         'handler' => plugin\file\app\process\ClearFile::class,
     ],
-    // 定时清除临时文件
+    // 瀹氭椂娓呴櫎涓存椂鏂囦欢
     'ClearTmpFile'   => [
          'handler' => plugin\file\app\process\ClearTmpFile::class,
     ],
