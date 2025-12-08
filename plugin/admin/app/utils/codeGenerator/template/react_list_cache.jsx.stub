@@ -81,8 +81,6 @@ export default () => {
         <?php echo $apiFileName;?>Api.getList().then(res => {
             if (res.code === 1) {
                 setList(res.data);
-            } else {
-                message.error(res.message);
             }
         })
     }

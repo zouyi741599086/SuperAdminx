@@ -12,34 +12,30 @@ use app\common\model\BaseModel;
  * */
 class AdminCodeGeneratorModel extends BaseModel
 {
-    /**
-     * 模型参数
-     * @return array
-     */
-    protected function getOptions() : array
-    {
-        return [
-            'name'               => 'admin_code_generator',
-            'autoWriteTimestamp' => false,
-            'type'               => [
-                'field_title'               => 'json',
-                'validate'                  => 'json',
-                'model'                     => 'json',
-                'logic'                     => 'json',
-                'controller'                => 'json',
-                'react_api'                 => 'json',
-                'react_create_update'       => 'json',
-                'react_form_code'           => 'json',
-                'react_info'                => 'json',
-                'react_list'                => 'json',
-                'react_list_component_code' => 'json',
-                'react_other'               => 'json',
-                'react_other_code'          => 'json',
-            ],
-            'fileField'          => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
-            ],
-        ];
-    }
+    // 自动时间戳
+    protected $autoWriteTimestamp = false;
+
+    // 表名
+    protected $name = 'admin_code_generator';
+
+    // 字段类型转换
+    protected $type = [
+        'field_title'               => 'json',
+        'validate'                  => 'json',
+        'model'                     => 'json',
+        'logic'                     => 'json',
+        'controller_admin'          => 'json',
+        'controller_api'            => 'json',
+        'react_api'                 => 'json',
+        'uni_api'                   => 'json',
+        'react_create_update'       => 'json',
+        'react_form_code'           => 'json',
+        'react_info'                => 'json',
+        'react_list'                => 'json',
+        'react_list_component_code' => 'json',
+        'react_other'               => 'json',
+        'react_other_code'          => 'json',
+    ];
 
     // 新增前，自动写入一些数据
     public static function onBeforeInsert($data)
@@ -110,12 +106,20 @@ class AdminCodeGeneratorModel extends BaseModel
 
         ];
 
-        // 控制器
-        $data->controller = [
+        // 后端控制器
+        $data->controller_admin = [
             // 默认类名
             'file_name' => $camelCaseTableName,
             // 默认存放路劲，就是命名空间
             'file_path' => "{$classPath}admin\\controller",
+        ];
+
+        // api控制器
+        $data->controller_api = [
+            // 默认类名
+            'file_name' => $camelCaseTableName,
+            // 默认存放路劲，就是命名空间
+            'file_path' => "{$classPath}api\\controller",
         ];
 
         // 后台api
@@ -124,6 +128,17 @@ class AdminCodeGeneratorModel extends BaseModel
             'file_name'      => strtolower($camelCaseTableName[0]) . substr($camelCaseTableName, 1),
             // 文件生成的目录
             'file_path'      => 'public\admin_react\src\api',
+
+            // 默认从哪生成api
+            'generator_type' => 1,
+        ];
+
+        // 前端api
+        $data->uni_api = [
+            // 文件名称
+            'file_name'      => strtolower($camelCaseTableName[0]) . substr($camelCaseTableName, 1),
+            // 文件生成的目录
+            'file_path'      => 'public\uni\utils\api',
 
             // 默认从哪生成api
             'generator_type' => 1,

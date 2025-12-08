@@ -11,25 +11,18 @@ use app\common\model\BaseModel;
  * */
 class AdminLogModel extends BaseModel
 {
-    /**
-     * 模型参数
-     * @return array
-     */
-    protected function getOptions() : array
-    {
-        return [
-            'name'               => 'admin_log',
-            'autoWriteTimestamp' => true,
-            'updateTime'         => false,
-            'type'               => [
-                'request_header' => 'json',
-                'request_get'    => 'json',
-                'request_post'   => 'json',
-            ],
-            'fileField'          => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
-            ],
-        ];
-    }
+    // 表名
+    protected $name = 'admin_log';
+
+    // 是否自动完成字段
+    protected $updateTime = false;
+    
+    // 字段类型转换
+    protected $type = [
+        'request_header' => 'json',
+        'request_get'    => 'json',
+        'request_post'   => 'json',
+    ];
 
     // 查询字段
     public function searchNameAttr($query, $value, $data)

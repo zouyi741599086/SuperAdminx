@@ -81,7 +81,7 @@ export default () => {
             title: '角色',
             dataIndex: 'admin_role_id',
             renderFormItem: () => <SelectAdminRole />,
-            render: (_, record) => record.AdminRole?.title,
+            render: (_, record) => record.AdminRole.title,
         },
         {
             title: '登录帐号',
@@ -214,9 +214,6 @@ export default () => {
                             ...params,// 包含了翻页参数跟搜索参数
                             page: params.current,
                         });
-                        if (result.code !== 1) {
-                            message.error(result.message);
-                        }
                         return {
                             data: result.data.data,
                             success: true,

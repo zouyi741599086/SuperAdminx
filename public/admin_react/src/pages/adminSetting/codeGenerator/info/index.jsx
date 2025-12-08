@@ -11,8 +11,10 @@ const TableSetting = lazy(() => import('./component/tableSetting'));
 const Validate = lazy(() => import('./component/validate'));
 const Model = lazy(() => import('./component/model'));
 const Logic = lazy(() => import('./component/logic'));
-const Controller = lazy(() => import('./component/controller'));
+const ControllerAdmin = lazy(() => import('./component/controllerAdmin'));
+const ControllerApi = lazy(() => import('./component/controllerApi'));
 const ReactApi = lazy(() => import('./component/reactApi'));
+const UniApi = lazy(() => import('./component/uniApi'));
 const ReactCreateUpdate = lazy(() => import('./component/reactCreateUpdate'));
 const ReactInfo = lazy(() => import('./component/reactInfo'));
 const ReactList = lazy(() => import('./component/reactList'));
@@ -110,8 +112,13 @@ export default () => {
         },
         {
             label: `后台控制器`,
-            key: 'controller',
-            children: <Lazyload><Controller tableName={tableName} operationFile={operationFile} /></Lazyload>,
+            key: 'controllerAdmin',
+            children: <Lazyload><ControllerAdmin tableName={tableName} operationFile={operationFile} /></Lazyload>,
+        },
+        {
+            label: `前端控制器`,
+            key: 'controllerApi',
+            children: <Lazyload><ControllerApi tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `后台逻辑层`,
@@ -120,8 +127,13 @@ export default () => {
         },
         {
             label: `后端api文件`,
-            key: 'api',
+            key: 'react_api',
             children: <Lazyload><ReactApi tableName={tableName} operationFile={operationFile} /></Lazyload>,
+        },
+        {
+            label: `前端api文件`,
+            key: 'api',
+            children: <Lazyload><UniApi tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `后端添加修改页面`,
@@ -187,7 +199,7 @@ export default () => {
                                 onChange: (key) => {
                                     setTabsKey(key);
                                 },
-                                destroyInactiveTabPane: true
+                                destroyOnHidden: true,
                             }}
                         ></ProCard>
                     </> : null}

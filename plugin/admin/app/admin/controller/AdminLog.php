@@ -26,7 +26,7 @@ class AdminLog
      * @param Request $request 
      * @return Response
      */
-    public function getList(Request $request) : Response
+    public function getList(Request $request): Response
     {
         $list = AdminLogLogic::getList($request->get());
         return success($list);

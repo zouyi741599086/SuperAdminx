@@ -178,7 +178,6 @@ export default ({ typeAction, ...props }) => {
                                 rules={[
                                     { required: true, message: '请输入' }
                                 ]}
-								extra="目录下必须存在index.jsx"
                             />
                         </Col>
                     }

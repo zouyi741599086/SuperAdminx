@@ -238,18 +238,15 @@ export default ({ tableReload, id, setId, ...props }) => {
                     for (let key in sort) {
                         orderBy = key + ' ' + (sort[key] === 'descend' ? 'desc' : 'asc');
                     }
-                    const result = await <?php echo $apiFileName;?>Api.<?php echo $modal_table_api_name;?>({
+                    const res = await <?php echo $apiFileName;?>Api.<?php echo $modal_table_api_name;?>({
                         ...params,// 包含了翻页参数跟搜索参数
                         orderBy, // 排序
                         page: params.current,
                     });
-                    if (result.code !== 1) {
-                        message.error(result.message);
-                    }
                     return {
-                        data: result.data.data,
+                        data: res.data.data,
                         success: true,
-                        total: result.data.total,
+                        total: res.data.total,
                     };
                 }}
 

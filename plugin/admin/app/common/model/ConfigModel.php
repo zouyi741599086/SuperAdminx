@@ -11,24 +11,19 @@ use app\common\model\BaseModel;
  * */
 class ConfigModel extends BaseModel
 {
-    /**
-     * 模型参数
-     * @return array
-     */
-    protected function getOptions() : array
-    {
-        return [
-            'name'               => 'config',
-            'autoWriteTimestamp' => true,
-            'type'               => [
-                'content'       => 'json',
-                'fields_config' => 'json',
-            ],
-            'fileField'          => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
-                'content' => 'array',
-            ],
-        ];
-    }
+    // 表名
+    protected $name = 'config';
+
+    // 包含附件的字段，key是字段名称，value是如何取值里面的图片的路劲
+    public $file = [
+        'content' => 'array',
+    ];
+
+    // 字段类型转换
+    protected $type = [
+        'content'       => 'json',
+        'fields_config' => 'json',
+    ];
 
     //类型 查询字段
     public function searchTypeAttr($query, $value, $data)

@@ -11,21 +11,8 @@ use app\common\model\BaseModel;
  * */
 class AdminRoleModel extends BaseModel
 {
-    /**
-     * 模型参数
-     * @return array
-     */
-    protected function getOptions() : array
-    {
-        return [
-            'name'               => 'admin_role',
-            'autoWriteTimestamp' => true,
-            'type'               => [
-            ],
-            'fileField'          => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
-            ],
-        ];
-    }
+    // 表名
+    protected $name = 'admin_role';
 
     /**
      * 关联管理用户
