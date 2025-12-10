@@ -28,10 +28,6 @@ export default ({ tableName, operationFile, ...props }) => {
             value: 'updateAll',
             label: '批量更新字段',
         },
-        {
-            value: 'empty',
-            label: '自己写',
-        },
     ];
     // 逻辑层类的类型
     const logicTypes = [
@@ -112,7 +108,7 @@ export default ({ tableName, operationFile, ...props }) => {
 
                 <ProFormList
                     name={['logic', 'other_functions']}
-                    label="添加其它方法"
+                    label="添加其它方法，后台控制跟前端控制的其他方法也会自动生成，无需在这手动添加"
                     creatorButtonProps={{
                         creatorButtonText: '添加方法'
                     }}
@@ -146,7 +142,7 @@ export default ({ tableName, operationFile, ...props }) => {
                             placeholder="请选择"
                             options={functionContent}
                             rules={[
-                                { required: true, message: '请输入' }
+                                //{ required: true, message: '请输入' }
                             ]}
                             fieldProps={{
                                 style: { width: 180 }

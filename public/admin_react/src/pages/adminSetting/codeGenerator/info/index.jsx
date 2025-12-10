@@ -121,7 +121,7 @@ export default () => {
             children: <Lazyload><ControllerApi tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
-            label: `后台逻辑层`,
+            label: `逻辑层`,
             key: 'logic',
             children: <Lazyload><Logic tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },

@@ -23,6 +23,12 @@ use plugin\admin\app\utils\codeGenerator\CodeGenerator;
 
     // 当前的表名转驼峰，用来当缓存标识
     $tableNameToCamelCase = CodeGenerator::toCamelCase($table_name);
+
+    // 一共有哪些方法
+    $controllerAdminFunction = $data['controller_admin']['functions'] ?? [];
+    $controllerApiFunction = $data['controller_api']['functions'] ?? [];
+    $logicFunction = array_unique(array_merge($controllerAdminFunction, $controllerApiFunction));
+
 ?>
 namespace <?php echo $file_path ?? ''; ?>;
 
@@ -50,7 +56,7 @@ class <?php echo $file_name ?? ''; ?>
 {
 <?php
     // getList方法
-    if (isset($data['controller']['functions']) && in_array('getList', $data['controller']['functions'])) {
+    if (in_array('getList', $logicFunction)) {
         // 常规方法
         if (isset($logic_type) && $logic_type == 1) {
     echo "
@@ -111,7 +117,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // create方法
-    if (isset($data['controller']['functions']) && in_array('create', $data['controller']['functions'])) {
+    if (in_array('create', $logicFunction)) {
         // 是否有该方法的验证场景
         $scenes = '';
         if (isset($data['validate']['scenes']) && is_array($data['validate']['scenes'])) {
@@ -154,7 +160,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // findData方法
-    if (isset($data['controller']['functions']) && in_array('findData', $data['controller']['functions'])) {
+    if (in_array('findData', $logicFunction)) {
         echo "
     /**
      * 获取数据
@@ -188,7 +194,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // update方法
-    if (isset($data['controller']['functions']) && in_array('update', $data['controller']['functions'])) {
+    if (in_array('update', $logicFunction)) {
         // 是否有该方法的验证场景
         $scenes = '';
         if (isset($data['validate']['scenes']) && is_array($data['validate']['scenes'])) {
@@ -232,7 +238,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // delete方法
-    if (isset($data['controller']['functions']) && in_array('delete', $data['controller']['functions'])) {
+    if (in_array('delete', $logicFunction)) {
         echo "
     /**
      * 删除
@@ -266,7 +272,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // updateSort更新排序
-    if (isset($data['controller']['functions']) && in_array('updateSort', $data['controller']['functions'])) {
+   if (in_array('updateSort', $logicFunction)) {
         echo "
     /**
      * 更改排序
@@ -306,7 +312,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // updateStatus更新状态
-    if (isset($data['controller']['functions']) && in_array('updateStatus', $data['controller']['functions'])) {
+    if (in_array('updateStatus', $logicFunction)) {
         echo "
     /**
      * 更新状态
@@ -347,7 +353,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // 搜索选择某条数据
-    if (isset($data['controller']['functions']) && in_array('select', $data['controller']['functions'])) {
+    if (in_array('select', $logicFunction)) {
         echo "
     /**
      * 搜索选择某条数据
@@ -388,7 +394,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // importData导入数据  下载导入模板
-    if (isset($data['controller']['functions']) && in_array('importData', $data['controller']['functions'])) {
+    if (in_array('importData', $logicFunction)) {
         // 导出的表格头
         $excelHeader = isset($data['field_title']) ? implode("', '", $data['field_title']) : [];
         // 导出的表格头需要过滤掉空值
@@ -467,7 +473,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // importData导入数据
-    if (isset($data['controller']['functions']) && in_array('importData', $data['controller']['functions'])) {
+    if (in_array('importData', $logicFunction)) {
         echo "
     /**
      * 导入数据
@@ -530,7 +536,7 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // exportData导出数据
-    if (isset($data['controller']['functions']) && in_array('exportData', $data['controller']['functions'])) {
+    if (in_array('exportData', $logicFunction)) {
         
         // 导出的表格头
         $excelHeader = isset($data['field_title']) ? implode("', '", $data['field_title']) : [];
@@ -582,11 +588,23 @@ class <?php echo $file_name ?? ''; ?>
 
 <?php
     // 生成其它方法
-    if (isset($other_functions) && is_array($other_functions)) {
-        
-        foreach ($other_functions as $key => $value) {
-            // 如果方法主体内容是批量更新字段
-            if ($value['function_content'] == 'updateAll') {
+    // 后端控制器的其他方法
+    $adminOtherFunction = $data['controller_admin']['other_functions'] ?? [];
+    $apiOtherFunction = $data['controller_api']['other_functions'] ?? [];
+    $logicOtherFunction = $data['logic']['other_functions'] ?? [];
+    $otherFunction = array_merge($adminOtherFunction, $apiOtherFunction, $logicOtherFunction);
+    // 合并前后端其它方法后无法去重，只能弄个变量存是否已生成
+    $tmpFunctoin = [];
+
+    foreach ($otherFunction as $key => $value) {
+        // 判断是否生成过
+        if (in_array($value['name'], $tmpFunctoin)) {
+            continue;
+        }
+        $tmpFunctoin[] = $value['name'];
+
+        // 如果方法主体内容是批量更新字段
+        if (isset($value['function_content']) && $value['function_content'] == 'updateAll') {
             echo "
     /**
      * {$value['title']}
@@ -623,10 +641,7 @@ class <?php echo $file_name ?? ''; ?>
     }
     ";
 
-        }
-
-        // 自己写方法主体内容
-        if ($value['function_content'] == 'empty') {
+        } else {
             echo "
     /**
      * {$value['title']}
@@ -640,7 +655,6 @@ class <?php echo $file_name ?? ''; ?>
 
         }
 
-        }
     }
 ?>
 
