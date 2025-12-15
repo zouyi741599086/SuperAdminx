@@ -78,7 +78,7 @@ class Config
      * @param string $name
      * @return Response
      */
-    public function findData(int $id = null, string $name = null) : Response
+    public function findData(?int $id = null, ?string $name = null) : Response
     {
         $data = ConfigLogic::findData($id, $name);
         return success($data);

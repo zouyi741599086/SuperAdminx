@@ -66,15 +66,7 @@ class <?php echo $file_name ?? ''; ?>
      * @param bool \$page 是否需要翻页，不翻页则返回模型
      * */
     public static function getList(array \$params = [], bool \$page = true)
-    {
-        // 排序
-        \$orderBy = \"{$orderBy}\";\n";
-
-        //排序是否有sort字段
-        echo "        if (isset(\$params['orderBy']) && \$params['orderBy']) {
-            \$orderBy = \"{\$params['orderBy']},{\$orderBy}\";
-        }\n";
-
+    {";
         // 如果有搜索
         if (isset($data['model']['search']) && is_array($data['model']['search'])) {
                 $searchFields = implode("', '", array_keys($data['model']['search']));
@@ -87,7 +79,14 @@ class <?php echo $file_name ?? ''; ?>
         }
 
         echo "        //->with([])
-        ->order(\$orderBy);\n
+            ->when(true, function (\$query) use (\$params)
+            {
+                \$orderBy = \"id desc\";
+                if (isset(\$params['orderBy']) && \$params['orderBy']) {
+                    \$orderBy = \"{\$params['orderBy']},{\$orderBy}\";
+                }
+                \$query->order(\$orderBy);
+            });
 
         return \$page ? \$list->paginate(\$params['pageSize'] ?? 20) : \$list;
     }";
