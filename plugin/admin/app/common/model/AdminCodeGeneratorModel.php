@@ -138,7 +138,7 @@ class AdminCodeGeneratorModel extends BaseModel
             // 文件名称
             'file_name'      => strtolower($camelCaseTableName[0]) . substr($camelCaseTableName, 1),
             // 文件生成的目录
-            'file_path'      => 'public\uni\utils\api',
+            'file_path'      => 'public\uni_app\utils\api',
 
             // 默认从哪生成api
             'generator_type' => 1,
