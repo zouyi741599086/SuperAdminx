@@ -3,7 +3,7 @@ namespace plugin\region\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\region\app\common\logic\RegionLogic;
+use plugin\region\app\common\service\RegionService;
 
 /**
  * 省市区
@@ -20,16 +20,21 @@ class Region
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private RegionService $regionService,
+    ) {}
+
     /**
      * 根据上级id，获取下级
      * @method get
      * @param Request $request 
+     * @param int $id 上级id
      * @return Response
      **/
-    public function getList(Request $request) : Response
+    public function getList(Request $request, int $id) : Response
     {
-        $list = RegionLogic::getList(request()->get('id'));
-        return success($list);
+        $result = $this->regionService->getList($id);
+        return success($result);
     }
 
     /**
@@ -40,8 +45,8 @@ class Region
      **/
     public function getProvince(Request $request) : Response
     {
-        $list = RegionLogic::getProvince();
-        return success($list);
+        $result = $this->regionService->getProvince();
+        return success($result);
     }
 
     /**
@@ -52,8 +57,8 @@ class Region
      **/
     public function getProvinceCity(Request $request) : Response
     {
-        $list = RegionLogic::getProvinceCity();
-        return success($list);
+        $result = $this->regionService->getProvinceCity();
+        return success($result);
     }
 
     /**
@@ -64,7 +69,7 @@ class Region
      **/
     public function getListAll(Request $request) : Response
     {
-        $list = RegionLogic::getListAll();
-        return success($list);
+        $result = $this->regionService->getListAll();
+        return success($result);
     }
 }

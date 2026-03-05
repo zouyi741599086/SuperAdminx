@@ -1,0 +1,20 @@
+<?php
+    // updateStatus更新状态
+    if (isset($data['controller_api']['functions']) && in_array('updateStatus', $data['controller_api']['functions'])) {
+        echo "
+    /**
+     * 修改{$data['table_title']}状态
+     * @method post
+	 * @param Request \$request 
+     * @param int \$id 数据id
+     * @param int \$status 数据状态 
+     * @return Response
+     */
+    public function updateStatus(Request \$request, int \$id, int \$status): Response
+    {
+        {$serviceMethodPrefix}updateStatus(\$id, \$status);
+        return success();
+    }\n";
+
+    }
+?>

@@ -1,0 +1,81 @@
+<?php
+// 验证场景
+if (isset($data['validate']['scenes']) && is_array($data['validate']['scenes']) && isset($data['validate']['field_rules'])) {
+    // 要验证的规则，是所有字段，把所有字段转成输出数组的格式
+    $tmp_field_rules = array_filter($data['validate']['field_rules'], function($item) {  
+        return count($item) > 0;
+    });  
+    $tmp_field_rules = array_keys($tmp_field_rules);
+    $tmp_field_rules = "['" . implode("', '", $tmp_field_rules) . "']";
+
+    foreach ($data['validate']['scenes'] as $scene) {
+        // 首字母大写
+        $tmp_name = ucfirst($scene['name']);
+        // 验证场景 函数体返回内容，默认等于所有规则，如何有删除的可能会踢掉里面为空的规则
+        $return = "return \$this->only({$tmp_field_rules})";
+
+        if (isset($scene['delete_rules']) && is_array($scene['delete_rules'])) {
+            $count = count($scene['delete_rules']);
+            //要删除的规则
+            if ($count > 0) {
+                //要验证的字段，默认所有，如果某个字段的规则被删除完了就要踢掉
+                $result_field_rules = array_filter($data['validate']['field_rules'], function($item) {  
+                    return count($item) > 0;
+                });
+
+                $tmp_delete_rules = [];
+                //要删除的规则
+                foreach ($scene['delete_rules'] as $key => $value) {
+                    $tmp = explode('|', $value);
+
+                    //要删除的规则里面把规则详情塞进去，如 in:1,2,3 就是把in 与 1,2,3 连接起来
+                    if (isset($data['validate']['field_rules_info'][$tmp[0]][$tmp[1]])) {
+                        $tmp_delete_rules[$tmp[0]][] = "{$tmp[1]}:{$data['validate']['field_rules_info'][$tmp[0]][$tmp[1]]}";
+                    } else {
+                        $tmp_delete_rules[$tmp[0]][] = $tmp[1];
+                    }
+
+                    //踢掉某个字段的规则
+                    foreach ($result_field_rules as $k => $v) {
+                        if ($k == $tmp[0]) {
+                            $result_field_rules[$k] = array_filter($v, function($item) use ($tmp) {  
+                                return $item != $tmp[1];
+                            });  
+                            break;
+                        }
+                    }
+                }
+                //$result_field_rules这个里面默认等于验证所有规则，经过筛选后里面的规则可能被删除为空了，此时需要踢掉
+                foreach ($result_field_rules as $key => $value) {
+                    if (count($value) == 0) {
+                        unset($tmp_delete_rules[$key]);
+                        unset($result_field_rules[$key]);
+                    } 
+                }
+                if (count($result_field_rules) == 0) {
+                    continue;
+                }
+                $return = array_keys($result_field_rules);
+                $return = "['" . implode("', '", $return) . "']";
+                $return = "return \$this->only({$return})";
+                
+                foreach ($tmp_delete_rules as $key => $value) {
+                    $tmp    = implode('|', $value);
+                    $return .= "
+            ->remove('{$key}', '{$tmp}')";
+                }
+            }
+        }
+        $return .= ";";
+
+    echo "
+    // {$scene['name']} {$scene['desc']}
+    public function scene{$tmp_name}()
+    {
+        {$return}
+    }
+    ";
+
+    }
+}
+?>

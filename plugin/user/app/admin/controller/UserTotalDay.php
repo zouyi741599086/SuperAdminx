@@ -3,7 +3,7 @@ namespace plugin\user\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\user\app\common\logic\UserTotalDayLogic;
+use plugin\user\app\common\service\UserTotalDayService;
 
 /**
  * 用户日统计 控制器
@@ -21,6 +21,9 @@ class UserTotalDay
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private UserTotalDayService $userTotalDayService,
+    ) {}
 
     /**
      * 列表
@@ -31,7 +34,7 @@ class UserTotalDay
      */
     public function getList(Request $request) : Response
     {
-        $list = UserTotalDayLogic::getList($request->get());
+        $list = $this->userTotalDayService->getList($request->get());
         return success($list);
     }
 
@@ -43,8 +46,8 @@ class UserTotalDay
      */
     public function getTotal(Request $request) : Response
     {
-        $data = UserTotalDayLogic::getTotal();
-        return success($data);
+        $result = $this->userTotalDayService->getTotal();
+        return success($result);
     }
 
     /**
@@ -56,7 +59,7 @@ class UserTotalDay
      */
     public function exportData(Request $request) : Response
     {
-        $data = UserTotalDayLogic::exportData($request->get());
-        return success($data);
+        $result = $this->userTotalDayService->exportData($request->get());
+        return success($result);
     }
 }

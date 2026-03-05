@@ -50,7 +50,9 @@ export default ({ title = '查看', imgs = [], ...props }) => {
                                         key={index}
                                         src={`${videoImg}?video_src=${item}`}
                                         video_src={item}
-                                        style={{ borderRadius: '5px' }}
+                                        styles={{
+											root: { borderRadius: '5px' }
+										}}
                                     />
                                 } else {
                                     return <Image
@@ -58,7 +60,9 @@ export default ({ title = '查看', imgs = [], ...props }) => {
                                         height={80}
                                         key={index}
                                         src={`${item}`}
-                                        style={{ borderRadius: '5px' }}
+                                        styles={{
+											root: { borderRadius: '5px' }
+										}}
                                     />
                                 }
                             }) : ''}

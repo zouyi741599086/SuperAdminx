@@ -140,7 +140,6 @@ export default () => {
         },
         {
             title: '状态',
-            tooltip: "禁用后用户将无法登录",
             key: 'status',
             dataIndex: 'status',
             //定义搜索框类型
@@ -157,6 +156,10 @@ export default () => {
                         value: 2,
                     }
                 ]
+            },
+            tooltip: "禁用后用户将无法登录",
+            formItemProps: {
+                tooltip: undefined
             },
             render: (text, record) => (
                 <Switch
@@ -243,12 +246,12 @@ export default () => {
                                         disabled={authCheck('userExportData')}
                                     >导出</Button>
                                 </Tooltip>
-
-                                <Lazyload block={false}>
-                                    <Create
-                                        tableReload={tableReload}
-                                    />
-                                </Lazyload>
+								
+								<Lazyload block={false}>
+									<Create
+										tableReload={tableReload}
+									/>
+								</Lazyload>
                             </Space>
                             {/* 修改表单 */}
                             <Lazyload block={false}>
@@ -283,9 +286,6 @@ export default () => {
                             orderBy, // 排序
                             page: params.current,
                         });
-                        if (result.code !== 1) {
-                            message.error(result.message);
-                        }
                         return {
                             data: result.data.data,
                             success: true,

@@ -1,0 +1,29 @@
+<?php
+// 验证规则
+if (isset($data['validate']['field_rules']) && is_array($data['validate']['field_rules'])) {
+    echo "
+    // 验证规则
+    protected \$rule = [";
+
+    foreach ($data['validate']['field_rules'] as $field => $rules_arr) {
+        if (!$rules_arr) {
+            continue;
+        }
+        // 将验证的详细规则塞进去，如 in:1,2,3 就是把in 与 1,2,3 连接起来
+        foreach ($rules_arr as $k => $v) {
+            if (isset($data['validate']['field_rules_info'][$field][$v]) && $data['validate']['field_rules_info'][$field][$v]) {
+                $rules_arr[$k] = "{$v}:{$data['validate']['field_rules_info'][$field][$v]}";
+            }
+        }
+
+        // 验证规则的值
+        $tmp_rule = implode('|', $rules_arr);
+
+        echo "
+        '{$field}' => '{$tmp_rule}',";
+    }
+
+    echo "
+    ];";
+}
+?>

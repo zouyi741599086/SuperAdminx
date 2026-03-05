@@ -1,0 +1,34 @@
+<?php
+    // 生成其它方法
+    // 后端控制器的其他方法
+    $adminOtherFunction = $data['controller_admin']['other_functions'] ?? [];
+    $apiOtherFunction = $data['controller_api']['other_functions'] ?? [];
+    $otherFunction = array_merge($adminOtherFunction, $apiOtherFunction);
+    // 合并前后端其它方法后无法去重，只能弄个变量存是否已生成
+    $tmpFunctoin = [];
+
+    foreach ($otherFunction as $key => $value) {
+        // 判断是否生成过
+        if (in_array($value['name'], $tmpFunctoin)) {
+            continue;
+        }
+        $tmpFunctoin[] = $value['name'];
+
+            echo "
+    /**
+     * {$value['title']}
+     * @param array \$params
+     */
+    public function {$value['name']}(array \$params)
+    {";
+        if ($value['method'] == 'get'){
+            echo "
+        \$this->{$tableNameToCamelCaseLower}QueryLogic->{$value['name']}(\$params);";
+        } else {
+            echo "
+        \$this->{$tableNameToCamelCaseLower}ExecuteLogic->{$value['name']}(\$params);";
+        } 
+    echo "
+    }\n";
+    }
+?>

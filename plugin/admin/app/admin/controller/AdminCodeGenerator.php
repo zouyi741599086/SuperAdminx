@@ -3,7 +3,7 @@ namespace plugin\admin\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\admin\app\utils\codeGenerator\CodeGenerator;
+use plugin\admin\app\common\service\AdminCodeGeneratorService;
 
 /**
  * 代码生成
@@ -21,6 +21,10 @@ class AdminCodeGenerator
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private AdminCodeGeneratorService $adminCodeGeneratorService,
+    ) {}
+
     /**
      * 获取数据库的设置
      * @method get
@@ -29,15 +33,8 @@ class AdminCodeGenerator
      */
     public function getMysqlConfig(Request $request) : Response
     {
-        $data = [
-            //'hostname' => getenv('DB_HOST'),
-            'database' => getenv('DB_NAME'),
-            //'username' => getenv('DB_USER'),
-            //'password' => getenv('DB_PASSWORD'),
-            //'hostport' => getenv('DB_PORT'),
-            'prefix' => getenv('DB_PREFIX'),
-        ];
-        return success($data);
+        $result = $this->adminCodeGeneratorService->getMysqlConfig();
+        return success($result);
     }
 
     /**
@@ -48,8 +45,8 @@ class AdminCodeGenerator
      */
     public function getTableList(Request $request) : Response
     {
-        $list = CodeGenerator::getTableList();
-        return success($list);
+        $result = $this->adminCodeGeneratorService->getTableList();
+        return success($result);
     }
 
     /**
@@ -60,55 +57,59 @@ class AdminCodeGenerator
      */
     public function getTableColumnList(Request $request) : Response
     {
-        $list = CodeGenerator::getTableColumnList();
-        return success($list);
+        $result = $this->adminCodeGeneratorService->getTableColumnList();
+        return success($result);
     }
 
     /**
      * 获取单表详情：创建时间、数据量、存储引擎等
      * @method get
      * @param Request $request 
+     * @param string $table_name 表名
      * @return Response
      */
-    public function getTableInfo(Request $request) : Response
+    public function getTableInfo(Request $request, string $table_name) : Response
     {
-        $data = CodeGenerator::getTableInfo($request->get('table_name'));
-        return success($data);
+        $result = $this->adminCodeGeneratorService->getTableInfo($table_name);
+        return success($result);
     }
 
     /**
      * 获取某个表的列
      * @method get
      * @param Request $request 
+     * @param string $table_name 表名
      * @return Response
      */
-    public function getTableColumn(Request $request) : Response
+    public function getTableColumn(Request $request, string $table_name) : Response
     {
-        $list = CodeGenerator::getTableColumn($request->get('table_name'));
-        return success($list);
+        $result = $this->adminCodeGeneratorService->getTableColumn($table_name);
+        return success($result);
     }
 
     /**
      * 获取代码生成器设置的详情
      * @method get
      * @param Request $request 
+     * @param string $table_name 表名
      * @return Response
      */
-    public function getCodeGeneratorInfo(Request $request) : Response
+    public function findData(Request $request, string $table_name) : Response
     {
-        $data = CodeGenerator::getCodeGeneratorInfo($request->get('table_name'));
-        return success($data);
+        $result = $this->adminCodeGeneratorService->findData($table_name);
+        return success($result);
     }
 
     /**
      * 更新代码生成器设置
      * @method post
      * @param Request $request 
+     * @param string $table_name 表名
      * @return Response
      */
-    public function updateCodeGenerator(Request $request) : Response
+    public function update(Request $request, string $table_name) : Response
     {
-        CodeGenerator::updateCodeGenerator($request->post());
+        $this->adminCodeGeneratorService->update($table_name, $request->post());
         return success();
     }
 
@@ -120,8 +121,8 @@ class AdminCodeGenerator
      */
     public function generatorCode(Request $request) : Response
     {
-        $data = CodeGenerator::generatorCode($request->post(), $request->post('code_name'));
-        return success($data);
+        $result = $this->adminCodeGeneratorService->generatorCode($request->post());
+        return success($result);
     }
 
     /**
@@ -133,8 +134,8 @@ class AdminCodeGenerator
     public function operationFile(Request $request) : Response
     {
         $params = $request->all();
-        CodeGenerator::operationFile($params['table_name'], $params['name'], $params['forced'] ?? false);
-        return success([], '已成功生成');
+        $this->adminCodeGeneratorService->operationFile($params['table_name'], $params['name'], $params['forced'] ?? false);
+        return success();
     }
 
 }

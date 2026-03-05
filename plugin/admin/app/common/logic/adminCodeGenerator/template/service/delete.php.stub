@@ -1,0 +1,15 @@
+<?php
+    // delete方法
+    if (in_array('delete', $serviceFunction)) {
+        echo "
+    /**
+     * 删除
+     * @param int|array \$id 要删除的id
+     */
+    public function delete(int|array \$id)
+    {
+        \$this->{$tableNameToCamelCaseLower}ExecuteLogic->delete(\$id);
+    }\n";
+
+    }
+?>

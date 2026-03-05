@@ -11,6 +11,7 @@ use app\common\model\BaseModel;
  * */
 class UserTotalDayModel extends BaseModel
 {
+
     /**
      * 模型参数
      * @return array

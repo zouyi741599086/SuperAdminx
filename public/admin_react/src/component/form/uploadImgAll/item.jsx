@@ -26,12 +26,14 @@ export default ({ data, preview, remove }) => {
         <Card
             key={data.uid}
             size="small"
-            styles={{
-                body: { padding: 8 }
-            }}
-            style={style}
+			styles={{
+				root: style,
+				body: {padding: 8}
+			}}
             ref={setNodeRef}
-            className={isDragging ? 'dragon upload-img' : 'upload-img'}
+            classNames={{
+				root: isDragging ? 'dragon upload-img' : 'upload-img'
+			}}
             {...attributes}
             {...listeners}
         >

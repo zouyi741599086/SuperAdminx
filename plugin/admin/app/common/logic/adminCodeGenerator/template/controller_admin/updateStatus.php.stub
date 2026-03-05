@@ -1,0 +1,27 @@
+<?php
+    // updateStatus更新状态
+    if (isset($data['controller_admin']['functions']) && in_array( 'updateStatus', $data['controller_admin']['functions'])) {
+        // 接口权限
+        $auth = '';
+        if (isset($data['controller_admin']['functions_auth']) && in_array('updateStatus', $data['controller_admin']['functions_auth'])) {
+            $authName = $authPrefix. 'UpdateStatus';
+            $auth = "\n     * @auth {$authName}";
+        }
+
+        echo "
+    /**
+     * @log 修改{$data['table_title']}状态
+     * @method post{$auth}
+	 * @param Request \$request 
+     * @param int \$id 数据id
+     * @param int \$status 数据状态 
+     * @return Response
+     */
+    public function updateStatus(Request \$request, int \$id, int \$status): Response
+    {
+        {$serviceMethodPrefix}updateStatus(\$id, \$status);
+        return success();
+    }\n";
+
+    }
+?>

@@ -1,0 +1,101 @@
+<?php
+/**
+ * 生成逻辑层
+ */
+    use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+
+    // 当前的表名转驼峰
+    $tableNameToCamelCase = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
+    $tableNameToCamelCaseLower = CodeGeneratorUtilLogic::toCamelCase($data['table_name'], true);
+
+    // 一共有哪些方法
+    $controllerAdminFunction = $data['controller_admin']['functions'] ?? [];
+    $controllerApiFunction = $data['controller_api']['functions'] ?? [];
+    $serviceFunction = array_unique(array_merge($controllerAdminFunction, $controllerApiFunction));
+
+    // 需要引入的逻辑层
+    $logicClass = [];
+    foreach ($serviceFunction as $key => $value) {
+        $logicName = '';
+        if (in_array($value, ['getList', 'findData', 'select'])) {
+            $logicName = "{$tableNameToCamelCase}QueryLogic";
+        }
+        if (in_array($value, ['create', 'update', 'delete', 'updateSort', 'updateStatus'])) {
+            $logicName = "{$tableNameToCamelCase}ExecuteLogic";
+        }
+        if (in_array($value, ['importData'])) {
+            $logicName = "{$tableNameToCamelCase}ImportLogic";
+        }
+        if (in_array($value, ['exportData'])) {
+            $logicName = "{$tableNameToCamelCase}ExportLogic";
+        }
+        if (! in_array($logicName, $logicClass)) {
+            $logicClass[] = $logicName;
+        }
+    }
+    $logicString = implode(', ', $logicClass);
+
+?>
+namespace <?php echo $data['service']['file_path'] ?? ''; ?>;
+
+<?php
+    // 引入逻辑层
+    echo "use {$data['logic']['file_path']}\\{$tableNameToCamelCaseLower}\{$logicString};\n";
+?>
+use think\facade\Db;
+
+/**
+ * <?php echo $data['table_title'] ?? '';?> 逻辑层
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+class <?php echo $data['service']['file_name'] ?? ''; ?>
+
+{
+<?php
+    // 依赖注入
+    if ($logicClass) {
+    echo "
+    public function __construct(\n";
+    foreach ($logicClass as $v) {
+        $tmp = lcfirst($v);
+        echo "        private {$v} \${$tmp},\n";
+    }
+    echo "    ){}\n";
+    }
+?>
+<?php
+    include __DIR__ . '/getList.php.stub';
+?>
+<?php
+    include __DIR__ . '/create.php.stub';
+?>
+<?php
+    include __DIR__ . '/findData.php.stub';
+?>
+<?php
+    include __DIR__ . '/update.php.stub';
+?>
+<?php
+    include __DIR__ . '/delete.php.stub';
+?>
+<?php
+    include __DIR__ . '/updateSort.php.stub';
+?>
+<?php
+    include __DIR__ . '/updateStatus.php.stub';
+?>
+<?php
+    include __DIR__ . '/select.php.stub';
+?>
+<?php
+    include __DIR__ . '/importData.php.stub';
+?>
+<?php
+    include __DIR__ . '/exportData.php.stub';
+?>
+<?php
+    include __DIR__ . '/other.php.stub';
+?>
+}

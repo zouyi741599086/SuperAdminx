@@ -3,7 +3,7 @@ namespace plugin\user\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\user\app\common\logic\UserTotalMonthLogic;
+use plugin\user\app\common\service\UserTotalMonthService;
 
 /**
  * 用户月统计 控制器
@@ -21,6 +21,9 @@ class UserTotalMonth
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private UserTotalMonthService $userTotalMonthService,
+    ) {}
 
     /**
      * 列表
@@ -31,7 +34,7 @@ class UserTotalMonth
      */
     public function getList(Request $request) : Response
     {
-        $list = UserTotalMonthLogic::getList($request->get());
+        $list = $this->userTotalMonthService->getList($request->get());
         return success($list);
     }
 
@@ -43,8 +46,8 @@ class UserTotalMonth
      */
     public function getTotal(Request $request) : Response
     {
-        $data = UserTotalMonthLogic::getTotal();
-        return success($data);
+        $result = $this->userTotalMonthService->getTotal();
+        return success($result);
     }
 
     /**
@@ -56,8 +59,8 @@ class UserTotalMonth
      */
     public function exportData(Request $request) : Response
     {
-        $data = UserTotalMonthLogic::exportData($request->get());
-        return success($data);
+        $result = $this->userTotalMonthService->exportData($request->get());
+        return success($result);
     }
 
 }

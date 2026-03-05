@@ -27,8 +27,9 @@ function file_url($data)
                 $data[$k] = file_url($v);
             }
         }
-        if (is_string($data)) {
-            $data = strpos($data, 'http') === false ? str_replace("/storage", "{$url}/storage", $data) : $data;
+        if (is_string($data) && strpos($data, 'http') === false) {
+            $data = str_replace("/storage", "{$url}/storage", $data);
+            $data = str_replace("/tmp_file", "{$url}/tmp_file", $data);
         }
     }
     return $data;
@@ -59,7 +60,7 @@ function file_url_dec($data)
  * 生成随机数字
  * @param int $length 需要生成的长度
  * @param int $type 0：使用数字生成，1：使用数字加字母组成
- * @return 字符串
+ * @return string
  */
 function get_str(int $length, int $type = 0) : string
 {
@@ -70,7 +71,7 @@ function get_str(int $length, int $type = 0) : string
     $randString = '';
     $len        = strlen($str) - 1;
     for ($i = 0; $i < $length; $i++) {
-        $num        = mt_rand(0, $len);
+        $num         = mt_rand(0, $len);
         $randString .= $str[$num];
     }
     return $randString;
@@ -135,7 +136,7 @@ function result($data = [], int $code = 1, string $mssage = '操作成功', bool
         config('superadminx.api_encryptor.enable') == true &&
         isset($result['data']) &&
         $is_encrypt &&
-		request()->dataEncrypt
+        request()->dataEncrypt
     ) {
         $result['encrypt_data'] = DataEncryptorUtils::aesEncrypt($result['data'], request()->aes_key, request()->aes_iv);
         unset($result['data']);
@@ -143,37 +144,36 @@ function result($data = [], int $code = 1, string $mssage = '操作成功', bool
     return json($result);
 }
 
+/**
+ * 后台table动态排序条件
+ * @param string $orderBy 默认排序
+ * @param array $params 参数
+ * @return string
+ */
+function get_admin_order_by(string $orderBy, array $params = [])
+{
+    if (isset($params['orderBy']) && $params['orderBy']) {
+        $orderBy = "{$params['orderBy']},{$orderBy}";
+    }
+    return $orderBy;
+}
 
 /**
- * get请求
- * @param string $url 请求地址
- * @param array $params 请求参数
- * @throws \Exception
+ * 搜索选择数据，动态排序
  */
-function send_get_request(string $url, array $params = [])
+function get_select_order_by(string $orderBy, array &$params = [])
 {
-    // 初始化 cURL 会话
-    $ch = curl_init();
-
-    // 设置 cURL 选项
-    curl_setopt($ch, CURLOPT_URL, $url); // 设置请求的 URL
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $params); // 设置参数
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // 将响应结果存储在变量中而不是直接输出
-    curl_setopt($ch, CURLOPT_HEADER, false); // 不包含响应头
-
-    // 执行 cURL 请求
-    $response = curl_exec($ch);
-
-    // 检查是否有错误发生
-    if (curl_errno($ch)) {
-        throw new \Exception('cURL Error: ' . curl_error($ch));
+    $orderBy = 'id DESC';
+    if (isset($params['id']) && $params['id']) {
+        if (is_array($params['id'])) {
+            $params['pageSize'] = count($params['id']) > $params['pageSize'] ? count($params['id']) : $params['pageSize'];
+            $idString           = implode(',', array_map('intval', $params['id']));
+        } else {
+            $idString = intval($params['id']);
+        }
+        $orderBy = "FIELD(id, {$idString}) DESC,{$orderBy}";
     }
-
-    // 关闭 cURL 会话
-    curl_close($ch);
-
-    // 返回响应
-    return json_decode($response, true);
+    return $orderBy;
 }
 
 /**
@@ -189,14 +189,33 @@ function export(array &$header, array &$list, ?string $exportPathType = null) : 
     $fileName = date('YmdHis') . rand(1, 10000) . '.xlsx';
 
     // 开始生成表格导出
-    $config   = [
+    $config     = [
         'path' => public_path() . '/tmp_file',
     ];
-    $excel    = new \Vtiful\Kernel\Excel($config);
-    $filePath = $excel->fileName($fileName)
+    $excel      = new \Vtiful\Kernel\Excel($config);
+    $fileObject = $excel->fileName($fileName)
         ->header($header)
-        ->data($list)
-        ->output();
+        ->data($list);
+    $fileHandle = $fileObject->getHandle();
+
+    // 第一行样式
+    $fileObject->setRow("A1", 22, (new \Vtiful\Kernel\Format($fileHandle))
+        ->wrap()
+        ->bold()
+        ->fontColor(\Vtiful\Kernel\Format::COLOR_WHITE)
+        ->align(\Vtiful\Kernel\Format::FORMAT_ALIGN_VERTICAL_CENTER)
+        ->background(\Vtiful\Kernel\Format::COLOR_RED)
+        ->toResource(),
+    );
+
+    // 设置第一行外的高度
+    $fileObject->setRow("A2:Y50000", 22, (new \Vtiful\Kernel\Format($fileHandle))
+        ->wrap()
+        ->align(\Vtiful\Kernel\Format::FORMAT_ALIGN_VERTICAL_CENTER)
+        ->toResource(),
+    )->setColumn("A1:Y50000", 10);
+
+    $filePath = $fileObject->output();
     $excel->close();
 
     $filePath = str_replace(public_path(), '', $filePath);
@@ -209,7 +228,7 @@ function export(array &$header, array &$list, ?string $exportPathType = null) : 
  * @param string $exportPathType 云存储类型，public》本地，aliyun》阿里云，qcloud》腾讯云
  * @return string 文件地址
  */
-function export_path($filePath, $exportPathType = null): string
+function export_path($filePath, $exportPathType = null) : string
 {
     // 判断生成的文件存在哪
     if (! $exportPathType) {

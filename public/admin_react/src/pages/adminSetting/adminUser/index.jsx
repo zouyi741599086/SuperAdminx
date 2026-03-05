@@ -3,8 +3,6 @@ import { PageContainer } from '@ant-design/pro-components';
 import { adminUserApi } from '@/api/adminUser';
 import { ProTable } from '@ant-design/pro-components';
 import { App, Avatar, Button, Popconfirm, Switch } from 'antd';
-import { config } from '@/common/config';
-import { adminRoleApi } from '@/api/adminRole'
 import { authCheck } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
 import SelectAdminRole from '@/components/selectAdminRole';
@@ -65,7 +63,7 @@ export default () => {
             title: '头像',
             dataIndex: 'img',
             render: (_, render) => {
-                return <Avatar src={`${config.url}${render.img}`}>{render.name?.substr(0, 1)}</Avatar>
+                return <Avatar src={render.img}>{render.name?.substr(0, 1)}</Avatar>
             },
             search: false,
         },
@@ -94,9 +92,7 @@ export default () => {
             tooltip: '点击可切换状态',
             // 列增加提示的同时搜索也会增加，所以要干掉搜索的提示
             formItemProps: {
-                tooltip: {
-                    icon: <></>
-                }
+                tooltip: undefined
             },
             render: (_, record) => <Switch
                 checkedChildren="正常"

@@ -1,0 +1,25 @@
+<?php
+    // delete方法
+    if (isset($data['controller_admin']['functions']) && in_array('delete', $data['controller_admin']['functions'])) {
+        // 接口权限
+        $auth = '';
+        if (isset($data['controller_admin']['functions_auth']) && in_array('delete', $data['controller_admin']['functions_auth'])) {
+            $authName = $authPrefix. 'Delete';
+            $auth = "\n     * @auth {$authName}";
+        }
+
+        echo "
+    /**
+     * @log 删除{$data['table_title']}
+     * @method post{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function delete(Request \$request): Response
+    {
+        {$serviceMethodPrefix}delete(\$request->post('id'));
+        return success([], '删除成功');
+    }\n";
+
+    }
+?>

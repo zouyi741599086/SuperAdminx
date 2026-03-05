@@ -1,0 +1,115 @@
+<?php
+/**
+ * 生成逻辑层
+ */
+    use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+
+    // 当前的表名转驼峰
+    $tableNameToCamelCase = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
+    $tableNameToCamelCaseLower = CodeGeneratorUtilLogic::toCamelCase($data['table_name'], true);
+
+    // 是否有sort字段
+    $isSort = false;
+    foreach ($tableColumn as $key => $value) {
+        if ($value['Field'] == 'sort') {
+            $isSort = true;
+        }
+    }
+    // 排序规则
+    $orderBy = $isSort ? "sort desc,id desc" : "id desc";
+
+    // 需要依赖注入的类
+    $newClass = [];
+    // 需要引入的类
+    $useClass = [];
+    // 修改层的时候
+    if ($logicFolder == "{$tableNameToCamelCase}ExecuteLogic") {
+        $useClass['model'] = "{$data['model']['file_path']}\\{$data['model']['file_name']}";
+        $useClass['validate'] = "{$data['validate']['file_path']}\\{$data['validate']['file_name']}";
+        $useClass['db']       = 'think\facade\Db';
+    }
+    // 查询层
+    if ($logicFolder == "{$tableNameToCamelCase}QueryLogic") {
+        $useClass['model'] = "{$data['model']['file_path']}\\{$data['model']['file_name']}";
+    }
+    // 导入层
+    if ($logicFolder == "{$tableNameToCamelCase}ImportLogic") {
+        $useClass['model'] = "{$data['model']['file_path']}\\{$data['model']['file_name']}";
+        $useClass['db']    = 'think\facade\Db';
+    }
+    // 导出层
+    if ($logicFolder == "{$tableNameToCamelCase}ExportLogic") {
+        $useClass['model'] = "{$data['logic']['file_path']}\\{$tableNameToCamelCaseLower}\\{$tableNameToCamelCase}QueryLogic";
+        $newClass[]        = "{$tableNameToCamelCase}QueryLogic";
+    }
+
+?>
+namespace <?php echo $data['logic']['file_path'] .  "\\{$tableNameToCamelCaseLower}"; ?>;
+
+<?php
+    // 修改层才引入这些
+    foreach ($useClass as $v) {
+        echo "use {$v};\n";
+    }
+
+    if (isset($data['logic']['logic_type']) && $data['logic']['logic_type'] == 2) {
+    echo "use support\Cache;\n";
+    }
+?>
+
+/**
+ * <?php echo $data['table_title'] ?? '';?> 逻辑层
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+class <?php echo $logicFolder ?? ''; ?>
+
+{
+<?php
+    // 依赖注入
+    if ($newClass) {
+    echo "
+    public function __construct(";
+    foreach ($newClass as $v) {
+        $tmp = lcfirst($v);
+        echo "
+        private {$v} \${$tmp},\n";
+    }
+    echo "    ){}\n";
+    }
+?>
+<?php
+    include __DIR__ . '/getList.php.stub';
+?>
+<?php
+    include __DIR__ . '/create.php.stub';
+?>
+<?php
+    include __DIR__ . '/findData.php.stub';
+?>
+<?php
+    include __DIR__ . '/update.php.stub';
+?>
+<?php
+    include __DIR__ . '/delete.php.stub';
+?>
+<?php
+    include __DIR__ . '/updateSort.php.stub';
+?>
+<?php
+    include __DIR__ . '/updateStatus.php.stub';
+?>
+<?php
+    include __DIR__ . '/select.php.stub';
+?>
+<?php
+    include __DIR__ . '/importData.php.stub';
+?>
+<?php
+    include __DIR__ . '/exportData.php.stub';
+?>
+<?php
+    include __DIR__ . '/other.php.stub';
+?>
+}

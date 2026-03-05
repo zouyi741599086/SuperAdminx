@@ -1,221 +1,317 @@
-import { useState, lazy, useEffect } from 'react';
+import { useState, lazy, useEffect, useMemo, useRef } from 'react';
 import { useRoutes, useLocation } from "react-router-dom";
 import { deepClone, isMobileFun, storage, colorHsb } from '@/common/function';
 import { ConfigProvider, theme, App } from 'antd';
-import './App.css';
-import '@/static/iconfont/iconfont.css'
 import { useSnapshot } from 'valtio';
-import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
+import { setAdminUserStore } from '@/store/adminUser';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
-import { adminUserApi } from '@/api/adminUser'
+import { adminUserApi } from '@/api/adminUser';
 import { loginAction } from '@/common/loginAction';
 import { useMount, useDebounceFn } from 'ahooks';
-import 'dayjs/locale/zh-cn';
-import zhCN from 'antd/locale/zh_CN';
 import { config } from '@/common/config';
+import { router } from './router';
 import LazyLoad from '@/component/lazyLoad/index';
 import RenderEmpty from '@/component/renderEmpty/index';
-import { router } from './router'
+import 'dayjs/locale/zh-cn';
+import zhCN from 'antd/locale/zh_CN';
+import './App.css';
+import '@/static/iconfont/iconfont.css';
 
 // 导入所有的页面，异步加载，要除开component 跟 components文件夹内的
 const routeAllPathToCompMap = import.meta.glob([
     `./pages/**/*index.jsx`,
-    `!./pages/layout/component/*`, // 除开的此文件
+    `!./**/components/**/*index.jsx`, // 除开的此文件
+    `!./**/component/**/*index.jsx`, // 除开的此文件
 ]);
 
 const Error = lazy(() => import('@/pages/error/index'));
 
-/**
- * 给html标签加class
- * @param {String} className 添加或删除的class
- * @param {Int} type 添加，删除
- */
-const htmlClass = (className, type = 'add') => {
-    if (type === 'add') {
-        document.querySelector('html').classList.add(className)
-    }
-    if (type === 'remove') {
-        document.querySelector('html').classList.remove(className)
-    }
-}
+// 提取常量
+const APP_TITLE = config.projectName;
 
-export default () => {
-    const adminUser = useSnapshot(adminUserStore);
-    const menuAuth = useSnapshot(menuAuthStore);
-    const layoutSetting = useSnapshot(layoutSettingStore);
-    const location = useLocation();
-    const [routes, setRoutes] = useState(router);
-    // 监听是否是移动端，防抖处理
-    const { run: debunceSettingMobile } = useDebounceFn(
+// 提取工具函数
+const htmlClass = (className, type = 'add') => {
+    const htmlEl = document.querySelector('html');
+    if (!htmlEl) return;
+
+    if (type === 'add') {
+        htmlEl.classList.add(className);
+    } else if (type === 'remove') {
+        htmlEl.classList.remove(className);
+    }
+};
+
+// 自定义Hook：移动端检测
+const useMobileDetection = () => {
+    const { run: debounceSettingMobile } = useDebounceFn(
         () => {
-            let isMobile = isMobileFun();
-            htmlClass('sa-mobile', isMobile === true ? 'add' : 'remove');
-            setLayoutSettingStore(_val => ({
-                ..._val,
+            const isMobile = isMobileFun();
+            htmlClass('sa-mobile', isMobile ? 'add' : 'remove');
+
+            setLayoutSettingStore(prev => ({
+                ...prev,
                 isMobile,
-                // 移动端就强制第一种布局
-                layoutValue: isMobile ? 'slide' : _val.layoutValue,
-                // 移动端强制白色布局
-                antdThemeValue: isMobile ? 'default' : _val.antdThemeValue,
-            }))
+                layoutValue: isMobile ? 'slide' : prev.layoutValue,
+                antdThemeValue: isMobile ? 'default' : prev.antdThemeValue,
+            }));
         },
         { wait: 300 },
     );
 
-    // 组件挂载后执行
-    useMount(() => {
-        // 设置页面标题
-        document.title = config.company;
+    return debounceSettingMobile;
+};
 
-        // 监听是否切换到移动端
-        debunceSettingMobile();
-        window.addEventListener("resize", () => {
-            debunceSettingMobile()
+// 自定义Hook：动态路由生成
+const useDynamicRoutes = (menuArrAll) => {
+    const [routes, setRoutes] = useState(router);
+
+    useEffect(() => {
+        const generateElement = (item) => {
+            let element = (
+                <LazyLoad>
+                    <Error />
+                </LazyLoad>
+            );
+
+            if (item.type === 4) {
+                // iframe页面
+                const Elm = lazy(routeAllPathToCompMap[`./pages/iframe/index.jsx`]);
+                element = (
+                    <LazyLoad>
+                        <Elm url={item.url} />
+                    </LazyLoad>
+                );
+            } else if (item.type === 7) {
+                // 配置页面
+                const Elm = lazy(routeAllPathToCompMap[`./pages/config/updateConfig/index.jsx`]);
+                element = (
+                    <LazyLoad>
+                        <Elm name={item.name.replace("config_", "")} />
+                    </LazyLoad>
+                );
+            } else if (routeAllPathToCompMap[`./pages${item.component_path}/index.jsx`]) {
+                const Elm = lazy(routeAllPathToCompMap[`./pages${item.component_path}/index.jsx`]);
+                element = (
+                    <LazyLoad>
+                        <Elm />
+                    </LazyLoad>
+                );
+            }
+            return element;
+        };
+
+        // 固定路由
+        const result = [...router];
+        // 插入新路由
+        menuArrAll.forEach(item => {
+            if (result[1]?.children) {
+                result[1].children.push({
+                    path: item.path,
+                    title: item.title,
+                    element: generateElement(item)
+                });
+            }
         });
 
-        // 已经登录， 重新加载登录信息
-        let adminUserToken = storage.get(`adminUserToken`) || sessionStorage.getItem(`adminUserToken`); // 是否保持登录状态
-        if (adminUserToken) {
-            adminUserApi.getAdminUser().then((res) => {
-                if (res.code === 1) {
-                    loginAction(res.data, setAdminUserStore, setMenuAuthStore)
-                }
-            }).catch(err => {
-            });
-        }
-    })
+        setRoutes(result);
+    }, [menuArrAll]);
 
-    // 色弱模式
+    return routes;
+};
+
+
+// 自定义Hook：页面标题和菜单状态管理
+const usePageTitleAndMenu = (menuArrAll, location) => {
+    const locationRef = useRef(location.pathname);
+    const initializedRef = useRef(false);
+
     useEffect(() => {
-        htmlClass('sa-filter', layoutSetting.bodyFilterValue === true ? 'add' : 'remove');
-    }, [layoutSetting.bodyFilterValue])
-
-    // 黑色主题
-    useEffect(() => {
-        htmlClass('sa-antd-dark', layoutSetting.antdThemeValue === 'dark' ? 'add' : 'remove');
-    }, [layoutSetting.antdThemeValue])
-
-    // 简约风格
-    useEffect(() => {
-        htmlClass('sa-antd-simple', layoutSetting.themeSimple ? 'add' : 'remove');
-    }, [layoutSetting.themeSimple])
-
-    // 圆角风格
-    useEffect(() => {
-        htmlClass('sa-is-radius', layoutSetting.isRadius ? 'add' : 'remove');
-    }, [layoutSetting.isRadius])
-
-    // 用户的菜单权限改变的时候，更新路由，主要用于登录后需要重新更新路由
-    useEffect(() => {
-        let result = [...router];
-        menuAuth.menuArrAll.map(item => {
-            let element = <LazyLoad><Error /></LazyLoad>;
-            if (item.type === 4) {
-                // 说明是iframe页面
-                let Elm = lazy(routeAllPathToCompMap[`./pages/iframe/index.jsx`])
-                element = <LazyLoad><Elm url={item.url} /></LazyLoad>;
-            } else if (item.type === 7) {
-                // 说明是配置页面
-                let Elm = lazy(routeAllPathToCompMap[`./pages/config/updateConfig/index.jsx`])
-                element = <LazyLoad><Elm name={item.name.replace("config_", "")} /></LazyLoad>;
-            } else if (routeAllPathToCompMap[`./pages${item.component_path}/index.jsx`]) {
-                let Elm = lazy(routeAllPathToCompMap[`./pages${item.component_path}/index.jsx`])
-                element = <LazyLoad><Elm /></LazyLoad>;
-            }
-
-            result[1].children.push({
-                path: item.path,
-                title: item.title,
-                element: element
-            });
-        })
-        setRoutes(result)
-    }, [menuAuth.menuArrAll])
-
-    // 导航钩子，监听url变化的时候
-    useEffect(() => {
-        if (!location.pathname) {
+        // 如果菜单数据为空，不执行
+        if (!menuArrAll || menuArrAll.length === 0) {
             return;
         }
-        menuAuth.menuArrAll.some(item => {
-            if (location.pathname === item.path) {
-                // 设置页面标题，根据当前页面的pid_name_path循环换成标题
-                let page_title = '';
-                item.pid_name_path.map(_name => {
-                    menuAuth.menuArrAll.some(__item => {
-                        if (__item.name === _name) {
-                            page_title += `-${__item.title}`;
-                            return true;
-                        }
-                    })
-                })
-                document.title = `${config.projectName}${page_title}`
-                // 设置菜单展开、选中项
-                setMenuAuthStore((_val) => {
-                    let tmp = item.pid_name_path.map(_name => _name.toString());
-                    return {
-                        ..._val,
-                        activeMenuPath: tmp,
-                        openKeys: tmp,
-                        activeData: item
+
+        // 首次加载或路径变化时执行
+        if (!initializedRef.current || location.pathname !== locationRef.current) {
+            initializedRef.current = true;
+            locationRef.current = location.pathname;
+
+            // 使用Map提高查找效率
+            const menuMap = new Map();
+            menuArrAll.forEach(item => {
+                menuMap.set(item.path, item);
+            });
+
+            const currentMenuItem = menuMap.get(location.pathname);
+            if (!currentMenuItem) return;
+
+            // 设置页面标题
+            let pageTitle = '';
+            currentMenuItem.pid_name_path.forEach(name => {
+                menuArrAll.some(item => {
+                    if (item.name === name) {
+                        pageTitle += `-${item.title}`;
+                        return true;
+                    }
+                    return false;
+                });
+            });
+
+            document.title = `${APP_TITLE}${pageTitle}`;
+
+            // 设置菜单展开、选中项
+            const activeMenuPath = currentMenuItem.pid_name_path.map(name => name.toString());
+            setMenuAuthStore(prev => ({
+                ...prev,
+                activeMenuPath,
+                openKeys: activeMenuPath,
+                activeData: currentMenuItem
+            }));
+        }
+    }, [location.pathname, menuArrAll]); // 依赖 menuArrAll 也很重要
+};
+
+// 自定义Hook：主题样式管理
+const useThemeStyles = (layoutSetting) => {
+    const [appStyle, setAppStyle] = useState({ minHeight: '100vh' });
+
+    useEffect(() => {
+        const updateStyles = () => {
+            // 批量更新html类名
+            const classUpdates = [
+                { className: 'sa-filter', condition: layoutSetting.bodyFilterValue },
+                { className: 'sa-antd-dark', condition: layoutSetting.antdThemeValue === 'dark' },
+                { className: 'sa-antd-simple', condition: layoutSetting.themeSimple },
+                { className: 'sa-is-radius', condition: layoutSetting.isRadius }
+            ];
+
+            classUpdates.forEach(({ className, condition }) => {
+                htmlClass(className, condition ? 'add' : 'remove');
+            });
+
+            // 更新应用样式
+            if (layoutSetting.themeSimple && layoutSetting.antdThemeValue !== 'dark') {
+                const backgroundHsb = colorHsb(layoutSetting.primaryColorValue);
+                setAppStyle({
+                    backgroundColor: `hsla(${backgroundHsb[0]}, 100%, 96%, 1)`,
+                    backgroundImage: `
+                        radial-gradient(at 13% 5%, hsla(${backgroundHsb[0]}, 100%, 37%, 0.29) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, hsla(254, 66%, 56%, 0.11) 0px, transparent 50%),
+                        radial-gradient(at 0% 100%, hsla(355, 100%, 93%, 0) 0px, transparent 50%),
+                        radial-gradient(at 61% 52%, hsla(227, 64%, 46%, 0.05) 0px, transparent 50%),
+                        radial-gradient(at 88% 12%, hsla(227, 70%, 49%, 0.1) 0px, transparent 50%),
+                        radial-gradient(at 100% 37%, hsla(254, 68%, 56%, 0) 0px, transparent 50%)
+                    `,
+                    backgroundAttachment: 'fixed',
+                    minHeight: '100vh',
+                });
+            } else {
+                setAppStyle({ minHeight: '100vh' });
+            }
+        };
+
+        updateStyles();
+    }, [
+        layoutSetting.bodyFilterValue,
+        layoutSetting.antdThemeValue,
+        layoutSetting.themeSimple,
+        layoutSetting.isRadius,
+        layoutSetting.primaryColorValue
+    ]);
+
+    return appStyle;
+};
+
+// 自定义Hook：应用初始化
+const useAppInitialization = () => {
+    const debounceSettingMobile = useMobileDetection();
+
+    useMount(() => {
+        // 监听是否切换到移动端
+        debounceSettingMobile();
+        window.addEventListener("resize", debounceSettingMobile);
+
+        // 已经登录，重新加载登录信息
+        const adminUserToken = storage.get(`adminUserToken`) || sessionStorage.getItem(`adminUserToken`);
+        if (adminUserToken) {
+            adminUserApi.getAdminUser()
+                .then((res) => {
+                    if (res.code === 1) {
+                        loginAction(res.data, setAdminUserStore, setMenuAuthStore);
                     }
                 })
-                return true;
-            }
-        })
-    }, [location])
-
-    // app样式，主要是简约风格的开关
-    const [appStyle, setAppStyle] = useState({});
-    useEffect(() => {
-        if (layoutSetting.themeSimple) {
-            let backgroundHsb = colorHsb(layoutSetting.primaryColorValue)
-            setAppStyle({
-                backgroundColor: layoutSetting.antdThemeValue !== 'dark' ? `hsla(${backgroundHsb[0]}, 100%, 96%, 1)` : 'none',
-                backgroundImage: layoutSetting.antdThemeValue !== 'dark' ? `radial-gradient(at 13% 5%, hsla(${backgroundHsb[0]}, 100%, 37%, 0.29) 0px, transparent 50%), radial-gradient(at 100% 100%, hsla(254, 66%, 56%, 0.11) 0px, transparent 50%), radial-gradient(at 0% 100%, hsla(355, 100%, 93%, 0) 0px, transparent 50%), radial-gradient(at 61% 52%, hsla(227, 64%, 46%, 0.05) 0px, transparent 50%), radial-gradient(at 88% 12%, hsla(227, 70%, 49%, 0.1) 0px, transparent 50%), radial-gradient(at 100% 37%, hsla(254, 68%, 56%, 0) 0px, transparent 50%)` : 'none',
-                backgroundAttachment: 'fixed',
-                minHeight: '100vh',
-            })
-        } else {
-            setAppStyle({
-                minHeight: '100vh',
-            })
+                .catch(err => {
+                    console.error('Failed to get admin user:', err);
+                });
         }
-    }, [layoutSetting.themeSimple, layoutSetting.antdThemeValue, layoutSetting.primaryColorValue])
+
+        // 清理函数
+        return () => {
+            window.removeEventListener("resize", debounceSettingMobile);
+        };
+    });
+};
+
+export default () => {
+    const menuAuth = useSnapshot(menuAuthStore);
+    const layoutSetting = useSnapshot(layoutSettingStore);
+    const location = useLocation();
+
+    // 初始化应用
+    useAppInitialization();
+
+    // 动态生成路由
+    const routes = useDynamicRoutes(menuAuth.menuArrAll);
+
+    // 管理页面标题和菜单状态
+    usePageTitleAndMenu(menuAuth.menuArrAll, location);
+
+    // 管理主题样式
+    const appStyle = useThemeStyles(layoutSetting);
+
+    // 主题配置
+    const themeConfig = useMemo(() => ({
+        cssVar: true,
+        components: {
+            Layout: {
+                bodyBg: layoutSetting.antdThemeValue === 'dark'
+                    ? '#000'
+                    : (layoutSetting.themeSimple
+                        ? 'none'
+                        : 'linear-gradient(#ffffff,#f5f5f5 28%)!important'),
+            },
+            Card: {
+                headerFontSize: 14
+            },
+            Tabs: {
+                titleFontSizeLG: 14
+            }
+        },
+        algorithm: theme[`${layoutSetting.antdThemeValue}Algorithm`],
+        token: {
+            colorPrimary: layoutSetting.primaryColorValue,
+        },
+    }), [
+        layoutSetting.antdThemeValue,
+        layoutSetting.themeSimple,
+        layoutSetting.primaryColorValue
+    ]);
+
+    // 渲染路由 - 不要用useMemo缓存，useRoutes会处理路由变化
+    const renderedRoutes = useRoutes(routes);
 
     return (
         <ConfigProvider
             locale={zhCN}
-            renderEmpty={() => {
-                return <RenderEmpty />
-            }}
-            theme={{
-                cssVar: true,
-                components: {
-                    Layout: {
-                        bodyBg: layoutSetting.antdThemeValue === 'dark' ? '#000' : (layoutSetting.themeSimple ? 'none' : 'linear-gradient(#ffffff,#f5f5f5 28%)!important'),
-                    },
-                    Card: {
-                        headerFontSize: 14
-                    },
-                    Tabs: {
-                        titleFontSizeLG: 14
-                    }
-                },
-                algorithm: theme[`${layoutSetting.antdThemeValue}Algorithm`],
-                token: {
-                    colorPrimary: layoutSetting.primaryColorValue,
-                },
-            }}
+            renderEmpty={RenderEmpty}
+            theme={themeConfig}
         >
-            <App
-                style={appStyle}
-            >
+            <App style={appStyle}>
                 <LazyLoad>
-                    {useRoutes(routes)}
+                    {renderedRoutes}
                 </LazyLoad>
             </App>
         </ConfigProvider>
-    )
-}
+    );
+};

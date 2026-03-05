@@ -9,7 +9,7 @@
 .sa-layout-left .sider .ant-layout-sider-children .menuWarp{flex:1;overflow-y: auto;}
 .sa-layout-left .sider .ant-layout-sider-children .menuWarp .menu{border:0px !important;padding:0px 5px;}
 
-.sa-layout-left .sider .ant-layout-sider-children .userWarp{width:100%;box-sizing: border-box;display: flex;padding:0 5px 0 10px;}
+.sa-layout-left .sider .ant-layout-sider-children .userWarp{width:100%;box-sizing: border-box;display: flex;padding:10px 10px 10px 10px;}
 .sa-layout-left .sider .ant-layout-sider-children .userWarp .l{flex:1;}
 .sa-layout-left .sider .ant-layout-sider-children .userWarp .r{width:auto;}
 .sa-layout-left .sider .ant-layout-sider-children .userWarp .r .item{display: inline-flex;align-items: center;}

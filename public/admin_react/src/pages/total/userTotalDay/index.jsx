@@ -3,8 +3,8 @@ import { PageContainer } from '@ant-design/pro-components';
 import { App } from 'antd';
 import Lazyload from '@/component/lazyLoad/index';
 
-const List = lazy(() => import('./list'));
-const Chart = lazy(() => import('./chart'));
+const List = lazy(() => import('./component/list'));
+const Chart = lazy(() => import('./component/chart'));
 
 /**
  * 用户日统计 

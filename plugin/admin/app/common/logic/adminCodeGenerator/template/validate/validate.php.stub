@@ -1,0 +1,28 @@
+namespace <?php echo $data['validate']['file_path'] ?? '';?>;
+
+use superadminx\think_validate\Validate;
+
+/**
+ * <?php echo $data['table_title'] ?? ''?> 验证器
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+class <?php echo $data['validate']['file_name'] ?? ''; ?> extends Validate
+{  
+<?php
+// 验证规则
+include __DIR__ . '/validate.rule.php.stub';
+?>
+
+<?php
+// 验证提示规则
+include __DIR__ . '/validate.message.php.stub';
+?>
+
+<?php
+// 验证
+include __DIR__ . '/validate.scenes.php.stub';
+?>
+
+}

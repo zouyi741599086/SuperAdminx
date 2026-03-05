@@ -169,7 +169,13 @@ export default () => {
                                 </Space>
                             </>}
                         >
-                            <Space direction="vertical" style={{ width: '100%' }} size="large">
+							<Space 
+								orientation="vertical"
+								size="large"
+								styles={{ 
+									root: {width: '100%'}
+								}}
+							>
                                 <Search
                                     onChange={searchKeywordsChange}
                                     placeholder="搜索..."
@@ -219,8 +225,14 @@ export default () => {
                                     />
                                 </Lazyload>
                             </> : <>
-                                <Space direction='vertical' size="middle" style={{ width: '100%' }}>
-                                    <Alert message="请点击权限节点名称，然后进行编辑" type="info" showIcon />
+								<Space 
+									orientation="vertical"
+									size="middle"
+									styles={{ 
+										root: {width: '100%'}
+									}}
+								>
+                                    <Alert title="请点击权限节点名称，然后进行编辑" type="info" showIcon />
                                     <Skeleton />
                                 </Space>
                             </>}

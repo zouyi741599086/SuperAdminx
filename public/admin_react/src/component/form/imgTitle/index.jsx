@@ -59,10 +59,10 @@ export default ({ value, onChange }) => {
 
     /////////////////////////预览图片/////////////////////////
     // 预览图片开关
-    const [previewVisible, setPreviewVisible] = useState(false);
+    const [previewOpen, setPreviewOpen] = useState(false);
     const [previewCurrent, setPreviewCurrent] = useState(0);
-    const previewVisibleChange = () => {
-        setPreviewVisible(!previewVisible);
+    const previewOpenChange = () => {
+        setPreviewOpen(!previewOpen);
     }
     // 图片预览的时候
     const preview = (data) => {
@@ -72,7 +72,7 @@ export default ({ value, onChange }) => {
                 return true;
             }
         })
-        previewVisibleChange();
+        previewOpenChange();
     }
 
     /////////////////////////拖拽排序//////////////////////////
@@ -130,8 +130,8 @@ export default ({ value, onChange }) => {
             <div style={{ display: 'none' }}>
                 <Image.PreviewGroup
                     preview={{
-                        visible: previewVisible,
-                        onVisibleChange: previewVisibleChange,
+                        open: previewOpen,
+                        onOpenChange: previewOpenChange,
                         current: previewCurrent,
                         onChange: (current) => {
                             setPreviewCurrent(current);

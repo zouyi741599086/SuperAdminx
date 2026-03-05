@@ -1,0 +1,22 @@
+<?php
+use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+
+// 通过反射获取控制器哪些方法不需要登录
+$methods = CodeGeneratorUtilLogic::getOwnMethods("{$data['controller_api']['file_path']}\\{$data['controller_api']['file_name']}");
+foreach ($methods as $key => $m) {
+    $docComment = $m->getDocComment();
+    // 如果是导入数据，则不一样
+    if ($m->name == 'importData') {
+        $list[] = [
+            'title' => '导入数据',
+            'content' => "importData: `\${config.url}/api/{$tableNameToCamelCase}/importData`,"       
+        ];
+    } else {
+        $list[] = [
+            'title' => CodeGeneratorUtilLogic::getMethodsDocComment($docComment, 'title'),
+            'functoin_name' => $m->name,
+            'method' => CodeGeneratorUtilLogic::getMethodsDocComment($docComment, 'method'),
+            'url' => "{$apiPrefix}/api/{$tableNameToCamelCase}/{$m->name}"           
+        ];
+    }
+}

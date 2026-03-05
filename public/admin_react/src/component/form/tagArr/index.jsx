@@ -105,7 +105,7 @@ export default ({ value = [], onChange, ...props }) => {
         verticalAlign: 'top',
     };
     return (
-        <Space size={[0, 8]} wrap>
+        <Space wrap>
             {list.map((item, index) => {
                 { item }
                 if (editIndex === index) {

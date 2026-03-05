@@ -1,0 +1,139 @@
+<?php
+    // importData导入数据  下载导入模板
+    if (in_array('importData', $logicFunctions)) {
+        // 导出的表格头
+        $excelHeader = isset($data['field_title']) ? implode("', '", $data['field_title']) : [];
+        // 导出的表格头需要过滤掉空值
+        $excelHeader = array_filter($data['field_title'] ?: [], function ($value) {  
+            return $value !== null && $value !== '';  
+        }); 
+        $excelHeader = implode("', '", $excelHeader);
+
+        echo "
+    /**
+     * 下载导入数据的表格模板
+     * @param array \$params
+     */
+    public function downloadImportExcel()
+    {
+        try {
+            // 表格头
+            \$tableData = [['{$excelHeader}']];
+
+            // 模板里面如果有数据，则继续往\$tableData里面装 
+            
+            // 开始生成表格导出
+            \$config    = [
+                'path' => public_path() . '/tmp_file',
+            ];
+            \$fileName   = \"导入{$data['table_title']}.xlsx\";
+            \$excel      = new \Vtiful\Kernel\Excel(\$config);
+            \$fileObject = \$excel->fileName(rand(1, 1000000) . '.xlsx')->header([])->data(\$tableData);
+            \$fileHandle = \$fileObject->getHandle();
+
+            // 第一行合并单元格
+            \$fileObject->mergeCells(\"A1:L1\", \"1：请按照表格录入数据\\n2：每一列都是必填项，为空将导致导入失败\");
+            // 第一行样式
+            \$format1 = new \Vtiful\Kernel\Format(\$fileHandle);
+            \$fileObject->setRow(\"A1\", 60, \$format1
+                ->wrap()
+                ->bold()
+                ->fontColor(\Vtiful\Kernel\Format::COLOR_RED)
+                ->align(\Vtiful\Kernel\Format::FORMAT_ALIGN_VERTICAL_CENTER)
+                ->toResource()
+            );
+            // 标题第二行样式
+            \$format2 = new \Vtiful\Kernel\Format(\$fileHandle);
+            \$fileObject->setRow(\"A2\", 22, \$format2
+                ->bold()
+                ->fontColor(\Vtiful\Kernel\Format::COLOR_RED)
+                ->align(\Vtiful\Kernel\Format::FORMAT_ALIGN_VERTICAL_CENTER)
+                ->toResource()
+            );
+
+            // 设置列的宽度
+            //\$fileObject->setColumn('A1:A1000', 10);
+            //\$fileObject->setColumn('B1:B1000', 30);
+
+            // 下拉选择，如果需要的话，下拉文字总数不能超过255，否则报错
+            //\$typeArr = ['选择项1', '选择项2'];
+            //\$validation = new \Vtiful\Kernel\Validation();
+            //\$validation->validationType(\Vtiful\Kernel\Validation::TYPE_LIST)->valueList(\$typeArr);
+            //\$fileObject->validation('A3:A1000', \$validation->toResource());
+
+            \$filePath = \$fileObject->output();
+            \$filePath = str_replace(public_path(), '', \$filePath);
+            \$excel->close();
+    
+            return [
+                'filePath' => export_path(\$filePath),
+                'fileName' => \$fileName
+            ];
+        } catch (\Throwable \$e) {
+            abort(\$e->getMessage());
+        }
+    }\n";
+
+    }
+    
+    // importData导入数据
+    if (in_array('importData', $logicFunctions)) {
+        echo "
+    /**
+     * 导入数据
+     * @param string \$file 上传表格文件的路劲
+     */
+    public function importData(string \$file)
+    {
+        \$config = ['path' => public_path()];
+        \$excel  = new \Vtiful\Kernel\Excel(\$config);
+    
+        Db::startTrans();
+        try {
+            // 读取文件
+            \$excel->openFile(\$file)->openSheet();
+    
+            \$list = [];
+            \$counter = 0;
+            // 游标读取每行数据减少内存消耗，此处判断请使用【!==】运算符进行判断；
+            // 如果使用【!=】进行判断，出现空行时，返回空数组，将导致读取中断；
+            while ((\$row = \$excel->nextRow()) !== NULL) {
+                \$counter++;
+                // 前面两行不导入
+                if (\$counter < 2) {
+                    continue;
+                }
+                \$list[] = [";
+                    if (isset($data['field_title'])) {
+                        $tmp = 0;
+                        foreach ($data['field_title'] as $key => $value) {
+                            if ($value) {
+                            echo "
+                    \$v['{$key}'] = \$row[{$tmp}],";
+                            }
+                            $tmp++;
+                        }
+                    }
+                echo "
+                ];
+            }
+            \$excel->close();
+
+            (new {$data['model']['file_name']}())->saveAll(\$list);";
+              
+            // 是否全表缓存
+            if (isset($data['logic']['logic_type']) && $data['logic']['logic_type'] == 2) {
+                echo "
+            Cache::delete(\"{$tableNameToCamelCase}\");\n";
+            }
+
+            echo "
+            Db::commit();
+        } catch (\Throwable \$e) {
+            Db::rollback();
+            abort(\$e->getMessage());
+        }
+    }\n";
+
+    }
+?>

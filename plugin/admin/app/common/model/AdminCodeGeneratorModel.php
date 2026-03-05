@@ -1,7 +1,8 @@
 <?php
 namespace plugin\admin\app\common\model;
 
-use plugin\admin\app\utils\codeGenerator\CodeGenerator;
+use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+use plugin\admin\app\common\logic\adminCodeGenerator\DataBaseLogic;
 use app\common\model\BaseModel;
 
 /**
@@ -12,38 +13,45 @@ use app\common\model\BaseModel;
  * */
 class AdminCodeGeneratorModel extends BaseModel
 {
-    // 自动时间戳
-    protected $autoWriteTimestamp = false;
-
-    // 表名
-    protected $name = 'admin_code_generator';
-
-    // 字段类型转换
-    protected $type = [
-        'field_title'               => 'json',
-        'validate'                  => 'json',
-        'model'                     => 'json',
-        'logic'                     => 'json',
-        'controller_admin'          => 'json',
-        'controller_api'            => 'json',
-        'react_api'                 => 'json',
-        'uni_api'                   => 'json',
-        'react_create_update'       => 'json',
-        'react_form_code'           => 'json',
-        'react_info'                => 'json',
-        'react_list'                => 'json',
-        'react_list_component_code' => 'json',
-        'react_other'               => 'json',
-        'react_other_code'          => 'json',
-    ];
+    /**
+     * 模型参数
+     * @return array
+     */
+    protected function getOptions() : array
+    {
+        return [
+            'name'               => 'admin_code_generator',
+            'autoWriteTimestamp' => false,
+            'type'               => [
+                'field_title'               => 'json',
+                'validate'                  => 'json',
+                'model'                     => 'json',
+                'service'                   => 'json',
+                'logic'                     => 'json',
+                'logic_code'                => 'json',
+                'controller_admin'          => 'json',
+                'controller_api'            => 'json',
+                'react_api'                 => 'json',
+                'uni_api'                   => 'json',
+                'react_create_update'       => 'json',
+                'react_form_code'           => 'json',
+                'react_info'                => 'json',
+                'react_list'                => 'json',
+                'react_list_component_code' => 'json',
+                'react_other'               => 'json',
+            ],
+            'fileField'          => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
+            ],
+        ];
+    }
 
     // 新增前，自动写入一些数据
     public static function onBeforeInsert($data)
     {
         // 表名转驼峰
-        $camelCaseTableName = CodeGenerator::toCamelCase($data->table_name);
+        $camelCaseTableName = CodeGeneratorUtilLogic::toCamelCase($data->table_name);
         // 表里面所有的列
-        $tableColumn = CodeGenerator::getTableColumn($data->table_name);
+        $tableColumn = (new DataBaseLogic())->getTableColumn($data->table_name);
         // 生成的目录
         $classPath = "app\\";
         if ($data->plugin_name) {
@@ -62,6 +70,20 @@ class AdminCodeGeneratorModel extends BaseModel
                 $isStatus = true;
             }
         }
+        // 默认生成的方法，逻辑层跟服务处
+        $functions = [
+            'getList',
+            'create',
+            'findData',
+            'update',
+            'delete',
+        ];
+        if ($isSort) {
+            $functions[] = 'updateSort';
+        }
+        if ($isStatus) {
+            $functions[] = 'updateSort';
+        }
 
         // 验证器
         $data->validate = [
@@ -79,20 +101,20 @@ class AdminCodeGeneratorModel extends BaseModel
             'file_path' => "{$classPath}common\\model",
         ];
 
-        // 逻辑层
-        $functions = [
-            'getList',
-            'create',
-            'findData',
-            'update',
-            'delete',
+        // 服务层
+        $data->service = [
+            // 默认类名
+            'file_name'  => "{$camelCaseTableName}Service",
+            // 默认存放路劲，就是命名空间
+            'file_path'  => "{$classPath}common\\service",
+
+            // 默认生成的方法
+            'functions'  => $functions,
+            // 逻辑层类型
+            'logic_type' => 1,
         ];
-        if ($isSort) {
-            $functions[] = 'updateSort';
-        }
-        if ($isStatus) {
-            $functions[] = 'updateSort';
-        }
+
+        // 逻辑层
         $data->logic = [
             // 默认类名
             'file_name'  => "{$camelCaseTableName}Logic",

@@ -27,7 +27,9 @@ export default ({ title = '查看图片', imgs = [], ...props }) => {
                                     height={80}
                                     key={index}
                                     src={`${item}`}
-                                    style={{ borderRadius: '5px' }}
+                                    styles={{
+										root: { borderRadius: '5px' }
+									}}
                                 />
                             }) : ''}
                         </Space>

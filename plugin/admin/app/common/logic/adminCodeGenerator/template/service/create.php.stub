@@ -1,0 +1,15 @@
+<?php
+    // create方法
+    if (in_array('create', $serviceFunction)) {
+        echo "
+    /**
+     * 新增
+     * @param array \$params
+     */
+    public function create(array \$params)
+    {
+        \$this->{$tableNameToCamelCaseLower}ExecuteLogic->create(\$params);
+    }\n";
+
+    }
+?>

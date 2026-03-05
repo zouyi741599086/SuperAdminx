@@ -1,0 +1,20 @@
+<?php
+    // 获取数据
+    if (isset($data['controller_admin']['functions']) && in_array('findData', $data['controller_admin']['functions'])) {
+
+        echo "
+    /**
+     * 获取数据
+     * @method get
+	 * @param Request \$request 
+     * @param int \$id 
+     * @return Response
+     */
+    public function findData(Request \$request, int \$id): Response
+    {
+        \$data = {$serviceMethodPrefix}findData(\$id);
+        return success(\$data);
+    }\n";
+
+    }
+?>

@@ -1,0 +1,50 @@
+    /**
+    * 模型参数
+    * @return array
+    */
+    protected function getOptions() : array
+    {
+        return [
+            'name' => '<?php echo substr($data['table_name'], strlen(getenv('DB_PREFIX'))); ?>',
+<?php
+    if ($create_time == false && $update_time == false) {
+        echo "            'autoWriteTimestamp' => false,\n";
+    }
+    if ($create_time == true && $update_time == true) {
+        echo "            'autoWriteTimestamp' => true,\n";  
+    }
+    if ($create_time == false && $update_time == true) {
+        echo "            'createTime' => false,\n";  
+    }
+    if ($create_time == true && $update_time == false) {
+        echo "            'updateTime' => false,\n";  
+    }
+    // 如果有软删除字段
+    if ($delete_time) {
+        echo "            'deleteTime' = 'delete_time',\n";
+    }
+?>
+            'type' => [
+<?php
+    // 字段类型
+    if (isset($data['model']['type']) && is_array($data['model']['type'])) {     
+        foreach ($data['model']['type'] as $key => $value) {
+            echo "                '{$key}' => '{$value}',
+";
+        }
+    }
+?>
+            ],
+            'fileField' => [ // 包含附件的字段，''代表直接等于附件路劲，'array'代表数组中包含附件路劲，'editor'代表富文本中包含附件路劲
+<?php
+    // 包含附件的字段
+    if (isset($data['model']['file']) && is_array($data['model']['file'])) {      
+        foreach ($data['model']['file'] as $key => $value) {
+            echo "                '{$key}' => '{$value}',
+";
+        }
+    }
+?>
+            ],
+        ];
+    }

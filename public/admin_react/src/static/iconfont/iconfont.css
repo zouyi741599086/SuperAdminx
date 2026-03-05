@@ -1,6 +1,8 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 4778961 */
-  src: url('iconfont.ttf?t=1734941147958') format('truetype');
+  font-family: "iconfont"; /* Project id 5083241 */
+  src: url('iconfont.woff2?t=1768197344740') format('woff2'),
+       url('iconfont.woff?t=1768197344740') format('woff'),
+       url('iconfont.ttf?t=1768197344740') format('truetype');
 }
 
 .iconfont {
@@ -11,12 +13,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-mendian:before {
-  content: "\e6a8";
+.icon-fenxiangfangshi:before {
+  content: "\ed2e";
 }
 
-.icon-pingjiaxingxing:before {
-  content: "\e6d5";
+.icon-shijian:before {
+  content: "\e6ad";
+}
+
+.icon-yingxiao:before {
+  content: "\e6e6";
 }
 
 .icon-wenjianjia1:before {
@@ -145,5 +151,125 @@
 
 .icon-shujujianguan1:before {
   content: "\e60a";
+}
+
+.icon-pingjiaxingxing:before {
+  content: "\e6d5";
+}
+
+.icon-mendian:before {
+  content: "\e6a8";
+}
+
+.icon-jifen:before {
+  content: "\e635";
+}
+
+.icon-qian:before {
+  content: "\e608";
+}
+
+.icon-qianbao:before {
+  content: "\e61c";
+}
+
+.icon-copper-coin-fill:before {
+  content: "\e7b5";
+}
+
+.icon-renwu:before {
+  content: "\e684";
+}
+
+.icon-choujiang:before {
+  content: "\e628";
+}
+
+.icon-tuandui:before {
+  content: "\e62d";
+}
+
+.icon-qudaoshang:before {
+  content: "\e6b9";
+}
+
+.icon-dakaqiandao:before {
+  content: "\10184";
+}
+
+.icon-shezhixitongshezhigongnengshezhishuxing:before {
+  content: "\e795";
+}
+
+.icon-gonggao:before {
+  content: "\e8c4";
+}
+
+.icon-miaosha:before {
+  content: "\e632";
+}
+
+.icon-file-fill:before {
+  content: "\e66f";
+}
+
+.icon-bg-excel:before {
+  content: "\e639";
+}
+
+.icon-file:before {
+  content: "\e66a";
+}
+
+.icon-fengqiang:before {
+  content: "\e62e";
+}
+
+.icon-yijiesuan:before {
+  content: "\e609";
+}
+
+.icon-shuzhuangtu:before {
+  content: "\e600";
+}
+
+.icon-tongji1:before {
+  content: "\e6cc";
+}
+
+.icon-tongji:before {
+  content: "\e64d";
+}
+
+.icon-huiyuan1:before {
+  content: "\e60d";
+}
+
+.icon-xuanchuan:before {
+  content: "\e77b";
+}
+
+.icon-dalibaoshangpin:before {
+  content: "\e60e";
+}
+
+.icon-tubiao-:before {
+  content: "\e601";
+}
+
+.icon-huiyuan3:before {
+  content: "\e733";
+}
+
+.icon-aijiadashi:before {
+  content: "\e60f";
+}
+
+.icon-tianqi_yueliang_moon:before {
+  content: "\e8a2";
+}
+
+.icon-iconsyihuifu-36:before {
+  content: "\e610";
 }
 

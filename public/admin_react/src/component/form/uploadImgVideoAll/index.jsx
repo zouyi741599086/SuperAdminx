@@ -72,10 +72,10 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
     }, [value])
 
     // 预览图片开关
-    const [previewVisible, setPreviewVisible] = useState(false);
+    const [previewOpen, setPreviewOpen] = useState(false);
     const [previewCurrent, setPreviewCurrent] = useState(0);
-    const previewVisibleChange = () => {
-        setPreviewVisible(!previewVisible);
+    const previewOpenChange = () => {
+        setPreviewOpen(!previewOpen);
     }
 
     // 图片上传的时候
@@ -136,7 +136,7 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
                 return true;
             }
         })
-        previewVisibleChange();
+        previewOpenChange();
     }
 
     // 更新父组件的值
@@ -278,7 +278,7 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
                     </ImgCrop>
                 </div>
             </div>
-            {/* <Alert message="上传后的图片可拖动排序~" type="info" showIcon={true} /> */}
+            {/* <Alert title="上传后的图片可拖动排序~" type="info" showIcon={true} /> */}
             {width > 0 && height > 0 ? <>
                 <Typography.Text type="secondary">可上传图片或视频，请上传宽高：{width}*{height}的图片，最多可上传{maxCount}张或视频，上传后可拖动排序~</Typography.Text>
             </> : <>
@@ -295,8 +295,8 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
             <div style={{ display: 'none' }}>
                 <Image.PreviewGroup
                     preview={{
-                        visible: previewVisible,
-                        onVisibleChange: previewVisibleChange,
+                        open: previewOpen,
+                        onOpenChange: previewOpenChange,
                         current: previewCurrent,
                         imageRender: (e) => {
                             // 判断是否是视频

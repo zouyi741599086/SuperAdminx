@@ -92,6 +92,7 @@ export default () => {
                                         </Typography.Title>
                                     </>}
                                     extra={<RightSquareTwoTone />}
+                                    variant="borderless"
                                 >
                                     {item.Comment}
                                     <br />

@@ -1,0 +1,29 @@
+<?php
+    // importData导入数据  下载导入模板
+    if (in_array('importData', $serviceFunction)) {
+        echo "
+    /**
+     * 下载导入数据的表格模板
+     * @param array \$params
+     */
+    public function downloadImportExcel()
+    {
+        return \$this->{$tableNameToCamelCaseLower}ImportLogic->downloadImportExcel();
+    }\n";
+
+    }
+    
+    // importData导入数据
+    if (in_array('importData', $serviceFunction)) {
+        echo "
+    /**
+     * 导入数据
+     * @param string \$file 上传表格文件的路劲
+     */
+    public function importData(string \$file)
+    {
+        \$this->{$tableNameToCamelCaseLower}ImportLogic->importData(\$file);
+    }\n";
+
+    }
+?>

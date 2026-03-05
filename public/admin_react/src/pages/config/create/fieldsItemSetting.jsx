@@ -1,4 +1,4 @@
-import { useRef, useState, lazy } from 'react';
+import { useRef, lazy } from 'react';
 import {
     ProForm,
     ModalForm,
@@ -7,32 +7,29 @@ import {
     ProFormDigit,
     ProFormDependency,
 } from '@ant-design/pro-components';
-import { useUpdateEffect } from 'ahooks';
 import Lazyload from '@/component/lazyLoad/index';
 
 const TagArr = lazy(() => import('@/component/form/tagArr/index'));
 
 export default (props) => {
     const formRef = useRef();
-    const [open, setOpen] = useState(false);
-    useUpdateEffect(() => {
-        if (props.data?.id) {
-            setOpen(true);
+    const open = props.data?.id ? true : false;
+
+    const handleOpenChange = (_boolean) => {
+        if (!_boolean) {
+            Promise.resolve().then(() => {
+                props.setUpdateData({});
+                formRef?.current?.resetFields();
+            });
         }
-    }, [props.data])
+    };
 
     return (
         <ModalForm
             name="settingFields"
             formRef={formRef}
             open={open}
-            onOpenChange={(_boolean) => {
-                setOpen(_boolean);
-                if (_boolean === false) {
-                    props.setUpdateData({});
-                    formRef?.current?.resetFields();
-                }
-            }}
+            onOpenChange={handleOpenChange}
             title="设置字段参数"
             grid={true}
             initialValues={{
@@ -42,7 +39,7 @@ export default (props) => {
                 gutter: [24, 0],
             }}
             modalProps={{
-                destroyOnHidden: true
+                //destroyOnHidden: true
             }}
             params={{
                 id: props.data?.id
@@ -72,8 +69,8 @@ export default (props) => {
 
                 // 输入框的前缀 后缀
                 if (['text', 'digit', 'digitRange'].indexOf(props.data.valueType) !== -1) {
-                    _data.fieldProps.addonBefore = values.addonBefore;
-                    _data.fieldProps.addonAfter = values.addonAfter;
+                    _data.fieldProps.prefix = values.prefix;
+                    _data.fieldProps.suffix = values.suffix;
                 }
                 // 如果必填
                 if (values.required === 2) {
@@ -174,9 +171,6 @@ export default (props) => {
                 }
 
                 const res = await props.updateFields(_data);
-                if (res) {
-                    formRef.current?.resetFields?.()
-                }
                 return res;
             }}
         >
@@ -423,12 +417,12 @@ export default (props) => {
             {/**input 的前缀 后缀 */}
             {['text', 'digit', 'digitRange'].indexOf(props.data.valueType) !== -1 ? <>
                 <ProFormText
-                    name="addonBefore"
+                    name="prefix"
                     label="输入框的前缀"
                     placeholder="请输入"
                 />
                 <ProFormText
-                    name="addonAfter"
+                    name="suffix"
                     label="输入框的后缀"
                     placeholder="请输入"
                 />

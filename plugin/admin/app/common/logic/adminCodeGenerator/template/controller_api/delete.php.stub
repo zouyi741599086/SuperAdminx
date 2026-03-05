@@ -1,0 +1,18 @@
+<?php
+    // delete方法
+    if (isset($data['controller_api']['functions']) && in_array('delete', $data['controller_api']['functions'])) {
+        echo "
+    /**
+     * 删除{$data['table_title']}
+     * @method post
+     * @param Request \$request 
+     * @return Response
+     */
+    public function delete(Request \$request): Response
+    {
+        {$serviceMethodPrefix}delete(\$request->post('id'));
+        return success([], '删除成功');
+    }\n";
+
+    }
+?>

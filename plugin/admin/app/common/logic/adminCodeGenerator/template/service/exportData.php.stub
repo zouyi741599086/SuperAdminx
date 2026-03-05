@@ -1,0 +1,16 @@
+<?php
+    // exportData导出数据
+    if (in_array('exportData', $serviceFunction)) {
+        echo "
+    /**
+     * 导出数据
+     * @param array \$params get参数，用于导出数据的控制
+     * @return array
+     */
+    public function exportData(array \$params) : array
+    {
+        return \$this->{$tableNameToCamelCaseLower}ExportLogic->exportData(\$params);
+    }\n";
+
+    }
+?>

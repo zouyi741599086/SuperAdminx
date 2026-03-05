@@ -67,6 +67,7 @@ export default ({ placement = 'top' }) => {
     const navigate = useNavigate();
     const menuAuth = useSnapshot(menuAuthStore);
     const [open, setOpen] = useState(false);
+    const [keywords, setKeywords] = useState('');
 
     // 原始是所有数据
     const [list, setList] = useState([]);
@@ -78,7 +79,7 @@ export default ({ placement = 'top' }) => {
         if (open && list.length == 0) {
             getSearchMenu();
         }
-    }, [open])
+    }, [open]);
 
     // 从后台获取所有的权限
     const getSearchMenu = async () => {
@@ -121,8 +122,6 @@ export default ({ placement = 'top' }) => {
         setTmpList(result);
     }
 
-    // 搜索的关键字
-    const [keywords, setKeywords] = useState('');
     // 触发搜索的时候，防抖处理
     const { run: onSearch } = useDebounceFn(
         (keywords) => {
@@ -130,7 +129,7 @@ export default ({ placement = 'top' }) => {
             if (keywords) {
                 setTmpList(list.filter(item => {
                     return item.title.includes(keywords);
-                }))
+                }));
             } else {
                 setTmpList(list);
             }
@@ -140,30 +139,45 @@ export default ({ placement = 'top' }) => {
         },
     );
 
-    return <>
+    return (
         <ModalForm
             open={open}
             onOpenChange={(_boolean) => {
-                setOpen(_boolean);
+                // 使用setTimeout避免渲染冲突
+                setTimeout(() => {
+                    setOpen(_boolean);
+                }, 0);
             }}
             title="搜索菜单功能"
             width={600}
             submitter={false}
             trigger={
-                <div className='item' >
+                <div className='item'>
                     <Tooltip title="搜索功能" placement={placement}>
-                        <span className='circle'>
+                        <span 
+                            className='circle' 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setTimeout(() => setOpen(true), 0);
+                            }}
+                        >
                             <SearchOutlined className='icon' />
                         </span>
                     </Tooltip>
                 </div>
             }
         >
-            <Space direction="vertical" style={{ width: '100%' }} size={24}>
+            <Space 
+                orientation="vertical"
+                size={24}
+                style={{ 
+                    width: '100%'
+                }}
+            >
                 <Search
                     placeholder="请输入..."
                     onChange={(e) => {
-                        onSearch(e.target.value)
+                        onSearch(e.target.value);
                     }}
                     onSearch={onSearch}
                 />
@@ -171,7 +185,9 @@ export default ({ placement = 'top' }) => {
                     bordered={false}
                     dataSource={tmpList}
                     showHeader={false}
-                    style={{ cursor: 'pointer' }}
+                    style={{ 
+                        cursor: 'pointer' 
+                    }}
                     rowKey="id"
                     columns={[
                         {
@@ -179,15 +195,16 @@ export default ({ placement = 'top' }) => {
                             key: 'title',
                             title: '菜单名称',
                             render: (_, record) => {
-                                // 搜索的关键字标红
                                 if (keywords && record.title.indexOf(keywords) > -1) {
-                                    return <>
-                                        {record.title.substr(0, record.title.indexOf(keywords))}
-                                        <span style={{ color: 'red' }}>{keywords}</span>
-                                        {record.title.substr(record.title.indexOf(keywords) + keywords.length)}
-                                    </>
+                                    return (
+                                        <>
+                                            {record.title.substr(0, record.title.indexOf(keywords))}
+                                            <span style={{ color: 'red' }}>{keywords}</span>
+                                            {record.title.substr(record.title.indexOf(keywords) + keywords.length)}
+                                        </>
+                                    );
                                 } else {
-                                    return record.title
+                                    return record.title;
                                 }
                             }
                         },
@@ -199,15 +216,17 @@ export default ({ placement = 'top' }) => {
                     pagination={false}
                     onRow={(record) => {
                         return {
-                            // 点击行的时候，跳转页面
                             onClick: (event) => {
-                                setOpen(false);
-                                navigate(record.url)
+                                // 延迟处理以避免渲染冲突
+                                setTimeout(() => {
+                                    setOpen(false);
+                                    navigate(record.url);
+                                }, 0);
                             },
                         };
                     }}
                 />
             </Space>
         </ModalForm>
-    </>;
+    );
 };

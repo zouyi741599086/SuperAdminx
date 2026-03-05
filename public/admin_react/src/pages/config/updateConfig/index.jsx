@@ -6,13 +6,12 @@ import {
     PageContainer,
 } from '@ant-design/pro-components';
 import { configApi } from '@/api/config';
-import { Alert, Skeleton, Space, App, Tooltip, Button } from 'antd';
+import { Alert, Skeleton, Space, App, Tooltip, Button,Card} from 'antd';
 import LazyLoad from '@/component/lazyLoad/index';
 import {
     ArrowUpOutlined,
     ArrowDownOutlined,
 } from '@ant-design/icons';
-import MiniLink from './miniLink';
 import './index.css';
 
 const ProConfigProvider = lazy(() => import('@/component/form/proConfigProvider/index'));
@@ -42,7 +41,7 @@ export default ({ name, ...props }) => {
             <ProCard
                 size="small"
                 hoverable
-                bordered={true}
+				variant="outlined"
                 extra={<>
                     <Space>
                         <Tooltip title="上移">
@@ -99,7 +98,6 @@ export default ({ name, ...props }) => {
                 }
 
                 if (res.data.type === 'form') {
-                    let fields_count = 0;
                     res.data.fields_config.map(item => {
                         if (item.valueType == 'formList') {
                             item.fieldProps = {
@@ -108,31 +106,8 @@ export default ({ name, ...props }) => {
                                 itemRender: formListItemRender
                             }
                         }
-                        fields_count += 1;
-                        if (item.valueType == 'group') {
-                            fields_count += item.columns.length;
-                        }
                         return item;
                     })
-
-                    // form表单的时候一行显示几个字段，如果有group字段，需要把group里面的算进来
-                    if (fields_count <= 2) {
-                        setColProps({
-                            xl: 12,
-                            lg: 12,
-                            md: 12,
-                            sm: 24,
-                            xs: 24
-                        })
-                    } else {
-                        setColProps({
-                            xl: 6,
-                            lg: 8,
-                            md: 12,
-                            sm: 24,
-                            xs: 24
-                        })
-                    }
                 }
 
                 setData(res.data)
@@ -166,12 +141,18 @@ export default ({ name, ...props }) => {
                 style: { padding: '0px 24px 12px' },
             }}
         >
-            <ProCard
-            //title={<MiniLink/>}
+            <Card
+                variant="borderless"
             >
-                <Space direction='vertical' size="middle" style={{ width: '100%' }}>
+				<Space 
+					orientation="vertical"
+					size="middle"
+					styles={{ 
+						root: {width: '100%'}
+					}}
+				>
                     {data !== false ? <>
-                        {data.description ? <Alert message={data.description} type="info" showIcon /> : ''}
+                        {data.description ? <Alert title={data.description} type="info" showIcon /> : ''}
                         <LazyLoad>
                             <ProConfigProvider>
                                 <BetaSchemaForm
@@ -233,7 +214,7 @@ export default ({ name, ...props }) => {
                         <Skeleton />
                     </>}
                 </Space>
-            </ProCard>
+            </Card>
         </PageContainer>
     </>;
 };

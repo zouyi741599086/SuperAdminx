@@ -19,6 +19,7 @@ const { useToken } = theme;
 const Message = lazy(() => import('./../component/message'));
 const ScreenFull = lazy(() => import('./../component/screenFull'));
 const SearchMenu = lazy(() => import('./../component/searchMenu'));
+const ClearCache = lazy(() => import('./../component/clearCache'));
 const LayoutSetting = lazy(() => import('./../component/layoutSetting'));
 const UserInfo = lazy(() => import('./../component/userInfo'));
 const Footer = lazy(() => import('./../component/footer'));
@@ -278,10 +279,12 @@ export default () => {
                                 <div className="logo">
                                     {!collapsed ? <span>{config.company}</span> : ''}
                                 </div>
-                                {!collapsed ? <Divider orientation="left" style={{ margin: '10px 0px' }}>{topMenuData?.label}</Divider> : ''}
+                                {!collapsed ? <Divider titlePlacement="start" style={{ margin: '10px 0px' }}>{topMenuData?.label}</Divider> : ''}
                                 <div className="menu-two-main">
                                     <Menu
-                                        style={{ background: 'none', borderRight: '0px' }}
+                                        styles={{
+											root: { background: 'none', borderRight: '0px' }
+										}}
                                         mode={`inline`}
                                         items={slideMenuList}
                                         onClick={onSlideMenuClick}
@@ -314,6 +317,7 @@ export default () => {
                                 <UserInfo />
                                 <Message />
                                 <SearchMenu />
+                                <ClearCache />
                                 <ScreenFull />
                                 <LayoutSetting />
                             </div>

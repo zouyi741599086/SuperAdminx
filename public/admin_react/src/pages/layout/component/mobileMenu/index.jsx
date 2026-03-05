@@ -31,7 +31,7 @@ export default () => {
                 open={open}
                 onClose={toggleOpen}
                 closable={false}
-                width={200}
+                size={200}
                 styles={{
                     body: {padding: 0}
                 }}

@@ -1,0 +1,25 @@
+<?php
+    // update方法
+    if (isset($data['controller_admin']['functions']) && in_array( 'update', $data['controller_admin']['functions'])) {
+        // 接口权限
+        $auth = '';
+        if (isset($data['controller_admin']['functions_auth']) && in_array('update', $data['controller_admin']['functions_auth'])) {
+            $authName = $authPrefix. 'Update';
+            $auth = "\n     * @auth {$authName}";
+        }
+
+        echo "
+    /**
+     * @log 修改{$data['table_title']}
+     * @method post{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function update(Request \$request): Response
+    {
+        {$serviceMethodPrefix}update(\$request->post());
+        return success([], '修改成功');
+    }\n";
+
+    }
+?>

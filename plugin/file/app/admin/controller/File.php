@@ -53,7 +53,7 @@ class File
                 $filePath = public_path() . $filePath;
             }
             return response()->download($filePath, $fileName);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }

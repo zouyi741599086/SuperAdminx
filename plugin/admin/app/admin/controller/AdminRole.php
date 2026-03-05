@@ -3,7 +3,7 @@ namespace plugin\admin\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\admin\app\common\logic\AdminRoleLogic;
+use plugin\admin\app\common\service\AdminRoleService;
 
 /**
  * 后台用户角色
@@ -20,6 +20,10 @@ class AdminRole
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private AdminRoleService $adminRoleService,
+    ) {}
+    
     /**
      * 获取列表
      * @method get
@@ -27,9 +31,9 @@ class AdminRole
      * @param Request $request 
      * @return Response
      */
-    public function getList(Request $request): Response
+    public function getList(Request $request) : Response
     {
-        $list = AdminRoleLogic::getList($request->get());
+        $list = $this->adminRoleService->getList($request->get());
         return success($list);
     }
 
@@ -40,9 +44,9 @@ class AdminRole
      * @param Request $request 
      * @return Response
      */
-    public function create(Request $request): Response
+    public function create(Request $request) : Response
     {
-        AdminRoleLogic::create($request->post());
+        $this->adminRoleService->create($request->post());
         return success([], '添加成功');
     }
 
@@ -53,9 +57,9 @@ class AdminRole
      * @param Request $request 
      * @return Response
      */
-    public function update(Request $request): Response
+    public function update(Request $request) : Response
     {
-        AdminRoleLogic::update($request->post());
+        $this->adminRoleService->update($request->post());
         return success([], '修改成功');
     }
 
@@ -65,9 +69,9 @@ class AdminRole
      * @param Request $request 
      * @return Response
      */
-    public function findData(Request $request): Response
+    public function findData(Request $request) : Response
     {
-        $data = AdminRoleLogic::findData($request->get('id'));
+        $data = $this->adminRoleService->findData($request->get('id'));
         return success($data);
     }
 
@@ -78,21 +82,21 @@ class AdminRole
      * @param Request $request 
      * @return Response
      */
-    public function delete(Request $request): Response
+    public function delete(Request $request) : Response
     {
-        AdminRoleLogic::delete($request->post('id'));
+        $this->adminRoleService->delete($request->post('id'));
         return success([], '删除成功');
     }
 
     /**
      * 搜索选择某条数据
      * @method get
-	 * @param Request $request 
+     * @param Request $request 
      * @return Response
      */
-    public function selectAdminRole(Request $request): Response
+    public function selectAdminRole(Request $request) : Response
     {
-        $list = AdminRoleLogic::selectAdminRole($request->get());
+        $list = $this->adminRoleService->selectAdminRole($request->get());
         return success($list);
     }
 
@@ -102,9 +106,9 @@ class AdminRole
      * @param Request $request 
      * @return Response
      */
-    public function getDataMenu(Request $request): Response
+    public function getDataMenu(Request $request) : Response
     {
-        $data = AdminRoleLogic::getDataMenu($request->get('id'));
+        $data = $this->adminRoleService->getDataMenu($request->get('id'));
         return success($data);
     }
 
@@ -115,9 +119,9 @@ class AdminRole
      * @param Request $request 
      * @return Response
      */
-    public function updateDataMenu(Request $request): Response
+    public function updateDataMenu(Request $request) : Response
     {
-        AdminRoleLogic::updateDataMenu($request->post());
+        $this->adminRoleService->updateDataMenu($request->post());
         return success([], '修改成功');
     }
 }

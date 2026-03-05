@@ -100,12 +100,16 @@ export default ({ value, onChange, ...props }) => {
             onChange={componentChange}
             options={options}
             loading={loading}
-            style={{
-                width: '100%'
+            styles={{
+                root: {width: '100%'}
             }}
             popupRender={menu => <>
                 {menu}
-                <Divider style={{ margin: '8px 0' }} />
+                <Divider 
+					styles={{
+						root:{ margin: '8px 0' }
+					}}
+				/>
                 <div
                     style={{ paddingBottom: '4px' }}
                 >

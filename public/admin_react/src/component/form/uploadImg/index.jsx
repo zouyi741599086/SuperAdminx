@@ -64,9 +64,9 @@ export default ({ value, onChange, width = 0, height = 0, UploadButton = null, .
     }
 
     /////////////////////////预览图片开关/////////////
-    const [previewVisible, setPreviewVisible] = useState(false);
-    const previewVisibleChange = () => {
-        setPreviewVisible(!previewVisible);
+    const [openVisible, setOpenVisible] = useState(false);
+    const previewOpenChange = () => {
+        setOpenVisible(!openVisible);
     }
 
     /////////////////////////上传前验证////////////////////
@@ -88,11 +88,13 @@ export default ({ value, onChange, width = 0, height = 0, UploadButton = null, .
         <>
             {value ? <>
                 <Card
-                    className="uploaddan-img"
+					classNames={{
+						root: "uploaddan-img"
+					}}
                     size="small"
-                    styles={{
-                        body: { padding: 8 }
-                    }}
+					styles={{
+						body: {padding: 8}
+					}}
                 >
                     <div className="bg">
                         <Image
@@ -100,13 +102,13 @@ export default ({ value, onChange, width = 0, height = 0, UploadButton = null, .
                             width='100%'
                             height='100%'
                             preview={{
-                                visible: previewVisible,
-                                onVisibleChange: previewVisibleChange,
+                                open: openVisible,
+                                onOpenChange: previewOpenChange,
                             }}
                         />
                         <div className="hover">
                             <div>
-                                <Button type="text" size="small" onClick={previewVisibleChange}>
+                                <Button type="text" size="small" onClick={previewOpenChange}>
                                     <EyeOutlined className="icon" />
                                 </Button>
                                 <Button type="text" size="small" onClick={remove}>

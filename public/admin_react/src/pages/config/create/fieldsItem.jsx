@@ -81,8 +81,12 @@ const FieldsItem = ({ data, delFields, setUpdateData, createFields, fields, setF
         <Card
             title={`${data.valueTypeTitle} ${data.valueType != 'group' && data.valueType != 'formList' ? data.name : ''}`}
             size="small"
-            style={style}
-            className={isDragging ? 'dragon' : ''}
+			styles={{
+				root: style
+			}}
+            className={{
+				root: isDragging ? 'dragon' : ''
+			}}
             ref={setNodeRef}
             {...attributes}
             {...listeners}

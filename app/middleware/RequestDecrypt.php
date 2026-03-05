@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace app\middleware;
 
 use Webman\MiddlewareInterface;
@@ -9,8 +10,8 @@ use app\utils\DataEncryptorUtils;
 /**
  * 请求数据加解密
  * 
- * @author zy <741599086@qq.com>
- * @link https://www.superadminx.com/
+ * @author zy <xxxxx@qq.com>
+ * @link https://www.xxxxxxxx.com/
  */
 class RequestDecrypt implements MiddlewareInterface
 {
@@ -30,13 +31,17 @@ class RequestDecrypt implements MiddlewareInterface
 
                 if ($request->get()) {
                     $data = DataEncryptorUtils::aesDecrypt($request->get('encrypt_data'), $request->aes_key, $request->aes_iv);
-                    $request->setGet(array_merge($request->get(), $data));
+                    $data = array_merge($request->get(), $data);
+                    unset($data['encrypt_data']);
+                    $request->setGet($data);
                 }
                 if ($request->post()) {
                     $data = DataEncryptorUtils::aesDecrypt($request->post('encrypt_data'), $request->aes_key, $request->aes_iv);
-                    $request->setPost(array_merge($request->post(), $data));
+                    $data = array_merge($request->post(), $data);
+                    unset($data['encrypt_data']);
+                    $request->setPost($data);
                 }
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 abort("数据解密失败：{$e->getMessage()}");
             }
         }

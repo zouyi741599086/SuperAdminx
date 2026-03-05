@@ -6,13 +6,11 @@ import { App, Form, Input, Modal } from 'antd';
 import { useBoolean } from 'ahooks'
 import { adminUserApi } from '@/api/adminUser';
 import { storage } from '@/common/function'
-import { useSnapshot } from 'valtio';
 import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
 import { useNavigate } from 'react-router-dom';
 
 export default () => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);
-    const adminUser = useSnapshot(adminUserStore);
     const [submitLoading, setSubmitLoading] = useState(false);
     const [form] = Form.useForm();
     const { message } = App.useApp();

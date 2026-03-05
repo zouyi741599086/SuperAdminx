@@ -152,12 +152,15 @@ export default ({ placement = 'top' }) => {
             <Drawer
                 title="主题设置"
                 placement="right"
-                width={300}
+                size={300}
                 onClose={toggleOpen}
                 open={open}
             >
-                <Space direction="vertical" size='large'>
-                    <Alert message="设置只保存在浏览器中，当更换浏览器后所有设置都将失效恢复到默认~" type="warning" />
+				<Space 
+					orientation="vertical"
+					size="large"
+				>
+                    <Alert title="设置只保存在浏览器中，当更换浏览器后所有设置都将失效恢复到默认~" type="warning" />
                     <div>
                         <Text>整体风格</Text>
                         <ul className="theme-set-ul">

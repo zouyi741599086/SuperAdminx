@@ -15,6 +15,7 @@ import Lazyload from '@/component/lazyLoad/index';
 const Message = lazy(() => import('./../component/message'));
 const ScreenFull = lazy(() => import('./../component/screenFull'));
 const SearchMenu = lazy(() => import('./../component/searchMenu'));
+const ClearCache = lazy(() => import('./../component/clearCache'));
 const LayoutSetting = lazy(() => import('./../component/layoutSetting'));
 const UserInfo = lazy(() => import('./../component/userInfo'));
 const Menu = lazy(() => import('./../component/menu'));
@@ -79,6 +80,7 @@ export default () => {
                             {/**pc端才显示 */}
                             {layoutSetting.isMobile === false ? (
                                 <>
+                                    <ClearCache />
                                     <ScreenFull />
                                     <LayoutSetting />
                                 </>

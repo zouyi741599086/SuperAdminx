@@ -1,0 +1,33 @@
+<?php
+    // delete方法
+    if (in_array('delete', $logicFunctions)) {
+        echo "
+    /**
+     * 删除
+     * @param int|array \$id 要删除的id
+     */
+    public function delete(int|array \$id)
+    {
+        {$data['model']['file_name']}::destroy(\$id);";
+
+        // 是否有全表缓存
+        if (isset($data['logic']['logic_type']) && $data['logic']['logic_type'] == 2) {
+
+            echo "
+
+        Cache::delete(\"{$tableNameToCamelCase}\");
+        if (is_array(\$id)) {
+            foreach (\$id as \$v) {
+                Cache::delete(\"{$tableNameToCamelCase}{\$v}\");
+            } 
+        } else {
+            Cache::delete(\"{$tableNameToCamelCase}{\$id}\");
+        }";
+
+        }
+
+    echo "
+    }\n";
+
+    }
+?>

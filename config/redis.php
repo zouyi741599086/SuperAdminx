@@ -14,17 +14,32 @@
 
 return [
     'default' => [
-        'password' => '',
-        'host' => '127.0.0.1',
-        'port' => 6379,
+        'password' => getenv('REDIS_PASSWORD', ''),
+        'host'     => getenv('REDIS_HOST'),
+        'port'     => getenv('REDIS_PORT'),
         'database' => 0,
         // Connection pool, supports only Swoole or Swow drivers.
-        'pool' => [
-            'max_connections' => 5,
-            'min_connections' => 1,
-            'wait_timeout' => 3,
-            'idle_timeout' => 60,
+        'pool'     => [
+            'max_connections'    => 100,
+            'min_connections'    => 1,
+            'wait_timeout'       => 3,
+            'idle_timeout'       => 60,
             'heartbeat_interval' => 50,
         ],
-    ]
+    ],
+    // 限流器
+    'limiter' => [
+        'password' => getenv('REDIS_PASSWORD', ''),
+        'host'     => getenv('REDIS_HOST'),
+        'port'     => getenv('REDIS_PORT'),
+        'database' => 1,
+        // Connection pool, supports only Swoole or Swow drivers.
+        'pool'     => [
+            'max_connections'    => 50,
+            'min_connections'    => 1,
+            'wait_timeout'       => 3,
+            'idle_timeout'       => 60,
+            'heartbeat_interval' => 50,
+        ],
+    ],
 ];

@@ -3,7 +3,7 @@ namespace plugin\user\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\user\app\common\logic\UserLogic;
+use plugin\user\app\common\service\UserService;
 
 /**
  * 用户 控制器
@@ -21,6 +21,10 @@ class User
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private UserService $userService,
+    ) {}
+
     /**
      * 列表
      * @method get
@@ -28,9 +32,9 @@ class User
      * @param Request $request 
      * @return Response
      */
-    public function getList(Request $request): Response
+    public function getList(Request $request) : Response
     {
-        $list = UserLogic::getList($request->get());
+        $list = $this->userService->getList($request->get());
         return success($list);
     }
 
@@ -40,9 +44,9 @@ class User
      * @param int $id 
      * @return Response
      */
-    public function findData(int $id): Response
+    public function findData(int $id) : Response
     {
-        $data = UserLogic::findData($id);
+        $data = $this->userService->findData($id);
         return success($data);
     }
 
@@ -53,9 +57,10 @@ class User
      * @param Request $request 
      * @return Response
      */
-    public function create(Request $request): Response
+    public function create(Request $request) : Response
     {
-        UserLogic::create($request->post());
+
+        $this->userService->create($request->post());
         return success([], '添加成功');
     }
 
@@ -66,9 +71,9 @@ class User
      * @param Request $request 
      * @return Response
      */
-    public function update(Request $request): Response
+    public function update(Request $request) : Response
     {
-        UserLogic::update($request->post());
+        $this->userService->update($request->post());
         return success([], '修改成功');
     }
 
@@ -82,19 +87,19 @@ class User
     public function updateStatus(Request $request) : Response
     {
         $params = $request->post();
-        UserLogic::updateStatus($params['id'], $params['status']);
+        $this->userService->updateStatus($params['id'], $params['status']);
         return success([], '操作成功');
     }
 
     /**
      * 搜索选择某条数据
      * @method get
-	 * @param Request $request 
+     * @param Request $request 
      * @return Response
      */
-    public function selectUser(Request $request): Response
+    public function selectUser(Request $request) : Response
     {
-        $list = UserLogic::selectUser($request->get());
+        $list = $this->userService->selectUser($request->get());
         return success($list);
     }
 
@@ -105,9 +110,9 @@ class User
      * @param Request $request 
      * @return Response
      */
-    public function exportData(Request $request): Response
+    public function exportData(Request $request) : Response
     {
-        $data = UserLogic::exportData($request->get());
+        $data = $this->userService->exportData($request->get());
         return success($data);
     }
 
@@ -117,9 +122,9 @@ class User
      * @param Request $request 
      * @return Response
      */
-    public function invitations(Request $request): Response
+    public function invitations(Request $request) : Response
     {
-        $data = UserLogic::invitations($request->get());
+        $data = $this->userService->invitations($request->get());
         return success($data);
     }
 
@@ -132,8 +137,8 @@ class User
      */
     public function selectPidPathUser(Request $request, int $id) : Response
     {
-        $list = UserLogic::selectPidPathUser($id);
-        return success($list);
+        $list = $this->userService->getPidUser($id, true);
+        return success(array_reverse($list));
     }
 
 }

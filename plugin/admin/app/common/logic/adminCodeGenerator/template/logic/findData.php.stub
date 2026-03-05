@@ -1,0 +1,34 @@
+<?php
+    // findData方法
+    if (in_array('findData', $logicFunctions)) {
+        echo "
+    /**
+     * 获取数据
+     * @param int \$id 数据id
+     * @param array \$with 关联数据
+     */
+    public function findData(int \$id, array \$with = [])
+    {";
+        // 是否缓存数据
+        if (isset($data['logic']['logic_type']) && $data['logic']['logic_type'] == 2) {
+
+            echo "
+        \$data = Cache::get(\"{$tableNameToCamelCase}{\$id}\");
+        if (is_null(\$data)) {
+            \$data = {$data['model']['file_name']}::with(\$with)->find(\$id);
+			Cache::set(\"{$tableNameToCamelCase}{\$id}\", \$data, 86400);
+        }
+        return \$data;";
+
+        } else {
+
+            echo "
+        return {$data['model']['file_name']}::with(\$with)->find(\$id);";
+
+        }
+
+    echo "
+    }\n";
+
+    }
+?>

@@ -1,6 +1,7 @@
 <?php
 
-use plugin\admin\app\common\logic\ConfigLogic;
+use plugin\admin\app\common\logic\config\ConfigQueryLogic;
+use app\utils\ArrayObjectAccessUtils;
 
 /**
  * Here is your custom functions.
@@ -11,9 +12,9 @@ use plugin\admin\app\common\logic\ConfigLogic;
  * @param string $name
  * @param string $resultType object|array
  * @throws \Exception
- * @return array
+ * @return array|ArrayObjectAccessUtils
  */
-function get_config(string $name, string $resultType = 'object') : array
+function get_config(string $name, string $resultType = 'object') : array|ArrayObjectAccessUtils
 {
-    return ConfigLogic::getConfig($name, $resultType);
+    return (new ConfigQueryLogic())->getConfig($name, $resultType);
 }

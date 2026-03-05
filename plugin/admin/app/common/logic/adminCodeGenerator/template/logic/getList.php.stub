@@ -1,0 +1,66 @@
+<?php
+    // getList方法
+    if (in_array('getList', $logicFunctions)) {
+        // 常规方法
+        if (isset($data['logic']['logic_type']) && $data['logic']['logic_type'] == 1) {
+    echo "
+    /**
+     * 列表
+     * @param array \$params get参数
+     * @param array \$with 关联
+     * @param array \$withCount 关联统计
+     * @param bool \$page 是否分页
+     * */
+    public function getList(array \$params = [], array \$with = [], array \$withCount = [], bool \$page = true)
+    {";
+        // 如果有搜索
+        if (isset($data['model']['search']) && is_array($data['model']['search'])) {
+                $searchFields = implode("', '", array_keys($data['model']['search']));
+        echo "
+        \$list = {$data['model']['file_name']}::withSearch(
+            ['{$searchFields}'], 
+            \$params,
+            true
+        )";
+        } else {
+        echo "
+        \$list = {$data['model']['file_name']}::withoutField('')\n";
+        }
+
+        echo "
+            //->withoutField([])
+            ->with(\$with)
+            ->with(\$withCount)
+            ->when(true, function (\$query) use (\$params)
+            {
+                //\$orderBy = \"sort desc,id desc\";
+                \$orderBy = \"id desc\";
+                \$orderBy = get_admin_order_by('id desc', \$params);
+                \$query->order(\$orderBy);
+            });
+
+        return \$page ? \$list->paginate(\$params['pageSize'] ?? 20) : \$list;
+    }\n";
+        }
+
+        // 全表缓存
+        if (isset($data['logic']['logic_type']) && $data['logic']['logic_type'] == 2) {
+
+    echo "
+    /**
+     * 列表
+     * */
+    public function getList()
+    {
+        \$list = Cache::get('{$tableNameToCamelCase}');
+        if (is_null(\$list)) {
+            \$list = {$data['model']['file_name']}::order('{$orderBy}')
+                ->select()
+                ->toArray();
+			Cache::set('{$tableNameToCamelCase}', \$list, 86400);
+        }
+        return \$list;
+    }\n";   
+        }
+    }
+?>

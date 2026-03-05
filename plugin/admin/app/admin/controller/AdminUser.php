@@ -3,7 +3,7 @@ namespace plugin\admin\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\admin\app\common\logic\AdminUserLogic;
+use plugin\admin\app\common\service\AdminUserService;
 
 /**
  * 管理用户
@@ -20,6 +20,10 @@ class AdminUser
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private AdminUserService $adminUserService,
+    ) {}
+
     /**
      * 获取列表
      * @method get
@@ -27,9 +31,9 @@ class AdminUser
      * @param Request $request 
      * @return Response
      */
-    public function getList(Request $request): Response
+    public function getList(Request $request) : Response
     {
-        $list = AdminUserLogic::getList($request->get());
+        $list = $this->adminUserService->getList($request->get());
         return success($list);
     }
 
@@ -40,9 +44,9 @@ class AdminUser
      * @param Request $request 
      * @return Response
      */
-    public function create(Request $request): Response
+    public function create(Request $request) : Response
     {
-        AdminUserLogic::create($request->post());
+        $this->adminUserService->create($request->post());
         return success([], '添加成功');
     }
 
@@ -53,9 +57,9 @@ class AdminUser
      * @param Request $request 
      * @return Response
      */
-    public function update(Request $request): Response
+    public function update(Request $request) : Response
     {
-        AdminUserLogic::udpate($request->post());
+        $this->adminUserService->udpate($request->post());
         return success([], '修改成功');
     }
 
@@ -65,9 +69,9 @@ class AdminUser
      * @param Request $request 
      * @return Response
      */
-    public function findData(Request $request): Response
+    public function findData(Request $request) : Response
     {
-        $data = AdminUserLogic::findData($request->get('id'));
+        $data = $this->adminUserService->findData($request->get('id'));
         return success($data);
     }
 
@@ -78,9 +82,9 @@ class AdminUser
      * @param Request $request 
      * @return Response
      */
-    public function delete(Request $request): Response
+    public function delete(Request $request) : Response
     {
-        AdminUserLogic::delete($request->post('id'), $request->adminUser->id);
+        $this->adminUserService->delete($request->post('id'), $request->adminUser->id);
         return success([], '删除成功');
     }
 
@@ -91,9 +95,9 @@ class AdminUser
      * @param Request $request 
      * @return Response
      */
-    public function updateStatus(Request $request): Response
+    public function updateStatus(Request $request) : Response
     {
-        AdminUserLogic::updateStatus($request->post());
+        $this->adminUserService->updateStatus($request->post());
         return success([], '操作成功');
     }
 
@@ -103,9 +107,9 @@ class AdminUser
      * @param Request $request 
      * @return Response
      */
-    public function updatePassword(Request $request): Response
+    public function updatePassword(Request $request) : Response
     {
-        AdminUserLogic::updatePassword($request->post(), $request->adminUser->id);
+        $this->adminUserService->updatePassword($request->post(), $request->adminUser->id);
         return success([], '修改成功，请重新登录');
     }
 
@@ -115,9 +119,9 @@ class AdminUser
      * @param Request $request 
      * @return Response
      */
-    public function getAdminUser(Request $request): Response
+    public function getAdminUser(Request $request) : Response
     {
-        $data = AdminUserLogic::getAdminUser($request->adminUser->id);
+        $data = $this->adminUserService->getAdminUser($request->adminUser->id);
         return success($data);
     }
 
@@ -127,9 +131,9 @@ class AdminUser
      * @param Request $request 
      * @return Response
      */
-    public function updateInfo(Request $request): Response
+    public function updateInfo(Request $request) : Response
     {
-        AdminUserLogic::updateInfo($request->post(), $request->adminUser->id);
+        $this->adminUserService->updateInfo($request->post(), $request->adminUser->id);
         return success([], '修改成功');
     }
 }

@@ -1,0 +1,15 @@
+<?php
+    // update方法
+    if (in_array('update', $serviceFunction)) {
+        echo "
+    /**
+     * 更新
+     * @param array \$params
+     */
+    public function update(array \$params)
+    {
+        \$this->{$tableNameToCamelCaseLower}ExecuteLogic->update(\$params);
+    }\n";
+
+    }
+?>

@@ -123,15 +123,23 @@ export default ({ value, onChange }) => {
             </Row>
 
             <Modal open={open} title='选择位置' width={800} onOk={confirmChange} onCancel={() => setOpen(false)}>
-                <Space direction='vertical' style={{ width: '100%' }} size='middle'>
-                    <Alert message='直接点击地图，设置位置~' type='info' show-icon />
+				<Space 
+					orientation="vertical"
+					size="middle"
+					styles={{ 
+						root: {width: '100%'}
+					}}
+				>
+                    <Alert title='直接点击地图，设置位置~' type='info' show-icon />
                     <div className='rowSearch'>
                         <Select
                             showSearch
                             allowClear
                             value={searchKeywords}
                             placeholder='请输入地址搜索'
-                            style={{ width: '100%' }}
+                            styles={{
+								root: { width: '100%'}
+							}}
                             filterOption={false}
                             onSearch={setSearchKeywords}
                             onChange={selectOnChange}

@@ -22,8 +22,8 @@ export default ({ pidPathUserId, setPidPathUserId, ...props }) => {
                 let _list = [];
                 res.data.map((item, index) => {
                     _list.push({
-                        dot: <Badge count={index + 1} color="#faad14" size="small" />,
-                        children: <>
+                        icon: <Badge count={index + 1} color="#faad14" size="small" />,
+                        content: <>
                             <div style={{ display: 'flex' }}>
                                 <div style={{ flex: 1 ,display: 'flex'}}>
                                     <Avatar
@@ -69,12 +69,14 @@ export default ({ pidPathUserId, setPidPathUserId, ...props }) => {
                 }}
             >
                 <Timeline
-                    style={{
-                        marginTop: 24,
-                        maxHeight: 500,
-                        overflowY: 'auto',
-                        padding: '10px'
-                    }}
+                    styles={{
+						root: {
+                        	marginTop: 24,
+                        	maxHeight: 500,
+                        	overflowY: 'auto',
+                        	padding: '10px'
+                    	}
+					}}
                     items={list}
                 />
             </Modal>

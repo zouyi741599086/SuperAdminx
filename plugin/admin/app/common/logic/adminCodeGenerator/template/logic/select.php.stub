@@ -1,0 +1,42 @@
+<?php
+    // 搜索选择某条数据
+    if (in_array('select', $logicFunctions)) {
+        echo "
+    /**
+     * 搜索选择某条数据
+     * @param array \$params 
+     */
+    public function select{$tableNameToCamelCase}(array \$params)
+    {";
+        // 排序
+        $order = 'id desc';
+        // 从表中读所有字段，判断是否有title、name、tel这三个字段，然后生成只搜索这三个字段
+        $tmpFields = [];
+        foreach ($tableColumn as $v) {
+            if (in_array($v['Field'], ['title','name','tel'])) {
+                $tmpFields[] = $v['Field'];
+            }
+            if ($v['Field'] == 'sort') {
+                $order = 'sort desc,id desc';
+            }
+        }
+        $tmpSearchFields = implode('|', $tmpFields);
+        $tmpSelectFields = implode(',', $tmpFields);
+        echo "
+        \$params['pageSize'] = \$params['pageSize'] ?? 20;
+        return {$data['model']['file_name']}::field('id,{$tmpSelectFields}')
+            ->when(isset(\$params['keywords']) && \$params['keywords'], function (\$query) use (\$params)
+            {
+                \$query->where('{$tmpSearchFields}', 'like', \"%{\$params['keywords']}%\");
+            })
+            ->when(true, function (\$query) use (&\$params)
+            {
+                \$orderBy = '{$order}';
+                \$orderBy = get_select_order_by(\$orderBy, \$params);
+                \$query->orderRaw(\$orderBy);
+            })
+            ->paginate(\$params['pageSize']);
+    }\n";
+
+    }
+?>

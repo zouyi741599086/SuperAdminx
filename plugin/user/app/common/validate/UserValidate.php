@@ -14,20 +14,15 @@ class UserValidate extends Validate
 
     // 验证规则
     protected $rule = [
-        'name|姓名'               => 'require',
-        'tel|手机号'               => 'require|mobile|unique:User',
-
-        'password|密码'           => 'require|min:6',
-        'new_password|新密码'      => 'require|min:6',
-        'confirm_password|再次输入' => 'require|min:6',
+        'name' => 'require',
+        'tel'  => 'require|mobile|unique:User',
     ];
 
-    // 验证场景
-    protected $scene = [
-        // 添加
-        'create'          => ['name', 'tel'],
-        // 修改密码
-        'update_password' => ['password', 'new_password', 'confirm_password'],
+    protected $message = [
+        'name.require' => '请输入姓名',
+        'tel.require'  => '请输入手机号',
+        'tel.mobile'   => '手机号格式错误',
+        'tel.unique'   => '手机号已存在',
     ];
 
 }

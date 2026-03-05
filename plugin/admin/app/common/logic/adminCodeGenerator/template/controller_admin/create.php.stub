@@ -1,0 +1,25 @@
+<?php
+    // create方法
+    if (isset($data['controller_admin']['functions']) && in_array('create', $data['controller_admin']['functions'])) {
+        // 接口权限
+        $auth = '';
+        if (isset($data['controller_admin']['functions_auth']) && in_array('create', $data['controller_admin']['functions_auth'])) {
+            $authName = $authPrefix. 'Create';
+            $auth = "\n     * @auth {$authName}";
+        }
+
+        echo "
+    /**
+     * @log 新增{$data['table_title']}
+     * @method post{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function create(Request \$request): Response
+    {
+        {$serviceMethodPrefix}create(\$request->post());
+        return success([], '添加成功');
+    }\n";
+
+    }
+?>

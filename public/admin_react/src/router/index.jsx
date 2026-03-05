@@ -14,7 +14,7 @@ const RequireAuth = (props) => {
     const adminUser = useSnapshot(adminUserStore);
     let adminUserToken = storage.get(`adminUserToken`) || sessionStorage.getItem(`adminUserToken`) || null;
     return <>
-        {!adminUser?.id || !adminUserToken ? <Navigate to="/login" replace={true} /> : <Layout /> }
+        {!adminUser?.id || !adminUserToken ? <Navigate to="/login" replace={true} /> : <Layout />}
     </>
 }
 
@@ -51,5 +51,10 @@ export const router = [
                 title: '404',
             },
         ]
+    },
+    {
+        path: '*',
+        element: <Navigate to="/login" />,
+        title: '登录',
     },
 ];

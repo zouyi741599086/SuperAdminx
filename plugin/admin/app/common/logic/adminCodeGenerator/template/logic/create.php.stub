@@ -1,0 +1,42 @@
+<?php
+    // create方法
+    if (in_array('create', $logicFunctions)) {
+        // 是否有该方法的验证场景
+        $scenes = '';
+        if (isset($data['validate']['scenes']) && is_array($data['validate']['scenes'])) {
+            foreach ($data['validate']['scenes'] as $key => $value) {
+                if ($value['name'] == 'create') {
+                    $scenes = "->scene('create')";
+                }
+            }
+        }
+
+        echo "
+    /**
+     * 新增
+     * @param array \$params
+     */
+    public function create(array \$params)
+    {
+        Db::startTrans();
+        try {
+            think_validate({$data['validate']['file_name']}::class){$scenes}->check(\$params);
+
+            {$data['model']['file_name']}::create(\$params);";
+        
+            // 是否有全局缓存
+            if (isset($data['logic']['logic_type']) && $data['logic']['logic_type'] == 2) {
+                echo "
+            Cache::delete(\"{$tableNameToCamelCase}\");";
+            }
+
+            echo "
+            Db::commit();
+        } catch (\Throwable \$e) {
+            Db::rollback();
+            abort(\$e->getMessage());
+        }
+    }\n";
+
+    }
+?>

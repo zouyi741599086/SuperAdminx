@@ -101,7 +101,7 @@ class BaseModel extends Model
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
         return $fileUrl;

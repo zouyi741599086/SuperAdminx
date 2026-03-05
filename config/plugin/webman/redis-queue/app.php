@@ -1,4 +1,4 @@
 <?php
 return [
-    'enable' => false,
+    'enable' => getenv('DE_BUG') == 'false' ? true : false,
 ];

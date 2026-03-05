@@ -1,0 +1,26 @@
+<?php
+    // 生成控制器其它方法
+    if (isset($data['controller_admin']['other_functions']) && is_array($data['controller_admin']['other_functions'])) {
+        foreach ($data['controller_admin']['other_functions'] as $key => $value) {
+            // 接口权限
+            $auth = '';
+            if (isset($value['auth_id'])) {
+                $auth = "\n     * @auth {$value['auth_id']}";
+            }
+            
+            echo "
+    /**
+     * @log {$value['title']}
+     * @method {$value['method']}{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function {$value['name']}(Request \$request): Response
+    {
+        \$data = {$serviceMethodPrefix}{$value['name']}(\$request->{$value['method']}());
+        return success(\$data);
+    }\n";
+
+        }
+    }
+?>

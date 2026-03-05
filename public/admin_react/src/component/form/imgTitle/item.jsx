@@ -27,12 +27,14 @@ export default ({ data, preview, remove }) => {
             key={data.uid}
             size="small"
             styles={{
+				root: style
                 body: {padding: 8}
             }}
-            style={style}
             ref={setNodeRef}
             hoverable={isDragging}
-            className={isDragging ? 'dragon imgTitle-img' : 'imgTitle-img'}
+			classNames={{
+				root: isDragging ? 'dragon imgTitle-img' : 'imgTitle-img'
+			}}
             {...attributes}
             {...listeners}
         >

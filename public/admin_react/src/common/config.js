@@ -4,7 +4,7 @@ export const config = {
     // 项目的url
     url: import.meta.env.VITE_APP_BASE_URL,
     // 项目名称，显示登录页及登录后左上角
-    projectName: 'SuperAdminx后台开发框架',
+    projectName: 'SuperAdminx后台管理系统',
     // 公司名称，显示在页脚
     company: 'SuperAdminx',
     icp: '渝ICP备xxxxxxxxxx号',
@@ -15,13 +15,13 @@ export const config = {
         // 开关
         enable: import.meta.env.VITE_APP_DEBUG === 'true' ? false : true,
         rsa_public: `-----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqNoRA7DlwWAp5N3Ax5eb
-    vt2ixWPaYOZXU+cprnubb75zoCbyks9zajuYPeSLUHF/jeg11aMcm/VC2URT/lpN
-    0PbdhvjASPhVw5Sr//TSfZpXWzAcVvbT/6i+vaQ3tUdXtstL9kG59bUUgAP2geYz
-    FVNSHHLwxDiuX+Cve6nXPY2hD01KQ5VqSmD5k8Lm3OrxU7FzCCipGT8DfPJrRMU+
-    T+UrESQOKK1Y96Q274z0XI6tM29f76lBX/uUooodMn8OufBaah/+yb3FCq3bydIn
-    vUgn2HeTk8+vv9uVLZKXcyIHQNTGOk/fUZFLxx88k1Pnkh37EKA6cb4hzB6FGBMa
-    PwIDAQAB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtRjX81sJAu8pyN4IQyXo
+    9WE5GYevieBcTiDhGTknKCGMH3sOrdFkj5RwNFzsH5cy//5Otutj4rarHebv5CUo
+    XfyBlDwCeyO1ampnZPUEJP50XW54eER5+NH+BFlGxMJJRhuWe9RXRmjdI6iq5trD
+    Clr2MrAvFY1e8whjPSka9KXDOdK68bH52goy0bWwDBPWS+8p+f3Le9j82L9sdz2A
+    cyoBkwMykgAV80QuE5TTFAwk3ERZf0Koj4QJMYrAEz3qc3B7mAVtbWjUWW7/EhnU
+    i2NbsBkUh/n6ftxT86X+g7+nBDSCKGJ+o2z/e3cEc1GZa6pyNUYEt2dsaYad+0vf
+    NwIDAQAB
     -----END PUBLIC KEY-----`,
     },
     // 腾讯地图apiKey，form里面的的腾讯经纬度字段组件需要使用

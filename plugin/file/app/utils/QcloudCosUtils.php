@@ -88,7 +88,7 @@ class QcloudCosUtils
             if ($deleteFile) {
                 @unlink("./public/{$filePath}");
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
         // oss权限公共读
@@ -121,7 +121,7 @@ class QcloudCosUtils
                     'ResumableTaskFile' => 'tmp.cosresumabletask' //断点文件信息路径，默认为<localpath>.cosresumabletask
                 ]
             );
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }
@@ -145,7 +145,7 @@ class QcloudCosUtils
 
             self::initOssClient()->deleteObject($params);
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }
@@ -172,7 +172,7 @@ class QcloudCosUtils
             }
             // 生成签名URL。
             return self::initOssClient()->getObjectUrl(config('plugin.file.superadminx.file_system.qcloud.bucket'), $object, $timeout);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }
@@ -246,7 +246,7 @@ class QcloudCosUtils
                     $version_id
                 );
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }

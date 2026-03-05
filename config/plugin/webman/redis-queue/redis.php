@@ -1,10 +1,10 @@
 <?php
 return [
     'default' => [
-        'host' => 'redis://127.0.0.1:6379',
+        'host' => 'redis://' . getenv('REDIS_HOST') . ':' . getenv('REDIS_PORT'),
         'options' => [
-            'auth' => '123456',       // 密码，字符串类型，可选参数
-            'db' => 1,            // 数据库
+            'auth' => getenv('REDIS_PASSWORD', ''),       // 密码，字符串类型，可选参数
+            'db' => 2,            // 数据库
             'prefix' => '',       // key 前缀
             'max_attempts'  => 5, // 消费失败后，重试次数
             'retry_seconds' => 5, // 重试间隔，单位秒

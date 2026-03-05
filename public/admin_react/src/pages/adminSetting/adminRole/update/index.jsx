@@ -15,28 +15,29 @@ const Form1 = lazy(() => import('./../component/form1'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default (props) => {
+export default ({ tableReload, updateId, setUpdateId, ...props }) => {
     const formRef = useRef();
-    const { message } = App.useApp();
-    const [open, setOpen] = useState(false);
+    const open = updateId > 0;
+
+    const handleOpenChange = (_boolean) => {
+        if (!_boolean) {
+            Promise.resolve().then(() => {
+                setUpdateId(0);
+            });
+        }
+    };
 
     useUpdateEffect(() => {
-        if (props.updateId > 0) {
-            setOpen(true);
+        if (updateId > 0) {
+            formRef.current?.resetFields?.();
         }
-    }, [props.updateId])
+    }, [updateId]);
 
     return (
         <ModalForm
             formRef={formRef}
             open={open}
-            onOpenChange={(_boolean) => {
-                setOpen(_boolean);
-                // 关闭的时候干掉updateId，不然无法重复修改同一条数据
-                if (_boolean === false) {
-                    props.setUpdateId(0);
-                }
-            }}
+            onOpenChange={handleOpenChange}
             title="修改角色"
             width={460}
             // 第一个输入框获取焦点

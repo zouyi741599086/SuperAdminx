@@ -2,6 +2,7 @@
 namespace app\utils;
 
 use Yansongda\Pay\Pay;
+use support\Log;
 
 /**
  * 支付
@@ -18,7 +19,7 @@ class PayUtils
     {
         $this->setConfig($notify_url);
     }
-    
+
     /**
      * 注入配置
      * @param string $notify_url 回调地址 如/api/Pay/notify
@@ -30,26 +31,26 @@ class PayUtils
             'alipay' => [
                 'default' => [
                     // 必填-支付宝分配的 app_id
-                    'app_id'                  => '',
+                    'app_id'                  => config('superadminx.alipay.app_id'),
                     // 必填-应用私钥 字符串或路径
                     // 在 https://open.alipay.com/develop/manage 《应用详情->开发设置->接口加签方式》中设置
-                    'app_secret_cert'         => '',
+                    'app_secret_cert'         => config('superadminx.alipay.app_secret_cert'),
                     // 必填-应用公钥证书 路径
                     // 设置应用私钥后，即可下载得到以下3个证书
-                    'app_public_cert_path'    => '',
+                    'app_public_cert_path'    => config('superadminx.alipay.app_public_cert_path'),
                     // 必填-支付宝公钥证书 路径
-                    'alipay_public_cert_path' => '',
+                    'alipay_public_cert_path' => config('superadminx.alipay.alipay_public_cert_path'),
                     // 必填-支付宝根证书 路径
-                    'alipay_root_cert_path'   => '',
+                    'alipay_root_cert_path'   => config('superadminx.alipay.alipay_root_cert_path'),
                     'return_url'              => '',
-                    'notify_url'              => '',
+                    'notify_url'              => config('superadminx.url') . $notify_url,
                     // 选填-第三方应用授权token
                     'app_auth_token'          => '',
                     // 选填-服务商模式下的服务商 id，当 mode 为 Pay::MODE_SERVICE 时使用该参数
                     'service_provider_id'     => '',
                     // 选填-默认为正常模式。可选为： MODE_NORMAL, MODE_SANDBOX, MODE_SERVICE
                     'mode'                    => Pay::MODE_NORMAL,
-                ]
+                ],
             ],
             'wechat' => [
                 'default' => [
@@ -74,11 +75,11 @@ class PayUtils
                     'notify_url'              => config('superadminx.url') . $notify_url,
                     // 选填-公众号 的 app_id
                     // 可在 mp.weixin.qq.com 设置与开发->基本配置->开发者ID(AppID) 查看
-                    'mp_app_id'               => '',
+                    'mp_app_id'               => config('superadminx.wechat_gongzhonghao.AppID'),
                     // 选填-小程序 的 app_id
                     'mini_app_id'             => config('superadminx.wechat_xiaochengxu.AppID'),
                     // 选填-app 的 app_id
-                    'app_id'                  => '',
+                    'app_id'                  => config('superadminx.wechat_app.AppID'),
                     // 选填-合单 app_id
                     'combine_app_id'          => '',
                     // 选填-合单商户号 
@@ -92,12 +93,10 @@ class PayUtils
                     // 选填-服务商模式下，子商户id
                     'sub_mch_id'              => '',
                     // 选填-微信平台公钥证书路径, optional，强烈建议 php-fpm 模式下配置此参数
-                    'wechat_public_cert_path' => [
-                        //'45F59D4DABF31918AFCEC556D5D2C6E376675D57' => __DIR__.'/Cert/wechatPublicKey.crt',
-                    ],
+                    'wechat_public_cert_path' => config('superadminx.wechat_pay.wechat_public_cert_path'),
                     // 选填-默认为正常模式。可选为： MODE_NORMAL, MODE_SERVICE
                     'mode'                    => Pay::MODE_NORMAL,
-                ]
+                ],
             ],
             'unipay' => [
                 'default' => [
@@ -135,37 +134,83 @@ class PayUtils
     //////////////////////////////////////////////////////////////////
 
     /**
-     * 发起微信小程序支付
-     * @param array $data
-     * $data = [
-     *       'out_trade_no' => 'E20241212021244esdfw',
-     *       'description'  => '商城订单支付',
-     *       'attach'       => a=1&b=2,
-     *       'amount'       => [
-     *           'total'    => 1,
-     *           'currency' => 'CNY',
-     *       ],
-     *       'payer'        => [
-     *           'openid' => 'dsfs454f5s54ew54f5s',
-     *      ],
-     *   ];
-     * @return \Yansongda\Artful\Rocket|\Yansongda\Supports\Collection
+     * 微信支付
+     * @param array $params
+     * @param string $paySource 支付方式，mp》公众号，app》app支付，h5》h5支付，mini》微信小程序
      */
-    public function wechatMiniPay(array $data)
+    public function wechatPay(array $params, string $paySource)
     {
-        // 发起支付
-        return Pay::wechat($this->config)->mini($data);
-    }
+        switch ($paySource) {
+            case 'mp':
+                // $params = [
+                //     'out_trade_no' => 'E20241212021244esdfw',
+                //     'description'  => '商城订单支付',
+                //     'attach'       => 'a=1&b=2', // 自定义参数
+                //     'amount'       => [
+                //         'total'    => 1,
+                //         'currency' => 'CNY',
+                //     ],
+                //     'payer'        => [
+                //         'openid' => 'dsfs454f5s54ew54f5s',
+                //     ],
+                // ];
+                return Pay::wechat($this->config)->mp($params);
+            case 'mini':
+                // $params = [
+                //     'out_trade_no' => 'E20241212021244esdfw',
+                //     'description'  => '商城订单支付',
+                //     'attach'       => 'a=1&b=2', // 自定义参数
+                //     'amount'       => [
+                //         'total'    => 1,
+                //         'currency' => 'CNY',
+                //     ],
+                //     'payer'        => [
+                //         'openid' => 'dsfs454f5s54ew54f5s',
+                //     ],
+                // ];
+                return Pay::wechat($this->config)->mini($params);
+            case 'app':
+                // $params = [
+                //     'out_trade_no' => 'E20241212021244esdfw',
+                //     'description'  => '商城订单支付',
+                //     'attach'       => 'a=1&b=2',
+                //     'amount'       => [
+                //         ' total' => 1,
+                //     ],
+                // ];
+                return Pay::wechat($this->config)->app($params);
+            case 'h5':
+                // $params = [
+                //     'out_trade_no' => 'E20241212021244esdfw',
+                //     'description'  => '商城订单支付',
+                //     'attach'       => 'a=1&b=2', // 自定义参数
+                //     'amount'       => [
+                //         'total'    => 1,
+                //         'currency' => 'CNY',
+                //     ],
+                //     'scene_info'   => [
+                //         'payer_client_ip' => request()->getRealIp(), // ip
+                //         'h5_info'         => [
+                //             'type' => 'Wap',
+                //         ],
+                //     ],
+                // ];
+                return Pay::wechat($this->config)->mp($params);
+            default:
+                throw new \Exception('错误的微信支付方式');
+        }
 
+    }
 
     /**
      * 微信支付回调解密数据
+     * @param ?array $params 回调参数
      * @return array 支付回调解密的参数
      */
-    public function wechatNotify() : array
+    public function wechatNotify(?array $params = null) : array
     {
         try {
-            $result = Pay::wechat($this->config)->callback(request()->post());
+            $result = Pay::wechat($this->config)->callback($params ?: request()->post());
             $result = $result->resource['ciphertext'] ?? [];
 
             if (
@@ -178,7 +223,7 @@ class PayUtils
             } else {
                 throw new \Exception('回调解密失败');
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }
@@ -194,30 +239,144 @@ class PayUtils
     /**
      * 微信退款
      * @param string $transaction_id 微信支付单号
-     * @param float 退款金额，单位：元
-     * @param float 原支付订单交易的订单总金额，单位：元
+     * @param float $refund 退款金额，单位：元
+     * @param float $total 原支付订单交易的订单总金额，单位：元
+     * @return array 退款结果
      */
-    public function wechatRefund(string $transaction_id, float $refund, float $total)
+    public function wechatRefund(string $transaction_id, float $refund, float $total) : array
     {
         try {
-            $order = [
-                'transaction_id' => $transaction_id,
-                'out_refund_no'  => get_order_no(),
-                'amount'         => [
-                    'refund'   => intval($refund * 100), // 退款金额
-                    'total'    => intval($total * 100), // 原支付交易的订单总金额，单位为分
-                    'currency' => 'CNY',
-                ],
-            ];
+            $result = Pay::wechat($this->config)
+                ->refund([
+                    'transaction_id' => $transaction_id,
+                    'out_refund_no'  => get_order_no(),
+                    'amount'         => [
+                        'refund'   => intval(round($refund * 100)), // 退款金额
+                        'total'    => intval(round($total * 100)), // 原支付交易的订单总金额，单位为分
+                        'currency' => 'CNY',
+                    ],
+                ])
+                ->toArray();
 
-            $result = Pay::wechat($this->config)->refund($order);
-            if ($result->status == 'CLOSED') {
+            if ($result['status'] == 'CLOSED') {
+                Log::error('微信退款失败', $result);
                 throw new \Exception('退款已关闭');
             }
-            if ($result->status == 'ABNORMAL') {
+            if ($result['status'] == 'ABNORMAL') {
+                Log::error('微信退款失败', $result);
                 throw new \Exception('退款异常');
             }
-        } catch (\Exception $e) {
+            return $result;
+        } catch (\Throwable $e) {
+            abort($e->getMessage());
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 支付宝支付
+     * @param array $params
+     * @param string $paySource 支付方式，web》网页支付，h5》h5支付，app》app支付，mini》小程序支付
+     */
+    public function aliPay(array $params, string $paySource)
+    {
+        switch ($paySource) {
+            case 'web':
+                // $params = [
+                //     'out_trade_no'    => 'E20241212021244esdfw',
+                //     'subject'         => '商城订单支付',
+                //     'passback_params' => 'a=1&b=2', // 要用urlencode编码，回调在用urldecode解码
+                //     'total_amount'    => 0.01,
+                //     '_method'         => 'get', // 可选，get方式提交
+                // ];
+                $result = Pay::alipay($this->config)->web($params);
+                return $result->getBody()->getContents();
+            case 'h5':
+                // $params = [
+                //     'out_trade_no'    => 'E20241212021244esdfw',
+                //     'subject'         => '商城订单支付',
+                //     'passback_params' => 'a=1&b=2', // 要用urlencode编码，回调在用urldecode解码
+                //     'total_amount'    => 0.01,
+                //     'quit_url'        => 'https://yansongda.cn', // 用户付款中途退出返回的地址
+                //     '_method'         => 'get', // 可选，get方式提交
+                // ];
+                $result = Pay::alipay($this->config)->web($params);
+                return $result->getBody()->getContents();
+            case 'mini':
+                // $params = [
+                //     'out_trade_no'    => 'E20241212021244esdfw',
+                //     'subject'         => '商城订单支付',
+                //     'passback_params' => 'a=1&b=2', // 要用urlencode编码，回调在用urldecode解码
+                //     'total_amount'    => 0.01,
+                //     'buyer_id'        => '2088622190161234', // 买家支付宝用户ID
+                // ];
+                $result = Pay::alipay($this->config)->web($params);
+                return $result->getBody()->getContents();
+            case 'app':
+                // $params = [
+                //     'out_trade_no'    => 'E20241212021244esdfw',
+                //     'subject'         => '商城订单支付',
+                //     'passback_params' => 'a=1&b=2', // 要用urlencode编码，回调在用urldecode解码
+                //     'total_amount'    => 0.01,
+                // ];
+                $result = Pay::alipay($this->config)->app($params);
+                return $result->getBody()->getContents();
+
+            default:
+                throw new \Exception('错误的微信支付方式');
+        }
+    }
+
+    /**
+     * 支付宝支付回调解密数据
+     * @param ?array $params 回调参数
+     * @return array 支付回调解密的参数
+     */
+    public function aliNotify(?array $params = null) : array
+    {
+        try {
+            $result = Pay::alipay($this->config)->callback($params ?: request()->post());
+            $result = $result->toArray();
+            if (
+                isset($result['trade_status']) &&
+                $result['trade_status'] == 'TRADE_SUCCESS'
+            ) {
+                return $result;
+            } else {
+                throw new \Exception('回调解密失败');
+            }
+        } catch (\Throwable $e) {
+            abort($e->getMessage());
+        }
+    }
+
+    /**
+     * 支付宝退款
+     * @param string $trade_no 支付宝支付单号
+     * @param float $refund_amount 退款金额，单位：元
+     * @param string $paySource 退款订单的支付方式，web》网页支付，h5》h5支付，app》app支付，mini》小程序支付
+     * @return array 退款结果
+     */
+    public function alipayRefund(string $trade_no, float $refund_amount, string $paySource) : array
+    {
+        try {
+            $result = Pay::alipay($this->config)
+                ->refund([
+                    'trade_no'      => $trade_no,
+                    'refund_amount' => $refund_amount,
+                    '_action'       => $paySource,
+                ])
+                ->toArray();
+
+            if ($result['msg'] != 'Success' && $result['code'] != '10000') {
+                Log::error('支付宝退款失败', $result);
+                throw new \Exception($result['sub_msg'] ?? '退款失败');
+            }
+            return $result;
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }

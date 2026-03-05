@@ -1,0 +1,25 @@
+<?php
+    // exportData导出数据
+    if (isset($data['controller_admin']['functions']) && in_array( 'exportData', $data['controller_admin']['functions'])) {
+        // 接口权限
+        $auth = '';
+        if (isset($data['controller_admin']['functions_auth']) && in_array('exportData', $data['controller_admin']['functions_auth'])) {
+            $authName = $authPrefix. 'ExportData';
+            $auth = "\n     * @auth {$authName}";
+        }
+
+        echo "
+    /**
+     * @log 导出{$data['table_title']}数据
+     * @method get{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function exportData(Request \$request): Response
+    {
+        \$data = {$serviceMethodPrefix}exportData(\$request->get());
+        return success(\$data);
+    }\n";
+
+    }
+?>

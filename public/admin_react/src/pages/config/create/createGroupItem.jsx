@@ -3,7 +3,7 @@ import { EditOutlined } from '@ant-design/icons';
 import {
     ModalForm,
 } from '@ant-design/pro-components';
-import { Button, App, Divider, Space, } from 'antd';
+import { Button, Divider, Space, } from 'antd';
 import fieldsData from './fields-data';
 
 /**
@@ -13,7 +13,6 @@ import fieldsData from './fields-data';
  * @link https://www.superadminx.com/
  * */
 export default ({ createFields, data, ...props }) => {
-    const { message } = App.useApp();
     const [open, setOpen] = useState(false);
 
     return <>
@@ -36,7 +35,7 @@ export default ({ createFields, data, ...props }) => {
             {fieldsData.map((item) => {
                 return (
                     <div key={item.title}>
-                        <Divider orientation="left" key={item.title}>{item.title}</Divider>
+                        <Divider titlePlacement="start" key={item.title}>{item.title}</Divider>
                         <Space wrap>
                             {item.children.map((_item, _index) => {
                                 // 分组里面不能在有分组

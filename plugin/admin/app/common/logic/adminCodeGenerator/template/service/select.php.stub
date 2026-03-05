@@ -1,0 +1,15 @@
+<?php
+    // 搜索选择某条数据
+    if (in_array('select', $serviceFunction)) {
+        echo "
+    /**
+     * 搜索选择某条数据
+     * @param array \$params 
+     */
+    public function select{$tableNameToCamelCase}(array \$params)
+    {
+        return \$this->{$tableNameToCamelCaseLower}QueryLogic->select{$tableNameToCamelCase}(\$params);
+    }\n";
+
+    }
+?>

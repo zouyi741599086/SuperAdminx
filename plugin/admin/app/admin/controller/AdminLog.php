@@ -3,7 +3,7 @@ namespace plugin\admin\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\admin\app\common\logic\AdminLogLogic;
+use plugin\admin\app\common\service\AdminLogService;
 /**
  * 操作日志
  * 
@@ -19,6 +19,10 @@ class AdminLog
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private AdminLogService $adminLogService,
+    ) {}
+
     /**
      * 获取列表
      * @method get
@@ -26,9 +30,9 @@ class AdminLog
      * @param Request $request 
      * @return Response
      */
-    public function getList(Request $request): Response
+    public function getList(Request $request) : Response
     {
-        $list = AdminLogLogic::getList($request->get());
+        $list = $this->adminLogService->getList($request->get());
         return success($list);
     }
 

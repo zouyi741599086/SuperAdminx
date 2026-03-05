@@ -1,0 +1,18 @@
+<?php
+    // getList方法
+    if (isset($data['controller_api']['functions']) && in_array('getList', $data['controller_api']['functions'])) {
+        echo "
+    /**
+     * 列表
+     * @method get
+     * @param Request \$request 
+     * @return Response
+     */
+    public function getList(Request \$request): Response
+    {
+        \$list = {$serviceMethodPrefix}getList(\$request->get());
+        return success(\$list);
+    }\n";
+
+    }
+?>

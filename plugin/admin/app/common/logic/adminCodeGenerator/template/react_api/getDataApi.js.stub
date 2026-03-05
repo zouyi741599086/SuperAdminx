@@ -1,0 +1,102 @@
+<?php
+/**
+ * 从设置中获取需要哪些方法
+ */
+if (isset($data['controller_admin']['functions']) && in_array('getList', $data['controller_admin']['functions'])) {
+    $apiList[] = [
+        'title' => '列表',
+        'functoin_name' => 'getList',
+        'method' => 'get',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/getList"           
+    ];
+}
+if (isset($data['controller_admin']['functions']) && in_array('create', $data['controller_admin']['functions'])) {
+    $apiList[] = [
+        'title' => '新增',
+        'functoin_name' => 'create',
+        'method' => 'post',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/create"           
+    ];
+}
+if (isset($data['controller_admin']['functions']) && in_array('findData', $data['controller_admin']['functions'])) {
+    $apiList[] = [
+        'title' => '获取数据',
+        'functoin_name' => 'findData',
+        'method' => 'get',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/findData"           
+    ];
+}
+if (isset($data['controller_admin']['functions']) && in_array('update', $data['controller_admin']['functions'])) {
+    $apiList[] = [
+        'title' => '更新',
+        'functoin_name' => 'update',
+        'method' => 'post',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/update"           
+    ];
+}
+if (isset($data['controller_admin']['functions']) && in_array('delete', $data['controller_admin']['functions'])) {
+    $apiList[] = [
+        'title' => '删除',
+        'functoin_name' => 'delete',
+        'method' => 'post',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/delete"           
+    ];
+}
+if (isset($data['controller_admin']['functions']) && in_array('updateSort', $data['controller_admin']['functions'])) {
+    $apiList[] = [
+        'title' => '更新排序',
+        'functoin_name' => 'updateSort',
+        'method' => 'post',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/updateSort"           
+    ];
+}
+if (isset($data['controller_admin']['functions']) && in_array('updateStatus', $data['controller_admin']['functions'])) {
+    $apiList[] = [
+        'title' => '更新状态',
+        'functoin_name' => 'updateStatus',
+        'method' => 'post',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/updateStatus"           
+    ];
+}
+if (isset($data['controller_admin']['functions']) && in_array('select', $data['controller_admin']['functions'])) {
+    $apiList[] = [
+        'title' => '搜索选择某条数据',
+        'functoin_name' => "select{$tableNameToCamelCase}",
+        'method' => 'get',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/select{$tableNameToCamelCase}"           
+    ];
+}
+if (isset($data['controller_admin']['functions']) && in_array('importData', $data['controller_admin']['functions'])) {
+    // 下载导入模板
+    $apiList[] = [
+        'title' => '下载导入数据的表格模板',
+        'functoin_name' => 'downloadImportExcel',
+        'method' => 'get',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/downloadImportExcel"           
+    ];
+    // 如果是导入数据，则不一样，是直接返回上传文件的地址
+    $apiList[] = [
+        'title' => '导入数据',
+        'content' => "importData: `\${config.url}/admin/{$tableNameToCamelCase}/importData`,"       
+    ];
+}
+if (isset($data['controller_admin']['functions']) && in_array('exportData', $data['controller_admin']['functions'])) {
+    $apiList[] = [
+        'title' => '导出数据',
+        'functoin_name' => 'exportData',
+        'method' => 'get',
+        'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/exportData"           
+    ];
+}
+// 生成控制器的其它方法
+if (isset($data['controller_admin']['other_functions']) && is_array($data['controller_admin']['other_functions'])) {
+    
+    foreach ($data['controller_admin']['other_functions'] as $key => $value) {
+        $apiList[] = [
+            'title' => $value['title'],
+            'functoin_name' => $value['name'],
+            'method' => $value['method'],
+            'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/{$value['name']}"           
+        ];
+    }
+}

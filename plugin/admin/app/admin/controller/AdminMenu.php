@@ -3,7 +3,7 @@ namespace plugin\admin\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\admin\app\common\logic\AdminMenuLogic;
+use plugin\admin\app\common\service\AdminMenuService;
 
 /**
  * 后台权限链接
@@ -21,6 +21,10 @@ class AdminMenu
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private AdminMenuService $adminMenuService,
+    ) {}
+
     /**
      * 获取列表
      * @method get
@@ -28,9 +32,9 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function getList(Request $request): Response
+    public function getList(Request $request) : Response
     {
-        $list = AdminMenuLogic::getList($request->get());
+        $list = $this->adminMenuService->getList($request->get());
         return success($list);
     }
 
@@ -41,9 +45,9 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function create(Request $request): Response
+    public function create(Request $request) : Response
     {
-        AdminMenuLogic::create($request->post());
+        $this->adminMenuService->create($request->post());
         return success([], '添加成功');
     }
 
@@ -54,9 +58,9 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function update(Request $request): Response
+    public function update(Request $request) : Response
     {
-        AdminMenuLogic::update($request->post());
+        $this->adminMenuService->update($request->post());
         return success([], '修改成功');
     }
 
@@ -66,9 +70,9 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function findData(Request $request): Response
+    public function findData(Request $request) : Response
     {
-        $data = AdminMenuLogic::findData(intval($request->get('id')));
+        $data = $this->adminMenuService->findData(intval($request->get('id')));
         return success($data);
     }
 
@@ -79,9 +83,9 @@ class AdminMenu
      * @param Request $request 
      * @return Response
      */
-    public function delete(Request $request): Response
+    public function delete(Request $request) : Response
     {
-        AdminMenuLogic::delete(request()->post('id'));
+        $this->adminMenuService->delete(request()->post('id'));
         return success([], '删除成功');
     }
 }

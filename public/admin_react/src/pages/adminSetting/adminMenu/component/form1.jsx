@@ -23,7 +23,7 @@ export default ({ typeAction, ...props }) => {
                 {({ type }) => {
                     if (typeAction == 'update' && type == 7) {
                         return <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
-                            <Alert message="当前修改为参数设置下面的配置，只能修改“所属上级”" type="error" showIcon />
+                            <Alert title="当前修改为参数设置下面的配置，只能修改“所属上级”" type="error" showIcon />
                             <br />
                         </Col>
                     }

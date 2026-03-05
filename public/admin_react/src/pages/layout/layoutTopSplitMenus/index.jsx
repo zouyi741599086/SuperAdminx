@@ -18,6 +18,7 @@ import { config } from '@/common/config'
 const Message = lazy(() => import('./../component/message'));
 const ScreenFull = lazy(() => import('./../component/screenFull'));
 const SearchMenu = lazy(() => import('./../component/searchMenu'));
+const ClearCache = lazy(() => import('./../component/clearCache'));
 const LayoutSetting = lazy(() => import('./../component/layoutSetting'));
 const UserInfo = lazy(() => import('./../component/userInfo'));
 const Footer = lazy(() => import('./../component/footer'));
@@ -224,7 +225,9 @@ export default () => {
                             </div>
                             <div className="menu-warp">
                                 <Menu
-                                    style={{ background: 'none', width: '100%', borderBottom: '0px', lineHeight: '55px' }}
+                                    styles={{
+										root: { background: 'none', width: '100%', borderBottom: '0px', lineHeight: '55px' }
+									}}
                                     mode={`horizontal`}
                                     items={topMenuList}
                                     onClick={onTopMenuClick}
@@ -239,6 +242,7 @@ export default () => {
                             <UserInfo />
                             <Message />
                             <SearchMenu />
+                            <ClearCache />
                             <ScreenFull />
                             <LayoutSetting />
                         </div>
@@ -254,7 +258,9 @@ export default () => {
                         >
                             <div className="menu-warp">
                                 <Menu
-                                    style={{ background: 'none', borderRight: '0px' }}
+                                    styles={{
+										root: { background: 'none', borderRight: '0px' }
+									}}
                                     mode={`inline`}
                                     items={slideMenuList}
                                     onClick={onSlideMenuClick}

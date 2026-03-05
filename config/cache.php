@@ -14,7 +14,7 @@
  */
 
 return [
-    'default' => 'file',
+    'default' => getenv('REDIS_PASSWORD') ? 'redis' : 'file',
     'stores' => [
         'file' => [
             'driver' => 'file',

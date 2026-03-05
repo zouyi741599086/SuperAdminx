@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace app\middleware;
 
 use ReflectionClass;
@@ -6,7 +7,7 @@ use Webman\MiddlewareInterface;
 use Webman\Http\Response;
 use Webman\Http\Request;
 use app\utils\JwtUtils;
-use plugin\admin\app\common\logic\AdminLogLogic;
+use plugin\admin\app\common\logic\adminLog\AdminLogExecuteLogic;
 use plugin\admin\app\common\model\AdminUserModel;
 use plugin\admin\app\common\model\AdminMenuModel;
 
@@ -21,6 +22,10 @@ class JwtAdmin implements MiddlewareInterface
     public static $controllerActionIsLogin = [];
     public static $controllerActionIsAuth  = [];
 
+    public function __construct(
+        private AdminLogExecuteLogic $adminLogExecuteLogic,
+    ) {}
+
     public function process(Request $request, callable $handler) : Response
     {
         // 登录的角色
@@ -28,7 +33,7 @@ class JwtAdmin implements MiddlewareInterface
         if ($this->actionIsLogin()) {
             try {
                 $request->adminUser = JwtUtils::getUser('admin');
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 abort($e->getMessage(), -2);
             }
 
@@ -54,7 +59,7 @@ class JwtAdmin implements MiddlewareInterface
             }
 
             // 写访问日志
-            AdminLogLogic::create();
+            $this->adminLogExecuteLogic->create();
         }
         return $handler($request);
     }

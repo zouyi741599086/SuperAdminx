@@ -11,7 +11,7 @@ import Lazyload from '@/component/lazyLoad/index';
 
 const Create = lazy(() => import('./create'));
 const Update = lazy(() => import('./update'));
-const Role = lazy(() => import('./component/role'));
+const UpdateRoleMneu = lazy(() => import('./component/updateRoleMneu'));
 
 /**
  * 管理员角色
@@ -136,7 +136,7 @@ export default () => {
                             </Lazyload>
                             {/* 权限设置表单 */}
                             <Lazyload block={false}>
-                                <Role
+                                <UpdateRoleMneu
                                     tableReload={tableReload}
                                     roleId={roleId}
                                     setRoleId={setRoleId}

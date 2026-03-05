@@ -18,28 +18,30 @@ const Form1 = lazy(() => import('./../component/form1'));
 export default ({ tableReload, updateId, setUpdateId, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
-    const [open, setOpen] = useState(false);
+    const open = updateId > 0;
+
+    const handleOpenChange = (_boolean) => {
+        if (!_boolean) {
+            Promise.resolve().then(() => {
+                setUpdateId(0);
+            });
+        }
+    };
 
     useUpdateEffect(() => {
         if (updateId > 0) {
-            setOpen(true);
+            formRef.current?.resetFields?.();
         }
-    }, [updateId])
+    }, [updateId]);
 
     return <>
         <ModalForm
             name="updateUser"
             formRef={formRef}
             open={open}
-            onOpenChange={(_boolean) => {
-                setOpen(_boolean);
-                // 关闭的时候干掉updateId，不然无法重复修改同一条数据
-                if (_boolean === false) {
-                    setUpdateId(0);
-                }
-            }}
+            onOpenChange={handleOpenChange}
             title="修改用户"
-            width={400}
+            width={460}
             // 第一个输入框获取焦点
             autoFocusFirstInput={true}
             // 可以回车提交

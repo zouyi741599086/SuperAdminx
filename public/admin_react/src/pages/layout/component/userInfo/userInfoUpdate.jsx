@@ -178,7 +178,9 @@ export default () => {
                     >
                         <InputNumber
                             prefix={<TabletOutlined />}
-                            style={{ width: '100%' }}
+                            styles={{
+								root: { width: '100%' }
+							}}
                             placeholder="请输入"
                         />
                     </Form.Item>

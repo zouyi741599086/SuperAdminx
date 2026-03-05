@@ -39,9 +39,9 @@ class WechatMiniUtils
             ],
         ];
 
-        return (new Application($config))
-            // 缓存使用的redis
-            ->setCache(new Psr16Cache(new RedisAdapter(Redis::connection()->client())));
+        return new Application($config);
+        // 缓存使用的redis
+        //return (new Application($config))->setCache(new Psr16Cache(new RedisAdapter(Redis::connection()->client())));
     }
 
     /**
@@ -57,7 +57,7 @@ class WechatMiniUtils
      * 生成小程序码
      * @param string $page 小程序的url地址 pages/index/index
      * @param string $scene 参数，最大32个字符串，类似于： a=1&b=2
-     * @param string $path 二维码保存的路劲 ./public/qrocde/111.png
+     * @param string $path 二维码保存的路劲 /qrocde/111.png
      * @param int $width 二维码的宽度，最小280，最大1280
      * @return string 图片的路劲
      */
@@ -79,9 +79,9 @@ class WechatMiniUtils
                 return $response->toDataUrl();
             }
             // 如果有path就存为图片
-            $response->saveAs($path);
+            $response->saveAs(public_path() . $path);
             return $path;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }
@@ -107,7 +107,7 @@ class WechatMiniUtils
             if (! isset($result['openid']) || ! $result['openid']) {
                 throw new \Exception($response['errmsg'] ?? '获取用户openid错误');
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
         return $result;
@@ -122,15 +122,15 @@ class WechatMiniUtils
     {
         try {
             $response = self::initApp()->getClient()->postJson('wxa/business/getuserphonenumber', [
-                'code' => $code
+                'code' => $code,
             ]);
             $response = $response->toArray();
-            if ($response['errcode'] == 0 && $response['errmsg'] == 'ok') {
+            if ($response['errcode'] == 0 && $response['errmsg'] == 'ok' && $response['phone_info']['phoneNumber']) {
                 return $response['phone_info']['phoneNumber'];
             } else {
                 throw new \Exception($response['errmsg'] ?? '小程序获取手机号错误');
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }
@@ -168,13 +168,13 @@ class WechatMiniUtils
                     'item_desc'       => $goods_title, // 购买的商品名称
                     'contact'         => [
                         'receiver_contact' => $receiver_contact, // 收件人手机号，发顺丰必填
-                    ]
-                ]
+                    ],
+                ],
             ],
             'upload_time'    => (new \DateTime)->format(\DateTime::RFC3339),
             'payer'          => [
                 'openid' => $openid, // 用户的openid
-            ]
+            ],
         ];
         $api      = self::initApp()->getClient();
         $response = $api->postJson('/wxa/sec/order/upload_shipping_info', $params);
@@ -191,7 +191,7 @@ class WechatMiniUtils
     {
         $api      = self::initApp()->getClient();
         $response = $api->postJson('/wxa/sec/order/get_order', [
-            'transaction_id' => $transaction_id
+            'transaction_id' => $transaction_id,
         ]);
         $response = $response->toArray();
         if ($response['errcode'] != 0) {

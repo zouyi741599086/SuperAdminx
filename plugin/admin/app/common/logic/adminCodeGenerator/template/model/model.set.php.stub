@@ -1,0 +1,23 @@
+<?php
+    use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+    
+    // 修改器
+    if (isset($data['model']['set']) && is_array($data['model']['set'])) {
+        foreach ($data['model']['set'] as $key => $value) {
+            //注释
+            $tmp_field_title = (isset($data['field_title'][$key]) && $data['field_title'][$key] != '') ? $data['field_title'][$key] : $key;
+            echo "    // {$tmp_field_title} 修改器";
+
+            //修改器的方法名，要将字段名转驼峰
+            $function_name = CodeGeneratorUtilLogic::toCamelCase($key);
+            
+    echo "
+    public function set{$function_name}Attr(\$value, \$data)
+    {\n";
+
+    echo "
+    }\n\n";
+
+        }
+    }
+?>

@@ -3,7 +3,7 @@ namespace plugin\admin\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\admin\app\common\logic\ConfigLogic;
+use plugin\admin\app\common\service\ConfigService;
 
 /**
  * 参数设置
@@ -20,6 +20,10 @@ class Config
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private ConfigService $configService,
+    ) {}
+
     /**
      * 获取列表
      * @method get
@@ -29,7 +33,7 @@ class Config
      */
     public function getList(Request $request) : Response
     {
-        $list = ConfigLogic::getList($request->get());
+        $list = $this->configService->getList($request->get());
         return success($list);
     }
 
@@ -42,7 +46,7 @@ class Config
      */
     public function create(Request $request) : Response
     {
-        ConfigLogic::create($request->post());
+        $this->configService->create($request->post());
         return success([], '添加成功');
     }
 
@@ -55,7 +59,7 @@ class Config
      */
     public function update(Request $request) : Response
     {
-        ConfigLogic::update($request->post());
+        $this->configService->update($request->post());
         return success([], '修改成功');
     }
 
@@ -67,7 +71,7 @@ class Config
      */
     public function updateContent(Request $request) : Response
     {
-        ConfigLogic::updateContent($request->post());
+        $this->configService->updateContent($request->post());
         return success([], '修改成功');
     }
 
@@ -80,7 +84,7 @@ class Config
      */
     public function findData(?int $id = null, ?string $name = null) : Response
     {
-        $data = ConfigLogic::findData($id, $name);
+        $data = $this->configService->findData($id, $name);
         return success($data);
     }
 
@@ -93,7 +97,7 @@ class Config
      */
     public function delete(int $id) : Response
     {
-        ConfigLogic::delete($id);
+        $this->configService->delete($id);
         return success([], '删除成功');
     }
 
@@ -106,7 +110,7 @@ class Config
      */
     public function updateSort(Request $request) : Response
     {
-        ConfigLogic::updateSort($request->post('list'));
+        $this->configService->updateSort($request->post('list'));
         return success([], '修改成功');
     }
 
@@ -118,7 +122,7 @@ class Config
      */
     public function getConfig(string $name) : Response
     {
-        $config = ConfigLogic::getConfig($name, 'array');
+        $config = $this->configService->getConfig($name, 'array');
         return success($config);
     }
 }

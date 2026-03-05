@@ -11,11 +11,11 @@
  */
 
 return [
-    'version'             => '3.0.0',
+    'version'             => '4.0.0',
     // 导出的文件，存到哪，如果是分布式部署应该就要存阿里云或腾讯云等才行
     'export_path_type'    => 'public', // public》本地，aliyun》阿里云，qcloud》腾讯云，如果分布式部署肯定不是贝蒂
-    //网站的url，上传的资源访问的url也在用
-    'url'                 => getenv('DE_BUG') == 'true' ? 'http://127.0.0.1:' . getenv('LISTEN_PORT') : 'https://www.superadminx.com',
+    //网站的url，上传的资源如果是本地的话访问的url也在用
+    'url'                 => getenv('DE_BUG') == 'true' ? 'http://127.0.0.1:' . getenv('LISTEN_PORT') : 'https://preview.superadminx.com',
     //api请求中数据是否加解密，需要跟前端的开关对应
     'api_encryptor'       => [
         //开关
@@ -23,32 +23,32 @@ return [
         //数据解密私钥，左边不要有空格，百度“rsa密钥在线生成”，需2048位PKCS1格式
         'rsa_private' => <<<EOF
 -----BEGIN RSA PRIVATE KEY-----
-MIIEpQIBAAKCAQEAqNoRA7DlwWAp5N3Ax5ebvt2ixWPaYOZXU+cprnubb75zoCby
-ks9zajuYPeSLUHF/jeg11aMcm/VC2URT/lpN0PbdhvjASPhVw5Sr//TSfZpXWzAc
-VvbT/6i+vaQ3tUdXtstL9kG59bUUgAP2geYzFVNSHHLwxDiuX+Cve6nXPY2hD01K
-Q5VqSmD5k8Lm3OrxU7FzCCipGT8DfPJrRMU+T+UrESQOKK1Y96Q274z0XI6tM29f
-76lBX/uUooodMn8OufBaah/+yb3FCq3bydInvUgn2HeTk8+vv9uVLZKXcyIHQNTG
-Ok/fUZFLxx88k1Pnkh37EKA6cb4hzB6FGBMaPwIDAQABAoIBAGE/XsdCbcEG0noW
-4X3Sqoet/J402UQvxaH0JARy+l3MUamuZMz7H9zSP+d9pmMJS05+q+rEC6kjA4JA
-oSN//QtZ8tJWl+Au7q47BSjgZw6iAqfpOJk5hXXcSSbN2qvUUAdeZPyKdEC4Lvtf
-zOyZmVgx6buq01If1wYvUMInWmj/JmEe7/vShway4L12HTYql6NOrwcBwPCkNHzx
-U5g0yTDrHzZpjgBjR/iVLhP/vy9YdPJEi3UCCeoU660YFkj3Z+Pr9nKPkDf77vxm
-7thkHOwbc6usUE6A5urardcO3Pufcu3TgNFnA8qOmlZ/ordOiFmcmnwhb9CkI6gO
-UwXLX2kCgYEA1wqH6Hpdj2RaLyi86Jb9NXqtdDjhE7rQcsZgXIn4AldCLVPBpX8r
-42b+fMBbpyplbzE+S/A5gUfdfKRQbh1Anx1/p8Ko1aTVdjJdTFrp+IYiknNjuDWx
-Oq0Gz3VLnPsM3PWh42KAfaPqG3J+fwYevFnwyDkpUeVqrIflzdcOVrUCgYEAyQNU
-vWrRYamTd6MZ1Xf2ojDU1B3qbZ1kOmSkFNZEhQanWDS8Lx77IB8w7IIZ7aU/HQOn
-QzS+EtMWfgpQJrrrKAqdIiOTYjNOLCFvkUoV+g3HWCEESOWrcjFViZUc3dEt9uwd
-L1r7YliNXL9eaFTplq2Xz0481NoGZRpR/j58caMCgYEAvFat1/AsN2VmEz2zzmZH
-mOo8NrmGcBhDbvLN/N6dx7cS784WoVMzZjSTmUGERHG+a1eOv0XDp7YAh6UGCJs4
-OOPGJXE5G/0FNENCMZjCqPcaGnhTk0f7VG+sslCCDBhZGMFNq3BfJytD5AwwPCJp
-EwAXAdYGmYK8HiXcIJ9FIK0CgYEAlw7bxaTaSIxI9+Un6tXGEEimB+mbXFilE4TC
-Ea6bu2QuqginSrn7ej42Y+W5Wm+OKF2wer7OABOFmZ5icViSk3q2bwtRHMD1hBB0
-aTjFny5vmfjl4WpHFv+gCk52bPNfmWoC3K2AsH1fbk2Zwsnc6JD3vqBK8qINoDjR
-WUDYAAUCgYEAzMJ/qhy+QzKZA1tV1dYR+wpZYTV9z9a3Fkk/k3TXBu7g6yZfjTVd
-cd7aSjZ/fuFc6mIFUQnSAkQvNsLYJcE1rw8F8nJvw/Aas9WuDiqnXPxpfDIQQ0xG
-fRsED8dQS0FS+41+8l3q/5XtbXOLfbqivMDTrhB3FLG8B7YDW7th8fM=
------END RSA PRIVATE KEY-----    
+MIIEoQIBAAKCAQEAtRjX81sJAu8pyN4IQyXo9WE5GYevieBcTiDhGTknKCGMH3sO
+rdFkj5RwNFzsH5cy//5Otutj4rarHebv5CUoXfyBlDwCeyO1ampnZPUEJP50XW54
+eER5+NH+BFlGxMJJRhuWe9RXRmjdI6iq5trDClr2MrAvFY1e8whjPSka9KXDOdK6
+8bH52goy0bWwDBPWS+8p+f3Le9j82L9sdz2AcyoBkwMykgAV80QuE5TTFAwk3ERZ
+f0Koj4QJMYrAEz3qc3B7mAVtbWjUWW7/EhnUi2NbsBkUh/n6ftxT86X+g7+nBDSC
+KGJ+o2z/e3cEc1GZa6pyNUYEt2dsaYad+0vfNwIDAQABAoH/HGn0Irql2fqsaQJt
+SXEpRqwlHrGrWSFar5Ijv1Fi/hOavgBmIoo4Ek8NS9Sd4lcBftOShiC+C1RIhOiM
+Zb9uwKWzBGRl/0FwYBdRzFqlISjLbogRXs1fqyqc2xHRiLhIcYzij4tBe5/4Z8qP
+Bf73myhVI0mBbwrqBY0gr6KYwsmmaTHrdZCSxz1sG+yiSKJqu27qKBl30lgkMK+Q
+iWBrqP0zOjXudyntvk8ZRy960cEixpL81/fVsVZsJKeMd5OFch0ESdbd0q6ysH6+
+cRKari4p/1UJfvqSN87JScb1tD3kv+XF+9IIazWcWek7SavSMg0R81mLFKsrUDXA
+ShB1AoGBANC4vsLGZB4FcWliDn2m4BKnI99/sKwGRl6KeC11mR4eq3FB91WvVnqE
+CYL7e9jNGvD/0bMZIrfbNFOi7g/ZpmB34AxVozkpPQhiEnabCJkPvz/wabCCt9S5
+v3SqYDsuWjVJYp1oa1H+ggYfOpSzEvLkmtmMnKr++44R5WZhxmKjAoGBAN4eNwpO
+dPQzQ5dpMd0m8bBPtRw6egEoKbE00uZ8LJ+0rBGXuQ7AEEG8UftFBlapTNdBFZ5s
+x7Mhr6OfHh78P3J5HOOrZocmHdqXl2GQqvby7EUbD9W2jSN0F4iiGKF2GncYkPNQ
+5QLBHcX8ftR1cgGq7gk+8q8ke0V+o/4+SG5dAoGBAJpBX2Jt4wI4/Zdny9PbZ9EB
+S8bbBQQt4wXuCmF2fwI+onAi05u06RHE0Y7HM8GH3DhuqFlX40vEKokBajW2onq7
+PY+AHxCYxK2UZZbYf2M3ux2THVlBUoFaAgBEBrjWSf8FzGcPC/neQdQqck4BhqiS
+gUr027iYl+tomISxEEBHAoGAU+qmcMZjeT9E8hdUN3FXLn1ut1OAdJ9v4PtMErgn
+Q89Gkv73c5MskSlM79mMI4Gi/lAgktIWQJ8hdHfRMXOrpNwNBhbjjXvhG4zaLIoz
+jUkJ6rHmsZ9eg16A5aYYGCg+p3Aok0SkwP2k+gADCtG0WNzzQZr+pRzrVb4axxtQ
+0iECgYAmuKj0FsdqRwwUeETsIm6506E5NDTaCmMjeE24/vST/eKmdlRxqM0Nw15x
+dA25B2XhWojMMiZti6c4Ud7YkNkPSG+olBTh+AYshQKFekENQNjySLyyy/l94KMz
+4CKDQzc7XuEh7xEMla7RUFfrbfA4Ea/5JCOLqKJxQEn9katZpA==
+-----END RSA PRIVATE KEY-----  
 EOF,
     ],
     //微信公众号的
@@ -58,8 +58,8 @@ EOF,
     ],
     //微信小程序的
     'wechat_xiaochengxu'  => [
-        'AppID'     => '',
-        'AppSecret' => ''
+        'AppID'		=> '' ,
+        'AppSecret'	=> ''
     ],
     //微信支付的
     'wechat_pay'          => [
@@ -77,6 +77,27 @@ EOF,
         // 即 API证书 CERTIFICATE，可在 账户中心->API安全->申请API证书 里获得
         // 文件名形如：apiclient_cert.pem
         'mch_public_cert_path' => './config/wechat_cert/apiclient_cert.pem',
+		// 微信支付公钥ID及证书路径，key 填写形如 PUB_KEY_ID_0000000000000024101100397200000006 的公钥id，见 https://pay.weixin.qq.com/doc/v3/merchant/4013053249
+        'wechat_public_cert_path' => [
+            'PUB_KEY_ID_0111057978072026012800291689001201' => './config/wechat_cert/pub_key.pem',
+        ]
+    ],
+	// 支付宝支付
+    'alipay'              => [
+        'app_id'                  => '',
+        // 应用私钥
+        'app_secret_cert'         => "",
+        // 应用公钥
+        'app_public_cert_path'    => './config/alipay_cert/appCertPublicKey_2021006117656200.crt',
+        // 支付宝公钥
+        'alipay_public_cert_path' => './config/alipay_cert/alipayCertPublicKey_RSA2.crt',
+        // 支付宝根证书
+        'alipay_root_cert_path'   => './config/alipay_cert/alipayRootCert.crt',
+    ],
+    // 快递100的参数
+    'kuaidi100'           => [
+        'key'      => '',
+        'customer' => '',
     ],
     //jwt权限验证
     'jwt'                 => [
@@ -98,14 +119,28 @@ EOF,
                 //同一个用户允许登录的终端设备数量
                 'num'        => 100,
                 //token过期时间，单位秒
-                'expires_at' => 24 * 60 * 60,
+                'expires_at' => 3 * 24 * 60 * 60,
             ],
             [
-                'name'       => 'api',
+                'name'       => 'weixin-mini',
                 'key'        => 'id',
                 'field'      => ['id', 'name', 'tel'],
                 'num'        => 1,
                 'expires_at' => 365 * 24 * 60 * 60,
+            ],
+            [
+                'name'       => 'app',
+                'key'        => 'id',
+                'field'      => ['id', 'name', 'tel'],
+                'num'        => 1,
+                'expires_at' => 30 * 24 * 60 * 60,
+            ],
+            [
+                'name'       => 'h5',
+                'key'        => 'id',
+                'field'      => ['id', 'name', 'tel'],
+                'num'        => 1,
+                'expires_at' => 7 * 24 * 60 * 60,
             ],
         ]
     ]

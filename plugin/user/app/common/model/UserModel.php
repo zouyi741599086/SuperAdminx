@@ -2,6 +2,7 @@
 namespace plugin\user\app\common\model;
 
 use app\common\model\BaseModel;
+use plugin\user\app\common\model\UserInfoModel;
 
 /**
  * 用户 模型
@@ -11,6 +12,7 @@ use app\common\model\BaseModel;
  * */
 class UserModel extends BaseModel
 {
+
     /**
      * 模型参数
      * @return array
@@ -73,6 +75,12 @@ class UserModel extends BaseModel
     public function NextUser()
     {
         return $this->hasMany(UserModel::class, 'pid');
+    }
+
+    // 用户资料 关联模型
+    public function UserInfo()
+    {
+        return $this->hasOne(UserInfoModel::class);
     }
 
 }

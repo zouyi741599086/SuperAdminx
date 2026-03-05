@@ -141,6 +141,30 @@ export const menuToTree = (arrs, pid = null, key = 'children', pid_name_path = [
 }
 
 /**
+ * 多维转一维数据
+ * @param {Array} arrs 需要转换的一维数据
+ * @param {Any} pid 上级
+ * @param {String} key 装下级的key
+ * @param {Array} pid_name_path 路劲
+ * @param {Boolean} empty_children 当下级为空的时候，是否需要保留key-children
+ * @returns Array
+ */
+export const treeToArray = (arrs, key = 'children') => {
+    return arrs.reduce((acc, item) => {
+        // 创建当前节点的副本，不包含子节点
+        const { [key]: children, ...rest } = item;
+        acc.push(rest);
+        
+        // 如果存在子节点，递归处理
+        if (children && Array.isArray(children)) {
+            acc.push(...treeToArray(children, key));
+        }
+        
+        return acc;
+    }, []);
+}
+
+/**
  * 对登录的token进行加密
  * @returns string
  */

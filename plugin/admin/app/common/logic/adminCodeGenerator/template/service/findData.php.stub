@@ -1,0 +1,16 @@
+<?php
+    // findData方法
+    if (in_array('findData', $serviceFunction)) {
+        echo "
+    /**
+     * 获取数据
+     * @param int \$id 数据id
+     * @param array \$with 关联数据
+     */
+    public function findData(int \$id, array \$with = [])
+    {
+        return \$this->{$tableNameToCamelCaseLower}QueryLogic->findData(\$id, \$with);
+    }\n";
+
+    }
+?>

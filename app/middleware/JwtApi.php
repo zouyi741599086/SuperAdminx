@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace app\middleware;
 
 use ReflectionClass;
@@ -6,7 +7,6 @@ use Webman\MiddlewareInterface;
 use Webman\Http\Response;
 use Webman\Http\Request;
 use app\utils\JwtUtils;
-use plugin\user\app\common\logic\UserLogic;
 use plugin\user\app\common\model\UserModel;
 use support\Log;
 
@@ -22,19 +22,21 @@ class JwtApi implements MiddlewareInterface
 
     public function process(Request $request, callable $handler) : Response
     {
+        // 请求来源，对应serupadminx配置里面的jwt里面name
+        $request->client = $request->header('X-Client-Type') ?: '';
         // 登录的角色
         $request->loginRole = 'user';
         try {
             // 不管是否需要登录都进行权限验证，因为有的接口可登录可不登录
-            $request->user = JwtUtils::getUser('api');
-        } catch (\Exception $e) {
+            $request->user = JwtUtils::getUser($request->client);
+        } catch (\Throwable $e) {
             // 必须要登录同时验证失败了，才抛出错误
-            if ($this->actionIsLogin()) {
-                abort($e->getMessage(), -2);
-            }
+            // if ($this->actionIsLogin()) {
+            //     abort($e->getMessage(), -2);
+            // }
 
             // 强制登录某个用户，需注释掉上面三行
-            //$request->user = UserModel::find(2449);
+            $request->user = UserModel::find(1);
         }
 
         // 模拟登录某个用户
@@ -43,12 +45,12 @@ class JwtApi implements MiddlewareInterface
         // }
 
         // 高并发需要关掉此处控制一下验证时机
-        if ($this->actionIsLogin()) {
-            $request->user = UserLogic::findData($request->user->id);
-            if (! $request->user || $request->user->status == 2) {
-                abort('非法请求', -2);
-            }
-        }
+        // if ($this->actionIsLogin()) {
+        //     $request->user = UserModel::find($request->user->id);
+        //     if (! $request->user || $request->user->status == 2) {
+        //         abort('非法请求', -2);
+        //     }
+        // }
         return $handler($request);
     }
 

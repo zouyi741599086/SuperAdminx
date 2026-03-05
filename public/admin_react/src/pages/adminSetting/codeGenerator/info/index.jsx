@@ -1,24 +1,25 @@
 import { lazy, useState } from 'react';
-import { PageContainer, ProCard } from '@ant-design/pro-components';
+import { PageContainer } from '@ant-design/pro-components';
 import { adminCodeGeneratorApi } from '@/api/adminCodeGenerator';
-import { App, Space, Descriptions } from 'antd';
+import { App, Space, Descriptions, Card } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import { useMount } from 'ahooks';
 import Lazyload from '@/component/lazyLoad/index';
 
-const TableSetting = lazy(() => import('./component/tableSetting'));
-const Validate = lazy(() => import('./component/validate'));
-const Model = lazy(() => import('./component/model'));
-const Logic = lazy(() => import('./component/logic'));
-const ControllerAdmin = lazy(() => import('./component/controllerAdmin'));
-const ControllerApi = lazy(() => import('./component/controllerApi'));
-const ReactApi = lazy(() => import('./component/reactApi'));
-const UniApi = lazy(() => import('./component/uniApi'));
-const ReactCreateUpdate = lazy(() => import('./component/reactCreateUpdate'));
-const ReactInfo = lazy(() => import('./component/reactInfo'));
-const ReactList = lazy(() => import('./component/reactList'));
-const ReactOther = lazy(() => import('./component/reactOther'));
+const TableSetting = lazy(() => import('./tableSetting'));
+const Validate = lazy(() => import('./validate'));
+const Model = lazy(() => import('./model'));
+const Logic = lazy(() => import('./logic'));
+const Service = lazy(() => import('./service'));
+const ControllerAdmin = lazy(() => import('./controllerAdmin'));
+const ControllerApi = lazy(() => import('./controllerApi'));
+const ReactApi = lazy(() => import('./reactApi'));
+const UniApi = lazy(() => import('./uniApi'));
+const ReactCreateUpdate = lazy(() => import('./reactCreateUpdate'));
+const ReactInfo = lazy(() => import('./reactInfo'));
+const ReactList = lazy(() => import('./reactList'));
+const ReactOther = lazy(() => import('./reactOther'));
 
 /**
  * 代码生成
@@ -35,6 +36,8 @@ export default () => {
     const [tableName, setTableName] = useState();
     // 表的详情
     const [tableInfo, setTableInfo] = useState({});
+    const [tableInfoItems, setTableInfoItems] = useState([]);
+
     useMount(() => {
         const _tableName = search.get('name');
         if (!_tableName) {
@@ -51,6 +54,39 @@ export default () => {
         }).then(res => {
             if (res.code === 1) {
                 setTableInfo(res.data);
+
+                setTableInfoItems([
+                    {
+                        key: 'Name',
+                        label: '表名',
+                        children: res.data.Name,
+                    },
+                    {
+                        key: 'Engine',
+                        label: '存储引擎',
+                        children: res.data.Engine,
+                    },
+                    {
+                        key: 'Rows',
+                        label: '数据量',
+                        children: res.data.Rows,
+                    },
+                    {
+                        key: 'Create_time',
+                        label: '创建时间',
+                        children: res.data.Create_time,
+                    },
+                    {
+                        key: 'Update_time',
+                        label: '更新时间',
+                        children: res.data.Update_time,
+                    },
+                    {
+                        key: 'Comment',
+                        label: '表注释',
+                        children: res.data.Comment,
+                    },
+                ])
             } else {
                 message.error(res.message);
                 onBack();
@@ -103,56 +139,73 @@ export default () => {
         {
             label: `验证器`,
             key: 'validata',
+            destroyOnHidden: true,
             children: <Lazyload><Validate tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `模型`,
             key: 'model',
+            destroyOnHidden: true,
             children: <Lazyload><Model tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `后台控制器`,
             key: 'controllerAdmin',
+            destroyOnHidden: true,
             children: <Lazyload><ControllerAdmin tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `前端控制器`,
             key: 'controllerApi',
+            destroyOnHidden: true,
             children: <Lazyload><ControllerApi tableName={tableName} operationFile={operationFile} /></Lazyload>,
+        },
+        {
+            label: `服务层`,
+            key: 'service',
+            destroyOnHidden: true,
+            children: <Lazyload><Service tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `逻辑层`,
             key: 'logic',
+            destroyOnHidden: true,
             children: <Lazyload><Logic tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `后端api文件`,
             key: 'react_api',
+            destroyOnHidden: true,
             children: <Lazyload><ReactApi tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `前端api文件`,
             key: 'api',
+            destroyOnHidden: true,
             children: <Lazyload><UniApi tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `后端添加修改页面`,
             key: 'add',
+            destroyOnHidden: true,
             children: <Lazyload><ReactCreateUpdate tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `后端详情页面`,
             key: 'info',
+            destroyOnHidden: true,
             children: <Lazyload><ReactInfo tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `后端列表页`,
             key: 'list',
+            destroyOnHidden: true,
             children: <Lazyload><ReactList tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
         {
             label: `后端其它组件`,
             key: 'other',
+            destroyOnHidden: true,
             children: <Lazyload><ReactOther tableName={tableName} operationFile={operationFile} /></Lazyload>,
         },
     ]
@@ -168,8 +221,16 @@ export default () => {
                     onBack: onBack
                 }}
             >
-                <Space direction="vertical" style={{ width: '100%' }} size="middle">
-                    <ProCard>
+                <Space
+                    orientation="vertical"
+                    size="middle"
+                    styles={{
+                        root: { width: '100%' }
+                    }}
+                >
+                    <Card
+                        variant="borderless"
+                    >
                         <Descriptions
                             size="small"
                             column={{
@@ -180,28 +241,19 @@ export default () => {
                                 xl: 4,
                                 xxl: 4,
                             }}
-                        >
-                            <Descriptions.Item label="表名">{tableInfo.Name}</Descriptions.Item>
-                            <Descriptions.Item label="存储引擎">{tableInfo.Engine || '--'}</Descriptions.Item>
-                            <Descriptions.Item label="数据量">{tableInfo.Rows || '--'}</Descriptions.Item>
-                            <Descriptions.Item label="创建时间">{tableInfo.Create_time || '--'}</Descriptions.Item>
-                            <Descriptions.Item label="更新时间">{tableInfo.Update_time || '--'}</Descriptions.Item>
-                            <Descriptions.Item label="表注释">{tableInfo.Comment || '--'}</Descriptions.Item>
-                        </Descriptions>
-                    </ProCard>
+                            items={tableInfoItems}
+                        />
+                    </Card>
 
                     {tableName ? <>
-                        <ProCard
-                            className='code-generator'
-                            tabs={{
-                                activeKey: tabsKey,
-                                items: tabsList,
-                                onChange: (key) => {
-                                    setTabsKey(key);
-                                },
-                                destroyOnHidden: true,
+                        <Card
+                            tabList={tabsList}
+                            activeTabKey={tabsKey}
+                            onTabChange={(key) => {
+                                setTabsKey(key);
                             }}
-                        ></ProCard>
+                            variant="borderless"
+                        ></Card>
                     </> : null}
                 </Space>
             </PageContainer>

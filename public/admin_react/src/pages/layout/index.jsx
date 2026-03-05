@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { useSnapshot } from 'valtio';
-import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
+import { layoutSettingStore } from '@/store/layoutSetting';
 
 const LayoutSlide = lazy(() => import('./layoutSlide/index'));
 const LayoutSlideSplitMenus = lazy(() => import('./layoutSlideSplitMenus/index'));

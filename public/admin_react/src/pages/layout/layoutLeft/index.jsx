@@ -8,12 +8,13 @@ import { Outlet } from 'react-router-dom';
 import logo from '@/static/logo.png';
 import './index.css'
 import { useSnapshot } from 'valtio';
-import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
+import { layoutSettingStore } from '@/store/layoutSetting';
 import { config } from '@/common/config'
 
 const Message = lazy(() => import('./../component/message'));
 const ScreenFull = lazy(() => import('./../component/screenFull'));
 const SearchMenu = lazy(() => import('./../component/searchMenu'));
+const ClearCache = lazy(() => import('./../component/clearCache'));
 const LayoutSetting = lazy(() => import('./../component/layoutSetting'));
 const UserInfo = lazy(() => import('./../component/userInfo'));
 const Menu = lazy(() => import('./../component/menu'));
@@ -85,11 +86,12 @@ export default () => {
                     {!collapsed ? (
                         <div className="userWarp">
                             <div className="l">
-                                <UserInfo showIcon={false} placement={'topLeft'} />
+                                <UserInfo showIcon={false} placement={'topLeft'} showName={false} />
                             </div>
                             <div className="r">
                                 <Message placement={'topLeft'} />
                                 <SearchMenu />
+                                <ClearCache />
                                 <ScreenFull />
                                 <LayoutSetting />
                             </div>
@@ -111,7 +113,7 @@ export default () => {
                     <Content>
                         <Outlet />
                     </Content>
-					<Footer />
+                    <Footer />
                 </Layout>
             </Layout>
         </div>

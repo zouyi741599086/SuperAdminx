@@ -1,0 +1,76 @@
+<?php
+/**
+ * 生成控制器
+ */
+use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+
+// 当前的表名转驼峰
+$tableNameToCamelCase = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
+
+// 权限名称的前缀
+$authPrefix = CodeGeneratorUtilLogic::toCamelCase($data['table_name'], true);
+
+// 服务的名称
+$serviceName = $authPrefix . 'Service';
+// 所有方法调用的前缀
+$serviceMethodPrefix = "\$this->{$serviceName}->";
+    
+?>
+namespace <?php echo $data['controller_api']['file_path'] ?? ''; ?>;
+
+use support\Request;
+use support\Response;
+<?php
+    // 如果有导入数据则引入文件上传
+    if (isset($data['controller_api']['functions']) && in_array('importData', $data['controller_api']['functions'])) {
+    echo "use plugin\\file\\app\\utils\\FileUtils;\n";
+    }
+    // 引入服务层
+    echo "use {$data['service']['file_path']}\\{$data['service']['file_name']};\n"; 
+?>
+
+/**
+ * <?php echo $table_title ?? '';?> 控制器
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+class <?php echo $data['controller_api']['file_name'] ?? ''; ?>
+
+{
+
+    // 此控制器是否需要登录
+    protected $onLogin = true;
+    // 不需要登录的方法
+    protected $noNeedLogin = [];
+    // 不需要加密的方法
+    protected $noNeedEncrypt = [];
+
+    public function __construct(
+        private <?php echo "{$data['service']['file_name']} \${$serviceName},\n"; ?>
+    ){}
+<?php
+    include __DIR__ . '/getList.php.stub';
+?>
+<?php
+    include __DIR__ . '/create.php.stub';
+?>
+<?php
+    include __DIR__ . '/findData.php.stub';
+?>
+<?php
+    include __DIR__ . '/update.php.stub';
+?>
+<?php
+    include __DIR__ . '/delete.php.stub';
+?>
+<?php
+    include __DIR__ . '/updateSort.php.stub';
+?>
+<?php
+    include __DIR__ . '/updateStatus.php.stub';
+?>
+<?php
+    include __DIR__ . '/other.php.stub';
+?>
+}

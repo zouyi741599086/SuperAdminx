@@ -1,11 +1,8 @@
 import { useRef, useState, lazy } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { configApi } from '@/api/config';
-import { App, Space, Button, Alert, Divider } from 'antd';
+import { App, Space, Button, Alert, Divider, Card, Col, Row } from 'antd';
 import { useNavigate } from "react-router-dom";
-import {
-    ProCard,
-} from '@ant-design/pro-components';
 import fieldsData from './fields-data';
 import FieldsItem from './fieldsItem';
 import FormSubmit from './formSubmit';
@@ -95,11 +92,15 @@ export default () => {
                 // formItem的属性
                 formItemProps: {
                     rules: [],
-                    style: { width: '100%' }
+                    styles: { 
+                        root: {width: '100%'}
+                     }
                 },
                 // formItem里面字段的属性
                 fieldProps: {
-                    style: { width: '100%' }
+                    style: { 
+                        root: {width: '100%'}
+                     }
                 },
                 // 列表组件才有的
                 fields: [],
@@ -343,64 +344,67 @@ export default () => {
                     onBack: onBack
                 }}
             >
-                <ProCard split="vertical">
-                    <ProCard colSpan={{ xs: 24, sm: 6, md: 5 }}>
-                        <FormSubmit
-                            fields={fields}
-                            setFields={setFields}
-                            type={type}
-                        />
-                    </ProCard>
+                <Card
+                    variant="borderless"
+                >
+                    <Row gutter={24}>
+                        <Col xs={24} sm={20} md={5} >
+                            <FormSubmit
+                                fields={fields}
+                                setFields={setFields}
+                                type={type}
+                            />
+                        </Col>
+                        <Col xs={24} sm={10} md={12}>
+                            <Alert title="点击右侧增加表单组件，组件可以拖拽排序~" type="warning" showIcon style={{ marginBottom: '24px' }} />
 
-                    <ProCard colSpan={{ xs: 24, sm: 10, md: 12 }} style={{ height: '100%' }} bodyStyle={{ display: 'flex', flexDirection: 'column' }}>
-                        <Alert message="点击右侧增加表单组件，组件可以拖拽排序~" type="warning" showIcon style={{ marginBottom: '24px' }} />
-
-                        <ProConfigProvider>
-                            <DndContext
-                                sensors={sensors}
-                                collisionDetection={closestCenter}
-                                onDragEnd={handleDragEnd}
-                            >
-                                <SortableContext
-                                    items={fields?.map(i => i.id)}
-                                    strategy={verticalListSortingStrategy}
-                                    modifiers={[restrictToParentElement]}
+                            <ProConfigProvider>
+                                <DndContext
+                                    sensors={sensors}
+                                    collisionDetection={closestCenter}
+                                    onDragEnd={handleDragEnd}
                                 >
-                                    {fields?.map(item =>
-                                        <FieldsItem
-                                            key={item.id}
-                                            data={item}
-                                            delFields={delFields}
-                                            setUpdateData={setUpdateData}
-                                            createFields={createFields}
-                                            fields={fields}
-                                            setFields={setFields}
-                                        />
-                                    )}
-                                </SortableContext>
-                            </DndContext>
-                        </ProConfigProvider>
-                    </ProCard>
+                                    <SortableContext
+                                        items={fields?.map(i => i.id)}
+                                        strategy={verticalListSortingStrategy}
+                                        modifiers={[restrictToParentElement]}
+                                    >
+                                        {fields?.map(item =>
+                                            <FieldsItem
+                                                key={item.id}
+                                                data={item}
+                                                delFields={delFields}
+                                                setUpdateData={setUpdateData}
+                                                createFields={createFields}
+                                                fields={fields}
+                                                setFields={setFields}
+                                            />
+                                        )}
+                                    </SortableContext>
+                                </DndContext>
+                            </ProConfigProvider>
+                        </Col>
+                        <Col xs={24} sm={8} md={7} >
+                            {fieldsData.map((item) => {
+                                return (
+                                    <div key={item.title}>
+                                        <Divider titlePlacement="start" key={item.title}>{item.title}</Divider>
+                                        <Space wrap>
+                                            {item.children.map((_item, _index) => {
+                                                return <Button
+                                                    type="dashed"
+                                                    key={_index}
+                                                    onClick={() => createFields(_item)}
+                                                >{_item.valueTypeTitle}</Button>
+                                            })}
+                                        </Space>
+                                    </div>
+                                )
+                            })}
+                        </Col>
+                    </Row>
+                </Card>
 
-                    <ProCard title="表单组件" colSpan={{ xs: 24, sm: 8, md: 7 }}>
-                        {fieldsData.map((item) => {
-                            return (
-                                <div key={item.title}>
-                                    <Divider orientation="left" key={item.title}>{item.title}</Divider>
-                                    <Space wrap>
-                                        {item.children.map((_item, _index) => {
-                                            return <Button
-                                                type="dashed"
-                                                key={_index}
-                                                onClick={() => createFields(_item)}
-                                            >{_item.valueTypeTitle}</Button>
-                                        })}
-                                    </Space>
-                                </div>
-                            )
-                        })}
-                    </ProCard>
-                </ProCard>
             </PageContainer>
         </>
     )

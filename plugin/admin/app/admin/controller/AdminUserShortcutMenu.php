@@ -3,7 +3,7 @@ namespace plugin\admin\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\admin\app\common\logic\AdminUserShortcutMenuLogic;
+use plugin\admin\app\common\service\AdminUserShortcutMenuService;
 
 /**
  * 用户快捷菜单 控制器
@@ -21,6 +21,9 @@ class AdminUserShortcutMenu
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private AdminUserShortcutMenuService $adminUserShortcutMenuLogic,
+    ) {}
 
     /**
      * 获取我的快捷菜单列表
@@ -31,7 +34,7 @@ class AdminUserShortcutMenu
     public function getList(Request $request) : Response
     {
         $params['admin_user_id'] = $request->adminUser->id;
-        $list                    = AdminUserShortcutMenuLogic::getList($params);
+        $list                    = $this->adminUserShortcutMenuLogic->getList($params);
         return success($list);
     }
 
@@ -43,7 +46,7 @@ class AdminUserShortcutMenu
      */
     public function getMenuList(Request $request) : Response
     {
-        $list = AdminUserShortcutMenuLogic::getMenuList($request->adminUser->id);
+        $list = $this->adminUserShortcutMenuLogic->getMenuList($request->adminUser->id);
         return success($list);
     }
 
@@ -55,7 +58,7 @@ class AdminUserShortcutMenu
      */
     public function update(Request $request) : Response
     {
-        AdminUserShortcutMenuLogic::update($request->adminUser->id, $request->post());
+        $this->adminUserShortcutMenuLogic->update($request->adminUser->id, $request->post());
         return success([], '修改成功');
     }
 
@@ -67,7 +70,7 @@ class AdminUserShortcutMenu
      */
     public function updateSort(Request $request) : Response
     {
-        AdminUserShortcutMenuLogic::updateSort($request->adminUser->id, $request->post());
+        $this->adminUserShortcutMenuLogic->updateSort($request->adminUser->id, $request->post());
         return success([], '修改成功');
     }
 

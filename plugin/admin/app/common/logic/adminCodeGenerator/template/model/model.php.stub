@@ -1,0 +1,96 @@
+<?php
+/**
+ * 生成模型
+ */
+use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+
+$delete_time = false; // 是否有软删除时间字段
+$create_time = false; // 是否有添加时间字段
+$update_time = false; // 是否有更新时间字段
+foreach ($tableColumn as $k => $v) {
+    if ($v['Field'] == 'create_time') {
+        $create_time = true;
+    }
+    if ($v['Field'] == 'update_time') {
+        $update_time = true;
+    }
+    if ($v['Field'] == 'delete_time') {
+        $delete_time = true;
+    }
+}
+?>
+namespace <?php echo $data['model']['file_path'] ?? ''; ?>;
+
+<?php
+    // 需要引入的模型
+    $useModel = [];
+    // 多对多模型中间表的时候
+    if (isset($data['model']['is_middle']) && $data['model']['is_middle'] == true) {
+        $useModel[] = "use think\model\Pivot;\n";
+    }
+    // 软删除
+    if ($delete_time) {
+        $useModel[] = "use think\model\concern\SoftDelete;\n";
+    }
+    // 如果生成的是插件的文件，则需引入共用模型
+    if ($data['plugin_name']) {
+        $useModel[] = "use app\common\model\BaseModel;\n";        
+    }
+
+    // 引入关联的模型
+    if (isset($data['model']['relevance']) && is_array($data['model']['relevance'])) {
+        foreach ($data['model']['relevance'] as $v) {
+            $function_name = CodeGeneratorUtilLogic::toCamelCase($v['model']);
+            if (isset($v['model_plugin_name']) && $v['model_plugin_name']) {
+                $useModel[] = "use plugin\\{$v['model_plugin_name']}\app\common\model\\{$function_name}Model;\n";
+            } else {
+                $useModel[] = "use app\common\model\\{$function_name}Model;\n";
+            }
+        }
+    }
+
+    foreach ($useModel as $v) {
+echo $v;
+    }
+?>
+
+/**
+ * <?php echo $data['table_title'] ?? '';?> 模型
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+class <?php echo $data['model']['file_name'] ?? ''; ?> extends <?php echo (isset($data['model']['is_middle']) && $data['model']['is_middle'] == true) ? 'Pivot' : 'BaseModel'; ?>
+
+{
+<?php
+    if ($delete_time) {
+echo "    use SoftDelete;\n";
+    }
+?>
+<?php
+// 模型参数设置
+include __DIR__ . '/model.options.php.stub';
+?>
+
+<?php
+// 修改器
+include __DIR__ . '/model.set.php.stub';
+?>
+
+<?php
+// 获取器
+include __DIR__ . '/model.get.php.stub';
+?>
+
+<?php
+// 搜索器
+include __DIR__ . '/model.search.php.stub';
+?>
+
+<?php
+// 模型关联
+include __DIR__ . '/model.connect.php.stub';
+?>
+
+}

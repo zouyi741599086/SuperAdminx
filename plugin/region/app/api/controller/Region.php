@@ -3,7 +3,7 @@ namespace plugin\region\app\api\controller;
 
 use support\Request;
 use support\Response;
-use plugin\region\app\common\logic\RegionLogic;
+use plugin\region\app\common\service\RegionService;
 
 /**
  * 省市区
@@ -12,59 +12,76 @@ use plugin\region\app\common\logic\RegionLogic;
  * */
 class Region
 {
-	//此控制器是否需要登录
-	protected $onLogin = false;
-	//不需要登录的方法，受控于上面个参数
-	protected $noNeedLogin = [];
+    //此控制器是否需要登录
+    protected $onLogin = false;
+    //不需要登录的方法，受控于上面个参数
+    protected $noNeedLogin = [];
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private RegionService $regionService,
+    ) {}
+
     /**
-     * @log 根据上级获取下级
+     * 根据上级获取下级
      * @method get
      * @param Request $request 
      * @param int $id 上级id
      * @return Response
      * */
-    public static function getList(Request $request, int $id): Response
+    public function getList(Request $request, int $id) : Response
     {
-        $list = RegionLogic::getList($id);
-        return success($list);
+        $result = $this->regionService->getList($id);
+        return success($result);
     }
 
     /**
-     * @log 获取所有的省
+     * 获取所有的省
      * @method get
      * @param Request $request 
      * @return Response
      * */
-    public static function getProvince(Request $request): Response
+    public function getProvince(Request $request) : Response
     {
-        $list = RegionLogic::getProvince();
-        return success($list);
+        $result = $this->regionService->getProvince();
+        return success($result);
     }
 
     /**
-     * @log 获取所有的省市，多维的
+     * 获取所有的省市，多维的
      * @method get
      * @param Request $request 
      * @return Response
      * */
-    public static function getProvinceCity(Request $request): Response
+    public function getProvinceCity(Request $request) : Response
     {
-        $list = RegionLogic::getProvinceCity();
-        return success($list);
+        $result = $this->regionService->getProvinceCity();
+        return success($result);
     }
 
     /**
-     * @log 获取所有省市区，多维的
+     * 获取所有省市区，多维的
      * @method get
      * @param Request $request 
      * @return Response
      * */
-    public static function getListAll(Request $request): Response
+    public function getListAll(Request $request) : Response
     {
-        $list = RegionLogic::getListAll();
-        return success($list);
+        $result = $this->regionService->getListAll();
+        return success($result);
+    }
+
+    /**
+     * 获取数据
+     * @method get
+     * @param Request $request 
+     * @param int $id 数据id
+     * @return Response
+     * */
+    public function pathInfo(Request $request, int $id) : Response
+    {
+        $result = $this->regionService->pathInfo($id);
+        return success($result);
     }
 }

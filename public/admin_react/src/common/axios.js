@@ -24,7 +24,9 @@ function requestAfter(response, aes_key, aes_iv) {
             sessionStorage.removeItem(`adminUserToken`);
             message.error(response.data.message);
             setTimeout(() => {
-                location.reload();
+                if (window.location.hash !== '#/login') {
+                    location.reload();
+                }
             }, 1500)
         }
         // 解密数据

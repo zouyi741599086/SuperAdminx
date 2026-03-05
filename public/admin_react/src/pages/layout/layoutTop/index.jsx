@@ -10,6 +10,7 @@ import { config } from '@/common/config'
 const Message = lazy(() => import('./../component/message'));
 const ScreenFull = lazy(() => import('./../component/screenFull'));
 const SearchMenu = lazy(() => import('./../component/searchMenu'));
+const ClearCache = lazy(() => import('./../component/clearCache'));
 const LayoutSetting = lazy(() => import('./../component/layoutSetting'));
 const UserInfo = lazy(() => import('./../component/userInfo'));
 const Menu = lazy(() => import('./../component/menu'));
@@ -46,13 +47,19 @@ export default () => {
                                 <span>{config.projectName}</span>
                             </div>
                             <div className="menu-warp">
-                                <Menu menuMode='horizontal' style={{ height: '100%' }} />
+                                <Menu 
+									menuMode='horizontal' 
+									styles={{
+										root: { height: '100%' }
+									}}
+								/>
                             </div>
                         </div>
                         <div className='r'>
                             <UserInfo />
                             <Message />
                             <SearchMenu />
+                            <ClearCache />
                             <ScreenFull />
                             <LayoutSetting />
                         </div>

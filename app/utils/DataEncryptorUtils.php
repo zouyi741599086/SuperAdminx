@@ -37,7 +37,7 @@ class DataEncryptorUtils
                 throw new \Exception('RSA解密失败，请检查密钥~');
             }
             return $decrypted;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new \Exception("RSA解密：{$e->getMessage()}");
         }
     }
@@ -55,7 +55,7 @@ class DataEncryptorUtils
             $data = json_encode($data);
             $data = openssl_encrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
             return base64_encode($data);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new \Exception("AES加密失败：{$e->getMessage()}");
         }
     }
@@ -80,7 +80,7 @@ class DataEncryptorUtils
                 throw new \Exception('解密失败');
             }
             return $return;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new \Exception("AES解密失败：{$e->getMessage()}");
         }
     }

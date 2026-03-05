@@ -11,7 +11,7 @@ import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 import { loginAction } from '@/common/loginAction';
 import { config } from '@/common/config'
-import ResetPassword from './resetPassword';
+import ResetPassword from './component/resetPassword';
 import './index.css'
 
 const { Title } = Typography;
@@ -71,7 +71,12 @@ export default () => {
                 <img src={loginMain} alt="" />
             </div>
             <div className="login-r">
-                <Card className="card-form" variant="outlined">
+                <Card 
+					classNames={{
+						root: 'card-form'
+					}} 
+					variant="borderless"	
+				>
                     <Title
                         level={4}
                         style={{

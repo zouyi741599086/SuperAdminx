@@ -1,0 +1,60 @@
+<?php
+/**
+ * 生成前端api文件
+ */
+use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+
+    // 当前的表名转驼峰
+    $tableNameToCamelCase = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
+    // 导出的名称
+    $apiFileName = strtolower($tableNameToCamelCase[0]) . substr($tableNameToCamelCase, 1);
+    // 是否是插件，则api有前缀
+    $apiPrefix = '';
+    if ($data['plugin_name']) {
+        $apiPrefix = "/app/{$data['plugin_name']}";
+    }
+
+    $list = [];
+
+    // 如果是从配置中生成
+    if (isset($data['uni_api']['generator_type']) && $data['uni_api']['generator_type'] == 1) {
+        include __DIR__ . '/getDataApi.js.stub';
+    }
+
+    // 如果是从反射中生成
+    if (isset($data['uni_api']['generator_type']) && $data['uni_api']['generator_type'] == 2) {
+        include __DIR__ . '/getClassApi.js.stub';
+    }
+    
+?>
+import api from '../api.js';
+
+/**
+ * <?php echo $table_title ?? '';?> API
+ *
+ * @author zy <741599086@qq.com>
+ * @link https://www.superadminx.com/
+ * */
+export const <?php echo $apiFileName;?>Api = {
+    <?php
+        foreach ($list as $key => $value) {
+
+            if (isset($value['content']) && $value['content']) {
+
+    echo "//{$value['title']}
+    {$value['content']}
+    ";
+
+            } else {
+
+    echo "// {$value['title']}
+    {$value['functoin_name']}: (params = {}, showLoading = false, showError = true, errDelStorage = true) => {
+        return api.{$value['method']}('{$value['url']}', params, showLoading, showError, errDelStorage);
+    },
+    ";
+
+            }
+        }    
+    ?>
+    
+}

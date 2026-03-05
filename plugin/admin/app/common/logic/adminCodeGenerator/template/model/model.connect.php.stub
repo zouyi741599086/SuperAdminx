@@ -1,0 +1,45 @@
+<?php
+    use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+
+    // 关联模型
+    if (isset($data['model']['relevance']) && is_array($data['model']['relevance'])) {
+        foreach ($data['model']['relevance'] as $key => $value) {
+            // 注释
+            echo "    // {$value['title']} 关联模型";
+
+            // 方法名，同时也是关联的模型名，要将表名转驼峰
+            $function_name = CodeGeneratorUtilLogic::toCamelCase($value['model']);
+            
+    echo "
+    public function {$function_name}()
+    {\n";
+    
+    // 一对一关联
+    if ($value['type'] == 'hasOne') {
+        echo "        return \$this->hasOne({$function_name}Model::class);";
+    }
+    // 一对多
+    if ($value['type'] == 'hasMany') {
+        echo "        return \$this->hasMany({$function_name}Model::class);";
+    }
+    // 反向一对一
+    if ($value['type'] == 'belongsTo') {
+        echo "        return \$this->belongsTo({$function_name}Model::class);";
+    }
+    // 多对多
+    if ($value['type'] == 'belongsToMany') {
+        // 中间表类名
+        $middle_name = CodeGeneratorUtilLogic::toCamelCase($value['middle']);
+        // 中间表中当前模型键名
+        $me_id = preg_replace('/^' . preg_quote(getenv('DB_PREFIX'), '/') . '/', '', $data['table_name']) . '_id';
+        // 中间表中关联模型的键名
+        $to_id = preg_replace('/^' . preg_quote(getenv('DB_PREFIX'), '/') . '/', '', $value['model']) . '_id';
+        echo "        return \$this->belongsToMany({$function_name}Model::class, {$middle_name}Model::class, '{$to_id}', '{$me_id}');";
+    }
+
+    echo "
+    }\n";
+
+        }
+    }
+?>

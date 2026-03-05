@@ -43,7 +43,7 @@ class FileUtils
             $fileSuffix = substr(strrchr($path, '.'), 1);
             $fileSize   = filesize("./public{$path}");
 
-            // 图片裁剪 https://image.intervention.io/v2
+            // 图片裁剪
             if (($width || $height) && in_array($fileSuffix, ['jpg', 'jpeg', 'png'])) {
                 self::imageCrop($path, $width, $height);
             }
@@ -90,6 +90,7 @@ class FileUtils
                 $mimeType = $file->getUploadMimeType();
                 $suffix   = $file->getUploadExtension();
                 $size     = $file->getSize();
+
                 if (! in_array($suffix, self::$fileSuffix) || ! in_array($mimeType, self::$fileMimeType)) {
                     throw new \Exception('不允许上传的文件类型');
                 }
@@ -107,7 +108,7 @@ class FileUtils
                 $file->move(public_path() . $path);
                 $result[$key] = $path;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error($e->getMessage());
             abort($e->getMessage());
         }
@@ -144,7 +145,7 @@ class FileUtils
                     }
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error($e->getMessage(), []);
         }
     }
@@ -173,7 +174,7 @@ class FileUtils
                 $width = intval($bili * $image->width());
             }
             $image->coverDown($width ?: $image->width(), $height ?: $image->height())->save($path, 100);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error($e->getMessage(), []);
         }
     }

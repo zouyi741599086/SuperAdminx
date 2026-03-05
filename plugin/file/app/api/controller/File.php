@@ -31,7 +31,7 @@ class File
         $result = FileUtils::upload();
         
         if (is_array($result) && $result) {
-            return result($result, 1, '上传成功', false);
+            return result(file_url($result), 1, '上传成功', false);
         } else {
             return result([], -1, '没有文件被上传', false);
         }
@@ -51,7 +51,7 @@ class File
                 $filePath = public_path() . $filePath;
             }
             return response()->download($filePath, $fileName);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             abort($e->getMessage());
         }
     }

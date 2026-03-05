@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import {
     ProConfigProvider,
 } from '@ant-design/pro-components';
+import ValueTypeToComponentMap from '@ant-design/pro-components/es/field/ValueTypeToComponent';
 import { Button } from 'antd';
 import Lazyload from '@/component/lazyLoad/index';
 
@@ -28,10 +29,11 @@ export default (props) => {
     return (<>
         <ProConfigProvider
             valueTypeMap={{
+                ...ValueTypeToComponentMap,
                 // 上传图片
                 uploadImg: {
                     render: (text) => <Image width={100} height={100} src={text} />,
-                    renderFormItem: (text, props) => (
+                    formItemRender: (text, props) => (
                         <Lazyload height="50"><UploadImg {...props?.fieldProps} /></Lazyload>
                     ),
                 },
@@ -44,7 +46,7 @@ export default (props) => {
                             })}
                         </>
                     },
-                    renderFormItem: (text, props) => {
+                    formItemRender: (text, props) => {
                         return <Lazyload height="50"><UploadImgAll {...props?.fieldProps} /></Lazyload>
                     },
                 },
@@ -57,14 +59,14 @@ export default (props) => {
                             })}
                         </>
                     },
-                    renderFormItem: (text, props) => {
+                    formItemRender: (text, props) => {
                         return <Lazyload height="50"><UploadImgVideoAll {...props?.fieldProps} /></Lazyload>
                     },
                 },
                 // 上传文件
                 uploadFile: {
                     render: (text) => <Button type="link" size="small" link={`${text.url}`}>{text.name}</Button>,
-                    renderFormItem: (text, props) => {
+                    formItemRender: (text, props) => {
                         return <Lazyload height="50"><UploadFile {...props?.fieldProps} /></Lazyload>
                     },
                 },
@@ -77,42 +79,42 @@ export default (props) => {
                             })}
                         </>
                     },
-                    renderFormItem: (text, props) => {
+                    formItemRender: (text, props) => {
                         return <Lazyload height="50"><UploadFileAll {...props?.fieldProps} /></Lazyload>
                     },
                 },
                 // 编辑器
                 teditor: {
                     render: (text) => <PreviewTeditor content={text} />,
-                    renderFormItem: (text, props) => (
+                    formItemRender: (text, props) => (
                         <Lazyload height="50"><Teditor {...props?.fieldProps} /></Lazyload>
                     ),
                 },
                 // 腾讯地图选择经纬度
                 tencentMap: {
                     render: (text) => text,
-                    renderFormItem: (text, props) => (
+                    formItemRender: (text, props) => (
                         <Lazyload height="50"><TencentMap {...props?.fieldProps} /></Lazyload>
                     ),
                 },
                 // 省选择
                 province: {
                     render: (text) => text,
-                    renderFormItem: (text, props) => (
+                    formItemRender: (text, props) => (
                         <Lazyload height="50"><Province {...props?.fieldProps} /></Lazyload>
                     ),
                 },
                 // 省市选择
                 provinceCity: {
                     render: (text) => text,
-                    renderFormItem: (text, props) => (
+                    formItemRender: (text, props) => (
                         <Lazyload height="50"><ProvinceCity {...props?.fieldProps} /></Lazyload>
                     ),
                 },
                 // 省市区选择
                 provinceCityArea: {
                     render: (text) => text,
-                    renderFormItem: (text, props) => (
+                    formItemRender: (text, props) => (
                         <Lazyload height="50"><ProvinceCityArea {...props?.fieldProps} /></Lazyload>
                     ),
                 },

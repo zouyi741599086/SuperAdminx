@@ -1,0 +1,24 @@
+<?php
+// 验证提示信息
+if (isset($data['validate']['field_rules']) && is_array($data['validate']['field_rules'])) {
+    echo "
+    protected \$message = [";
+
+    foreach ($data['validate']['field_rules'] as $field => $rules_arr) {
+        if (!$rules_arr) {
+            continue;
+        }
+       
+        // 字段的中文名称
+        $tmp_field_title = (isset($data['field_title'][$field]) && $data['field_title'][$field] != '') ? $data['field_title'][$field] : $field;
+
+        foreach ($rules_arr as $k => $v) {
+         echo "
+        '{$field}.{$v}' => '{$tmp_field_title}',";
+        }
+    }
+
+    echo "
+    ];";
+}
+?>

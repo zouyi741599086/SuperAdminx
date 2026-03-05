@@ -11,5 +11,8 @@
  * @link      http://www.workerman.net/
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
-return new Webman\Container;
+$builder = new \DI\ContainerBuilder();
+$builder->addDefinitions(config('dependence', []));
+$builder->useAutowiring(true);
+$builder->useAttributes(true);
+return $builder->build();

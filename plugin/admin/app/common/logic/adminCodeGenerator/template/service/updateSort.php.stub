@@ -1,0 +1,15 @@
+<?php
+    // updateSort更新排序
+   if (in_array('updateSort', $serviceFunction)) {
+        echo "
+    /**
+     * 更改排序
+     * @param array \$params
+     * */
+    public function updateSort(array \$params)
+    {
+        \$this->{$tableNameToCamelCaseLower}ExecuteLogic->updateSort(\$params);
+    }\n";
+
+    }
+?>

@@ -28,18 +28,18 @@ export const adminCodeGeneratorApi = {
         return http.get('/app/admin/admin/AdminCodeGenerator/getTableColumn', params);
     },
     // 获取代码生成器设置的详情
-    getCodeGeneratorInfo: (params = {}) => {
-        return http.get('/app/admin/admin/AdminCodeGenerator/getCodeGeneratorInfo', params);
+    findData: (params = {}) => {
+        return http.get('/app/admin/admin/AdminCodeGenerator/findData', params);
     },
     // 更新代码生成器设置
-    updateCodeGenerator: (params = {}) => {
-        return http.post('/app/admin/admin/AdminCodeGenerator/updateCodeGenerator', params);
+    update: (params = {}) => {
+        return http.post('/app/admin/admin/AdminCodeGenerator/update', params);
     },
     // 更新设置并生成代码
     generatorCode: (params = {}) => {
         return http.post('/app/admin/admin/AdminCodeGenerator/generatorCode', params);
     },
-    // 操作文件代码，是下载文件代码，还是生成到项目中
+    // 生成代码到项目中
     operationFile: (params = {}) => {
         return http.post('/app/admin/admin/AdminCodeGenerator/operationFile', params);
     },

@@ -1,11 +1,10 @@
 import { PageContainer } from '@ant-design/pro-components';
-import { ProCard } from '@ant-design/pro-components';
-import { Col, Row, Space, Avatar, Typography, Tag } from 'antd';
+import { Col, Row, Space, Avatar, Typography, Tag, Card } from 'antd';
 import { useSnapshot } from 'valtio';
-import { adminUserStore } from '@/store/adminUser';
-import { layoutSettingStore } from '@/store/layoutSetting';
+import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
+import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import { useMount } from 'ahooks';
-import ShortcutMenu from './component/shortcutMenu';
+import ShortcutMenu from './component/shortcutMenu/index';
 
 /**
  * 后台首页
@@ -20,58 +19,70 @@ export default () => {
     useMount(() => {
     })
 
-    return (
-        <>
-            <PageContainer
-                ghost
-                className="sa-page-container"
+
+    return <>
+        <PageContainer
+            ghost
+            className="sa-page-container"
+        >
+            <Space
+                orientation="vertical"
+                size="middle"
+                styles={{
+                    root: { width: '100%' }
+                }}
             >
-                <Space direction="vertical" style={{ width: '100%' }} size="middle">
-                    <ProCard style={{ marginTop: '4px' }}>
-                        <Row gutter={[0, 20]}>
-                            <Col span={24} >
-                                <Row type="flex" gutter={[12, 0]}>
-                                    <Col flex={0}>
-                                        <Avatar size={50} src={`${adminUser.img}`}>{adminUser.name?.substr(0, 1)}</Avatar>
+                <Card
+                    styles={{
+                        root: {marginTop: '4px' }
+                    }}
+                    variant="borderless"
+                >
+                <Row gutter={[0, 20]}>
+                    <Col span={24} >
+                        <Row type="flex" gutter={[12, 0]}>
+                            <Col flex={0}>
+                                <Avatar size={50} src={`${adminUser.img}`}>{adminUser.name?.substr(0, 1)}</Avatar>
+                            </Col>
+                            <Col flex={1}>
+                                <Row>
+                                    <Col span={24} >
+                                        <Space>
+                                            <Typography.Title
+                                                level={4}
+                                                style={{ margin: '0px', display: 'inline-block' }}
+                                            >{adminUser.name}</Typography.Title>
+                                            <Tag color="blue">{adminUser.AdminRole?.title}</Tag>
+                                        </Space>
                                     </Col>
-                                    <Col flex={1}>
-                                        <Row>
-                                            <Col span={24} >
-                                                <Space>
-                                                    <Typography.Title
-                                                        level={4}
-                                                        style={{ margin: '0px', display: 'inline-block' }}
-                                                    >{adminUser.name}</Typography.Title>
-                                                    <Tag color="blue">{adminUser.AdminRole?.title}</Tag>
-                                                </Space>
-                                            </Col>
-                                            <Col span={24}>
-                                                <Typography.Title
-                                                    level={5}
-                                                    style={{ margin: '0px', fontWeight: 'normal' }}
-                                                >{adminUser.tel}</Typography.Title>
-                                            </Col>
-                                        </Row>
+                                    <Col span={24}>
+                                        <Typography.Title
+                                            level={5}
+                                            style={{ margin: '0px', fontWeight: 'normal' }}
+                                        >{adminUser.tel}</Typography.Title>
                                     </Col>
                                 </Row>
                             </Col>
-                            <Col span={24} >
-                                {!layoutSetting.isMobile ? <>
-                                    <iframe
-                                        scrolling="no"
-                                        style={{ width: '100%', height: '50px' }}
-                                        frameBorder="0"
-                                        allowtransparency="true"
-                                        src={`//i.tianqi.com/index.php?c=code&id=12&icon=1&num=5&site=12${layoutSetting.antdThemeValue == 'dark' ? '&color=%23FFFFFF' : ''}`}
-                                    ></iframe>
-                                </> : ''}
-                            </Col>
                         </Row>
-                    </ProCard>
+                    </Col>
+                    <Col span={24} >
+                        {!layoutSetting.isMobile ? <>
+                            <iframe
+                                scrolling="no"
+                                style={{ width: '100%', height: '50px' }}
+                                frameBorder="0"
+                                allowtransparency="true"
+                                src={`//i.tianqi.com/index.php?c=code&id=12&icon=1&num=5&site=12${layoutSetting.antdThemeValue == 'dark' ? '&color=%23FFFFFF' : ''}`}
+                            ></iframe>
+                        </> : ''}
 
-                    <ShortcutMenu />
-                </Space>
-            </PageContainer>
-        </>
-    )
+                    </Col>
+                </Row>
+            </Card>
+
+            <ShortcutMenu />
+
+        </Space>
+    </PageContainer >
+    </>
 }

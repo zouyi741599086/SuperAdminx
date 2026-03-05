@@ -4,9 +4,10 @@ namespace plugin\user\app\api\controller;
 use support\Request;
 use support\Response;
 use plugin\user\app\common\model\UserModel;
-use plugin\user\app\common\logic\UserLogic;
-use plugin\sms\app\common\model\SmsCodeModel;
-use plugin\sms\app\utils\SmsUtils;
+use Webman\RateLimiter\Limiter;
+use plugin\user\app\common\service\UserService;
+use DI\Attribute\Inject;
+use support\Cache;
 
 /**
  * 用户
@@ -19,21 +20,13 @@ class User
     // 此控制器是否需要登录
     protected $onLogin = true;
     // 不需要登录的方法
-    protected $noNeedLogin = ['getResetPasswordCode', 'resetPassword'];
+    protected $noNeedLogin = ['getShareQrcode'];
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
-    /**
-     * 修改自己的登录密码
-     * @method post
-     * @param Request $request 
-     * @return Response
-     */
-    public function updatePassword(Request $request) : Response
-    {
-        UserLogic::updatePassword($request->post(), $request->user->id);
-        return success([], '修改成功，请重新登录');
-    }
+    public function __construct(
+        private UserService $userService,
+    ) {}
 
     /**
      * 获取自己的资料
@@ -43,8 +36,8 @@ class User
      */
     public function getUserInfo(Request $request) : Response
     {
-        $data 		= UserLogic::findData($request->user->id);
-		$data->img  = file_url($data->img);
+        $data      = $this->userService->findData($request->user->id);
+        $data->img = file_url($data->img);
         return success($data);
     }
 
@@ -56,39 +49,108 @@ class User
      */
     public function updateInfo(Request $request) : Response
     {
-        UserLogic::updateInfo($request->post(), $request->user->id);
+        $this->userService->updateInfo($request->post(), $request->user->id);
         return success([], '修改成功');
     }
 
     /**
-     * 忘记密码获取验证码
+     * 获取推广统计
+     * @method get
+     * @param Request $request 
+     * @return Response
+     */
+    public function getChildrenTotal(Request $request) : Response
+    {
+        $result = $this->userService->getChildrenTotal($request->user->id);
+        return success($result);
+    }
+
+    /**
+     * 获取推广统计 月走势图
+     * @method get
+     * @param Request $request 
+     * @return Response
+     */
+    public function getChildrenTotalMonth(Request $request) : Response
+    {
+        $result = $this->userService->getChildrenTotalMonth($request->user->id, $request->get());
+        return success($result);
+    }
+
+    /**
+     * 获取推广统计 日走势图
+     * @method get
+     * @param Request $request 
+     * @return Response
+     */
+    public function getChildrenTotalDate(Request $request) : Response
+    {
+        $result = $this->userService->getChildrenTotalDate($request->user->id, $request->get());
+        return success($result);
+    }
+
+    /**
+     * 获取推广列表，就是或下级列表
+     * @method get
+     * @param Request $request 
+     * @return Response
+     */
+    public function getChildrenList(Request $request) : Response
+    {
+        $result = $this->userService->getChildrenList($request->user->id, $request->get());
+        return success($result);
+    }
+
+    /**
+     * 搜索某个用户，不能搜索自己
+     * @method get
+     * @param Request $request 
+     * @param string $tel 手机号
+     * @return Response
+     */
+    public function searchUser(Request $request, string $tel) : Response
+    {
+        $result      = $this->userService->searchUser($request->user->id, $tel);
+        $result->img = file_url($result->img);
+        return success($result);
+    }
+
+    /**
+     * 更改手机号获取验证码
+     * @method get
+     * @param Request $request 
+     * @return Response
+     */
+    public function getUpdateTelCode(Request $request) : Response
+    {
+        $this->userService->getUpdateTelCode($request->get('tel'));
+        return success([], "发送成功");
+    }
+
+    /**
+     * 获取推广二维码
      * @method post
      * @param Request $request 
      * @return Response
      */
-    public function getResetPasswordCode(Request $request) : Response
+    public function getShareQrcode(Request $request) : Response
     {
-        $data['tel'] = $request->post('tel');
-        if (! $data['tel']) {
-            abort('参数错误');
-        }
+        $result = $this->userService->getShareQrcode($request->user->id);
+        $result = file_url($result);
+        return success($result);
+    }
 
-        // 验证手机号格式
-        SmsUtils::checkTel($data['tel']);
-
-        // 判断此用户是否存在 是否正常
-        $user = UserModel::where('tel', $data['tel'])->find();
-        if (! $user || $user['status'] == 2) {
-            abort('手机号错误~');
-        }
-
-        $data['code'] = SmsUtils::getCode(4);
-        // 开始发送
-        //SmsUtils::send($data['tel'], "您的验证码是：{$data['code']}，有效期5分钟。");
-
-        // 添加发送记录
-        $data['type'] = 1;
-        SmsCodeModel::create($data);
-        return success([], '发送成功');
+    /**
+     * 获取推广海报
+     * @method post
+     * @param Request $request 
+     * @param string $appName app名称
+     * @return Response
+     */
+    public function getSharePoster(Request $request, string $appName) : Response
+    {
+        $result = $this->userService->getSharePoster($request->user->id, $appName);
+        $result = file_url($result);
+        return success($result);
     }
 }

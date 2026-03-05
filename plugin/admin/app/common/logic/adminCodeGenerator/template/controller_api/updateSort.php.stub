@@ -1,0 +1,19 @@
+<?php
+    // updateSort更新排序
+    if (isset($data['controller_api']['functions']) && in_array('updateSort', $data['controller_api']['functions'])) {
+        echo "
+    /**
+     * 更改{$data['table_title']}排序
+     * @method post
+     * @param Request \$request 
+     * @param array \$list 
+     * @return Response
+     * */
+    public function updateSort(Request \$request, array \$list) : Response
+    {
+        {$serviceMethodPrefix}updateSort(\$list);
+        return success();
+    }\n";
+
+    }
+?>

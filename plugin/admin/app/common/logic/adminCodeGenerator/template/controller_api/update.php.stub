@@ -1,0 +1,18 @@
+<?php
+    // update方法
+    if (isset($data['controller_api']['functions']) && in_array('update', $data['controller_api']['functions'])) {
+        echo "
+    /**
+     * 修改{$data['table_title']}
+     * @method post
+     * @param Request \$request 
+     * @return Response
+     */
+    public function update(Request \$request): Response
+    {
+        {$serviceMethodPrefix}update(\$request->post());
+        return success([], '修改成功');
+    }\n";
+
+    }
+?>

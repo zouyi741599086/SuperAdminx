@@ -1,0 +1,23 @@
+<?php
+use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
+/**
+ * 过反射获取控制器哪些方法
+ */
+$methods = CodeGeneratorUtilLogic::getOwnMethods("{$data['controller_admin']['file_path']}\\{$data['controller_admin']['file_name']}");
+foreach ($methods as $key => $m) {
+    $docComment = $m->getDocComment();
+    // 如果是导入数据，则不一样
+    if ($m->name == 'importData') {
+        $apiList[] = [
+            'title' => '导入数据',
+            'content' => "importData: `\${config.url}/admin/{$tableNameToCamelCase}/importData`,"       
+        ];
+    } else {
+        $apiList[] = [
+            'title' => CodeGeneratorUtilLogic::getMethodsDocComment($docComment, 'title'),
+            'functoin_name' => $m->name,
+            'method' => CodeGeneratorUtilLogic::getMethodsDocComment($docComment, 'method'),
+            'url' => "{$apiPrefix}/admin/{$tableNameToCamelCase}/{$m->name}"           
+        ];
+    }
+}

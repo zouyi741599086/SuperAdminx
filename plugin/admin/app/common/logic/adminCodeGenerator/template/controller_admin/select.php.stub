@@ -1,0 +1,19 @@
+<?php
+    // 搜索选择某条数据
+    if (isset($data['controller_admin']['functions']) && in_array('select', $data['controller_admin']['functions'])) {
+
+        echo "
+    /**
+     * 搜索选择某条数据
+     * @method get
+	 * @param Request \$request 
+     * @return Response
+     */
+    public function select{$tableNameToCamelCase}(Request \$request): Response
+    {
+        \$list = {$serviceMethodPrefix}select{$tableNameToCamelCase}(\$request->get());
+        return success(\$list);
+    }\n";
+
+    }
+?>

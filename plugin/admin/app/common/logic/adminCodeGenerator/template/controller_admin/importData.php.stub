@@ -1,0 +1,42 @@
+<?php
+    // importData导入数据下载表格模板
+    if (isset($data['controller_admin']['functions']) && in_array( 'importData', $data['controller_admin']['functions'])) {
+        // 接口权限
+        $auth = '';
+        if (isset($data['controller_admin']['functions_auth']) && in_array('importData', $data['controller_admin']['functions_auth'])) {
+            $authName = $authPrefix. 'ImportData';
+            $auth = "\n     * @auth {$authName}";
+        }
+
+        echo "
+    /**
+     * 下载导入{$data['table_title']}数据的表格模板
+     * @method get{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function downloadImportExcel(Request \$request): Response
+    {
+        \$data = {$serviceMethodPrefix}downloadImportExcel();
+        return success(\$data);
+    }\n";
+
+    echo "
+    /**
+     * @log 导入{$data['table_title']}数据
+     * @method post{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function importData(Request \$request): Response
+    {
+        \$result = FileUtils::uploadPublic('/tmp_file');
+        if (! isset(\$result['file']) || ! \$result['file']) {
+            abort('请上传导入的表格');
+        }
+        {$serviceMethodPrefix}importData(\$result['file']);
+        return success();
+    }\n";
+
+    }
+?>

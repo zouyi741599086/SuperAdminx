@@ -3,7 +3,7 @@ namespace plugin\admin\app\admin\controller;
 
 use support\Request;
 use support\Response;
-use plugin\admin\app\common\logic\AdminUserLogic;
+use plugin\admin\app\common\logic\adminUser\AdminUserQueryLogic;
 use plugin\admin\app\common\model\AdminUserModel;
 use app\utils\JwtUtils;
 
@@ -21,6 +21,10 @@ class Login
     protected $noNeedLogin = [];
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
+
+    public function __construct(
+        private AdminUserQueryLogic $adminUserQueryLogic,
+    ) {}
 
     /**
      * @log 后台登录
@@ -40,21 +44,21 @@ class Login
         // 查询用户
         $adminUser = AdminUserModel::where('username', $username)->find();
         // 判断用户是否存在
-        if (! $adminUser || ! password_verify($password, $adminUser['password'])) {
+        if (! $adminUser || ! password_verify($password, $adminUser->password)) {
             return error('用户名或密码错误');
         }
-        if ($adminUser['status'] == 2) {
+        if ($adminUser->status == 2) {
             return error('帐号已被锁定');
         }
 
         // 更新用户登录的ip和时间
         AdminUserModel::update([
-            'id'        => $adminUser['id'],
+            'id'        => $adminUser->id,
             'last_time' => date('Y-m-d H:i:s'),
-            'lastip'    => $request->getRealIp(true)
+            'lastip'    => $request->getRealIp(true),
         ]);
 
-        $adminUser          = AdminUserLogic::getAdminUser($adminUser['id']);
+        $adminUser          = $this->adminUserQueryLogic->getAdminUser($adminUser->id);
         $adminUser['token'] = JwtUtils::generateToken('admin', $adminUser);
         return success($adminUser, '登录成功');
     }

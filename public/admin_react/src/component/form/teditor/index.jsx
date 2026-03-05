@@ -29,7 +29,7 @@ export default (props) => {
         {/* Tinymce编辑器在移动端的时候必须要苹果的Safari浏览器或谷歌浏览器才行 */}
         {(!layoutSetting.isMobile || isMobileSafariOrChrome()) ? <Tinymce {...props} /> : <>
             <Alert
-                message="错误"
+                title="错误"
                 description="当前浏览器无法编辑，请使用iPhone的Safari浏览器或下载谷歌的Chrome浏览器进行访问~"
                 type="error"
                 showIcon

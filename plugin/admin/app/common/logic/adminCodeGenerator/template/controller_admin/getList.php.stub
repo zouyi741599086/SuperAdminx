@@ -1,0 +1,25 @@
+<?php
+    // getList方法
+    if (isset($data['controller_admin']['functions']) && in_array('getList', $data['controller_admin']['functions'])) {
+        // 接口权限
+        $auth = '';
+        if (isset($data['controller_admin']['functions_auth']) && in_array('getList', $data['controller_admin']['functions_auth'])) {
+            $authName = $authPrefix. 'GetList';
+            $auth = "\n     * @auth {$authName}";
+        }
+
+        echo "
+    /**
+     * 列表
+     * @method get{$auth}
+     * @param Request \$request 
+     * @return Response
+     */
+    public function getList(Request \$request): Response
+    {
+        \$list = {$serviceMethodPrefix}getList(\$request->get());
+        return success(\$list);
+    }\n";
+
+    }
+?>

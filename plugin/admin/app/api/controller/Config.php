@@ -3,7 +3,7 @@ namespace plugin\admin\app\api\controller;
 
 use support\Request;
 use support\Response;
-use plugin\admin\app\common\logic\ConfigLogic;
+use plugin\admin\app\common\service\ConfigService;
 
 /**
  * 配置
@@ -20,6 +20,10 @@ class Config
     // 不需要加密的方法
     protected $noNeedEncrypt = [];
 
+    public function __construct(
+        private ConfigService $configService,
+    ) {}
+
     /**
      * 获取配置
      * @method get
@@ -28,7 +32,7 @@ class Config
      */
     public function getConfig(Request $request, string $name) : Response
     {
-        $data = ConfigLogic::getConfig($name, 'array');
+        $data = $this->configService->getConfig($name, 'array');
         $data = file_url($data);
         return success($data);
     }

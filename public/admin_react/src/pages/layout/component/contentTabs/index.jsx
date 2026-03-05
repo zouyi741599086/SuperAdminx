@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
+import { menuAuthStore } from '@/store/menuAuth';
 import { useSnapshot } from 'valtio';
 import { contentTabsStore, setContentTabsStore } from '@/store/contentTabs';
-import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
+import { layoutSettingStore } from '@/store/layoutSetting';
 import { Layout, Dropdown, Button, Tabs } from 'antd';
 import { deepClone } from '@/common/function';
 import {
@@ -179,8 +179,6 @@ export default () => {
                     }
                 })
             })
-           
-
             setContentTabsStore((val) => ({
                 ...val,
                 activeName: menuTop.name,
