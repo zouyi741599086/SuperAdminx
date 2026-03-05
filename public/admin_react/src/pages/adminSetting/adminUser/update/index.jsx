@@ -2,6 +2,7 @@ import { useRef, useState, lazy } from 'react';
 import {
     ModalForm,
 } from '@ant-design/pro-components';
+import { App } from 'antd';
 import { adminUserApi } from '@/api/adminUser';
 import { useUpdateEffect } from 'ahooks';
 import Lazyload from '@/component/lazyLoad/index';
@@ -15,6 +16,7 @@ const Form1 = lazy(() => import('./../component/form1'));
  * @link https://www.superadminx.com/
  * */
 export default ({ tableReload, updateId, setUpdateId, ...props }) => {
+    const { message } = App.useApp();
     const formRef = useRef();
     const open = updateId > 0;
 

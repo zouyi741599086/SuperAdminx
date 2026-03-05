@@ -63,7 +63,7 @@ export default () => {
             title: '头像',
             dataIndex: 'img',
             render: (_, render) => {
-                return <Avatar src={render.img}>{render.name?.substr(0, 1)}</Avatar>
+                return <Avatar src={render.img || null}>{render.name?.substr(0, 1)}</Avatar>
             },
             search: false,
         },
