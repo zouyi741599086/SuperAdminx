@@ -55,7 +55,7 @@ const types = [
 // 是否包含附件的选择
 const files = [
     {
-        value: '',
+        value: '=',
         label: '等于附件路劲',
     },
     {

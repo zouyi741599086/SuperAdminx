@@ -84,13 +84,7 @@ import { useRef, lazy, useState} from 'react';
 import { ModalForm } from '@ant-design/pro-components';
 import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>';
 import { ProTable } from '@ant-design/pro-components';
-import { App, Button, Typography,
-<?php 
-    foreach ($antdComponent as $v) {
-echo "{$v}, ";
-    }
-?>
-} from 'antd';
+import { App, Button, Typography, <?php echo implode(', ',$antdComponent);?>} from 'antd';
 import {
     DeleteOutlined,
     PlusOutlined,

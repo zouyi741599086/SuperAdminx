@@ -151,7 +151,7 @@ export default ({typeAction, ...props}) => {
                     $filedTip = '请选择';
                 }
                 if (in_array($type, ['uploadFile', 'uploadFileAll', 'uploadImg', 'uploadImgAll', 'uploadImgVideoAll'])) {
-                    $filedTip = '请输入';
+                    $filedTip = '请上传';
                 }
                 // 字段的类型 string | number | array
                 $fieldType = 'string';

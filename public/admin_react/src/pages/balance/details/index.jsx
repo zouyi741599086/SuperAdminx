@@ -139,7 +139,7 @@ export default () => {
             dataIndex: 'user_id',
             search: true,
             valueType: 'selectTable',
-            renderFormItem: () => <SelectUser />,
+            formItemRender: () => <SelectUser />,
             render: (_, record) => <div style={{ display: 'flex' }}>
                 <Avatar src={record.User?.img}>{record.User?.name?.substr(0, 1)}</Avatar>
                 <div style={{ paddingLeft: '5px' }}>

@@ -30,6 +30,7 @@ const Form1 = lazy(() => import('./../component/form1'));
 export default ({ tableReload, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
+    
     return <>
         <ModalForm
             name="create<?php echo CodeGeneratorUtilLogic::toCamelCase($data['table_name']);?>"

@@ -103,7 +103,7 @@ export default () => {
             dataIndex: 'user_id',
             search: true,
             valueType: 'selectTable',
-            renderFormItem: () => <SelectUser />,
+            formItemRender: () => <SelectUser />,
             render: (_, record) => {
                 if (record.User) {
                     return <div style={{ display: 'flex' }}>

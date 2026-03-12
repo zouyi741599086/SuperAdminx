@@ -223,35 +223,26 @@ export default ({ typeAction, ...props }) => {
                 }}
             </ProFormDependency>
 
-            <ProFormDependency name={['type']}>
-                {({ type }) => {
-                    // 1》菜单目录，2》菜单，3》外部链接菜单，4》iframe菜单 才可以隐藏
-                    if ([1, 2, 3, 4].indexOf(type) !== -1) {
-                        return <>
-                            <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
-                                <ProFormRadio.Group
-                                    name="hidden"
-                                    label="是否隐藏"
-                                    options={[
-                                        {
-                                            label: '否',
-                                            value: 1,
-                                        },
-                                        {
-                                            label: '是',
-                                            value: 2,
-                                        },
-                                    ]}
-                                    extra="角色管理、菜单中都不会出现此权限，superadmainx账户会显示"
-                                    rules={[
-                                        { required: true, message: '请选择' }
-                                    ]}
-                                />
-                            </Col>
-                        </>
-                    }
-                }}
-            </ProFormDependency>
+            <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+                <ProFormRadio.Group
+                    name="hidden"
+                    label="是否隐藏"
+                    options={[
+                        {
+                            label: '否',
+                            value: 1,
+                        },
+                        {
+                            label: '是',
+                            value: 2,
+                        },
+                    ]}
+                    extra="角色管理、菜单中都不会出现此权限，superadmainx账户会显示"
+                    rules={[
+                        { required: true, message: '请选择' }
+                    ]}
+                />
+            </Col>
             <ProFormDependency name={['type']}>
                 {({ type }) => {
                     // 5》内页菜单权限，7》参数设置权限 才有参数选择

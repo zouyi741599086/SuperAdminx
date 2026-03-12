@@ -40,6 +40,7 @@
     // 包含附件的字段
     if (isset($data['model']['file']) && is_array($data['model']['file'])) {      
         foreach ($data['model']['file'] as $key => $value) {
+        $value = $value == '=' ? '' : $value;
             echo "                '{$key}' => '{$value}',
 ";
         }

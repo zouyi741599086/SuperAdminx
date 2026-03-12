@@ -81,7 +81,7 @@ export default () => {
                     </div>
                 </div>
             </>,
-            renderFormItem: () => <SelectUser />
+            formItemRender: () => <SelectUser />
         },
         {
             title: '订单号',

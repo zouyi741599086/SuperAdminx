@@ -180,19 +180,19 @@ class GeneratorFileLogic
     private function generateReactOtherFile(string $tableName, object $data, string $code, bool $forced = false) : void
     {
         // 生成的是搜索选择数据组件
-        if ($data->react_other->component_type == 'select') {
+        if ($data->react_other['component_type'] == 'select') {
             $file_path = "public\admin_react\src\components";
             $file_name = 'select' . CodeGeneratorUtilLogic::toCamelCase($tableName) . '.jsx';
         }
 
         // 生成的是弹窗form
-        if ($data->react_other->component_type == 'modalForm') {
+        if ($data->react_other['component_type'] == 'modalForm') {
             $file_path = $data->react_other->modal_form_file_path;
             $file_name = $data->react_other->modal_form_file_name;
         }
 
         // 生成的是弹窗table
-        if ($data->react_other->component_type == 'modalTable') {
+        if ($data->react_other['component_type'] == 'modalTable') {
             $file_path = $data->react_other->modal_table_file_path;
             $file_name = $data->react_other->modal_table_file_name;
         }

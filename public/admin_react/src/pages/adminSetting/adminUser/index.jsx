@@ -78,7 +78,7 @@ export default () => {
         {
             title: '角色',
             dataIndex: 'admin_role_id',
-            renderFormItem: () => <SelectAdminRole />,
+            formItemRender: () => <SelectAdminRole />,
             render: (_, record) => record.AdminRole.title,
         },
         {

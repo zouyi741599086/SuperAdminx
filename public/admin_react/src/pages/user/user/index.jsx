@@ -114,7 +114,7 @@ export default () => {
             dataIndex: 'pid',
             search: true,
             valueType: 'selectTable',
-            renderFormItem: () => <SelectUser />,
+            formItemRender: () => <SelectUser />,
             render: (_, record) => {
                 if (record.PUser) {
                     return <div style={{ display: 'flex' }}>

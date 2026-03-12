@@ -35,7 +35,7 @@
             {
                 //\$orderBy = \"sort desc,id desc\";
                 \$orderBy = \"id desc\";
-                \$orderBy = get_admin_order_by('id desc', \$params);
+                \$orderBy = get_admin_order_by(\$orderBy, \$params);
                 \$query->order(\$orderBy);
             });
 
