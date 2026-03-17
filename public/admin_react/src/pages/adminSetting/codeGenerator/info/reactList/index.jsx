@@ -194,6 +194,22 @@ export default ({ tableName, operationFile, ...props }) => {
                 const result = await adminCodeGeneratorApi.findData(params);
                 setData(result.data);
                 setIsGetData(Date.now());
+
+                // 第一次进入此页面保存没得问题，第二次进入此页面的时候list_fields_type_config下面的字段是空的数组，如list_fields_type_config.create_time = []，这时候编辑list_fields_type_config.create_time 下多个item的时候会出现编辑好第一个、编辑第二个的时候会将第一个清空的情况，解决办法把空数组改为空对象，这是pro2升级到pro3后出现的问题
+                if (result.data?.react_list?.list_fields_type_config) {
+                    const config = result.data.react_list.list_fields_type_config;
+                    Object.keys(config).forEach(key => {
+                        if (Array.isArray(config[key])) {
+                            // 如果值是数组，根据业务决定如何处理
+                            // 如果数组中的元素需要保留，可以转换为对象并保留数组内容
+                            // 这里假设只需要一个空对象来存放 extra1/extra2
+                            config[key] = {};
+                            // 如果你需要保留数组中的原有数据，可以这样做：
+                            // config[key] = { originalArray: config[key] };
+                        }
+                    });
+                }
+
                 return result.data || {};
             }}
             submitter={false}

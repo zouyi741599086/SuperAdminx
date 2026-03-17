@@ -15,8 +15,9 @@ class SmsLogic
     /**
      * 发送登录验证码
      * @param string $tel 手机号
+     * @return string 验证码
      */
-    public function sendCode(string $tel)
+    public function sendCode(string $tel) : string
     {
         // 频率限制
         Limiter::check(
@@ -28,10 +29,10 @@ class SmsLogic
 
         $code = get_str(4);
         // 这里调用短信发送
-        var_dump($code);
         // sms_send($tel, $code);
 
         Cache::set("login_code_{$tel}", $code, 60);
+        return $code;
     }
 
     /**

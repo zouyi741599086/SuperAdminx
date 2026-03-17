@@ -27,7 +27,7 @@ export default ({ data, preview, remove }) => {
             key={data.uid}
             size="small"
             styles={{
-				root: style
+				root: style,
                 body: {padding: 8}
             }}
             ref={setNodeRef}

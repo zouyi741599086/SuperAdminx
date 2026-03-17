@@ -21,6 +21,13 @@
         try {
             \$tmpList = [];
             \$list    = \$this->{$tableNameToCamelCaseLower}QueryLogic->getList(\$params, [], [], false)->cursor();
+
+            // \$status = match (\$v->status) {
+            //     1       => '商城订单支付',
+            //     2       => '充值',
+            //     default => '--'
+            // };
+            
             foreach (\$list as \$v) {
                 // 导出的数据
                 \$tmpList[] = [";

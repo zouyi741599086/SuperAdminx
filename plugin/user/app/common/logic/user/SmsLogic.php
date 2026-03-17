@@ -14,8 +14,9 @@ class SmsLogic
     /**
      * 获取验证码
      * @param string $tel 新手机号
+     * @return string 验证码
      */
-    public function sendCode(string $tel)
+    public function sendCode(string $tel) : string
     {
         $request = request();
         think_validate([
@@ -31,20 +32,20 @@ class SmsLogic
         );
 
         if ($tel == $request->user->tel) {
-            return error('手机号不能和当前手机号一致');
+            abort('手机号不能和当前手机号一致');
         }
 
         if (UserModel::where('tel', $tel)->value('id')) {
-            return error('手机号已存在');
+            abort('手机号已存在');
         }
 
         $code = get_str(4);
         // 发送验证码
-        var_dump($code);
         // if (! sms_send($params['tel'], $code)) {
-        //     return error('发送验证码失败');
+        //     abort('发送验证码失败');
         // }
         Cache::set("update_tel_code_{$tel}", $code, 60);
+        return $code;
     }
 
     /**

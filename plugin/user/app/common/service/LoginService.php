@@ -91,10 +91,11 @@ class LoginService
     /**
      * 发送登录验证码
      * @param string $tel 手机号
+     * @return string 验证码
      */
-    public function sendCode(string $tel)
+    public function sendCode(string $tel) : string
     {
-        $this->smsLogic->sendCode($tel);
+        return $this->smsLogic->sendCode($tel);
     }
 
 }

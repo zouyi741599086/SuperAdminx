@@ -80,6 +80,7 @@ export default () => {
 				styles={{
 					body: {paddingBottom: 40}
 				}}
+                variant="borderless"
 <?php
                 if (isset($data['react_create_update']['card_tab_list']) && $data['react_create_update']['card_tab_list']) {
 echo "                tabList={topList}

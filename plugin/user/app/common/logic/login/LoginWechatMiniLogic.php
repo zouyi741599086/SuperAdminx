@@ -40,15 +40,16 @@ class LoginWechatMiniLogic implements LoginInterface
     public function getRegisteredUserId(array &$data) : int|null
     {
         //是否已注册
-        $userId = UserModel::where('status', 1)
-            ->where('tel', $data['tel'])
-            ->value('id');
+        $user = UserModel::where('tel', $data['tel'])->find();
+        if ($user->status ==  2) {
+            abort('账户被锁定~');
+        }
 
         // 重新绑定用户的openid
-        if ($userId) {
+        if ($user) {
             $result = WechatMiniUtils::getOpenid($data['code']);
-            $this->wechatMiniLogic->bindWechatMiniOpenId($userId, $result);
+            $this->wechatMiniLogic->bindWechatMiniOpenId($user->id, $result);
         }
-        return $userId;
+        return $user->id;
     }
 }

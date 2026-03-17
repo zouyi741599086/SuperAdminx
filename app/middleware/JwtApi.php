@@ -31,12 +31,12 @@ class JwtApi implements MiddlewareInterface
             $request->user = JwtUtils::getUser($request->client);
         } catch (\Throwable $e) {
             // 必须要登录同时验证失败了，才抛出错误
-            // if ($this->actionIsLogin()) {
-            //     abort($e->getMessage(), -2);
-            // }
+            if ($this->actionIsLogin()) {
+                abort($e->getMessage(), -2);
+            }
 
             // 强制登录某个用户，需注释掉上面三行
-            $request->user = UserModel::find(1);
+            // $request->user = UserModel::find(1);
         }
 
         // 模拟登录某个用户

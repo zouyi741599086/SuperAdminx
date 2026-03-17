@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
  * @param {Boolean} empty_children 当下级为空的时候，是否需要保留key-children
  * @returns Array
  */
-export const menuToTree = (arr, pid = null, key = 'children') => {
+const menuToTree = (arr, pid = null, key = 'children') => {
     let newArr = [];
     arr.forEach(item => {
         if (item.pid_name == pid) {

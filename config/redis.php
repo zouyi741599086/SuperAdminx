@@ -15,8 +15,8 @@
 return [
     'default' => [
         'password' => getenv('REDIS_PASSWORD', ''),
-        'host'     => getenv('REDIS_HOST'),
-        'port'     => getenv('REDIS_PORT'),
+        'host'     => getenv('REDIS_HOST', ''),
+        'port'     => getenv('REDIS_PORT', ''),
         'database' => 0,
         // Connection pool, supports only Swoole or Swow drivers.
         'pool'     => [
@@ -30,8 +30,8 @@ return [
     // 限流器
     'limiter' => [
         'password' => getenv('REDIS_PASSWORD', ''),
-        'host'     => getenv('REDIS_HOST'),
-        'port'     => getenv('REDIS_PORT'),
+        'host'     => getenv('REDIS_HOST', ''),
+        'port'     => getenv('REDIS_PORT', ''),
         'database' => 1,
         // Connection pool, supports only Swoole or Swow drivers.
         'pool'     => [

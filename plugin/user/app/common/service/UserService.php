@@ -96,10 +96,11 @@ class UserService
     /**
      * 更改手机号获取验证码
      * @param string $tel 新手机号
+     * @return string 验证码
      */
-    public function getUpdateTelCode(string $tel)
+    public function getUpdateTelCode(string $tel): string
     {
-        $this->smsLogic->sendCode($tel);
+        return $this->smsLogic->sendCode($tel);
     }
 
     /**

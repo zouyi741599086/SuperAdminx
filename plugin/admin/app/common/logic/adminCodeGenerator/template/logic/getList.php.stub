@@ -27,14 +27,20 @@
         \$list = {$data['model']['file_name']}::withoutField('')\n";
         }
 
+        // 判断是否有排序字段
+        $order = 'id desc';
+        foreach ($tableColumn as $v) {
+            if ($v['Field'] == 'sort') {
+                $order = 'sort desc,id desc';
+            }
+        }
         echo "
             //->withoutField([])
             ->with(\$with)
             ->with(\$withCount)
             ->when(true, function (\$query) use (\$params)
             {
-                //\$orderBy = \"sort desc,id desc\";
-                \$orderBy = \"id desc\";
+                \$orderBy = \"{$order}\";
                 \$orderBy = get_admin_order_by(\$orderBy, \$params);
                 \$query->order(\$orderBy);
             });

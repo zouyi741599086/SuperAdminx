@@ -231,7 +231,9 @@ export default () => {
                         // 排序的时候
                         let orderBy = '';
                         for (let key in sort) {
-                            orderBy = key + ' ' + (sort[key] === 'descend' ? 'desc' : 'asc');
+                            if (sort[key]) {
+                                orderBy = key + ' ' + (sort[key] === 'descend' ? 'desc' : 'asc');
+                            }
                         }
                         const result = await configApi.getList({
                             ...params,// 包含了翻页参数跟搜索参数

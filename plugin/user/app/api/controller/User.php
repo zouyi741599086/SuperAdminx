@@ -123,8 +123,12 @@ class User
      */
     public function getUpdateTelCode(Request $request) : Response
     {
-        $this->userService->getUpdateTelCode($request->get('tel'));
-        return success([], "发送成功");
+        $code = $this->userService->getUpdateTelCode($request->get('tel'));
+        $message = "发送成功";
+        if (config('app.debug')) {
+            $message .= $code;
+        }
+        return success([], $message);
     }
 
     /**

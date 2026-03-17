@@ -5,6 +5,7 @@ use plugin\user\app\common\model\UserModel;
 use plugin\user\app\common\validate\UserValidate;
 use plugin\user\app\common\logic\user\UserTreeLogic;
 use plugin\user\app\common\logic\login\RegisterLogic;
+use app\utils\JwtUtils;
 use support\think\Db;
 
 /**
@@ -95,6 +96,13 @@ class UserExecuteLogic
             UserModel::where('id', 'in', $id)->update([
                 'status' => $status,
             ]);
+
+            $id = is_array($id) ? $id : [$id];
+            foreach ($id as $v) {
+                JwtUtils::logoutUser('weixin-mini', $v);
+                JwtUtils::logoutUser('app', $v);
+                JwtUtils::logoutUser('h5', $v);
+            }
         } catch (\Throwable $e) {
             abort($e->getMessage());
         }

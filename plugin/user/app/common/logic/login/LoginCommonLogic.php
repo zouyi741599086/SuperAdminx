@@ -43,20 +43,21 @@ class LoginCommonLogic implements LoginInterface
      */
     public function getRegisteredUserId(array &$data) : ?int
     {
-        $userId = UserModel::where('status', 1)
-            ->where('tel', $data['tel'])
-            ->value('id');
+        $user = UserModel::where('tel', $data['tel'])->find();
+        if ($user->status ==  2) {
+            abort('账户被锁定~');
+        }
 
-        // 重新绑定用户的openid
+        // 重新绑定用户的微信公众号 openid
         $weixinMpOpenid = request()->post('weixin_mp_openid');
-        if ($userId && $weixinMpOpenid) {
+        if ($user && $weixinMpOpenid) {
             $this->wechatMpLogic->bindWechatMpOpenId(
-                $userId,
+                $user->id,
                 $weixinMpOpenid,
                 request()->post('weixin_unionid'),
             );
         }
 
-        return $userId;
+        return $user->id;
     }
 }

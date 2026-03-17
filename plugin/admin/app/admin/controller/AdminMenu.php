@@ -28,7 +28,6 @@ class AdminMenu
     /**
      * 获取列表
      * @method get
-     * @auth adminMenuGetList
      * @param Request $request 
      * @return Response
      */

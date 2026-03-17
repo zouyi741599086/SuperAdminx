@@ -33,7 +33,7 @@ const { Header, Content, Sider } = Layout;
  * @param {Array} pid_name_path 路劲
  * @returns 
  */
-export const arrayToTree = (arr, pid = null, pid_name_path = []) => {
+const arrayToTree = (arr, pid = null, pid_name_path = []) => {
     let newArr = [];
     arr.forEach(item => {
         if (item['pid_name'] === pid) {
@@ -142,8 +142,8 @@ export default () => {
                         const searchPath = (arr) => {
                             let _path = '';
                             arr.some(_item => {
-                                // 2》菜单，4》iframe菜单  才是内部组件
-                                if ([2, 4].indexOf(_item.type) !== -1 && _item.path) {
+                                // 2》菜单，4》iframe菜单，7》配置菜单  才是内部组件
+                                if ([2, 4, 7].indexOf(_item.type) !== -1 && _item.path) {
                                     _path = _item.path;
                                     return true;
                                 }

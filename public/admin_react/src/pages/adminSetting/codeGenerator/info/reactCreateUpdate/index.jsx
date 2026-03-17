@@ -33,6 +33,7 @@ export default ({ tableName, operationFile, ...props }) => {
             getTableList();
         }
     }, [tableName]);
+
     // 获取字段列表
     const [tableColumns, setTableColumns] = useState([]);
     const [isGetData, setIsGetData] = useState(); // 数据是否已经请求完成，需要按照数据库中的表单字段排序 对 字段列表进行重新排序
@@ -115,7 +116,6 @@ export default ({ tableName, operationFile, ...props }) => {
     // 表单字段设置 验证规则
     const validateRules = (Field) => {
         return <ProFormSelect
-            key="validateRules"
             name={['react_create_update', 'form_fields_type_config', `${Field}`, `validateRules`]}
             placeholder="验证规则"
             options={[
@@ -305,9 +305,7 @@ export default ({ tableName, operationFile, ...props }) => {
     // 当多tab标签的时候，某个字段归属于哪个标签里面
     const fieldToTab = (Field) => {
         return <ProFormDependency key="field_to_tab" name={[['react_create_update', 'card_tab_list'], ['react_create_update', 'open_type']]}>
-            {({ react_create_update }) => {
-                const card_tab_list = react_create_update?.card_tab_list;
-                const open_type = react_create_update?.open_type;
+            {({ card_tab_list, open_type }) => {
                 if (open_type == 2 && card_tab_list?.length > 0) {
                     return <ProFormSelect
                         key="field_to_tab"
@@ -379,9 +377,8 @@ export default ({ tableName, operationFile, ...props }) => {
             fieldProps={{
                 prefix: '最小|长度',
                 style: { margin: '2px 0px' },
-                precision: 0
+                precision: 2
             }}
-            min={1}
             rules={[
                 { required: true, message: '请输入' }
             ]}
@@ -396,9 +393,8 @@ export default ({ tableName, operationFile, ...props }) => {
             fieldProps={{
                 prefix: '最大|长度',
                 style: { margin: '2px 0px' },
-                precision: 0
+                precision: 2
             }}
-            min={1}
             rules={[
                 { required: true, message: '请输入' }
             ]}
@@ -446,7 +442,7 @@ export default ({ tableName, operationFile, ...props }) => {
             ]}
         />
     };
-    // 表单字段设置 数量来源表
+    // 表单字段设置 数据来源表
     const dataSourceTable = (Field) => {
         return <ProFormSelect
             key="dataSourceTable"
@@ -481,6 +477,21 @@ export default ({ tableName, operationFile, ...props }) => {
                 const result = await adminCodeGeneratorApi.findData(params);
                 setData(result.data);
                 setIsGetData(Date.now());
+
+                // 第一次进入此页面保存没得问题，第二次进入此页面的时候form_fields_type_config下面的字段是空的数组，如form_fields_type_config.create_time = []，这时候编辑form_fields_type_config.create_time 下多个item的时候会出现编辑好第一个、编辑第二个的时候会将第一个清空的情况，解决办法把空数组改为空对象，这是pro2升级到pro3后出现的问题
+                if (result.data?.react_create_update?.form_fields_type_config) {
+                    const config = result.data.react_create_update.form_fields_type_config;
+                    Object.keys(config).forEach(key => {
+                        if (Array.isArray(config[key])) {
+                            // 如果值是数组，根据业务决定如何处理
+                            // 如果数组中的元素需要保留，可以转换为对象并保留数组内容
+                            // 这里假设只需要一个空对象来存放 extra1/extra2
+                            config[key] = {};
+                            // 如果你需要保留数组中的原有数据，可以这样做：
+                            // config[key] = { originalArray: config[key] };
+                        }
+                    });
+                }
                 return result.data || {};
             }}
             submitter={false}
@@ -513,12 +524,12 @@ export default ({ tableName, operationFile, ...props }) => {
                 })
             }}
         >
-            <Space 
-				orientation="vertical"
-				styles={{ 
-					root: {width: '100%'}
-				}}
-			>
+            <Space
+                orientation="vertical"
+                styles={{
+                    root: { width: '100%' }
+                }}
+            >
                 <Row gutter={[24, 0]}>
                     <Col xs={24} sm={12} md={12} lg={8} xl={6} xxl={6}>
                         <ProFormRadio.Group
@@ -713,19 +724,19 @@ export default ({ tableName, operationFile, ...props }) => {
                                             // 对验证规则设置详情参数
                                             _component.push(<ProFormDependency key="1" name={[['react_create_update', 'form_fields_type_config', record.Field, 'validateRules']]}>
                                                 {({ react_create_update }) => {
-                                                    const validateRules = react_create_update?.form_fields_type_config?.[record.Field]?.validateRules;
-                                                    if (Array.isArray(validateRules) && validateRules.length > 0) {
+                                                    const tmpValidateRules = react_create_update?.form_fields_type_config?.[record.Field]?.validateRules;
+                                                    if (Array.isArray(tmpValidateRules) && tmpValidateRules.length > 0) {
                                                         const _tmp_com = [];
                                                         // 设置最小 或 最小长度
-                                                        if (validateRules.indexOf('min') !== -1) {
+                                                        if (tmpValidateRules.indexOf('min') !== -1) {
                                                             _tmp_com.push(minNumber(record.Field));
                                                         }
                                                         // 设置最大 或 最大长度
-                                                        if (validateRules.indexOf('max') !== -1) {
+                                                        if (tmpValidateRules.indexOf('max') !== -1) {
                                                             _tmp_com.push(maxNumber(record.Field));
                                                         }
                                                         // 设置固定长度 
-                                                        if (validateRules.indexOf('len') !== -1) {
+                                                        if (tmpValidateRules.indexOf('len') !== -1) {
                                                             _tmp_com.push(lenNumber(record.Field));
                                                         }
                                                         return _tmp_com;
@@ -823,7 +834,7 @@ export default ({ tableName, operationFile, ...props }) => {
                         }
                     }}
                 </ProFormDependency>
-                
+
                 <ProFormDependency name={[['react_create_update', 'card_tab_list'], ['react_create_update', 'open_type'],]}>
                     {({ react_create_update }) => {
                         const open_type = react_create_update?.open_type;

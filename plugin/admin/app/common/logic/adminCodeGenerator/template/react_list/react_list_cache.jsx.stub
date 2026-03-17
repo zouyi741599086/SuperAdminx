@@ -117,52 +117,50 @@ export default () => {
         }
     }
 
-    return (
-        <>
-            <Lazyload block={false}>
-                <Update
-                    updateId={updateId}
-                    setUpdateId={setUpdateId}
-                    getList={getList}
-                />
-            </Lazyload>
-            <PageContainer
-                className="sa-page-container"
-                ghost
-                header={{
-                    title: '<?php echo $data['table_title'] ?? '';?>',
-                    style: { padding: '12px 24px' },
-                }}
-                content={<Alert title="可鼠标按住元素拖动排序~" type="warning" />}
+    return <>
+        <Lazyload block={false}>
+            <Update
+                updateId={updateId}
+                setUpdateId={setUpdateId}
+                getList={getList}
+            />
+        </Lazyload>
+        <PageContainer
+            className="sa-page-container"
+            ghost
+            header={{
+                title: '<?php echo $data['table_title'] ?? '';?>',
+                style: { padding: '12px 24px' },
+            }}
+            content={<Alert title="可鼠标按住元素拖动排序~" type="warning" />}
+        >
+            <ProCard
+                title={<Lazyload block={false}>
+                    <Create getList={getList} />
+                </Lazyload>}
             >
-                <ProCard
-                    title={<Lazyload block={false}>
-                        <Create getList={getList} />
-                    </Lazyload>}
+                <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}
+                    modifiers={[restrictToParentElement]}
                 >
-                    <DndContext
-                        sensors={sensors}
-                        collisionDetection={closestCenter}
-                        onDragEnd={handleDragEnd}
-                        modifiers={[restrictToParentElement]}
+                    <SortableContext
+                        items={list.map(i => i.id)}
+                        strategy={rectSortingStrategy}
                     >
-                        <SortableContext
-                            items={list.map(i => i.id)}
-                            strategy={rectSortingStrategy}
-                        >
-                            {list.map(item => <Item
-                                {...item}
-                                setUpdateId={setUpdateId}
-                                del={del}
-                                key={item.id}
-                            />)}
-                        </SortableContext>
-                    </DndContext>
+                        {list.map(item => <Item
+                            {...item}
+                            setUpdateId={setUpdateId}
+                            del={del}
+                            key={item.id}
+                        />)}
+                    </SortableContext>
+                </DndContext>
 
-                </ProCard >
-            </PageContainer >
-        </>
-    )
+            </ProCard >
+        </PageContainer >
+    </>
 }
 
 const Item = (props) => {

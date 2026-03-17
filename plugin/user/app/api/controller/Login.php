@@ -77,8 +77,12 @@ class Login
      */
     public function getLoginCode(Request $request, string $tel) : Response
     {
-        $this->loginService->sendCode($tel);
-        return success([], "发送成功");
+        $code    = $this->loginService->sendCode($tel);
+        $message = "发送成功";
+        if (config('app.debug')) {
+            $message .= $code;
+        }
+        return success([], $message);
     }
 
     /**

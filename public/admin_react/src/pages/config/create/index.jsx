@@ -98,7 +98,7 @@ export default () => {
                 },
                 // formItem里面字段的属性
                 fieldProps: {
-                    style: { 
+                    styles: { 
                         root: {width: '100%'}
                      }
                 },
