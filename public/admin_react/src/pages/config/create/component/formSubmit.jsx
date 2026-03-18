@@ -11,7 +11,7 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { useMount } from 'ahooks';
 
-export default ({ fields, setFields, type }) => {
+const FormSubmit = ({ fields, setFields, type }) => {
     const formRef = useRef();
     const navigate = useNavigate();
     const { message } = App.useApp();
@@ -147,3 +147,5 @@ export default ({ fields, setFields, type }) => {
         </>
     )
 }
+
+export default FormSubmit;

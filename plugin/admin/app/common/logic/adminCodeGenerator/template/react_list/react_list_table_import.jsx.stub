@@ -34,7 +34,7 @@ import { authCheck } from '@/common/function';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ tableReload, ...props }) => {
+const Import = ({ tableReload, ...props }) => {
     const { message, modal } = App.useApp();
 
     // 下载导入模板
@@ -174,3 +174,5 @@ export default ({ tableReload, ...props }) => {
         </ModalForm>
     );
 };
+
+export default Import;

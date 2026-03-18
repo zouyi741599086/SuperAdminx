@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const { useToken } = theme;
 
-export default ({ title, name, close, path, closePage, activeName, ...props }) => {
+const Item = ({ title, name, close, path, closePage, activeName, ...props }) => {
     const { token } = useToken();
     const navigate = useNavigate();
 
@@ -31,3 +31,5 @@ export default ({ title, name, close, path, closePage, activeName, ...props }) =
         </> : ''}
     </div>
 }
+
+export default Item;

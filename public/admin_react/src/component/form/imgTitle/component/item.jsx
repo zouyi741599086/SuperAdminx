@@ -7,7 +7,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import './item.css'
 
-export default ({ data, preview, remove }) => {
+const Item = ({ data, preview, remove }) => {
     const {
         attributes,
         listeners,
@@ -27,14 +27,14 @@ export default ({ data, preview, remove }) => {
             key={data.uid}
             size="small"
             styles={{
-				root: style,
-                body: {padding: 8}
+                root: style,
+                body: { padding: 8 }
             }}
             ref={setNodeRef}
             hoverable={isDragging}
-			classNames={{
-				root: isDragging ? 'dragon imgTitle-img' : 'imgTitle-img'
-			}}
+            classNames={{
+                root: isDragging ? 'dragon imgTitle-img' : 'imgTitle-img'
+            }}
             {...attributes}
             {...listeners}
         >
@@ -56,3 +56,5 @@ export default ({ data, preview, remove }) => {
         </Card>
     )
 }
+
+export default Item;

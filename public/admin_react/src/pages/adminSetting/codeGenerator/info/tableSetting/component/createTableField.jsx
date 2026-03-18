@@ -6,7 +6,7 @@ import { Button, Row, Col } from 'antd';
 /**
  * 给表添加额外的字段
  */
-export default ({ callback, ...props }) => {
+const CreateTableField = ({ callback, ...props }) => {
     const formRef = useRef();
 
     return <>
@@ -54,3 +54,5 @@ export default ({ callback, ...props }) => {
         </ModalForm>
     </>;
 };
+
+export default CreateTableField;

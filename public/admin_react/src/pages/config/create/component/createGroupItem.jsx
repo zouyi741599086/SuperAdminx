@@ -4,7 +4,7 @@ import {
     ModalForm,
 } from '@ant-design/pro-components';
 import { Button, Divider, Space, } from 'antd';
-import fieldsData from './fields-data';
+import formFields from './formFields';
 
 /**
  * 订单分润结果 修改
@@ -12,7 +12,7 @@ import fieldsData from './fields-data';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ createFields, data, ...props }) => {
+const CreateGroupItem = ({ createFields, data, ...props }) => {
     const [open, setOpen] = useState(false);
 
     return <>
@@ -32,7 +32,7 @@ export default ({ createFields, data, ...props }) => {
             }
             width={600}
         >
-            {fieldsData.map((item) => {
+            {formFields.map((item) => {
                 return (
                     <div key={item.title}>
                         <Divider titlePlacement="start" key={item.title}>{item.title}</Divider>
@@ -57,3 +57,5 @@ export default ({ createFields, data, ...props }) => {
         </ModalForm>
     </>;
 };
+
+export default CreateGroupItem;

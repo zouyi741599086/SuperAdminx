@@ -8,7 +8,7 @@ import { ProTable } from '@ant-design/pro-components';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const AdminLog = () => {
     // 表格列
     const columns = [
         {
@@ -79,3 +79,5 @@ export default () => {
         </>
     )
 }
+
+export default AdminLog;

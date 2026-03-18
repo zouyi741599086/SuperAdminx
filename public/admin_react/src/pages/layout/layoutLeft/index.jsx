@@ -6,10 +6,10 @@ import {
 import { Layout, Tooltip, Divider, Button } from 'antd';
 import { Outlet } from 'react-router-dom';
 import logo from '@/static/logo.png';
-import './index.css'
 import { useSnapshot } from 'valtio';
 import { layoutSettingStore } from '@/store/layoutSetting';
 import { config } from '@/common/config'
+import './index.css'
 
 const Message = lazy(() => import('./../component/message'));
 const ScreenFull = lazy(() => import('./../component/screenFull'));
@@ -29,7 +29,7 @@ const { Content, Sider } = Layout;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const LayoutLeft = () => {
     const [collapsed, setCollapsed] = useState(false);
     const layoutSetting = useSnapshot(layoutSettingStore);
 
@@ -119,3 +119,5 @@ export default () => {
         </div>
     );
 };
+
+export default LayoutLeft;

@@ -14,7 +14,7 @@ import { regionApi } from '@/api/region';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value, onChange, valueType = 'title', changeOnSelect = false, multiple = false, expandTrigger = 'hover',...props }) => {
+const ProvinceCityArea = ({ value, onChange, valueType = 'title', changeOnSelect = false, multiple = false, expandTrigger = 'hover',...props }) => {
     const [list, setList] = useState([]);
     useMount(() => {
         regionApi.getListAll().then(res => {
@@ -50,3 +50,5 @@ export default ({ value, onChange, valueType = 'title', changeOnSelect = false, 
         </>
     )
 }
+
+export default ProvinceCityArea;

@@ -7,10 +7,12 @@ import { Spin } from 'antd';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const Refresh = () => {
     return (
         <>
             <div style={{ textAlign: 'center', margin: '20% auto 0px' }}><Spin /></div>
         </>
     )
 }
+
+export default Refresh;

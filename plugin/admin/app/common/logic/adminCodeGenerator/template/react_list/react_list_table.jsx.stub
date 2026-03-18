@@ -5,6 +5,9 @@
     use plugin\admin\app\common\logic\adminCodeGenerator\CodeGeneratorUtilLogic;
     use plugin\admin\app\common\model\AdminMenuModel;
 
+    // 当前的表名转驼峰
+    $tableNameToCamelCase = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
+
     // 需要引入的api文件
     $apiFileArr = [];
 
@@ -232,7 +235,7 @@ echo "{$v}\n";
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const <?php echo $tableNameToCamelCase;?> = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
     const formRef = useRef();
@@ -923,3 +926,5 @@ export default () => {
             </PageContainer>
         </>
 }
+
+export default <?php echo $tableNameToCamelCase;?>;

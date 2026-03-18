@@ -10,7 +10,7 @@ import { useMount } from 'ahooks';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ value, onChange, ...props }) => {
+const SelectUser = ({ value, onChange, ...props }) => {
     const [options, setOptions] = useState([]);
     const [keywords, setKeywords] = useState();
     const [_value, _setValue] = useState();
@@ -133,3 +133,5 @@ export default ({ value, onChange, ...props }) => {
         />
     </>
 }
+
+export default SelectUser;

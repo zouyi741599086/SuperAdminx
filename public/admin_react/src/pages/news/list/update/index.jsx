@@ -14,7 +14,7 @@ const Form1 = lazy(() => import('../component/form1'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const Update = () => {
     const formRef = useRef();
     const navigate = useNavigate();
     const { message } = App.useApp();
@@ -98,3 +98,5 @@ export default () => {
         </>
     )
 }
+
+export default Update;

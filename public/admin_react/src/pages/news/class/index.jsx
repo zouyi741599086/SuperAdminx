@@ -19,7 +19,7 @@ const Update = lazy(() => import('./update'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const NewsClass = () => {
     const tableRef = useRef();
     const [sortArr, setSortArr] = useState([]);
     const [list, setList] = useState([]);
@@ -254,3 +254,5 @@ export default () => {
         </>
     )
 }
+
+export default NewsClass;

@@ -10,14 +10,14 @@ import { App, Space, Flex, Button, Affix } from 'antd';
 import CodeHighlight from '@/component/codeHighlight';
 import Lazyload from '@/component/lazyLoad/index';
 
-const QuerySelect = lazy(() => import('./querySelect'));
+const QuerySelect = lazy(() => import('./select'));
 const ModelForm = lazy(() => import('./modalForm'));
 const ModelTable = lazy(() => import('./modalTable'));
 
 /**
  * 后端其它组件
  */
-export default ({ tableName, operationFile, ...props }) => {
+const ReactOther = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -174,3 +174,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default ReactOther;

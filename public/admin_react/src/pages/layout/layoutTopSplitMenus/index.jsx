@@ -58,7 +58,7 @@ const arrayToTree = (arr, pid = null, pid_name_path = []) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const LayoutTopSplitMenus = () => {
     const navigate = useNavigate();
 
     const layoutSetting = useSnapshot(layoutSettingStore);
@@ -293,3 +293,5 @@ export default () => {
         </div>
     );
 };
+
+export default LayoutTopSplitMenus;

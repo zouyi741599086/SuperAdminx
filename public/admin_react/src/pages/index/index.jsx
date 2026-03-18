@@ -12,13 +12,12 @@ import ShortcutMenu from './component/shortcutMenu/index';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const Index = () => {
     const adminUser = useSnapshot(adminUserStore);
     const layoutSetting = useSnapshot(layoutSettingStore);
 
     useMount(() => {
     })
-
 
     return <>
         <PageContainer
@@ -86,3 +85,5 @@ export default () => {
     </PageContainer >
     </>
 }
+
+export default Index;

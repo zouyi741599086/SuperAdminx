@@ -14,13 +14,13 @@ import { adminMenuApi } from '@/api/adminMenu';
 import {
     QuestionCircleOutlined,
 } from '@ant-design/icons';
-import formFieldsTypes from './../component/formFieldsTypes';
-import './modalForm.css'
+import formFieldsTypes from './../../component/formFieldsTypes';
+import './index.css'
 
 /**
  * 弹窗form
  */
-export default ({ tableName, ...props }) => {
+const ModalForm = ({ tableName, ...props }) => {
     const { message } = App.useApp();
 
     useEffect(() => {
@@ -687,3 +687,5 @@ export default ({ tableName, ...props }) => {
         />
     </>
 }
+
+export default ModalForm;

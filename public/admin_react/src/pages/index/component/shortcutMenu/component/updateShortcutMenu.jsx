@@ -68,7 +68,7 @@ const getParentKey = (id, tree) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default (props) => {
+const UpdateShortcutMenu = (props) => {
     const formRef = useRef();
     const { message } = App.useApp();
 
@@ -262,3 +262,5 @@ export default (props) => {
         </Modal>
     </>;
 };
+
+export default UpdateShortcutMenu;

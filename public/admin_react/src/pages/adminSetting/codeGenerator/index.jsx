@@ -17,7 +17,7 @@ import './index.css';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const CodeGenerator = () => {
 
     const [list, setList] = useState([]);
 
@@ -106,3 +106,5 @@ export default () => {
         </>
     )
 }
+
+export default CodeGenerator;

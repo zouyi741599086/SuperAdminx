@@ -16,7 +16,7 @@ const Update = lazy(() => import('./update'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const AdminUser = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
 
@@ -221,3 +221,5 @@ export default () => {
         </>
     )
 }
+
+export default AdminUser;

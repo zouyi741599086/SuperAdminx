@@ -22,7 +22,7 @@ const { Title } = Typography;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const Login = () => {
     const adminUser = useSnapshot(adminUserStore);
     const menuAuth = useSnapshot(menuAuthStore);
     const [loading, setLoading] = useState(false);
@@ -140,3 +140,5 @@ export default () => {
         <div className="ft">Copyright © {(new Date()).getFullYear()} {config.company} 版权所有 <a href="https://beian.miit.gov.cn/" target="_blank">{config.icp}</a></div>
     </>
 }
+
+export default Login;

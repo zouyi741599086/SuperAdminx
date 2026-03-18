@@ -14,7 +14,7 @@ const SelectAdminRole = lazy(() => import('@/components/selectAdminRole'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ action, ...props }) => {
+const Form1 = ({ action, ...props }) => {
     return <>
         <ProFormText
             name="name"
@@ -65,3 +65,5 @@ export default ({ action, ...props }) => {
         </Lazyload>
     </>;
 };
+
+export default Form1;

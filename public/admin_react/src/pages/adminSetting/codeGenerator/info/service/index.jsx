@@ -2,12 +2,8 @@ import { useRef, useEffect } from 'react';
 import { adminCodeGeneratorApi } from '@/api/adminCodeGenerator';
 import {
     ProCard,
-    ProFormList,
     ProForm,
     ProFormText,
-    ProFormGroup,
-    ProFormSelect,
-    ProFormRadio,
 } from '@ant-design/pro-components';
 import { App, Space, Flex, Button, Affix, Row, Col } from 'antd';
 import CodeHighlight from '@/component/codeHighlight';
@@ -15,7 +11,7 @@ import CodeHighlight from '@/component/codeHighlight';
 /**
  * 生成服务层
  */
-export default ({ tableName, operationFile, ...props }) => {
+const Service = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -118,3 +114,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default Service;

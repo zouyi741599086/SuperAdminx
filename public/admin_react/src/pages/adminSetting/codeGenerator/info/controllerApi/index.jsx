@@ -15,7 +15,7 @@ import CodeHighlight from '@/component/codeHighlight';
 /**
  * 生成控制器
  */
-export default ({ tableName, operationFile, ...props }) => {
+const ControllerApi = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -204,3 +204,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default ControllerApi;

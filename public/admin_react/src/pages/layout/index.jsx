@@ -14,7 +14,7 @@ const LayoutTopSplitMenus = lazy(() => import('./layoutTopSplitMenus/index'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const Layout = () => {
     const layoutSetting = useSnapshot(layoutSettingStore);
 
     return <>
@@ -26,3 +26,5 @@ export default () => {
         : ''}
     </>
 };
+
+export default Layout;

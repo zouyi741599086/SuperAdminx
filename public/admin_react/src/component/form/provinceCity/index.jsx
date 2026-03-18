@@ -11,7 +11,7 @@ import { regionApi } from '@/api/region';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value, onChange, valueType = 'title', ...props }) => {
+const ProvinceCity = ({ value, onChange, valueType = 'title', ...props }) => {
     const [list, setList] = useState([]);
     useMount(() => {
         regionApi.getProvinceCity().then(res => {
@@ -43,3 +43,5 @@ export default ({ value, onChange, valueType = 'title', ...props }) => {
         </>
     )
 }
+
+export default ProvinceCity;

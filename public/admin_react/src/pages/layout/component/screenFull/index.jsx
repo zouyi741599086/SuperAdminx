@@ -10,7 +10,7 @@ import { useFullscreen } from 'ahooks'
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ placement = 'top' }) => {
+const ScreenFull = ({ placement = 'top' }) => {
     const [_, { toggleFullscreen }] = useFullscreen(document.body);
 
     return (
@@ -23,3 +23,5 @@ export default ({ placement = 'top' }) => {
         </div>
     );
 };
+
+export default ScreenFull;

@@ -10,13 +10,13 @@ import {
 import { App, Row, Col, } from 'antd';
 import { menuToTree } from '@/common/function';
 import { adminMenuApi } from '@/api/adminMenu';
-import listFieldsTypes from './../component/listFieldsTypes'
-import './modalTable.css';
+import listFieldsTypes from './../../component/listFieldsTypes'
+import './index.css';
 
 /**
  * 生成弹窗列表
  */
-export default ({ tableName, ...props }) => {
+const ModalTable = ({ tableName, ...props }) => {
     const { message } = App.useApp();
 
     useEffect(() => {
@@ -276,3 +276,5 @@ export default ({ tableName, ...props }) => {
 
     </>
 }
+
+export default ModalTable;

@@ -11,7 +11,7 @@ const Chart = lazy(() => import('./component/chart'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const UserTotalMonth = () => {
 
     /////////////////////顶部切换/////////////////
     const [topKey, setTopKey] = useState("1");
@@ -49,3 +49,5 @@ export default () => {
         </>
     )
 }
+
+export default UserTotalMonth;

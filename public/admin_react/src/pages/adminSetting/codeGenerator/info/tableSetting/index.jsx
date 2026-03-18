@@ -2,13 +2,13 @@ import { useRef, useState, useEffect } from 'react';
 import { adminCodeGeneratorApi } from '@/api/adminCodeGenerator';
 import { ProCard, ProForm, ProFormText } from '@ant-design/pro-components';
 import { App, Typography, Alert, Space, Affix, Flex, Button, Row, Col, Table } from 'antd';
-import CreateTableField from './createTableField';
+import CreateTableField from './component/createTableField';
 import './index.css';
 
 /**
  * 表格的列
  */
-export default ({ tableName, ...props }) => {
+const TableSetting = ({ tableName, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -197,3 +197,5 @@ export default ({ tableName, ...props }) => {
         </ProForm>
     </>
 }
+
+export default TableSetting;

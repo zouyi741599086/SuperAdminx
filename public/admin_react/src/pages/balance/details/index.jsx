@@ -62,7 +62,7 @@ const transformToLabelValueArray = (obj) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const Details = () => {
     const { message } = App.useApp();
     const navigate = useNavigate();
     const tableRef = useRef();
@@ -326,3 +326,5 @@ export default () => {
         </>
     )
 }
+
+export default Details;

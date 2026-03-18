@@ -28,7 +28,7 @@ const childrenDisabled = (list) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const Form1 = () => {
 
     return <>
         <ProFormTreeSelect
@@ -97,3 +97,5 @@ export default () => {
         </ProForm.Item>
     </>
 }
+
+export default Form1;

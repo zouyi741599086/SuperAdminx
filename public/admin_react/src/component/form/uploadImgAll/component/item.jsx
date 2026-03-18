@@ -6,10 +6,8 @@ import {
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import './item.css'
-const videoImg = new URL('@/static/default/video.jpg', import.meta.url).href;
 
-export default ({ data, preview, remove }) => {
-
+const Item = ({ data, preview, remove }) => {
     const {
         attributes,
         listeners,
@@ -46,11 +44,7 @@ export default ({ data, preview, remove }) => {
             </> : ''}
             {data.status === 'done' ? <>
                 <div className="bg" >
-                    {['jpg', 'jpeg', 'png'].indexOf(data.url.substring(data.url.lastIndexOf(".") + 1)) == -1 ? <>
-                        <img src={videoImg} key={data.url} />
-                    </> : <>
-                        <img src={data.url} key={data.url} />
-                    </>}
+                    <img src={data.url} />
                     <div className="hover">
                         <div>
                             <Button type="text" size="small" onClick={() => preview(data)}>
@@ -66,3 +60,5 @@ export default ({ data, preview, remove }) => {
         </Card>
     )
 }
+
+export default Item;

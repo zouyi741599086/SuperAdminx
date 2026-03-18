@@ -9,7 +9,7 @@ import { TMap as Map, MultiMarker } from 'tlbs-map-react';
  * @param {value} String 默认值
  * @param {onChange} fun 修改value事件
  */
-export default ({ value, onChange }) => {
+const TencentMap = ({ value, onChange }) => {
     const mapRef = useRef();
     const markerRef = useRef();
     const { message } = App.useApp()
@@ -195,3 +195,5 @@ export default ({ value, onChange }) => {
         </>
     )
 }
+
+export default TencentMap;

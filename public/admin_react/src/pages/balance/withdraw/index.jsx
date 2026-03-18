@@ -12,7 +12,7 @@ import SelectUser from '@/components/selectUser';
 import Info from './component/info';
 import Audit from './component/audit';
 
-export default () => {
+const Withdraw = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
     const formRef = useRef();
@@ -341,3 +341,5 @@ export default () => {
         </>
     )
 }
+
+export default Withdraw;

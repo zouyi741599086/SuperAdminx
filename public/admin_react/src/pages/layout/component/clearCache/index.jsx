@@ -10,7 +10,7 @@ import { adminIndexApi } from '@/api/adminIndex';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ placement, ...props }) => {
+const ClearCache = ({ placement, ...props }) => {
     const { message } = App.useApp();
 
     const clearCache = () => {
@@ -40,3 +40,5 @@ export default ({ placement, ...props }) => {
         </div>
     </>;
 };
+
+export default ClearCache;

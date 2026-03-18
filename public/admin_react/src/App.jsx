@@ -253,7 +253,7 @@ const useAppInitialization = () => {
     });
 };
 
-export default () => {
+const MainApp = () => {
     const menuAuth = useSnapshot(menuAuthStore);
     const layoutSetting = useSnapshot(layoutSettingStore);
     const location = useLocation();
@@ -315,3 +315,5 @@ export default () => {
         </ConfigProvider>
     );
 };
+
+export default MainApp;

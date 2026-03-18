@@ -129,7 +129,7 @@ class GeneratorCodeLogic
                 $params['react_form_code'][$i] = $this->templateRender($params['table_name'], 'react_form', $params['react_create_update']['file_suffix'], $i);
             }
         } else {
-            $params['react_form_code']['1'] = $this->templateRender($params['table_name'], 'react_form', $params['react_create_update']['file_suffix']);
+            $params['react_form_code']['1'] = $this->templateRender($params['table_name'], 'react_form', $params['react_create_update']['file_suffix'], 1);
         }
     }
 

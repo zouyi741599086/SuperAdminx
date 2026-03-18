@@ -22,7 +22,7 @@ const updateTreeData = (list, key, children) =>
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const Invitations = () => {
     const { message } = App.useApp();
 
     const [treeData, setTreeData] = useState([]);
@@ -102,3 +102,5 @@ export default () => {
         </>
     )
 }
+
+export default Invitations;

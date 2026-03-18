@@ -89,7 +89,7 @@ if (in_array('preview_word',$filedsTypeArr)) echo "import PreviewWord from '@/co
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const Info = () => {
 <?php
         // 如果有proTable
         if (isset($table_list) && $table_list) {
@@ -557,3 +557,5 @@ export default () => {
         </PageContainer>
     </>
 };
+
+export default Info;

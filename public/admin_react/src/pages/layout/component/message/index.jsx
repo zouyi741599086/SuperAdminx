@@ -11,7 +11,7 @@ import './index.css'
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ placement = 'bottomRight' }) => {
+const Message = ({ placement = 'bottomRight' }) => {
     return <>
         {/* <Dropdown
       placement={placement}
@@ -51,3 +51,5 @@ export default ({ placement = 'bottomRight' }) => {
     </Dropdown> */}
     </>;
 };
+
+export default Message;

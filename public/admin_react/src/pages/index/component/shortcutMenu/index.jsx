@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { ProCard } from '@ant-design/pro-components';
-import UpdateShortcutMenu from './updateShortcutMenu';
 import { useMount } from 'ahooks';
 import { adminUserShortcutMenuApi } from '@/api/adminUserShortcutMenu';
-import ShortcutMenuItem from './shortcutMenuItem';
-import './shortcutMenu.css'
 import {
     DndContext,
     closestCenter,
@@ -20,6 +17,9 @@ import {
     sortableKeyboardCoordinates,
     rectSortingStrategy, // 排序碰撞算法，有水平、垂直等
 } from '@dnd-kit/sortable';
+import UpdateShortcutMenu from './component/updateShortcutMenu';
+import ShortcutMenuItem from './component/shortcutMenuItem';
+import './index.css'
 
 /**
  * 快捷菜单
@@ -27,7 +27,7 @@ import {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const ShortcutMenu = () => {
 
     // 我的快捷菜单
     const [menuList, setMenuList] = useState([]);
@@ -120,3 +120,5 @@ export default () => {
         </ProCard>
     </>
 }
+
+export default ShortcutMenu;

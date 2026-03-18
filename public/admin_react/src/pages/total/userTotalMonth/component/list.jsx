@@ -16,7 +16,7 @@ import { fileApi } from '@/api/file';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const List = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
     const formRef = useRef();
@@ -138,3 +138,5 @@ export default () => {
         </>
     )
 }
+
+export default List;

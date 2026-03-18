@@ -4,7 +4,7 @@ import { userTotalMonthApi } from '@/api/userTotalMonth';
 import { useMount } from 'ahooks';
 import { Line } from '@ant-design/plots';
 
-export default () => {
+const Chart = () => {
     const { message } = App.useApp();
 
     useMount(() => {
@@ -61,3 +61,5 @@ export default () => {
         </>
     )
 }
+
+export default Chart;

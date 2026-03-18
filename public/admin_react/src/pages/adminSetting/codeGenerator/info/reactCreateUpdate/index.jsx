@@ -23,7 +23,7 @@ import './index.css'
 /**
  * 生成添加修改页面
  */
-export default ({ tableName, operationFile, ...props }) => {
+const ReactCreateUpdate = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -305,7 +305,9 @@ export default ({ tableName, operationFile, ...props }) => {
     // 当多tab标签的时候，某个字段归属于哪个标签里面
     const fieldToTab = (Field) => {
         return <ProFormDependency key="field_to_tab" name={[['react_create_update', 'card_tab_list'], ['react_create_update', 'open_type']]}>
-            {({ card_tab_list, open_type }) => {
+            {({ react_create_update}) => {
+                const open_type = react_create_update?.open_type;
+                const card_tab_list = react_create_update?.card_tab_list;
                 if (open_type == 2 && card_tab_list?.length > 0) {
                     return <ProFormSelect
                         key="field_to_tab"
@@ -886,3 +888,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default ReactCreateUpdate;

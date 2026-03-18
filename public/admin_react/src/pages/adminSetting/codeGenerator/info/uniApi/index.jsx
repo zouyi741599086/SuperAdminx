@@ -13,7 +13,7 @@ import CodeHighlight from '@/component/codeHighlight';
 /**
  * 生成后台api
  */
-export default ({ tableName, operationFile, ...props }) => {
+const UniApi = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -130,3 +130,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default UniApi;

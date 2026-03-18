@@ -14,7 +14,7 @@ import { App, Tooltip } from 'antd';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const ResetPassword = () => {
     const formRef = useRef();
     const { message } = App.useApp();
 
@@ -108,3 +108,5 @@ export default () => {
         </ModalForm>
     </>;
 };
+
+export default ResetPassword;

@@ -9,8 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { storage } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
 
-const UserInfoUpdate = lazy(() => import('./userInfoUpdate'));
-const UserInfoPassword = lazy(() => import('./userInfoPassword'));
+const UserInfoUpdate = lazy(() => import('./component/userInfoUpdate'));
+const UserInfoPassword = lazy(() => import('./component/userInfoPassword'));
 const { Text } = Typography;
 
 /**
@@ -19,7 +19,7 @@ const { Text } = Typography;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ showIcon = true, showName = true, placement = 'bottomLeft' }) => {
+const UserInfo = ({ showIcon = true, showName = true, placement = 'bottomLeft' }) => {
     const adminUser = useSnapshot(adminUserStore);
     const menuAuth = useSnapshot(menuAuthStore);
     const contentTabs = useSnapshot(contentTabsStore);
@@ -94,3 +94,5 @@ export default ({ showIcon = true, showName = true, placement = 'bottomLeft' }) 
         </Dropdown>
     );
 };
+
+export default UserInfo;

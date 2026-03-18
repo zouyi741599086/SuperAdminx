@@ -9,7 +9,7 @@ import SelectUser from '@/components/selectUser';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ typeAction, ...props }) => {
+const Form1 = ({ typeAction, ...props }) => {
 
     return <>
         <Row gutter={[24, 0]}>
@@ -65,3 +65,5 @@ export default ({ typeAction, ...props }) => {
         </Row>
     </>
 }
+
+export default Form1;

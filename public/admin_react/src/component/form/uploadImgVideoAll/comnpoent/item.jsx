@@ -6,8 +6,10 @@ import {
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import './item.css'
+const videoImg = new URL('@/static/default/video.jpg', import.meta.url).href;
 
-export default ({ data, preview, remove }) => {
+const Item = ({ data, preview, remove }) => {
+
     const {
         attributes,
         listeners,
@@ -26,14 +28,14 @@ export default ({ data, preview, remove }) => {
         <Card
             key={data.uid}
             size="small"
-			styles={{
-				root: style,
-				body: {padding: 8}
-			}}
+            styles={{
+                root: style,
+                body: { padding: 8 }
+            }}
             ref={setNodeRef}
             classNames={{
-				root: isDragging ? 'dragon upload-img' : 'upload-img'
-			}}
+                root: isDragging ? 'dragon upload-img' : 'upload-img'
+            }}
             {...attributes}
             {...listeners}
         >
@@ -44,7 +46,11 @@ export default ({ data, preview, remove }) => {
             </> : ''}
             {data.status === 'done' ? <>
                 <div className="bg" >
-                    <img src={data.url} />
+                    {['jpg', 'jpeg', 'png'].indexOf(data.url.substring(data.url.lastIndexOf(".") + 1)) == -1 ? <>
+                        <img src={videoImg} key={data.url} />
+                    </> : <>
+                        <img src={data.url} key={data.url} />
+                    </>}
                     <div className="hover">
                         <div>
                             <Button type="text" size="small" onClick={() => preview(data)}>
@@ -60,3 +66,5 @@ export default ({ data, preview, remove }) => {
         </Card>
     )
 }
+
+export default Item;

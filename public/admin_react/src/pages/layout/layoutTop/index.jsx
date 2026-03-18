@@ -25,7 +25,7 @@ const { Header, Content, } = Layout;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const LayoutTop = () => {
     const layoutSetting = useSnapshot(layoutSettingStore);
 
     return (
@@ -77,3 +77,5 @@ export default () => {
         </div>
     );
 };
+
+export default LayoutTop;

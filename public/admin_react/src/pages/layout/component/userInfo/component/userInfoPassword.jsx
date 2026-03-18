@@ -9,7 +9,7 @@ import { storage } from '@/common/function'
 import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
 import { useNavigate } from 'react-router-dom';
 
-export default () => {
+const UserInfoPassword = () => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);
     const [submitLoading, setSubmitLoading] = useState(false);
     const [form] = Form.useForm();
@@ -101,3 +101,5 @@ export default () => {
         </>
     );
 };
+
+export default UserInfoPassword;

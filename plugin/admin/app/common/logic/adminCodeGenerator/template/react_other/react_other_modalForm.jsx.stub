@@ -8,6 +8,9 @@
     $apiFileName = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
+    // 当前的表名转驼峰
+    $tableNameToCamelCase = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
+
     // 异步搜索选择某个表的id 需要导入的组件
     $selectComponents = [];
 
@@ -117,7 +120,7 @@ echo "import Select{$v} from '@/components/select{$v}';\n";
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ tableReload, updateId, setUpdateId, ...props }) => {
+const Update<?php echo $tableNameToCamelCase;?> = ({ tableReload, updateId, setUpdateId, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     const [open, setOpen] = useState(false);
@@ -296,3 +299,5 @@ export default ({ tableReload, updateId, setUpdateId, ...props }) => {
         </ModalForm>
     </>;
 };
+
+export default Update<?php echo $tableNameToCamelCase;?>;

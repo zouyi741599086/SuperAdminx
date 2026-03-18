@@ -38,7 +38,7 @@ const menuToTree = (arr, pid = null, key = 'children') => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ menuMode = 'inline' }) => {
+const MenuComponent = ({ menuMode = 'inline' }) => {
     const navigate = useNavigate();
     const menuAuth = useSnapshot(menuAuthStore);
     const [menuList, setMenuList] = useState();
@@ -112,3 +112,5 @@ export default ({ menuMode = 'inline' }) => {
         )}
     </>;
 };
+
+export default MenuComponent;

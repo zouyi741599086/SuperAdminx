@@ -105,7 +105,7 @@ const search_type = [
 /**
  * 生成列表页面
  */
-export default ({ tableName, operationFile, ...props }) => {
+const ReactList = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -760,3 +760,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default ReactList;

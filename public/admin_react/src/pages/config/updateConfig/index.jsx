@@ -14,7 +14,7 @@ import {
 } from '@ant-design/icons';
 import './index.css';
 
-const ProConfigProvider = lazy(() => import('@/component/form/proConfigProvider/index'));
+const FormProConfigProvider = lazy(() => import('@/component/form/proConfigProvider/index'));
 
 /**
  * 更新参数
@@ -22,7 +22,7 @@ const ProConfigProvider = lazy(() => import('@/component/form/proConfigProvider/
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ name, ...props }) => {
+const UpdateConfig = ({ name, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -154,7 +154,7 @@ export default ({ name, ...props }) => {
                     {data !== false ? <>
                         {data.description ? <Alert title={data.description} type="info" showIcon /> : ''}
                         <LazyLoad>
-                            <ProConfigProvider>
+                            <FormProConfigProvider>
                                 <BetaSchemaForm
                                     key={data.id}
                                     initialValues={data.content}
@@ -208,7 +208,7 @@ export default ({ name, ...props }) => {
                                     }}
                                 />
 
-                            </ProConfigProvider>
+                            </FormProConfigProvider>
                         </LazyLoad>
                     </> : <>
                         <Skeleton />
@@ -218,3 +218,5 @@ export default ({ name, ...props }) => {
         </PageContainer>
     </>;
 };
+
+export default UpdateConfig;

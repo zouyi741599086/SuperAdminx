@@ -17,7 +17,7 @@ import SelectUser from '@/components/selectUser';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const PayRecord = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
     const formRef = useRef();
@@ -301,3 +301,5 @@ export default () => {
         </>
     )
 }
+
+export default PayRecord;

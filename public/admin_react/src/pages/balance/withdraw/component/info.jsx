@@ -9,7 +9,7 @@ import { useUpdateEffect } from 'ahooks';
 /**
  * @param fun tableReload 刷新表格
  */
-export default ({ infoId, setInfoId, ...props }) => {
+const Info = ({ infoId, setInfoId, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     const [items, setItems] = useState([]);
@@ -135,3 +135,5 @@ export default ({ infoId, setInfoId, ...props }) => {
         </ModalForm>
     );
 };
+
+export default Info;

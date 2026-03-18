@@ -7,7 +7,7 @@ import { App, Button, Space, Image, Empty } from 'antd';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ title = '查看图片', imgs = [], ...props }) => {
+const Images = ({ title = '查看图片', imgs = [], ...props }) => {
     const { modal } = App.useApp();
 
     return <>
@@ -46,3 +46,5 @@ export default ({ title = '查看图片', imgs = [], ...props }) => {
         }}>{Array.isArray(imgs) ? imgs.length : 0}张</Button>
     </>
 }
+
+export default Images;

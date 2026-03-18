@@ -7,7 +7,7 @@ import { Button, Empty, Popover } from 'antd';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ url = '', ...props }) => {
+const Video = ({ url = '', ...props }) => {
     return <>
         <Popover content={<>
             {url ? <>
@@ -21,3 +21,5 @@ export default ({ url = '', ...props }) => {
 
     </>
 }
+
+export default Video;

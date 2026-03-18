@@ -15,7 +15,7 @@ import { NavLink } from "react-router-dom";
 import MoveAll from './component/moveAll'
 import CopyAll from './component/copyAll'
 
-export default () => {
+const NewsList = () => {
     const tableRef = useRef();
     const { message } = App.useApp();
 
@@ -318,3 +318,5 @@ export default () => {
         </>
     )
 }
+
+export default NewsList;

@@ -21,7 +21,7 @@ const PidPath = lazy(() => import('./component/pidPath'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const User = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
     const formRef = useRef();
@@ -300,3 +300,5 @@ export default () => {
         </>
     )
 }
+
+export default User;

@@ -16,7 +16,7 @@ const Form1 = lazy(() => import('./../component/form1'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ tableReload, ...props }) => {
+const Create = ({ tableReload, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     return (
@@ -54,3 +54,5 @@ export default ({ tableReload, ...props }) => {
         </ModalForm>
     );
 };
+
+export default Create;

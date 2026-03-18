@@ -9,7 +9,7 @@ import { App, Button, Empty, Popover } from 'antd';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ title = '查看内容', content = '', isShow = false, type = 2, ...props }) => {
+const Content = ({ title = '查看内容', content = '', isShow = false, type = 2, ...props }) => {
     const { modal } = App.useApp();
     return <>
         {isShow ? <>
@@ -37,3 +37,5 @@ export default ({ title = '查看内容', content = '', isShow = false, type = 2
 
     </>
 }
+
+export default Content;

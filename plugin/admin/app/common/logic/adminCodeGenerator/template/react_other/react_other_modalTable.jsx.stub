@@ -9,6 +9,9 @@
     $apiFileName = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
 
+    // 当前的表名转驼峰
+    $tableNameToCamelCase = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
+
     // 需要引入的组件
     $antdComponent = [];
 
@@ -111,7 +114,7 @@ echo "const imgErr = new URL('@/static/default/imgErr.png', import.meta.url).hre
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ tableReload, id, setId, ...props }) => {
+const <?php echo $tableNameToCamelCase;?> = ({ tableReload, id, setId, ...props }) => {
     const tableRef = useRef();
     const { message } = App.useApp();
     const [open, setOpen] = useState(false);
@@ -248,3 +251,5 @@ export default ({ tableReload, id, setId, ...props }) => {
         </ModalForm>
     </>;
 };
+
+export default <?php echo $tableNameToCamelCase;?>;

@@ -27,7 +27,7 @@ const childrenDisabled = (list) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default (props) => {
+const CopyAll = (props) => {
     const formRef = useRef();
     const { message } = App.useApp();
 
@@ -98,3 +98,5 @@ export default (props) => {
         </ModalForm>
     );
 };
+
+export default CopyAll;

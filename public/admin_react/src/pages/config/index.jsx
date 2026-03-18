@@ -18,7 +18,7 @@ import { authCheck } from '@/common/function';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const Config = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
     const formRef = useRef();
@@ -252,3 +252,5 @@ export default () => {
         </>
     )
 }
+
+export default Config;

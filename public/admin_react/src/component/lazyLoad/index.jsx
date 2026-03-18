@@ -10,13 +10,24 @@ import { Spin } from 'antd';
  */
 const ElementLoading = ({ block = true, width = '100%', height = 400, ...props }) => <>
     {block ? <>
-        <div style={{ width: width, height: `${height}px`, maxHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div
+            style={{
+                width: width,
+                height: `${height}px`,
+                maxHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}
+        >
             <Spin />
         </div>
     </> : ''}
 </>
 
 // 加载中
-export default (props) => {
+const LazyLoad = (props) => {
     return <Suspense fallback={<ElementLoading  {...props} />}>{props.children}</Suspense>
 }
+
+export default LazyLoad;

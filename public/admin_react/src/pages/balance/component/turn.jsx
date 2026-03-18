@@ -12,7 +12,7 @@ import SelectUser from '@/components/selectUser';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ tableReload, balanceType, turnUserId, setTurnUserId, ...props }) => {
+const Trun = ({ tableReload, balanceType, turnUserId, setTurnUserId, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     const open = turnUserId > 0;
@@ -110,3 +110,5 @@ export default ({ tableReload, balanceType, turnUserId, setTurnUserId, ...props 
         </ModalForm>
     </>;
 };
+
+export default Trun;

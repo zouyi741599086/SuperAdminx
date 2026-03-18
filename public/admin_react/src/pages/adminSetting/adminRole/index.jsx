@@ -19,7 +19,7 @@ const UpdateRoleMneu = lazy(() => import('./component/updateRoleMneu'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const AdminRole = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
 
@@ -176,3 +176,5 @@ export default () => {
         </>
     )
 }
+
+export default AdminRole;

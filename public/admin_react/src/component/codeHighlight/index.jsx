@@ -16,7 +16,7 @@ SyntaxHighlighter.registerLanguage('php', php);
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value, language = 'jsx', height = 500, ...props }) => {
+const CodeHighlight = ({ value, language = 'jsx', height = 500, ...props }) => {
 
     return <>
         <div
@@ -56,3 +56,5 @@ export default ({ value, language = 'jsx', height = 500, ...props }) => {
         </div>
     </>
 }
+
+export default CodeHighlight;

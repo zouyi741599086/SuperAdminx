@@ -19,7 +19,7 @@ import { useMount } from 'ahooks';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value, onChange, UploadButton = null, accept = ['docx', 'ppt'], disk = 'public', maxSize = config.uploadFileMax }) => {
+const UploadFile = ({ value, onChange, UploadButton = null, accept = ['docx', 'ppt'], disk = 'public', maxSize = config.uploadFileMax }) => {
     const { message } = App.useApp();
 
     useMount(() => {
@@ -250,3 +250,5 @@ export default ({ value, onChange, UploadButton = null, accept = ['docx', 'ppt']
         </>
     )
 }
+
+export default UploadFile;

@@ -11,7 +11,7 @@ import { useMount } from 'ahooks';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value, onChange, valueType = 'title', ...props }) => {
+const Province = ({ value, onChange, valueType = 'title', ...props }) => {
     const [list, setList] = useState([]);
     useMount(() => {
         regionApi.getProvince().then(res => {
@@ -40,3 +40,5 @@ export default ({ value, onChange, valueType = 'title', ...props }) => {
         </>
     )
 }
+
+export default Province;

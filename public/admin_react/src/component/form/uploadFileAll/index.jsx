@@ -20,7 +20,7 @@ import { useMount } from 'ahooks';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value = [], onChange, accept = [], maxCount = 10, disk = 'public', maxSize = config.uploadFileMax }) => {
+const UploadFileAll = ({ value = [], onChange, accept = [], maxCount = 10, disk = 'public', maxSize = config.uploadFileMax }) => {
     const { message } = App.useApp();
 
     useMount(() => {
@@ -255,3 +255,5 @@ export default ({ value = [], onChange, accept = [], maxCount = 10, disk = 'publ
         </>
     )
 }
+
+export default UploadFileAll;

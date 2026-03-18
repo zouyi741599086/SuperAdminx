@@ -8,7 +8,7 @@ import {
 import { Button, App } from 'antd';
 import UploadImg from '@/component/form/uploadImg/index';
 
-export default ({ handleCreate, ...props }) => {
+const Create =  ({ handleCreate, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     return (
@@ -67,3 +67,5 @@ export default ({ handleCreate, ...props }) => {
         </ModalForm>
     );
 };
+
+export default Create;

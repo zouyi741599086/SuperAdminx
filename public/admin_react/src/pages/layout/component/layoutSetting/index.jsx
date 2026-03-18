@@ -16,7 +16,7 @@ const { Text } = Typography;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ placement = 'top' }) => {
+const LoyoutSetting = ({ placement = 'top' }) => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);
     const layoutSetting = useSnapshot(layoutSettingStore);
 
@@ -258,3 +258,5 @@ export default ({ placement = 'top' }) => {
         </>
     );
 };
+
+export default LoyoutSetting;

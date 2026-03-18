@@ -31,7 +31,7 @@ const { Header, Content, Sider } = Layout;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const LayoutSlide = () => {
     const [collapsed, setCollapsed] = useState(false);
     const layoutSetting = useSnapshot(layoutSettingStore);
 
@@ -127,3 +127,5 @@ export default () => {
         </div>
     </>;
 };
+
+export default LayoutSlide;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Modal, Timeline, Avatar, Typography, App, Badge } from 'antd';
 import { userApi } from '@/api/user';
 
-export default ({ pidPathUserId, setPidPathUserId, ...props }) => {
+const PidPath = ({ pidPathUserId, setPidPathUserId, ...props }) => {
     const { message } = App.useApp();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -83,3 +83,5 @@ export default ({ pidPathUserId, setPidPathUserId, ...props }) => {
         </>
     );
 };
+
+export default PidPath;

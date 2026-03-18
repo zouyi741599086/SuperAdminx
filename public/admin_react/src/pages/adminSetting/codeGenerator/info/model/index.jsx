@@ -271,7 +271,7 @@ const columns = [
 /**
  * 生成模型
  */
-export default ({ tableName, operationFile, ...props }) => {
+const Model = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -577,3 +577,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default Model;

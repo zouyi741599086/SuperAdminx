@@ -27,7 +27,7 @@ const ReactOther = lazy(() => import('./reactOther'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const Info = () => {
     const navigate = useNavigate();
     const { message, modal } = App.useApp();
     const [search] = useSearchParams();
@@ -260,3 +260,5 @@ export default () => {
         </>
     )
 }
+
+export default Info;

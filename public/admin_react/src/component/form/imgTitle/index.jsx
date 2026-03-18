@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Image, Typography } from 'antd';
-import Item from './item';
-import Create from './create';
+import Item from './component/item';
+import Create from './component/create';
 
 import {
     DndContext,
@@ -25,7 +25,7 @@ import {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value, onChange }) => {
+const ImgTitle = ({ value, onChange }) => {
     const [list, setList] = useState([]);
 
     // 父组件的value不等于本组件的value的时候，就更新本组价的value
@@ -144,3 +144,5 @@ export default ({ value, onChange }) => {
         </>
     )
 }
+
+export default ImgTitle;

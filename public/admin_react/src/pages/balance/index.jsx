@@ -22,7 +22,7 @@ const Turn = lazy(() => import('./component/turn'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const Balance = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
     const navigate = useNavigate();
@@ -266,3 +266,5 @@ export default () => {
         </>
     )
 }
+
+export default Balance;

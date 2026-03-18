@@ -8,7 +8,7 @@ import { useDynamicList } from 'ahooks';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value = [], onChange, ...props }) => {
+const TagArr = ({ value = [], onChange, ...props }) => {
 
     const { message } = App.useApp();
 
@@ -166,3 +166,5 @@ export default ({ value = [], onChange, ...props }) => {
         </Space>
     );
 };
+
+export default TagArr;

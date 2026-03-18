@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const Error = () => {
     const navigate = useNavigate();
     return (
         <Result
@@ -25,3 +25,5 @@ export default () => {
         />
     )
 };
+
+export default Error;

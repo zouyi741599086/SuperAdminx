@@ -12,7 +12,7 @@ import { config } from '@/common/config';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ title = 'Word内容', url = null, button = null, errorMessage = null, height = 650, ...props }) => {
+const Word = ({ title = 'Word内容', url = null, button = null, errorMessage = null, height = 650, ...props }) => {
     const { modal, message } = App.useApp();
 
     const preView = () => {
@@ -77,3 +77,5 @@ export default ({ title = 'Word内容', url = null, button = null, errorMessage 
         >{button}</span>
     }
 }
+
+export default Word;

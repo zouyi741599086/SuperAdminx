@@ -8,10 +8,12 @@ const { Footer } = Layout;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const FooterComponent = () => {
     return (
         <>
             <Footer style={{ textAlign: 'center', background: 'none', padding: '12px' }}>Copyright © {(new Date()).getFullYear()} {config.company} {config.icp}</Footer>
         </>
     );
 };
+
+export default FooterComponent;

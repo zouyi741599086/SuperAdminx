@@ -15,7 +15,7 @@ const Form1 = lazy(() => import('./../component/form1'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ updateId, setUpdateId, tableReload, ...props }) => {
+const Update = ({ updateId, setUpdateId, tableReload, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     const open = updateId > 0;
@@ -86,3 +86,5 @@ export default ({ updateId, setUpdateId, tableReload, ...props }) => {
         </ModalForm>
     );
 };
+
+export default Update;

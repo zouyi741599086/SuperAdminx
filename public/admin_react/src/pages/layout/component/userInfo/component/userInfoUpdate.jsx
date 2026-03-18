@@ -15,7 +15,7 @@ import { useSnapshot } from 'valtio';
 import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
 import ImgCrop from 'antd-img-crop';
 
-export default () => {
+const UserInfoUpdate = () => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);
     const adminUser = useSnapshot(adminUserStore);
     const [submitLoading, setSubmitLoading] = useState(false);
@@ -189,3 +189,5 @@ export default () => {
         </>
     );
 };
+
+export default UserInfoUpdate;

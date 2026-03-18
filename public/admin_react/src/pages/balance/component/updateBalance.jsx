@@ -23,7 +23,7 @@ const transformToLabelValueArray = (obj) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({ tableReload, balanceType, updateBalanceUserId, setUpdateBalanceUserId, ...props }) => {
+const UpdateBalance = ({ tableReload, balanceType, updateBalanceUserId, setUpdateBalanceUserId, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     const open = updateBalanceUserId > 0;
@@ -141,3 +141,5 @@ export default ({ tableReload, balanceType, updateBalanceUserId, setUpdateBalanc
         </ModalForm>
     </>;
 };
+
+export default UpdateBalance;

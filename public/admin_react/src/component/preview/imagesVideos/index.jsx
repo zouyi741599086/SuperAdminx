@@ -1,4 +1,5 @@
 import { App, Button, Space, Image, Empty } from 'antd';
+
 const videoImg = new URL('@/static/default/video.jpg', import.meta.url).href;
 
 /**
@@ -8,7 +9,7 @@ const videoImg = new URL('@/static/default/video.jpg', import.meta.url).href;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ title = '查看', imgs = [], ...props }) => {
+const ImagesVideos = ({ title = '查看', imgs = [], ...props }) => {
     const { modal } = App.useApp();
 
     return <>
@@ -77,3 +78,5 @@ export default ({ title = '查看', imgs = [], ...props }) => {
         }}>{Array.isArray(imgs) ? imgs.length : 0}张</Button>
     </>
 }
+
+export default ImagesVideos;

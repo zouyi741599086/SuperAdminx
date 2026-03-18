@@ -22,7 +22,7 @@ import './index.css';
 /**
  * 生成验证器
  */
-export default ({ tableName, operationFile, ...props }) => {
+const Validate = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -360,3 +360,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default Validate;

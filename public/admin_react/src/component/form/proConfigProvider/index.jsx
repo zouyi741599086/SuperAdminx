@@ -24,7 +24,7 @@ const ProvinceCityArea = lazy(() => import('@/component/form/provinceCityArea'))
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default (props) => {
+const FormProConfigProvider = (props) => {
 
     return (<>
         <ProConfigProvider
@@ -125,3 +125,5 @@ export default (props) => {
     </>
     );
 };
+
+export default FormProConfigProvider;

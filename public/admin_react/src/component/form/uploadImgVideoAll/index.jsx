@@ -5,7 +5,7 @@ import {
 } from '@ant-design/icons';
 import { config } from '@/common/config';
 import { getToken } from '@/common/function';
-import Item from './item';
+import Item from './comnpoent/item';
 import ImgCrop from 'antd-img-crop';
 import { fileApi } from '@/api/file';
 
@@ -49,7 +49,7 @@ import {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) => {
+const UploadImgVidelAll = ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) => {
     const { message } = App.useApp();
 
     const [fileList, setFileList] = useState([]);
@@ -340,3 +340,5 @@ export default ({ value = [], onChange, width = 0, height = 0, maxCount = 10 }) 
         </>
     )
 }
+
+export default UploadImgVidelAll;

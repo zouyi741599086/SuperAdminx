@@ -103,7 +103,7 @@ const info_fields_types = [
 /**
  * 生成详情页面 
  */
-export default ({ tableName, operationFile, ...props }) => {
+const ReactInfo = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -499,3 +499,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default ReactInfo;

@@ -22,7 +22,7 @@ import './index.css';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ value, onChange, width = 0, height = 0, disabled = false }) => {
+const UploadImgMini = ({ value, onChange, width = 0, height = 0, disabled = false }) => {
     const { message } = App.useApp();
 
     /////////////////////图片上传修改后////////////////////
@@ -150,3 +150,5 @@ export default ({ value, onChange, width = 0, height = 0, disabled = false }) =>
         </>
     )
 }
+
+export default UploadImgMini;

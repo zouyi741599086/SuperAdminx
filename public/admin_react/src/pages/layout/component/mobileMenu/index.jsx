@@ -16,7 +16,7 @@ const Menu = lazy(() => import('./../menu'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const MobileMenu = () => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);
 
     return (
@@ -33,7 +33,7 @@ export default () => {
                 closable={false}
                 size={200}
                 styles={{
-                    body: {padding: 0}
+                    body: { padding: 0 }
                 }}
                 placement="left"
             >
@@ -54,3 +54,5 @@ export default () => {
         </>
     );
 };
+
+export default MobileMenu;

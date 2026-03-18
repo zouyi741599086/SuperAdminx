@@ -12,7 +12,7 @@ const Chart = lazy(() => import('./component/chart'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const UserTotalDay = () => {
     const { message } = App.useApp();
 
     /////////////////////顶部切换/////////////////
@@ -51,3 +51,5 @@ export default () => {
         </>
     )
 }
+
+export default UserTotalDay;

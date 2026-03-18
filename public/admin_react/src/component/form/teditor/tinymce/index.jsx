@@ -49,7 +49,7 @@ const uploadValidata = (file, type) => {
  * @param {Boolean} toolbarDisabled 工具栏是否显示，如果是在弹出框里面的就需要禁用，否则点击更多工具的时候，弹窗关闭了，而工具选择无法关闭
  * @param {Int} height 编辑器高度
  */
-export default ({ value = '', onChange, disabled = false, toolbarDisabled = false, height = 400 }) => {
+const TinymceTeditor = ({ value = '', onChange, disabled = false, toolbarDisabled = false, height = 400 }) => {
     const layoutSetting = useSnapshot(layoutSettingStore);
     const editorRef = useRef();
     const { message } = App.useApp();
@@ -235,3 +235,5 @@ export default ({ value = '', onChange, disabled = false, toolbarDisabled = fals
         </>
     )
 }
+
+export default TinymceTeditor;

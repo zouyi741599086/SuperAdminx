@@ -36,7 +36,7 @@ echo "const Form{$i} = lazy(() => import('./../component/form{$i}'));\n";
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const Create = () => {
     const formRef = useRef();
     const navigate = useNavigate();
     const { message } = App.useApp();
@@ -178,3 +178,5 @@ labelCol={{
         </PageContainer>
     </>
 }
+
+export default Create;

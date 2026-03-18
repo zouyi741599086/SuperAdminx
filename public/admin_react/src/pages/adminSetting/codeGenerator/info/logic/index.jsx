@@ -28,7 +28,7 @@ const methods = [
 /**
  * 生成逻辑层
  */
-export default ({ tableName, operationFile, ...props }) => {
+const Logic = ({ tableName, operationFile, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
 
@@ -223,3 +223,5 @@ export default ({ tableName, operationFile, ...props }) => {
         </Affix>
     </>
 }
+
+export default Logic;

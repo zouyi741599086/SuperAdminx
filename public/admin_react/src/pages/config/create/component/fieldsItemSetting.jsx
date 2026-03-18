@@ -11,7 +11,7 @@ import Lazyload from '@/component/lazyLoad/index';
 
 const TagArr = lazy(() => import('@/component/form/tagArr/index'));
 
-export default (props) => {
+const FieldsItemSetting = (props) => {
     const formRef = useRef();
     const open = props.data?.id ? true : false;
 
@@ -432,3 +432,5 @@ export default (props) => {
         </ModalForm>
     );
 };
+
+export default FieldsItemSetting;

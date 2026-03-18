@@ -21,7 +21,7 @@ const disabledClass = (list, id) => {
     return list;
 }
 
-export default ({typeAction, ...props}) => {
+const Form1 = ({typeAction, ...props}) => {
 
     return <>
         <ProFormText
@@ -57,3 +57,5 @@ export default ({typeAction, ...props}) => {
         />
     </>;
 };
+
+export default Form1;

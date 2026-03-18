@@ -12,7 +12,7 @@ import './index.css'
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ title = '查看内容', content = '', isShow = false, width = 800, type = 1, ...props }) => {
+const Teditor = ({ title = '查看内容', content = '', isShow = false, width = 800, type = 1, ...props }) => {
     const { modal } = App.useApp();
     return <>
         {isShow ? <>
@@ -51,3 +51,5 @@ export default ({ title = '查看内容', content = '', isShow = false, width = 
 
     </>
 }
+
+export default Teditor;

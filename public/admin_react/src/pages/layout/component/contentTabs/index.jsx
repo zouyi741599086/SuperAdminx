@@ -17,7 +17,7 @@ import {
     useNavigate,
 } from "react-router-dom";
 import './index.css';
-import Item from './item';
+import Item from './component/item';
 
 const { Header } = Layout;
 
@@ -51,7 +51,7 @@ const routerParent = (pageName, menuArrAll) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const ContentTabs = () => {
     const layoutSetting = useSnapshot(layoutSettingStore);
     const contentTabs = useSnapshot(contentTabsStore);
     const menuAuth = useSnapshot(menuAuthStore);
@@ -287,3 +287,5 @@ export default () => {
         </>
     );
 };
+
+export default ContentTabs;

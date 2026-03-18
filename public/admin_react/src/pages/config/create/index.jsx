@@ -3,10 +3,10 @@ import { PageContainer } from '@ant-design/pro-components';
 import { configApi } from '@/api/config';
 import { App, Space, Button, Alert, Divider, Card, Col, Row } from 'antd';
 import { useNavigate } from "react-router-dom";
-import fieldsData from './fields-data';
-import FieldsItem from './fieldsItem';
-import FormSubmit from './formSubmit';
-import FieldsItemSetting from './fieldsItemSetting';
+import formFields from './component/formFields';
+import FieldsItem from './component/fieldsItem';
+import FormSubmit from './component/formSubmit';
+import FieldsItemSetting from './component/fieldsItemSetting';
 import { useSearchParams } from "react-router-dom";
 import { useMount } from 'ahooks';
 import {
@@ -33,7 +33,7 @@ const ProConfigProvider = lazy(() => import('@/component/form/proConfigProvider/
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const Create = () => {
     const formRef = useRef();
     const navigate = useNavigate();
     const { message } = App.useApp();
@@ -385,7 +385,7 @@ export default () => {
                             </ProConfigProvider>
                         </Col>
                         <Col xs={24} sm={8} md={7} >
-                            {fieldsData.map((item) => {
+                            {formFields.map((item) => {
                                 return (
                                     <div key={item.title}>
                                         <Divider titlePlacement="start" key={item.title}>{item.title}</Divider>
@@ -409,3 +409,5 @@ export default () => {
         </>
     )
 }
+
+export default Create;

@@ -4,7 +4,7 @@
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ url, ...props }) => {
+const Iframe = ({ url, ...props }) => {
     return (
         <iframe
             key={url}
@@ -14,3 +14,5 @@ export default ({ url, ...props }) => {
         ></iframe>
     )
 }
+
+export default Iframe;

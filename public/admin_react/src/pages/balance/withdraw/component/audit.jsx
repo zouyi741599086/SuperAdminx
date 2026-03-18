@@ -7,7 +7,7 @@ import { balanceWithdrawApi } from '@/api/balanceWithdraw';
 import { App } from 'antd';
 import { useUpdateEffect } from 'ahooks';
 
-export default ({ tableReload, updateId, setUpdateId, updateStatusValue, ...props }) => {
+const Audit = ({ tableReload, updateId, setUpdateId, updateStatusValue, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     const open = updateId.length > 0;
@@ -67,3 +67,5 @@ export default ({ tableReload, updateId, setUpdateId, updateStatusValue, ...prop
         </ModalForm>
     );
 };
+
+export default Audit;

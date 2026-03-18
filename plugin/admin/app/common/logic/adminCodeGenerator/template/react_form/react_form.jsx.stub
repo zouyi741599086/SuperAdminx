@@ -21,7 +21,6 @@
             }
         }
     }
-    
 
     // 所有的字段的类型
     $filedsTypeArr = [];
@@ -124,7 +123,7 @@ echo "import Select{$v} from '@/components/select{$v}';\n";
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default ({typeAction, ...props}) => {
+const Form<?php echo $generatorIndex;?> ({typeAction, ...props}) => {
 
     return <>
         <Row gutter={[24, 0]}>
@@ -231,3 +230,5 @@ export default ({typeAction, ...props}) => {
         </Row>
     </>
 }
+
+export default Form<?php echo $generatorIndex;?>;

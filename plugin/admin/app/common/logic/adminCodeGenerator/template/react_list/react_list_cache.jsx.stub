@@ -8,6 +8,9 @@
     // 引入api的文件名称
     $apiFileName = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
     $apiFileName = strtolower($apiFileName[0]) . substr($apiFileName, 1);
+
+    // 当前的表名转驼峰
+    $tableNameToCamelCase = CodeGeneratorUtilLogic::toCamelCase($data['table_name']);
 ?>
 import { useState } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
@@ -48,7 +51,7 @@ import { CSS } from '@dnd-kit/utilities';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const <?php echo $tableNameToCamelCase;?> = () => {
 
     const { message } = App.useApp();
 
@@ -209,3 +212,5 @@ const Item = (props) => {
         </div>
     </div >
 }
+
+export default <?php echo $tableNameToCamelCase;?>;

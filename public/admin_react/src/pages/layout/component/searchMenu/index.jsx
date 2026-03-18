@@ -62,7 +62,7 @@ const upSearchPath = (pid_name_path, arr) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ placement = 'top' }) => {
+const SearchMenu = ({ placement = 'top' }) => {
     const { message } = App.useApp();
     const navigate = useNavigate();
     const menuAuth = useSnapshot(menuAuthStore);
@@ -154,8 +154,8 @@ export default ({ placement = 'top' }) => {
             trigger={
                 <div className='item'>
                     <Tooltip title="搜索功能" placement={placement}>
-                        <span 
-                            className='circle' 
+                        <span
+                            className='circle'
                             onClick={(e) => {
                                 e.preventDefault();
                                 setTimeout(() => setOpen(true), 0);
@@ -167,10 +167,10 @@ export default ({ placement = 'top' }) => {
                 </div>
             }
         >
-            <Space 
+            <Space
                 orientation="vertical"
                 size={24}
-                style={{ 
+                style={{
                     width: '100%'
                 }}
             >
@@ -185,8 +185,8 @@ export default ({ placement = 'top' }) => {
                     bordered={false}
                     dataSource={tmpList}
                     showHeader={false}
-                    style={{ 
-                        cursor: 'pointer' 
+                    style={{
+                        cursor: 'pointer'
                     }}
                     rowKey="id"
                     columns={[
@@ -230,3 +230,5 @@ export default ({ placement = 'top' }) => {
         </ModalForm>
     );
 };
+
+export default SearchMenu;

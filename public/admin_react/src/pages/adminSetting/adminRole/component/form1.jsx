@@ -8,7 +8,7 @@ import {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const Form1 = () => {
     return <>
         <ProFormText
             name="title"
@@ -20,3 +20,5 @@ export default () => {
         />
     </>;
 };
+
+export default Form1;

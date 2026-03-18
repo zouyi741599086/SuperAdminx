@@ -55,7 +55,7 @@ const getParentKey = (id, tree) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-export default () => {
+const AdminMenu = () => {
     const layoutSetting = useSnapshot(layoutSettingStore);
     const { message } = App.useApp();
 
@@ -169,13 +169,13 @@ export default () => {
                                 </Space>
                             </>}
                         >
-							<Space 
-								orientation="vertical"
-								size="large"
-								styles={{ 
-									root: {width: '100%'}
-								}}
-							>
+                            <Space
+                                orientation="vertical"
+                                size="large"
+                                styles={{
+                                    root: { width: '100%' }
+                                }}
+                            >
                                 <Search
                                     onChange={searchKeywordsChange}
                                     placeholder="搜索..."
@@ -225,13 +225,13 @@ export default () => {
                                     />
                                 </Lazyload>
                             </> : <>
-								<Space 
-									orientation="vertical"
-									size="middle"
-									styles={{ 
-										root: {width: '100%'}
-									}}
-								>
+                                <Space
+                                    orientation="vertical"
+                                    size="middle"
+                                    styles={{
+                                        root: { width: '100%' }
+                                    }}
+                                >
                                     <Alert title="请点击权限节点名称，然后进行编辑" type="info" showIcon />
                                     <Skeleton />
                                 </Space>
@@ -244,3 +244,5 @@ export default () => {
         </>
     )
 }
+
+export default AdminMenu;

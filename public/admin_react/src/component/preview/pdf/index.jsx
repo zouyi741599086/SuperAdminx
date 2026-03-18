@@ -11,7 +11,7 @@ import { App, Spin, Button } from 'antd';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ title = 'Pdf内容', url = null, button = null, errorMessage = '', height = 650, ...props }) => {
+const Pdf = ({ title = 'Pdf内容', url = null, button = null, errorMessage = '', height = 650, ...props }) => {
     const { modal, message } = App.useApp();
 
     const preView = () => {
@@ -78,3 +78,5 @@ export default ({ title = 'Pdf内容', url = null, button = null, errorMessage =
         >{button}</span>
     }
 }
+
+export default Pdf;

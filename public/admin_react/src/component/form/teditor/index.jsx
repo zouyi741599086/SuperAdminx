@@ -14,7 +14,7 @@ const Tinymce = lazy(() => import('./tinymce/index'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default (props) => {
+const Teditor = (props) => {
     const layoutSetting = useSnapshot(layoutSettingStore);
     // 判断是否是苹果的Safari浏览器或谷歌浏览器
     const isMobileSafariOrChrome = () => {
@@ -38,3 +38,5 @@ export default (props) => {
 
     </>
 }
+
+export default Teditor;

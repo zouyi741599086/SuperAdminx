@@ -6,7 +6,6 @@ import {
 import { Layout, Button, Divider, Menu, theme } from 'antd';
 import { Outlet } from 'react-router-dom';
 import logo from '@/static/logo.png';
-import './index.css'
 import { useSnapshot } from 'valtio';
 import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import { config } from '@/common/config'
@@ -14,6 +13,7 @@ import { useMount } from 'ahooks';
 import { colorHsb } from '@/common/function';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 import { useNavigate } from 'react-router-dom';
+import './index.css'
 
 const { useToken } = theme;
 const Message = lazy(() => import('./../component/message'));
@@ -59,7 +59,7 @@ const arrayToTree = (arr, pid = null, pid_name_path = []) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default () => {
+const LayoutSlideSpliMenus = () => {
     const { token } = useToken();
     const navigate = useNavigate();
     const layoutSetting = useSnapshot(layoutSettingStore);
@@ -338,3 +338,5 @@ export default () => {
         </div >
     );
 };
+
+export default LayoutSlideSpliMenus;

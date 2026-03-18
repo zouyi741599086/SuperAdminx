@@ -3,7 +3,6 @@ import { Card } from 'antd';
 import { useSnapshot } from 'valtio';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 import { useNavigate } from 'react-router-dom';
-import './shortcutMenu.css'
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -13,7 +12,7 @@ import { CSS } from '@dnd-kit/utilities';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-export default ({ item, ...props }) => {
+const ShortcutMenuItem = ({ item, ...props }) => {
     const menuAuth = useSnapshot(menuAuthStore);
     const navigate = useNavigate();
 
@@ -74,3 +73,5 @@ export default ({ item, ...props }) => {
         </Card>
     </>
 }
+
+export default ShortcutMenuItem;
