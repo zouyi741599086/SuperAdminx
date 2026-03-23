@@ -28,10 +28,11 @@ class SmsLogic
         );
 
         $code = get_str(4);
-        // 这里调用短信发送
-        // sms_send($tel, $code);
+        if (! send_sms($tel, "您的验证码是：{$code}，有效期10分钟，请勿转发！")){
+            abort('验证码发送失败');
+        }
 
-        Cache::set("login_code_{$tel}", $code, 60);
+        Cache::set("login_code_{$tel}", $code, 600);
         return $code;
     }
 

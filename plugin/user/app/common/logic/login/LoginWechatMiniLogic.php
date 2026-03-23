@@ -41,7 +41,7 @@ class LoginWechatMiniLogic implements LoginInterface
     {
         //是否已注册
         $user = UserModel::where('tel', $data['tel'])->find();
-        if ($user->status ==  2) {
+        if ($user && $user->status ==  2) {
             abort('账户被锁定~');
         }
 
@@ -50,6 +50,6 @@ class LoginWechatMiniLogic implements LoginInterface
             $result = WechatMiniUtils::getOpenid($data['code']);
             $this->wechatMiniLogic->bindWechatMiniOpenId($user->id, $result);
         }
-        return $user->id;
+        return $user->id ?? null;
     }
 }

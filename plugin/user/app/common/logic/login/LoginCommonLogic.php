@@ -44,7 +44,7 @@ class LoginCommonLogic implements LoginInterface
     public function getRegisteredUserId(array &$data) : ?int
     {
         $user = UserModel::where('tel', $data['tel'])->find();
-        if ($user->status ==  2) {
+        if ($user && $user->status ==  2) {
             abort('账户被锁定~');
         }
 
@@ -58,6 +58,6 @@ class LoginCommonLogic implements LoginInterface
             );
         }
 
-        return $user->id;
+        return $user->id ?? null;
     }
 }

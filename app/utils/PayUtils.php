@@ -292,9 +292,11 @@ class PayUtils
                 //     'total_amount'    => 0.01,
                 //     '_method'         => 'get', // 可选，get方式提交
                 // ];
+                $params['_method'] = 'get';
                 $result = Pay::alipay($this->config)->web($params);
                 return $result->getBody()->getContents();
             case 'h5':
+            case 'mp':
                 // $params = [
                 //     'out_trade_no'    => 'E20241212021244esdfw',
                 //     'subject'         => '商城订单支付',
@@ -303,8 +305,10 @@ class PayUtils
                 //     'quit_url'        => 'https://yansongda.cn', // 用户付款中途退出返回的地址
                 //     '_method'         => 'get', // 可选，get方式提交
                 // ];
-                $result = Pay::alipay($this->config)->web($params);
-                return $result->getBody()->getContents();
+                $params['_method'] = 'get';
+
+                $result = Pay::alipay($this->config)->h5($params);
+                return $result->getHeaderLine('Location');
             case 'mini':
                 // $params = [
                 //     'out_trade_no'    => 'E20241212021244esdfw',

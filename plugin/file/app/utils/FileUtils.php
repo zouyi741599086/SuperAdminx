@@ -29,15 +29,16 @@ class FileUtils
     /**
      * 文件上传，上传的数据会记录到file表进行管理
      * @param string $disk 上传到哪，public》本地，aliyun》阿里云，qcloud》腾讯云
+     * @param string $url 代表从url下载图片
      * @throws \Exception
      */
-    public static function upload(string $disk = ''): array
+    public static function upload(string $disk = '', string $url = '') : array
     {
         $disk    = $disk ?: config('plugin.file.superadminx.file_system.default');
         $request = request();
         $width   = intval($request->post('width')) ?: null;
         $height  = intval($request->post('height')) ?: null;
-        $files   = self::uploadPublic();
+        $files   = $url ? self::downloadImage($url) : self::uploadPublic();
 
         foreach ($files as $key => $path) {
             $fileSuffix = substr(strrchr($path, '.'), 1);
@@ -114,6 +115,104 @@ class FileUtils
         }
 
         return $result;
+    }
+
+    /**
+     * 下载远程图片到本地
+     *
+     * @param string $url 图片的远程 URL
+     * @param string $dir 上传的目录，默认/storage
+     * @return array
+     */
+    public static function downloadImage(string $url, string $dir = '')
+    {
+        // 验证 URL
+        if (! filter_var($url, FILTER_VALIDATE_URL)) {
+            abort("Invalid URL: $url");
+            return false;
+        }
+
+        // 下载图片数据（cURL部分不变）
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; Image Downloader)',
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HEADER         => false,
+        ]);
+        $imageData = curl_exec($ch);
+        $httpCode  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
+        curl_close($ch);
+
+        // 检查下载是否成功
+        if ($httpCode !== 200) {
+            abort("HTTP request failed with code $httpCode for URL: $url");
+            return false;
+        }
+        if ($curlError) {
+            abort("cURL error: $curlError");
+            return false;
+        }
+        if (empty($imageData)) {
+            abort("Empty image data received from URL: $url");
+            return false;
+        }
+
+        // 验证图片类型
+        $finfo        = new \finfo(FILEINFO_MIME_TYPE);
+        $mimeType     = $finfo->buffer($imageData);
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+        if (! in_array($mimeType, $allowedTypes, true)) {
+            abort("Invalid image type: $mimeType from URL: $url");
+            return false;
+        }
+
+        // 确定文件扩展名
+        $pathParts = pathinfo(parse_url($url, PHP_URL_PATH));
+        $ext       = isset($pathParts['extension']) ? strtolower($pathParts['extension']) : '';
+        $validExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
+        if (! in_array($ext, $validExts)) {
+            $extMap = [
+                'image/jpeg' => 'jpg',
+                'image/png'  => 'png',
+                'image/gif'  => 'gif',
+                'image/webp' => 'webp',
+                'image/bmp'  => 'bmp',
+            ];
+            $ext    = $extMap[$mimeType] ?? 'bin';
+        }
+
+        // 生成保存路径
+        $datePath = date('Y/m/d');
+        $filename = time() . '_' . mt_rand(0, 100000) . '.' . $ext;
+
+        // 确定基础目录：如果传入了$dir，则使用$dir（视为相对于public_path的路径）；否则默认使用'storage'
+        $baseDir = $dir ?: 'storage';
+        // 构建完整的保存路径
+        $fullPath = public_path($baseDir . '/' . $datePath . '/' . $filename);
+
+        // 确保目录存在
+        $dirPath = dirname($fullPath);
+        if (! is_dir($dirPath)) {
+            if (! mkdir($dirPath, 0777, true)) {
+                abort("Failed to create directory: $dirPath");
+                return false;
+            }
+        }
+
+        // 保存文件
+        if (file_put_contents($fullPath, $imageData) === false) {
+            abort("Failed to write image to $fullPath");
+            return false;
+        }
+
+        // 返回相对路径（便于生成URL）或完整路径，这里返回相对路径
+        return [
+            'img' => '/' . $baseDir . '/' . $datePath . '/' . $filename,
+        ];
     }
 
     /**
