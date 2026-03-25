@@ -1,10 +1,10 @@
-import { useState, lazy } from 'react';
+import { useState, lazy, memo} from 'react';
 import {
     LeftOutlined,
     RightOutlined,
 } from '@ant-design/icons';
 import { Layout, Button } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import logo from '@/static/logo.png';
 import './index.css'
 import { useSnapshot } from 'valtio';
@@ -31,7 +31,7 @@ const { Header, Content, Sider } = Layout;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-const LayoutSlide = () => {
+const LayoutSlide = memo(() => {
     const [collapsed, setCollapsed] = useState(false);
     const layoutSetting = useSnapshot(layoutSettingStore);
 
@@ -126,6 +126,6 @@ const LayoutSlide = () => {
             </Layout>
         </div>
     </>;
-};
+});
 
 export default LayoutSlide;

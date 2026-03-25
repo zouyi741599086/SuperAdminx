@@ -7,7 +7,7 @@ import { useBoolean } from 'ahooks'
 import { adminUserApi } from '@/api/adminUser';
 import { storage } from '@/common/function'
 import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 const UserInfoPassword = () => {
     const [open, { toggle: toggleOpen }] = useBoolean(false);

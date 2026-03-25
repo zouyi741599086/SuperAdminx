@@ -1,10 +1,10 @@
-import { useState, lazy } from 'react';
+import { useState, lazy, memo } from 'react';
 import {
     LeftOutlined,
     RightOutlined,
 } from '@ant-design/icons';
 import { Layout, Tooltip, Divider, Button } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import logo from '@/static/logo.png';
 import { useSnapshot } from 'valtio';
 import { layoutSettingStore } from '@/store/layoutSetting';
@@ -29,7 +29,7 @@ const { Content, Sider } = Layout;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-const LayoutLeft = () => {
+const LayoutLeft = memo(() => {
     const [collapsed, setCollapsed] = useState(false);
     const layoutSetting = useSnapshot(layoutSettingStore);
 
@@ -118,6 +118,6 @@ const LayoutLeft = () => {
             </Layout>
         </div>
     );
-};
+});
 
 export default LayoutLeft;

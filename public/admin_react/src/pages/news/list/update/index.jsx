@@ -2,8 +2,8 @@ import { useRef, lazy } from 'react';
 import { PageContainer, ProForm } from '@ant-design/pro-components';
 import { newsApi } from '@/api/news';
 import { App, Space, Row, Col, Card } from 'antd';
-import { useNavigate } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router";
+import { useSearchParams } from "react-router";
 import Lazyload from '@/component/lazyLoad/index';
 
 const Form1 = lazy(() => import('../component/form1'));

@@ -25,7 +25,7 @@ export const loginAction = (adminUser, setAdminUserStore, setMenuAuthStore) => {
     adminUser.menu.unshift({
         id: 0,
         title: '首页',
-        path: '/index',
+        path: '/',
         type: 2,
         hidden: 1,
         icon: 'icon-shouyefill',

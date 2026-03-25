@@ -1,17 +1,17 @@
-import { useState, lazy, useEffect } from 'react';
+import { useState, lazy, useEffect, memo } from 'react';
 import {
     LeftOutlined,
     RightOutlined,
     EllipsisOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, Button } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import logo from '@/static/logo.png';
 import './index.css'
 import { useSnapshot } from 'valtio';
 import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useMount } from 'ahooks';
 import { config } from '@/common/config'
 
@@ -58,7 +58,7 @@ const arrayToTree = (arr, pid = null, pid_name_path = []) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-const LayoutTopSplitMenus = () => {
+const LayoutTopSplitMenus = memo(() => {
     const navigate = useNavigate();
 
     const layoutSetting = useSnapshot(layoutSettingStore);
@@ -226,8 +226,8 @@ const LayoutTopSplitMenus = () => {
                             <div className="menu-warp">
                                 <Menu
                                     styles={{
-										root: { background: 'none', width: '100%', borderBottom: '0px', lineHeight: '55px' }
-									}}
+                                        root: { background: 'none', width: '100%', borderBottom: '0px', lineHeight: '55px' }
+                                    }}
                                     mode={`horizontal`}
                                     items={topMenuList}
                                     onClick={onTopMenuClick}
@@ -259,8 +259,8 @@ const LayoutTopSplitMenus = () => {
                             <div className="menu-warp">
                                 <Menu
                                     styles={{
-										root: { background: 'none', borderRight: '0px' }
-									}}
+                                        root: { background: 'none', borderRight: '0px' }
+                                    }}
                                     mode={`inline`}
                                     items={slideMenuList}
                                     onClick={onSlideMenuClick}
@@ -292,6 +292,6 @@ const LayoutTopSplitMenus = () => {
             </Layout>
         </div>
     );
-};
+});
 
 export default LayoutTopSplitMenus;

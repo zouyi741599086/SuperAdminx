@@ -1,10 +1,10 @@
-import { useState, lazy, useEffect } from 'react';
+import { useState, lazy, useEffect, memo } from 'react';
 import {
     LeftOutlined,
     RightOutlined,
 } from '@ant-design/icons';
 import { Layout, Button, Divider, Menu, theme } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import logo from '@/static/logo.png';
 import { useSnapshot } from 'valtio';
 import { layoutSettingStore, setLayoutSettingStore } from '@/store/layoutSetting';
@@ -12,7 +12,7 @@ import { config } from '@/common/config'
 import { useMount } from 'ahooks';
 import { colorHsb } from '@/common/function';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import './index.css'
 
 const { useToken } = theme;
@@ -59,7 +59,7 @@ const arrayToTree = (arr, pid = null, pid_name_path = []) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-const LayoutSlideSpliMenus = () => {
+const LayoutSlideSpliMenus = memo(() => {
     const { token } = useToken();
     const navigate = useNavigate();
     const layoutSetting = useSnapshot(layoutSettingStore);
@@ -337,6 +337,6 @@ const LayoutSlideSpliMenus = () => {
             </Layout >
         </div >
     );
-};
+});
 
 export default LayoutSlideSpliMenus;

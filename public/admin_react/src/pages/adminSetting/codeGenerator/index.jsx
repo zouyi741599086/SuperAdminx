@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { adminCodeGeneratorApi } from '@/api/adminCodeGenerator';
 import { Typography, Input, Row, Col, Card } from 'antd';
 import { authCheck } from '@/common/function';
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { useMount, useDebounceFn } from 'ahooks';
 import {
     DatabaseTwoTone,

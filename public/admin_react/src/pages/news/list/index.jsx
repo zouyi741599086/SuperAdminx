@@ -11,7 +11,7 @@ import {
     DeleteOutlined,
     PlusOutlined,
 } from '@ant-design/icons';
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import MoveAll from './component/moveAll'
 import CopyAll from './component/copyAll'
 

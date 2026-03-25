@@ -5,7 +5,7 @@ import {
 } from '@ant-design/icons';
 import { useSnapshot } from 'valtio';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 /**
  * 数组转多维数据，会给数组增加上级的路劲（数组），这是专门是后台菜单用的

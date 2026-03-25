@@ -2,12 +2,12 @@ import { useRef, useState, lazy } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { configApi } from '@/api/config';
 import { App, Space, Button, Alert, Divider, Card, Col, Row } from 'antd';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import formFields from './component/formFields';
 import FieldsItem from './component/fieldsItem';
 import FormSubmit from './component/formSubmit';
 import FieldsItemSetting from './component/fieldsItemSetting';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import { useMount } from 'ahooks';
 import {
     DndContext,

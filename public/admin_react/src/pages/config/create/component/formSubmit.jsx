@@ -1,14 +1,14 @@
 import { useRef, useState } from 'react';
 import { configApi } from '@/api/config';
 import { App, } from 'antd';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import {
     ProForm,
     ProFormText,
     ProFormTextArea,
     ProFormDigit,
 } from '@ant-design/pro-components';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import { useMount } from 'ahooks';
 
 const FormSubmit = ({ fields, setFields, type }) => {

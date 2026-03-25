@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { useDebounceFn } from 'ahooks';
 import { deepClone } from '@/common/function';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useSnapshot } from 'valtio';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 

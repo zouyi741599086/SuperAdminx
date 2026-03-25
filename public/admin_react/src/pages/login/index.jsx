@@ -5,10 +5,9 @@ import { App, Card, Typography, Button, Form, Input, Checkbox, Flex } from 'antd
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { storage } from '@/common/function'
 import { adminUserApi } from '@/api/adminUser'
-import { useNavigate } from "react-router-dom";
-import { useSnapshot } from 'valtio';
-import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
-import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
+import { useNavigate } from "react-router";
+import { setAdminUserStore } from '@/store/adminUser';
+import { setMenuAuthStore } from '@/store/menuAuth';
 import { loginAction } from '@/common/loginAction';
 import { config } from '@/common/config'
 import ResetPassword from './component/resetPassword';
@@ -23,8 +22,6 @@ const { Title } = Typography;
  * @link https://www.superadminx.com/
  */
 const Login = () => {
-    const adminUser = useSnapshot(adminUserStore);
-    const menuAuth = useSnapshot(menuAuthStore);
     const [loading, setLoading] = useState(false);
     const { message } = App.useApp();
     const navigate = useNavigate();
@@ -51,7 +48,7 @@ const Login = () => {
                     // 非保持登录状态
                     sessionStorage.setItem(`adminUserToken`, res.data.token);
                 }
-                navigate('/index');
+                navigate('/');
             }
         }).catch(err => {
             setLoading(false);

@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import { storage, authCheck } from '@/common/function';
 import SelectUser from '@/components/selectUser';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useMount } from 'ahooks';
 
 

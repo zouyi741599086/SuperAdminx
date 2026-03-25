@@ -2,7 +2,7 @@ import {
     BellOutlined,
 } from '@ant-design/icons';
 import { Badge, Dropdown } from 'antd';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import './index.css'
 
 /**

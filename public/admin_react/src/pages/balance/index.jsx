@@ -11,7 +11,7 @@ import { fileApi } from '@/api/file';
 import Lazyload from '@/component/lazyLoad/index';
 import SelectUser from '@/components/selectUser';
 import { useMount } from 'ahooks';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const UpdateBalance = lazy(() => import('./component/updateBalance'));
 const Turn = lazy(() => import('./component/turn'));

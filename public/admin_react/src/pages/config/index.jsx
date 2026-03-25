@@ -9,7 +9,7 @@ import {
     OrderedListOutlined,
     PlusOutlined,
 } from '@ant-design/icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import { authCheck } from '@/common/function';
 
 /**

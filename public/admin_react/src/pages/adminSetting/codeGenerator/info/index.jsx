@@ -2,8 +2,8 @@ import { lazy, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { adminCodeGeneratorApi } from '@/api/adminCodeGenerator';
 import { App, Space, Descriptions, Card } from 'antd';
-import { useNavigate } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router";
+import { useSearchParams } from "react-router";
 import { useMount } from 'ahooks';
 import Lazyload from '@/component/lazyLoad/index';
 

@@ -1,6 +1,6 @@
-import { lazy } from 'react';
+import { lazy, memo } from 'react';
 import { Layout } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import logo from '@/static/logo.png';
 import './index.css'
 import { useSnapshot } from 'valtio';
@@ -25,7 +25,7 @@ const { Header, Content, } = Layout;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-const LayoutTop = () => {
+const LayoutTop = memo(() => {
     const layoutSetting = useSnapshot(layoutSettingStore);
 
     return (
@@ -47,12 +47,12 @@ const LayoutTop = () => {
                                 <span>{config.projectName}</span>
                             </div>
                             <div className="menu-warp">
-                                <Menu 
-									menuMode='horizontal' 
-									styles={{
-										root: { height: '100%' }
-									}}
-								/>
+                                <Menu
+                                    menuMode='horizontal'
+                                    styles={{
+                                        root: { height: '100%' }
+                                    }}
+                                />
                             </div>
                         </div>
                         <div className='r'>
@@ -76,6 +76,6 @@ const LayoutTop = () => {
             </Layout>
         </div>
     );
-};
+});
 
 export default LayoutTop;

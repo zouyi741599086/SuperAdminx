@@ -3,9 +3,9 @@ import { CaretDownOutlined, LogoutOutlined } from '@ant-design/icons';
 import { App, Avatar, Space, Dropdown, Typography } from 'antd';
 import { useSnapshot } from 'valtio';
 import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
-import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
-import { contentTabsStore, setContentTabsStore } from '@/store/contentTabs';
-import { useNavigate } from 'react-router-dom';
+import { setMenuAuthStore } from '@/store/menuAuth';
+import { setContentTabsStore } from '@/store/contentTabs';
+import { useNavigate } from 'react-router';
 import { storage } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
 
@@ -21,8 +21,6 @@ const { Text } = Typography;
  */
 const UserInfo = ({ showIcon = true, showName = true, placement = 'bottomLeft' }) => {
     const adminUser = useSnapshot(adminUserStore);
-    const menuAuth = useSnapshot(menuAuthStore);
-    const contentTabs = useSnapshot(contentTabsStore);
     const { modal } = App.useApp();
     const navigate = useNavigate();
 
@@ -32,24 +30,26 @@ const UserInfo = ({ showIcon = true, showName = true, placement = 'bottomLeft' }
             title: '提示',
             content: '确认要退出登录吗?',
             onOk() {
+                // 先跳转到登录页
+                // 然后异步清理数据，避免在跳转过程中引起组件树剧变
                 storage.remove('adminUserToken');
                 sessionStorage.removeItem(`adminUserToken`);
                 setAdminUserStore({});
-                setMenuAuthStore({
-                    menu: [],
-                    menuArrAll: [],
-                    menuArr: [],
-                    actionAuthArr: [],
-                    activeMenuPath: [],
-                    openKeys: [],
-                    activeData: {},
+                setMenuAuthStore((_val) => {
+                    return {
+                        ..._val,
+                        actionAuthArr: [],
+                        activeMenuPath: [],
+                        openKeys: [],
+                        activeData: {},
+                    }
                 })
                 setContentTabsStore({
                     activeName: '',
                     keepAlive: [],
                     list: [],
-                })
-                navigate('/login')
+                });
+                navigate('/login');
             },
         });
     }

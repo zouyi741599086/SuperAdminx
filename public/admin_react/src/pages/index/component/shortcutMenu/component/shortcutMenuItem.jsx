@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Card } from 'antd';
 import { useSnapshot } from 'valtio';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
