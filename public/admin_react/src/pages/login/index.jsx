@@ -5,9 +5,10 @@ import { App, Card, Typography, Button, Form, Input, Checkbox, Flex } from 'antd
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { storage } from '@/common/function'
 import { adminUserApi } from '@/api/adminUser'
-import { useNavigate } from "react-router";
-import { setAdminUserStore } from '@/store/adminUser';
-import { setMenuAuthStore } from '@/store/menuAuth';
+import { useNavigate, Navigate} from "react-router";
+import { useSnapshot } from 'valtio';
+import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
+import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
 import { loginAction } from '@/common/loginAction';
 import { config } from '@/common/config'
 import ResetPassword from './component/resetPassword';
@@ -22,10 +23,11 @@ const { Title } = Typography;
  * @link https://www.superadminx.com/
  */
 const Login = () => {
+    const adminUser = useSnapshot(adminUserStore);
     const [loading, setLoading] = useState(false);
     const { message } = App.useApp();
     const navigate = useNavigate();
-    const [stay_login, set_stay_login] = useState(false);
+    const [stayLogin, setStayLogin] = useState(false);
 
     // 设置网页标题
     document.title = `${config.projectName}-登录`;
@@ -41,7 +43,7 @@ const Login = () => {
                 message.success(res.message);
                 loginAction(res.data, setAdminUserStore, setMenuAuthStore);
                 // 设置登录标识
-                if (stay_login === true) {
+                if (stayLogin === true) {
                     // 保存登录状态
                     storage.set(`adminUserToken`, res.data.token);
                 } else {
@@ -54,6 +56,11 @@ const Login = () => {
             setLoading(false);
         });
     };
+
+    // 判断是否已登录
+    if (adminUser?.id ) {
+        return <Navigate to="/" replace />;
+    }
 
     return <>
         <div className="login-logo">
@@ -113,8 +120,8 @@ const Login = () => {
                         </Form.Item>
                         <Form.Item>
                             <Flex justify="space-between" align="flex-start">
-                                <Checkbox checked={stay_login} onChange={(e) => {
-                                    set_stay_login(e.target.checked);
+                                <Checkbox checked={stayLogin} onChange={(e) => {
+                                    setStayLogin(e.target.checked);
                                 }}>保持登录状态</Checkbox>
                                 <ResetPassword />
                             </Flex>

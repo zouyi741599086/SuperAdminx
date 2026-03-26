@@ -1,4 +1,3 @@
-// src/main.jsx
 import React, { useMemo, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { useSnapshot } from 'valtio';
