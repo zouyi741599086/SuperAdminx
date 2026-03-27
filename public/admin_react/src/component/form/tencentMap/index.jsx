@@ -1,49 +1,173 @@
-import { useRef, useState, useEffect } from 'react'
-import { Button, App, Row, Col, Alert, Modal, Input, Space, Select } from 'antd'
-import { useThrottleEffect } from 'ahooks'
-import { CloseCircleOutlined } from '@ant-design/icons'
-import { TMap as Map, MultiMarker } from 'tlbs-map-react';
+import { useRef, useState, useEffect } from 'react';
+import { Button, App, Alert, Modal, Input, Space, Select } from 'antd';
+import { useMount, useThrottleEffect } from 'ahooks';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { config } from '@/common/config.js';
 
-/**
- * 腾讯地图经纬选择坐标：https://mapapi.qq.com/web/tlbs-map-react/components/t-map
- * @param {value} String 默认值
- * @param {onChange} fun 修改value事件
- */
-const TencentMap = ({ value, onChange }) => {
-    const mapRef = useRef();
-    const markerRef = useRef();
-    const { message } = App.useApp()
+let map, markerLayer, geocoder, suggest, infoWindow;
 
-    //搜索的关键字
-    const [searchKeywords, setSearchKeywords] = useState(null)
-    // 搜索列表
-    const [searchResultList, setSearchResultList] = useState([])
-    //弹出框显示与否
-    const [open, setOpen] = useState(false)
-    //地图后端搜索服务
-    const [suggest, setSuggest] = useState(null);
-    //被组件的值，默认经纬度
-    const [latLng, setLatLng] = useState({
-        lat: value ? value.split(',')[0] : 29.552703,
-        lng: value ? value.split(',')[1] : 106.549358
-    })
-    //地图的中心点
-    const [geometries, setGeometries] = useState([]);
+const MapMain = ({ value, setLatLng, ...props }) => {
+    const { message } = App.useApp();
+    const [searchResultList, setSearchResultList] = useState([]);
+    const [scriptLoaded, setScriptLoaded] = useState(false); // 脚本加载状态
+    const [isInitMap, setIsInitMap] = useState(false);
+    const containerRef = useRef();
 
-    //本组件值被改变的时候，改变地图的marker点
-    useEffect(() => {
-        if (latLng.lat && latLng.lng) {
-            setGeometries([
-                {
-                    styleId: 'multiMarkerStyle1',
-                    position: {
-                        lat: latLng.lat,
-                        lng: latLng.lng
-                    },
-                }
-            ])
+    useMount(() => {
+        // 加载腾讯地图脚本
+        if (!document.getElementById('tencentMap') && !window.TMap) {
+            const url = `//map.qq.com/api/gljs?v=1.exp&libraries=service&key=${config.tencentApiKey}`;
+            const script = document.createElement('script');
+            script.src = url;
+            script.id = 'tencentMap';
+            script.onload = () => setScriptLoaded(true); // 加载完成标记
+            document.head.appendChild(script);
+        } else if (window.TMap) {
+            setScriptLoaded(true);
         }
-    }, [latLng])
+    });
+
+    // 初始化地图
+    useEffect(() => {
+        if (!scriptLoaded) return; // 等待脚本加载
+
+        if (!map && !isInitMap && containerRef) {
+            const _value = value || '29.492804,106.526012';
+            const [lat, lng] = _value.split(',').map(v => parseFloat(v.trim()));
+            if (!isNaN(lat) && !isNaN(lng)) {
+                initMap(lat, lng);
+            } else {
+                message.error('经纬度错误');
+            }
+            setIsInitMap(true);
+        }
+    }, [scriptLoaded, value, isInitMap, containerRef]);
+
+    // 初始化地图
+    const initMap = (lat, lng) => {
+        if (!containerRef || !window.TMap) return;
+
+        map = new TMap.Map(containerRef.current, {
+            zoom: 14,
+            center: new TMap.LatLng(lat, lng),
+            pitch: 50,
+            rotation: 0,
+        });
+        setLatLng({ lat, lng });
+
+        // 创建初始 marker
+        markerLayer = new TMap.MultiMarker({
+            map: map,
+            geometries: [
+                {
+                    id: 'center',
+                    position: map.getCenter(),
+                },
+            ],
+        });
+
+        // 地图点击事件：移动 marker
+        map.on('click', (evt) => {
+            if (markerLayer) {
+                markerLayer.setGeometries([]);
+                markerLayer.updateGeometries([
+                    {
+                        id: '0',
+                        position: evt.latLng,
+                    },
+                ]);
+            }
+            if (infoWindow) infoWindow.close();
+            setLatLng(evt.latLng);
+        });
+
+        map.setViewMode('3D');
+        // 地址解析与提示服务
+        geocoder = new TMap.service.Geocoder();
+        suggest = new TMap.service.Suggestion({
+            pageSize: 20,
+            regionFix: false,
+        });
+    };
+
+    // 搜索关键词
+    const [searchKeywords, setSearchKeywords] = useState(null);
+    const mapSearch = () => {
+        if (!suggest || !searchKeywords) return;
+        suggest.getSuggestions({
+            keyword: searchKeywords,
+            location: map.getCenter()
+        }).then((result) => {
+            if (result.data?.length) {
+                setSearchResultList(result.data);
+            } else {
+                message.error('没有相关信息！');
+            }
+        }).catch((error) => {
+            message.error(error.message);
+        });
+    };
+
+    // 选择搜索结果
+    const selectOnChange = (selectedId) => {
+        const info = searchResultList.find(item => item.id === selectedId);
+        if (!info) return;
+        if (!markerLayer) return;
+        // 关闭现有信息窗
+        if (infoWindow) infoWindow.close();
+        // 更新 marker
+        markerLayer.setGeometries([]);
+        markerLayer.updateGeometries([
+            {
+                id: '0',
+                position: info.location,
+            },
+        ]);
+        // 显示信息窗
+        infoWindow = new TMap.InfoWindow({
+            map: map,
+            position: info.location,
+            content: `<h3>${info.title}</h3><p>地址：${info.address}</p>`,
+            offset: { x: 0, y: -50 },
+        });
+        map.setCenter(info.location);
+        setLatLng({ lat: info.location.lat, lng: info.location.lng });
+    };
+
+    useThrottleEffect(
+        () => {
+            mapSearch();
+        },
+        [searchKeywords],
+        { wait: 1000 }
+    );
+
+    return <>
+        <Space orientation="vertical" style={{ width: '100%' }} size="middle">
+            <Alert title="直接点击地图，设置位置~" type="info" showIcon />
+            <div className="rowSearch">
+                <Select
+                    showSearch
+                    allowClear
+                    value={searchKeywords}
+                    placeholder="请输入地址搜索"
+                    style={{ width: '100%' }}
+                    filterOption={false}
+                    onSearch={setSearchKeywords}
+                    onChange={selectOnChange}
+                    options={searchResultList}
+                    fieldNames={{ label: 'title', value: 'id' }}
+                />
+            </div>
+            <div ref={containerRef} id="container" style={{ width: '100%', height: '500px' }} />
+        </Space>
+    </>
+}
+
+const TencentMap = ({ value, onChange }) => {
+    const { message } = App.useApp();
+    const [open, setOpen] = useState(false);
+    const [latLng, setLatLng] = useState(null);
 
     //确认选择的时候
     const confirmChange = () => {
@@ -55,145 +179,63 @@ const TencentMap = ({ value, onChange }) => {
         setOpen(false)
     }
 
-    //点击搜索的时候
-    const mapSearch = () => {
-        if (!searchKeywords) {
-            return false;
+    // modal关闭后，清理地图资源
+    const afterClose = () => {
+        if (map) {
+            map.destroy(); // 销毁地图实例（若 API 支持）
+            map = undefined;
         }
-        let _suggest = suggest;
-        if (!_suggest) {
-            _suggest = new TMap.service.Suggestion({
-                // 新建一个关键字输入提示类
-                pageSize: 20, // 返回结果每页条目数
-                //region: '重庆', // 限制城市范围
-                regionFix: false, // 搜索无结果时是否固定在当前城市
-            });
-            setSuggest(_suggest);
-        }
-
-        _suggest.getSuggestions({ keyword: searchKeywords }).then((result) => {
-            if (result.data?.length) {
-                // 以当前所输入关键字获取输入提示
-                setSearchResultList(result.data)
-            } else {
-                message.error('没有相关信息！')
-            }
-        })
-            .catch((error) => {
-                message.error(error.message)
-            })
-    }
-    //搜索出来的地址 点击选择的时候
-    const selectOnChange = (e) => {
-        searchResultList.some((item) => {
-            if (item.id == e) {
-                setLatLng({
-                    lat: item.location.lat,
-                    lng: item.location.lng
-                });
-                return true;
-            }
-        })
-    }
-    //输入搜索关键字的时候，防抖搜索
-    useThrottleEffect(
-        () => {
-            mapSearch()
-        },
-        [searchKeywords],
-        {
-            wait: 1000,
-        },
-    );
+        markerLayer = undefined;
+        geocoder = undefined;
+        suggest = undefined;
+        infoWindow = undefined;
+    };
 
     return (
         <>
-            <Row gutter={[10, 0]}>
-                <Col flex="auto" style={{ flex: 1 }}>
-                    <Input value={value} disabled placeholder='请选择位置' allowClear />
-                </Col>
-                <Col flex="none">
-                    <Space>
-                        {value ? <>
-                            <Button type='dashed' icon={<CloseCircleOutlined />} onClick={() => onChange('')}></Button>
-                        </> : ''}
-                        <Button onClick={() => setOpen(true)}>选择位置</Button>
-                    </Space>
-                </Col>
-            </Row>
+            <Space.Compact
+                style={{
+                    width: '100%'
+                }}
+            >
+                <Input
+                    value={value}
+                    readOnly
+                    placeholder="请选择位置"
+                    suffix={<>
+                        <CloseCircleOutlined
+                            onClick={() => onChange('')}
+                            style={{
+                                cursor: 'pointer'
+                            }}
+                        />
+                    </>}
+                />
+                <Button
+                    color="primary"
+                    variant="dashed"
+                    onClick={() => { 
+                        if (!config.tencentApiKey) {
+                            return message.error('未设置腾讯地图API KEY')
+                        }
+                        setOpen(true)
+                    }}
+                >选择位置</Button>
+            </Space.Compact>
 
-            <Modal open={open} title='选择位置' width={800} onOk={confirmChange} onCancel={() => setOpen(false)}>
-				<Space 
-					orientation="vertical"
-					size="middle"
-					styles={{ 
-						root: {width: '100%'}
-					}}
-				>
-                    <Alert title='直接点击地图，设置位置~' type='info' show-icon />
-                    <div className='rowSearch'>
-                        <Select
-                            showSearch
-                            allowClear
-                            value={searchKeywords}
-                            placeholder='请输入地址搜索'
-                            styles={{
-								root: { width: '100%'}
-							}}
-                            filterOption={false}
-                            onSearch={setSearchKeywords}
-                            onChange={selectOnChange}
-                            options={searchResultList}
-                            fieldNames={{
-                                label: 'title',
-                                value: 'id',
-                            }}
-                        />
-                    </div>
-                    <Map
-                        ref={mapRef}
-                        apiKey="UBCBZ-MLQL4-PKWUD-DNVHI-TQPMH-CGFU3"
-                        control={{
-                            zoom: {
-                                position: 'topRight',
-                                numVisible: true,
-                            },
-                        }}
-                        libraries="service"
-                        options={{
-                            center: latLng,
-                            zoom: 14,
-                            showControl: true
-                        }}
-                        onClick={(e) => {
-                            setLatLng({
-                                lat: e.latLng.lat,
-                                lng: e.latLng.lng
-                            })
-                        }}
-                    >
-                        <MultiMarker
-                            ref={markerRef}
-                            //点的样式，是个对象可以有多个样式，然后在marker点里面应用key就行
-                            styles={{
-                                //点的样式
-                                multiMarkerStyle1: {
-                                    width: 30,
-                                    height: 45,
-                                    anchor: { x: 15, y: 45 },
-                                }
-                            }}
-                            //marker点，是个数组，可以添加多个marker
-                            geometries={geometries}
-                            onClick={(e) => {
-                                //某个marker点被点击的时候
-                            }}
-                        />
-                    </Map>
-                </Space>
+            <Modal
+                open={open}
+                title="选择位置"
+                width={800}
+                onOk={confirmChange}
+                onCancel={() => setOpen(false)}
+                destroyOnHidden
+                afterClose={afterClose}
+            >
+                <MapMain value={value} setLatLng={setLatLng} />
             </Modal>
         </>
-    )
-}
+    );
+};
 
 export default TencentMap;
