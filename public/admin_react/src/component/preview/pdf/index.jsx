@@ -24,7 +24,9 @@ const Pdf = ({ title = 'Pdf内容', url = null, button = null, errorMessage = ''
             footer: null,
             closable: true,
             icon: <></>,
-            maskClosable: true,
+            mask: {
+                closable: true,
+            },
             content: <>
                 <div
                     style={{

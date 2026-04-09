@@ -16,6 +16,7 @@ const Form1 = lazy(() => import('./../component/form1'));
  * @link https://www.superadminx.com/
  * */
 const Update = ({ tableReload, updateId, setUpdateId, ...props }) => {
+	const { message } = App.useApp();
     const formRef = useRef();
     const open = updateId > 0;
 
@@ -55,7 +56,7 @@ const Update = ({ tableReload, updateId, setUpdateId, ...props }) => {
                 destroyOnHidden: true,
             }}
             params={{
-                id: props.updateId
+                id: updateId
             }}
             request={async (params) => {
                 const result = await adminRoleApi.findData(params);
@@ -68,11 +69,11 @@ const Update = ({ tableReload, updateId, setUpdateId, ...props }) => {
             }}
             onFinish={async (values) => {
                 const result = await adminRoleApi.update({
-                    id: props.updateId,
+                    id: updateId,
                     ...values
                 });
                 if (result.code === 1) {
-                    props.tableReload();
+                    tableReload();
                     message.success(result.message)
                     formRef.current?.resetFields?.()
                     return true;

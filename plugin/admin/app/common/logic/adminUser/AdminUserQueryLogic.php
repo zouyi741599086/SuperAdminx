@@ -25,7 +25,7 @@ class AdminUserQueryLogic
             $params,
             true,
         )
-            ->where('id', '<>', 1)
+            ->where('is_super', 1)
             ->with(['AdminRole'])
             ->order('id desc')
             ->paginate($params['pageSize'] ?? 20);
@@ -52,7 +52,7 @@ class AdminUserQueryLogic
             ->toArray();
 
         // 用户拥有的权限节点
-        if ($data['id'] == 1) {
+        if ($data['is_super'] == 2) {
             $data['menu'] = AdminMenuModel::field('*')
                 ->order('sort asc,id desc')
                 ->select();

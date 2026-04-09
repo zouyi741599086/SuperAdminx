@@ -41,7 +41,9 @@ const Images = ({ title = '查看图片', imgs = [], ...props }) => {
                         />
                     </> : ''}
                 </>,
-                maskClosable: true
+                mask: {
+                    closable: true,
+                }
             });
         }}>{Array.isArray(imgs) ? imgs.length : 0}张</Button>
     </>

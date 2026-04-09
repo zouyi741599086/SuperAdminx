@@ -36,7 +36,9 @@ const Teditor = ({ title = '查看内容', content = '', isShow = false, width =
                             dangerouslySetInnerHTML={{ __html: content }}
                         ></div> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="无内容" />}
                     </>,
-                    maskClosable: true
+                    mask: {
+                        closable: true,
+                    },
                 });
             }}>{title}</Button>
         </> : <>

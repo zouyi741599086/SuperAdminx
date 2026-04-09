@@ -5,7 +5,7 @@ import { App, Card, Typography, Button, Form, Input, Checkbox, Flex } from 'antd
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { storage } from '@/common/function'
 import { adminUserApi } from '@/api/adminUser'
-import { useNavigate, Navigate} from "react-router";
+import { useNavigate, Navigate } from "react-router";
 import { useSnapshot } from 'valtio';
 import { adminUserStore, setAdminUserStore } from '@/store/adminUser';
 import { menuAuthStore, setMenuAuthStore } from '@/store/menuAuth';
@@ -58,7 +58,9 @@ const Login = () => {
     };
 
     // 判断是否已登录
-    if (adminUser?.id ) {
+    const adminUserToken = storage.get('adminUserToken') || sessionStorage.getItem('adminUserToken');
+    const isAuthenticated = adminUser?.id && adminUserToken;
+    if (isAuthenticated) {
         return <Navigate to="/" replace />;
     }
 
@@ -75,12 +77,12 @@ const Login = () => {
                 <img src={loginMain} alt="" />
             </div>
             <div className="login-r">
-                <Card 
-					classNames={{
-						root: 'card-form'
-					}} 
-					variant="borderless"	
-				>
+                <Card
+                    classNames={{
+                        root: 'card-form'
+                    }}
+                    variant="borderless"
+                >
                     <Title
                         level={4}
                         style={{

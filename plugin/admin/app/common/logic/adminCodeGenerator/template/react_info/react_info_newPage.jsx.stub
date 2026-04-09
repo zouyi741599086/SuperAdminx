@@ -71,7 +71,7 @@ foreach ($apiAll as $v) {
 ?>
 import { App, Space, Row, Col, Descriptions, Typography, Affix, Flex, Timeline, Progress, Badge} from 'antd';
 import { useMount } from 'ahooks';
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router";
 import Lazyload from '@/component/lazyLoad/index';
 <?php
 // 导入需要使用的自定义的字段

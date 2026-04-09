@@ -111,9 +111,9 @@ class AdminUserExecuteLogic
     public function updateInfo(array $data, int $adminUserId)
     {
         try {
+            $data['id'] = $adminUserId;
             think_validate(AdminUserValidate::class)->scene('update_info')->check($data);
 
-            $data['id'] = $adminUserId;
             AdminUserModel::update($data);
         } catch (\Throwable $e) {
             abort($e->getMessage());

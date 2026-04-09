@@ -91,7 +91,8 @@ const UpdateRoleMenu = (props) => {
     const onCheck = (checkedKeys, { checked, node }) => {
         let _roleArr = [...roleArr];
         // 找出当前点击元素的所有下级，在判断是全部选中还是取消
-        let nextArr = menuListArr.filter(item => item.pid_name_path.indexOf(`,${node.name},`) !== -1 && item.id !== node.id);
+        let nextArr = menuListArr.filter(item => item.pid_name_path.includes(node.name) && item.id !== node.id);
+        console.log(nextArr)
         nextArr.push(node);
 
         // 如果选中，则把所有下级都选中
@@ -119,7 +120,7 @@ const UpdateRoleMenu = (props) => {
             // 判断下级中是否有选中的
             let isCkecked = _roleArr.some(id => {
                 let menu = menuListArr.find(item => item.id === id && item.name != pid_name);
-                return menu ? menu.pid_name_path.indexOf(`,${pid_name},`) !== -1 : false;
+                return menu ? menu.pid_name_path.includes(node.name) : false;
             })
 
             if (isCkecked === true) {

@@ -21,10 +21,14 @@ class ShortcuMenuExecuteLogic
      */
     public function update(int $adminUserId, array $adminMenuIds)
     {
+        $adminUser = AdminUserModel::with([
+            'AdminRole.AdminRoleMenu',
+        ])->find($adminUserId);
+
         Db::startTrans();
         try {
             // 旧的菜单数据
-            $oldAdminMenuIds = AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)->column('admin_menu_id');
+            $oldAdminMenuIds = AdminUserShortcutMenuModel::where('admin_user_id', $adminUser->id)->column('admin_menu_id');
             // 计算要删除的菜单
             $permissionsToDelete = array_diff($oldAdminMenuIds, $adminMenuIds);
             // 计算需要插入的菜单
@@ -32,24 +36,20 @@ class ShortcuMenuExecuteLogic
 
             // 删除不要的菜单
             if ($permissionsToDelete) {
-                AdminUserShortcutMenuModel::where('admin_user_id', $adminUserId)
+                AdminUserShortcutMenuModel::where('admin_user_id', $adminUser->id)
                     ->whereIn('admin_menu_id', $permissionsToDelete)
                     ->delete();
             }
 
-            if ($adminUserId == 1) {
+            if ($adminUser->is_super == 2) {
                 // 插入新的菜单
                 foreach ($permissionsToInsert as $v) {
                     $dataAll[] = [
-                        'admin_user_id' => $adminUserId,
+                        'admin_user_id' => $adminUser->id,
                         'admin_menu_id' => $v,
                     ];
                 }
             } else {
-                $adminUser = AdminUserModel::with([
-                    'AdminRole.AdminRoleMenu',
-                ])->find($adminUserId);
-
                 // 插入新的菜单
                 foreach ($permissionsToInsert as $v) {
                     // 找到菜单对角色的id
@@ -61,7 +61,7 @@ class ShortcuMenuExecuteLogic
                         }
                     }
                     $dataAll[] = [
-                        'admin_user_id'      => $adminUserId,
+                        'admin_user_id'      => $adminUser->id,
                         'admin_role_menu_id' => $adminRoleMenuId,
                         'admin_menu_id'      => $v,
                     ];

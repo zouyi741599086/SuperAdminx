@@ -212,8 +212,6 @@ const TencentMap = ({ value, onChange }) => {
                     </>}
                 />
                 <Button
-                    color="primary"
-                    variant="dashed"
                     onClick={() => { 
                         if (!config.tencentApiKey) {
                             return message.error('未设置腾讯地图API KEY')

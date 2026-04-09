@@ -22,7 +22,7 @@ class AdminLogExecuteLogic
     {
         $request = request();
         $title   = $title ?: self::getMethodLog();
-        if ($title && $request->adminUser && $request->adminUser->id != 1) {
+        if ($title && $request->adminUser && $request->adminUser->is_super != 2) {
             AdminLogModel::create([
                 'name'           => $request->adminUser->name ?? '',
                 'tel'            => $request->adminUser->tel ?? '',

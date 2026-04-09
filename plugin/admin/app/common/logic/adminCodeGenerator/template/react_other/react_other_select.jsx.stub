@@ -50,7 +50,7 @@ import { useMount } from 'ahooks';
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const Select<?php echo $tableNameToCamelCase;?> = ({ value, onChange, ...props }) => {
+const Select<?php echo $tableNameToCamelCase;?> = ({ value, onChange, multiple = false, ...props }) => {
     const [options, setOptions] = useState([]);
     const [keywords, setKeywords] = useState();
     const [_value, _setValue] = useState();
@@ -127,16 +127,17 @@ const Select<?php echo $tableNameToCamelCase;?> = ({ value, onChange, ...props }
 
     return <>
         <Select
-            showSearch
+            showSearch={{
+                filterOption: false,
+                onSearch: setKeywords
+            }}
             allowClear
             value={value}
             placeholder='输入<?php echo $placeholder;?>搜索'
             // 是否可以多选
-            // mode="multiple"
+            mode={multiple ? 'multiple' : ''}
             // 多选时做多显示多少个tag：number | responsive
             // maxTagCount="responsive"
-            filterOption={false}
-            onSearch={setKeywords}
             onChange={componentChange}
             options={options}
             loading={loading}

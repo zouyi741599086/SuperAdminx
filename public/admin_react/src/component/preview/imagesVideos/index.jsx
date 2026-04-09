@@ -73,7 +73,9 @@ const ImagesVideos = ({ title = '查看', imgs = [], ...props }) => {
                         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="无图片" />
                     </> : ''}
                 </>,
-                maskClosable: true
+                mask: {
+                    closable: true,
+                }
             });
         }}>{Array.isArray(imgs) ? imgs.length : 0}张</Button>
     </>

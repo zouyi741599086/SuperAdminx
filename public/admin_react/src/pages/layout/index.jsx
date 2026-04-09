@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { lazy, memo } from 'react';
 import { useSnapshot } from 'valtio';
 import { layoutSettingStore } from '@/store/layoutSetting';
 
@@ -14,17 +14,17 @@ const LayoutTopSplitMenus = lazy(() => import('./layoutTopSplitMenus/index'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-const Layout = () => {
+const Layout = memo(() => {
     const layoutSetting = useSnapshot(layoutSettingStore);
 
     return <>
-        {layoutSetting.layoutValue === 'slide' ? <LayoutSlide /> 
-        : layoutSetting.layoutValue === 'slideSplitMenus' ? <LayoutSlideSplitMenus /> 
-        : layoutSetting.layoutValue === 'left' ? <LayoutLeft /> 
-        : layoutSetting.layoutValue === 'top' ? <LayoutTop /> 
-        : layoutSetting.layoutValue === 'topSplitMenus' ? <LayoutTopSplitMenus /> 
-        : ''}
+        {layoutSetting.layoutValue === 'slide' ? <LayoutSlide />
+            : layoutSetting.layoutValue === 'slideSplitMenus' ? <LayoutSlideSplitMenus />
+                : layoutSetting.layoutValue === 'left' ? <LayoutLeft />
+                    : layoutSetting.layoutValue === 'top' ? <LayoutTop />
+                        : layoutSetting.layoutValue === 'topSplitMenus' ? <LayoutTopSplitMenus />
+                            : ''}
     </>
-};
+})
 
 export default Layout;

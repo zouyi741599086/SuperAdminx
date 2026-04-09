@@ -153,7 +153,7 @@ const ContentTabs = () => {
                     title: menuTop.title,
                     path: menuTop.path,
                     keepAlive: [menuTop.name],
-                    close: menuTop.path === '/index' ? false : true // 首页不能关闭
+                    close: menuTop.path === '/' ? false : true // 首页不能关闭
                 });
             }
 

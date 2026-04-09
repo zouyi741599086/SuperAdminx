@@ -52,7 +52,7 @@ export const loginAction = (adminUser, setAdminUserStore, setMenuAuthStore) => {
             menuArr.push(item);
         }
         // 我的超级权限，把隐藏的菜单也显示出来
-        if (adminUser.id == 1 && item.hidden == 2 && item.type != 6) {
+        if (adminUser.is_super == 2 && item.hidden == 2 && item.type != 6) {
             menuArr.push(item);
         }
         if ([2, 4, 5, 7].indexOf(item.type) !== -1) {

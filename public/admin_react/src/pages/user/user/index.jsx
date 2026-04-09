@@ -49,13 +49,10 @@ const User = () => {
             message.destroy('excel')
             if (res.code === 1 && res.data.filePath && res.data.fileName) {
                 message.success('数据已生成');
-                setTimeout(() => {
-                    if (res.data.filePath.indexOf("http") !== -1) {
-                        window.open(`${res.data.filePath}`);
-                    } else {
-                        window.open(`${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`);
-                    }
-                }, 1000)
+                const downloadUrl = res.data.filePath.indexOf("http") !== -1
+                    ? res.data.filePath
+                    : `${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`;
+                window.location.href = downloadUrl;
             } else {
                 message.error(res.message || '数据导出失败');
             }

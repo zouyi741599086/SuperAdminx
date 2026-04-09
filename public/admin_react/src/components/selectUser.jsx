@@ -85,7 +85,10 @@ const SelectUser = ({ value, onChange, ...props }) => {
 
     return <>
         <Select
-            showSearch
+            showSearch={{
+                filterOption: false,
+                onSearch: setKeywords
+            }}
             allowClear
             value={value}
             placeholder='输入姓名/手机号搜索'
@@ -93,8 +96,6 @@ const SelectUser = ({ value, onChange, ...props }) => {
             // mode="multiple"
             // 多选时做多显示多少个tag：number | responsive
             // maxTagCount="responsive"
-            filterOption={false}
-            onSearch={setKeywords}
             onChange={componentChange}
             options={options}
             loading={loading}

@@ -18,7 +18,7 @@ const Error = () => {
                 <Button
                     type="primary"
                     onClick={() => {
-                        navigate('/index')
+                        navigate('/')
                     }}
                 >返回首页</Button>
             }

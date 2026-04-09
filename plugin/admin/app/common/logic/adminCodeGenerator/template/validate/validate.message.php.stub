@@ -14,7 +14,7 @@ if (isset($data['validate']['field_rules']) && is_array($data['validate']['field
 
         foreach ($rules_arr as $k => $v) {
          echo "
-        '{$field}.{$v}' => '{$tmp_field_title}',";
+        '{$field}.{$v}' => '请输入{$tmp_field_title}',";
         }
     }
 

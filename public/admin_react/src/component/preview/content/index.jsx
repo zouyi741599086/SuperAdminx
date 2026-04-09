@@ -30,7 +30,9 @@ const Content = ({ title = '查看内容', content = '', isShow = false, type = 
                     content: <>
                         {content ? content : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="无内容" />}
                     </>,
-                    maskClosable: true
+                    mask: {
+                        closable: true,
+                    },
                 });
             }}>查看</Button>
         </>}

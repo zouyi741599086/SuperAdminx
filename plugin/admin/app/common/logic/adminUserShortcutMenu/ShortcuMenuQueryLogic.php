@@ -37,16 +37,16 @@ class ShortcuMenuQueryLogic
      */
     public function getMenuList(int $adminUserId)
     {
-        if ($adminUserId == 1) {
+        $adminUser = AdminUserModel::find($adminUserId);
+        if ($adminUser->is_super == 1) {
             return AdminMenuModel::field('*')
                 ->order('sort asc,id desc')
                 ->where('type', 'in', [1, 2, 3, 4, 7])
                 ->select();
         } else {
-            $adminRoleId = AdminUserModel::where('id', $adminUserId)->value('admin_role_id');
             return AdminRoleMenuModel::alias('arm')
                 ->join('AdminMenu am', 'arm.admin_menu_id = am.id')
-                ->where('arm.admin_role_id', $adminRoleId)
+                ->where('arm.admin_role_id', $adminUser->admin_role_id)
                 ->where('am.type', 'in', [1, 2, 3, 4, 7])
                 ->field('am.*')
                 ->order('am.sort asc,am.id desc')
