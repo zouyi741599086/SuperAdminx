@@ -1,10 +1,7 @@
-import { useRef, lazy, useState } from 'react';
+import { useRef, lazy } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { App, Badge, Button, Popconfirm, Typography } from 'antd';
-import {
-    EditOutlined,
-} from '@ant-design/icons';
+import { App, Badge, Button, Popconfirm } from 'antd';
 import { adminRoleApi } from '@/api/adminRole'
 import { authCheck } from '@/common/function';
 import Lazyload from '@/component/lazyLoad/index';
@@ -23,10 +20,10 @@ const AdminRole = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
 
-    // 要修改的数据id
-    const [updateId, setUpdateId] = useState(0);
-    // 要修改的权限数据id
-    const [roleId, setRoleId] = useState(0);
+    // 修改
+    const updateRef = useRef();
+    // 修改的权限数据
+    const updateRoleMenuRef = useRef();
 
     // 删除
     const del = (id) => {
@@ -79,7 +76,7 @@ const AdminRole = () => {
                         type="link"
                         size="small"
                         onClick={() => {
-                            setUpdateId(record.id);
+                            updateRef.current?.open(record.id);
                         }}
                         disabled={authCheck('adminRoleUpdate')}
                     >修改</Button>
@@ -87,7 +84,7 @@ const AdminRole = () => {
                         type="link"
                         size="small"
                         onClick={() => {
-                            setRoleId(record.id);
+                            updateRoleMenuRef.current?.open(record.id);
                         }}
                         disabled={authCheck('adminRoleAuth')}
                     >设置权限</Button>
@@ -138,16 +135,14 @@ const AdminRole = () => {
                             <Lazyload block={false}>
                                 <UpdateRoleMneu
                                     tableReload={tableReload}
-                                    roleId={roleId}
-                                    setRoleId={setRoleId}
+                                    ref={updateRoleMenuRef}
                                 />
                             </Lazyload>
                             {/* 修改表单 */}
                             <Lazyload block={false}>
                                 <Update
                                     tableReload={tableReload}
-                                    updateId={updateId}
-                                    setUpdateId={setUpdateId}
+                                    ref={updateRef}
                                 />
                             </Lazyload>
                         </>

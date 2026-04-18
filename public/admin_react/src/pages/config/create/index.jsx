@@ -85,7 +85,7 @@ const Create = () => {
         };
 
         // 非分组、列表的时候
-        if (['group', 'fromList'].indexOf(data.valueType) == -1) {
+        if (['group', 'fromList', 'switch'].indexOf(data.valueType) == -1) {
             tmp = {
                 ...tmp,
                 name: '',

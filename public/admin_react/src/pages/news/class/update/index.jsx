@@ -1,10 +1,9 @@
-import { useRef, useState, lazy } from 'react';
+import { useRef, useState, lazy, useImperativeHandle } from 'react';
 import {
     ModalForm,
 } from '@ant-design/pro-components';
 import { App } from 'antd';
 import { newsClassApi } from '@/api/newsClass';
-import { useUpdateEffect } from 'ahooks';
 import Lazyload from '@/component/lazyLoad/index';
 
 const Form1 = lazy(() => import('./../component/form1'));
@@ -15,24 +14,26 @@ const Form1 = lazy(() => import('./../component/form1'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  */
-const Update = ({ updateId, setUpdateId, tableReload, ...props }) => {
+const Update = ({ tableReload, ref, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
-    const open = updateId > 0;
+    const [open, setOpen] = useState(false);
+    const [currentId, setCurrentId] = useState(0);
 
-    const handleOpenChange = (_boolean) => {
-        if (!_boolean) {
-            Promise.resolve().then(() => {
-                setUpdateId(0);
-            });
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id) => {
+            setCurrentId(id);
+            setOpen(true);
+        }
+    }));
+
+    const handleOpenChange = (visible) => {
+        if (!visible) {
+            setOpen(false);
+            setCurrentId(0);
         }
     };
-
-    useUpdateEffect(() => {
-        if (updateId > 0) {
-            formRef.current?.resetFields?.();
-        }
-    }, [updateId]);
 
     return (
         <ModalForm
@@ -53,7 +54,7 @@ const Update = ({ updateId, setUpdateId, tableReload, ...props }) => {
                 destroyOnHidden: true,
             }}
             params={{
-                id: updateId
+                id: currentId
             }}
             request={async (params) => {
                 const result = await newsClassApi.findData(params);
@@ -66,14 +67,13 @@ const Update = ({ updateId, setUpdateId, tableReload, ...props }) => {
             }}
             onFinish={async (values) => {
                 const result = await newsClassApi.update({
-                    id: updateId,
+                    id: currentId,
                     pid: values.pid ?? null,
                     ...values,
                 });
                 if (result.code === 1) {
                     tableReload();
                     message.success(result.message)
-                    formRef.current?.resetFields?.()
                     return true;
                 } else {
                     message.error(result.message)
@@ -81,7 +81,7 @@ const Update = ({ updateId, setUpdateId, tableReload, ...props }) => {
             }}
         >
             <Lazyload block={false}>
-                <Form1 typeAction="update" updateId={updateId} />
+                <Form1 typeAction="update" updateId={currentId} />
             </Lazyload>
         </ModalForm>
     );

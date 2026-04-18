@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
+import { useState, useImperativeHandle } from 'react';
 import { adminMenuApi } from '@/api/adminMenu';
 import { App, Drawer, Space, Input, Tree, Button } from 'antd';
 import { adminRoleApi } from '@/api/adminRole'
-import { useMount, useUpdateEffect } from 'ahooks';
-import { menuToTree, treeToArray} from '@/common/function';
+import { useMount } from 'ahooks';
+import { menuToTree, treeToArray } from '@/common/function';
 
 
 // 找出多维数组的所有的父节点
@@ -44,31 +44,37 @@ const getParentKey = (id, tree) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const UpdateRoleMenu = (props) => {
-    const formRef = useRef();
+const UpdateRoleMenu = ({ tableReload, ref, ...props }) => {
     const { message } = App.useApp();
     const [open, setOpen] = useState(false);
+    const [currentId, setCurrentId] = useState(0);
 
     useMount(() => {
         // 加载菜单
         getList();
     })
 
-    // 监听修改的时候加载修改的时间
-    useUpdateEffect(() => {
-        if (props.roleId > 0) {
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id) => {
+            setCurrentId(id);
+            getDataMenu(id);
             setOpen(true);
-            adminRoleApi.getDataMenu({
-                id: props.roleId
-            }).then(res => {
-                if (res.code === 1) {
-                    setRoleArr(res.data.AdminRoleMenu.map(item => item.admin_menu_id))
-                } else {
-                    message.error(res.message)
-                }
-            })
         }
-    }, [props.roleId])
+    }));
+
+    // 监听修改的时候加载修改的时间
+    const getDataMenu = (id) => {
+        adminRoleApi.getDataMenu({
+            id: id
+        }).then(res => {
+            if (res.code === 1) {
+                setRoleArr(res.data.AdminRoleMenu.map(item => item.admin_menu_id))
+            } else {
+                message.error(res.message)
+            }
+        })
+    }
 
     /////////////////////点击数据变化的时候////////////////////////////////////
     // 往选中的数据里面添加数据
@@ -92,7 +98,6 @@ const UpdateRoleMenu = (props) => {
         let _roleArr = [...roleArr];
         // 找出当前点击元素的所有下级，在判断是全部选中还是取消
         let nextArr = menuListArr.filter(item => item.pid_name_path.includes(node.name) && item.id !== node.id);
-        console.log(nextArr)
         nextArr.push(node);
 
         // 如果选中，则把所有下级都选中
@@ -203,13 +208,12 @@ const UpdateRoleMenu = (props) => {
     const updateDataRole = () => {
         setFormLoading(true);
         adminRoleApi.updateDataMenu({
-            id: props.roleId,
+            id: currentId,
             admin_menu_id: roleArr,
         }).then(res => {
             if (res.code === 1) {
                 message.success(res.message)
-                props.tableReload();
-                props.setRoleId(0);
+                tableReload();
                 setOpen(false);
 
             } else {
@@ -228,7 +232,6 @@ const UpdateRoleMenu = (props) => {
             placement="right"
             onClose={() => {
                 setOpen(false)
-                props.setRoleId(0);
             }}
             open={open}
             extra={
@@ -238,13 +241,13 @@ const UpdateRoleMenu = (props) => {
                 </Space>
             }
         >
-			<Space 
-				orientation="vertical"
-				size="large"
-				styles={{ 
-					root: {width: '100%'}
-				}}
-			>
+            <Space
+                orientation="vertical"
+                size="large"
+                styles={{
+                    root: { width: '100%' }
+                }}
+            >
                 <Input.Search
                     onChange={searchKeywordsChange}
                     placeholder="搜索..."

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { App, Input, Space, Tag } from 'antd';
 import { useDynamicList } from 'ahooks';
@@ -15,7 +15,8 @@ const TagArr = ({ value = [], onChange, ...props }) => {
     const { list, remove, push, resetList, replace } = useDynamicList(value);
 
     useEffect(() => {
-        if (value != list) {
+        const isEqual = JSON.stringify(value) === JSON.stringify(list);
+        if (! isEqual) {
             resetList(value);
         }
     }, [value])

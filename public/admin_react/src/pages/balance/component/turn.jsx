@@ -1,35 +1,36 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useImperativeHandle} from 'react';
 import { ModalForm, ProForm, ProFormDependency } from '@ant-design/pro-components';
 import { balanceApi } from '@/api/balance';
 import { App } from 'antd';
-import { useUpdateEffect } from 'ahooks';
 import { ProFormDigit, ProFormSelect } from '@ant-design/pro-components';
 import SelectUser from '@/components/selectUser';
 
 /**
- * 账户转账 修改
+ * 账户转账
  *
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const Trun = ({ tableReload, balanceType, turnUserId, setTurnUserId, ...props }) => {
+const Trun = ({ tableReload, balanceType, ref, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
-    const open = turnUserId > 0;
+    const [open, setOpen] = useState(false);
+    const [userId, setUserId] = useState(0);
 
-    const handleOpenChange = (_boolean) => {
-        if (!_boolean) {
-            Promise.resolve().then(() => {
-                setTurnUserId(0);
-            });
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id) => {
+            setUserId(id);
+            setOpen(true);
+        }
+    }));
+
+    const handleOpenChange = (visible) => {
+        if (!visible) {
+            setOpen(false);
+            setUserId(0);
         }
     };
-
-    useUpdateEffect(() => {
-        if (turnUserId > 0) {
-            formRef.current?.resetFields?.();
-        }
-    }, [turnUserId]);
 
     return <>
         <ModalForm
@@ -50,13 +51,12 @@ const Trun = ({ tableReload, balanceType, turnUserId, setTurnUserId, ...props })
             }}
             onFinish={async (values) => {
                 const result = await balanceApi.turn({
-                    user_id: turnUserId,
+                    user_id: userId,
                     ...values
                 });
                 if (result.code === 1) {
                     tableReload?.();
                     message.success(result.message)
-                    formRef.current?.resetFields?.()
                     return true;
                 } else {
                     message.error(result.message)

@@ -2,7 +2,6 @@ import { useRef, useState, lazy } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { newsClassApi } from '@/api/newsClass';
-import { useMount } from 'ahooks';
 import { arrayToTree, authCheck } from '@/common/function';
 import { Button, Popconfirm, InputNumber, App, Space, Switch } from 'antd';
 import {
@@ -21,16 +20,11 @@ const Update = lazy(() => import('./update'));
  */
 const NewsClass = () => {
     const tableRef = useRef();
-    const [sortArr, setSortArr] = useState([]);
     const [list, setList] = useState([]);
     const { message } = App.useApp();
 
-    useMount(() => {
-        // 加载列表数据
-        //getList();
-    })
-    /////////////////////////修改的数据////////////////////////
-    const [updateId, setUpdateId] = useState(0);
+    /////////////////////////修改数据////////////////////////
+    const updateRef = useRef();
 
     ///////////////////////////刷新表格数据///////////////////////
     const tableReload = () => {
@@ -38,12 +32,18 @@ const NewsClass = () => {
     }
 
     ///////////////////////////保存排序///////////////////////////
+    const sortArrRef = useRef([]); 
     const updateSort = () => {
-        newsClassApi.updateSort({ list: sortArr }).then(res => {
+        const listToSave = sortArrRef.current; 
+        if (listToSave.length === 0) {
+            message.info('没有需要保存的排序');
+            return;
+        }
+        newsClassApi.updateSort({ list: listToSave  }).then(res => {
             if (res.code === 1) {
                 message.success(res.message)
                 tableRef.current.reload();
-                setSortArr([]);
+                sortArrRef.current = []; 
                 getList();
             } else {
                 message.error(res.message)
@@ -52,20 +52,13 @@ const NewsClass = () => {
     }
     // 排序改变的时候
     const sortArrChange = (id, sort) => {
-        let _sortArr = [...sortArr];
-        let whether = _sortArr.some(_item => {
-            if (_item.id === id) {
-                _item.sort = sort;
-                return true;
-            }
-        })
-        if (!whether) {
-            _sortArr.push({
-                id,
-                sort
-            })
+        let _sortArr = sortArrRef.current;
+        const index = _sortArr.findIndex(item => item.id === id);
+        if (index !== -1) {
+            _sortArr[index].sort = sort;
+        } else {
+            _sortArr.push({ id, sort });
         }
-        setSortArr(_sortArr);
     }
 
     ///////////////修改状态///////////////////
@@ -116,8 +109,8 @@ const NewsClass = () => {
                 return <InputNumber
                     defaultValue={text}
                     styles={{
-						root: { width: '100px' }
-					}}
+                        root: { width: '100px' }
+                    }}
                     min={0}
                     disabled={authCheck('newsClassUpdateSort')}
                     onChange={(value) => {
@@ -167,17 +160,19 @@ const NewsClass = () => {
         {
             title: '操作',
             dataIndex: 'action',
-            render: (_, render) => {
+            render: (_, record) => {
                 return <>
                     <Button
                         type="link"
                         size="small"
-                        onClick={() => { setUpdateId(render.id) }}
+                        onClick={() => {
+                            updateRef.current?.open(record.id);
+                        }}
                         disabled={authCheck('newsClassUpdate')}
                     >修改</Button>
                     <Popconfirm
                         title={<div style={{ maxWidth: '200px' }}>谨慎操作：会将此分类下所有子分类及所有文章一并删除，确认删除吗？</div>}
-                        onConfirm={() => { del(render.id) }}
+                        onConfirm={() => { del(record.id) }}
                         disabled={authCheck('newsClassDelete')}
                     >
                         <Button
@@ -213,7 +208,7 @@ const NewsClass = () => {
                         fullScreen: true
                     }}
                     headerTitle={
-						<>
+                        <>
                             <Space>
                                 <Lazyload block={false}>
                                     <Create tableReload={tableReload} list={list} />
@@ -225,15 +220,14 @@ const NewsClass = () => {
                                     icon={<OrderedListOutlined />}
                                 >保存排序</Button>
                             </Space>
-							{/* 修改表单 */}
+                            {/* 修改表单 */}
                             <Lazyload block={false}>
                                 <Update
                                     tableReload={tableReload}
-                                    updateId={updateId}
-                                    setUpdateId={setUpdateId}
+                                    ref={updateRef}
                                 />
                             </Lazyload>
-						</>
+                        </>
                     }
                     pagination={false}
                     request={async (params = {}, sort, filter) => {

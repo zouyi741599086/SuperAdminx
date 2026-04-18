@@ -38,7 +38,7 @@ class ShortcuMenuQueryLogic
     public function getMenuList(int $adminUserId)
     {
         $adminUser = AdminUserModel::find($adminUserId);
-        if ($adminUser->is_super == 1) {
+        if ($adminUser->is_super == 2) {
             return AdminMenuModel::field('*')
                 ->order('sort asc,id desc')
                 ->where('type', 'in', [1, 2, 3, 4, 7])

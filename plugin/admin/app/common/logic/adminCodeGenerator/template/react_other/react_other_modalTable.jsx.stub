@@ -83,7 +83,7 @@
         }
     }
 ?>
-import { useRef, lazy, useState} from 'react';
+import { useRef, lazy, useState, useImperativeHandle} from 'react';
 import { ModalForm } from '@ant-design/pro-components';
 import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>';
 import { ProTable } from '@ant-design/pro-components';
@@ -114,16 +114,26 @@ echo "const imgErr = new URL('@/static/default/imgErr.png', import.meta.url).hre
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const <?php echo $tableNameToCamelCase;?> = ({ tableReload, id, setId, ...props }) => {
+const <?php echo $tableNameToCamelCase;?> = ({ tableReload, ref, ...props }) => {
     const tableRef = useRef();
     const { message } = App.useApp();
     const [open, setOpen] = useState(false);
+    const [currentId, setCurrentId] = useState(0);
 
-    useUpdateEffect(() => {
-        if (id > 0) {
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id) => {
+            setCurrentId(id);
             setOpen(true);
         }
-    }, [id])
+    }));
+
+    const handleOpenChange = (visible) => {
+        if (!visible) {
+            setOpen(false);
+            setCurrentId(0);
+        }
+    };
 
     ///////////////////////////刷新表格数据///////////////////////
     const tableRe = () => {
@@ -177,13 +187,7 @@ const <?php echo $tableNameToCamelCase;?> = ({ tableReload, id, setId, ...props 
         <ModalForm
             name="list<?php echo CodeGeneratorUtilLogic::toCamelCase($data['table_name']);?>"
             open={open}
-            onOpenChange={(_boolean) => {
-                setOpen(_boolean);
-                // 关闭的时候干掉id，不然无法重复修改同一条数据
-                if (_boolean === false) {
-                    setId(0);
-                }
-            }}
+            onOpenChange={handleOpenChange}
             title="<?php echo $data['react_other']['modal_table_title'] ?? '';?>"
             //trigger={
             //    <Button 
@@ -224,7 +228,7 @@ const <?php echo $tableNameToCamelCase;?> = ({ tableReload, id, setId, ...props 
                     responsive: true,
                 }}
                 params={{
-                    id: id
+                    id: currentId
                 }}
                 // 请求数据
                 request={async (params = {}, sort, filter) => {

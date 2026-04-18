@@ -249,15 +249,15 @@ const <?php echo $tableNameToCamelCase;?> = () => {
     // 如果修改是弹窗修改
     if ($updateIsModal) {
         echo "
-    // 要修改的数据
-    const [updateId, setUpdateId] = useState(0);";
+    // 修改弹窗ref
+    const updateRef = useRef();";
     }
 
     // 如果详情是弹窗查看
     if ($infoIsModal) {
         echo "
-    // 要查看详情的数据
-    const [infoId, setInfoId] = useState(0);";
+    // 查看详情
+    const infoRef = useRef()";
     }
 ?>
     
@@ -287,13 +287,18 @@ const <?php echo $tableNameToCamelCase;?> = () => {
     if (in_array('InputNumber', $antdComponent)) {
         echo "
     ///////////////////////////保存排序///////////////////////////
-    const [sortArr, setSortArr] = useState([]);
+    const sortArrRef = useRef([]); 
     const updateSort = () => {
-        {$apiFileName}Api.updateSort({ list: sortArr }).then(res => {
+        const listToSave = sortArrRef.current; 
+        if (listToSave.length === 0) {
+            message.info('没有需要保存的排序');
+            return;
+        }
+        {$apiFileName}Api.updateSort({ list: listToSave }).then(res => {
             if (res.code === 1) {
                 message.success(res.message)
                 tableReload();
-                setSortArr([]);
+                sortArrRef.current = []; 
                 getList();
             } else {
                 message.error(res.message)
@@ -302,20 +307,13 @@ const <?php echo $tableNameToCamelCase;?> = () => {
     }
     // 排序改变的时候
     const sortArrChange = (id, sort) => {
-        let _sortArr = [...sortArr];
-        let whether = _sortArr.some(_item => {
-            if (_item.id === id) {
-                _item.sort = sort;
-                return true;
-            }
-        })
-        if (!whether) {
-            _sortArr.push({
-                id,
-                sort
-            })
+        let _sortArr = sortArrRef.current;
+        const index = _sortArr.findIndex(item => item.id === id);
+        if (index !== -1) {
+            _sortArr[index].sort = sort;
+        } else {
+            _sortArr.push({ id, sort });
         }
-        setSortArr(_sortArr);
     }";
     }
 ?>
@@ -356,7 +354,7 @@ const <?php echo $tableNameToCamelCase;?> = () => {
             message.destroy('excel')
             if (res.code === 1 && res.data.filePath && res.data.fileName) {
                 message.success('数据已生成');
-                const downloadUrl = res.data.filePath.indexOf("http") !== -1
+                const downloadUrl = res.data.filePath.indexOf(\"http\") !== -1
                     ? res.data.filePath
                     : `${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`;
                 window.location.href = downloadUrl;
@@ -579,7 +577,7 @@ const <?php echo $tableNameToCamelCase;?> = () => {
                         type=\"link\"
                         size=\"small\"
                         onClick={() => { 
-                            setInfoId(record.id) 
+                            infoRef.current?.open(record.id);
                         }}
                         disabled={authCheck('{$infoAuthName}')}
                     >详情</Button>";
@@ -610,7 +608,7 @@ const <?php echo $tableNameToCamelCase;?> = () => {
                         type=\"link\"
                         size=\"small\"
                         onClick={() => { 
-                            setUpdateId(record.id) 
+                            updateRef.current?.open(record.id);
                         }}
                         disabled={authCheck('{$updateAuthName}')}
                     >修改</Button>";
@@ -768,8 +766,7 @@ const <?php echo $tableNameToCamelCase;?> = () => {
                             <Lazyload block={false}>
                                 <Update
                                     tableReload={tableReload}
-                                    updateId={updateId}
-                                    setUpdateId={setUpdateId}
+                                    ref={updateRef}
                                 />
                             </Lazyload>\n";
     }
@@ -779,8 +776,7 @@ const <?php echo $tableNameToCamelCase;?> = () => {
         echo "                            {/* 查看详情 */}
                             <Lazyload block={false}>
                                 <Info
-                                    infoId={infoId}
-                                    setInfoId={setInfoId}
+                                    ref={infoRef}
                                 />
                             </Lazyload>\n";
     }

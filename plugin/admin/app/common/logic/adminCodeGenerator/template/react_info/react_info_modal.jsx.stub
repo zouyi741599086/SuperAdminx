@@ -20,7 +20,7 @@
     }
 
 ?>
-import { useRef, useState, useEffect, lazy } from 'react';
+import { useRef, useState, useEffect, lazy, useImperativeHandle } from 'react';
 import {
   ModalForm,
 } from '@ant-design/pro-components';
@@ -44,228 +44,234 @@ if (in_array('preview_word',$filedsTypeArr)) echo "import PreviewWord from '@/co
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const Info = ({ infoId, setInfoId, ...props }) => {
+const Info = ({ ref, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     const [items, setItems] = useState([]);
-    const open = infoId > 0;
+    const [open, setOpen] = useState(false);
+    const [currentId, setCurrentId] = useState(0);
 
-    const handleOpenChange = (_boolean) => {
-        if (!_boolean) {
-            Promise.resolve().then(() => {
-                setInfoId(0);
-            });
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id) => {
+            setCurrentId(id);
+            getData(id);
+            setOpen(true);
+        }
+    }));
+
+    const handleOpenChange = (visible) => {
+        if (!visible) {
+            setOpen(false);
+            setCurrentId(0);
         }
     };
 
     //////////描述列表的列
-    useUpdateEffect(() => {
-        if (infoId > 0) {
-            <?php echo $apiFileName;?>Api.findData({
-                id: infoId
-            }).then(res => {
-                if (res.code === 1) {
-                    setItems([
+    const getData = (id) => {
+        <?php echo $apiFileName;?>Api.findData({
+            id: id
+        }).then(res => {
+            if (res.code === 1) {
+                setItems([
 <?php
-                        if (isset($data['react_info']['info_fields_type'])) {
-                            foreach ($data['react_info']['info_fields_type'] as $field => $type) {
+                    if (isset($data['react_info']['info_fields_type'])) {
+                        foreach ($data['react_info']['info_fields_type'] as $field => $type) {
 
-                            // 字段的中文名称
-                            $tmp_field_title = (isset($data['field_title'][$field]) && $data['field_title'][$field] != '') ? $data['field_title'][$field] : $field;
+                        // 字段的中文名称
+                        $tmp_field_title = (isset($data['field_title'][$field]) && $data['field_title'][$field] != '') ? $data['field_title'][$field] : $field;
 
-                            $children = "";
-                            // 文本
-                            if ($type == 'text') {
-                                $children = "<Typography.Text>{res.data.{$field}}</Typography.Text>";
-                            }
-
-                            // 文本可展开
-                            if ($type == 'text_ellipsis') {
-                                $children = "<Typography.Paragraph
-                                    ellipsis={{
-                                        rows: 1,
-                                        expandable: 'collapsible',
-                                    }}
-                            >{res.data.{$field}}</Typography.Paragraph>";
-                            }
-
-                            // 状态如订单状态
-                            if ($type == 'status') {
-                                $children = "<>
-                                {res.data.{$field} === 1 ? <>
-                                    <Typography.Text type=\"danger\">待付款</Typography.Text>
-                                </> : ''}
-                                {res.data.{$field} === 2 ? <>
-                                    <Typography.Text mark>待发货</Typography.Text>
-                                </> : ''}
-                                {res.data.{$field} === 3 ? <>
-                                    <Typography.Text type=\"success\">待收货</Typography.Text>
-                                </> : ''}
-                                {res.data.{$field} === 4 ? <>
-                                    <Typography.Text type=\"success\">待评价</Typography.Text>
-                                </> : ''}
-                                {res.data.{$field} === 5 ? <>
-                                    <Typography.Text>已完成</Typography.Text>
-                                </> : ''}
-                                {res.data.{$field} === 6 ? <>
-                                    <Typography.Text disabled>已关闭</Typography.Text>
-                                </> : ''}
-                                {res.data.{$field} === 7 ? <>
-                                    <Typography.Text mark>退款审核中</Typography.Text>
-                                </> : ''}
-                                {res.data.{$field} === 8 ? <>
-                                    <Typography.Text underline>已退款</Typography.Text>
-                                </> : ''}
-                            </>";
-                            }
-
-                            // 进度条
-                            if ($type == 'progress') {
-                                $children = "<>
-                                <Progress
-                                    styles={{
-                                        root: { maxWidth: 150 }
-                                    }}
-                                    percent={res.data.{$field}}
-                                    size=\"small\"
-                                    format={(val) => {
-                                        return `\${val}%`
-                                    }}
-                                    percentPosition={{
-                                        align: 'end',
-                                        type: 'outer',
-                                    }}
-                                />
-                            </>";
-                            }
-
-                            // 徽标-带背景色的数字
-                            if ($type == 'badge_number') {
-                                $children = "<>
-                                <Badge 
-                                    count={res.data.{$field}} 
-                                    // color=\"#faad14\" // 黄色 
-                                    // color=\"#f5222d\" // 红色
-                                    // color=\"#52c41a\" // 绿色
-                                />
-                            </>";
-                            }
-
-                            // 徽标-状态
-                            if ($type == 'badge_status') {
-                                $children = "<>
-                                {res.data.{$field} === 1 ? <>
-                                    <Badge status=\"success\" text=\"待付款\" />
-                                </> : ''}
-                                {res.data.{$field} === 2 ? <>
-                                    <Badge status=\"error\" text=\"待发货\" />
-                                </> : ''}
-                                {res.data.{$field} === 3 ? <>
-                                    <Badge status=\"default\" text=\"待收货\" />
-                                </> : ''}
-                                {res.data.{$field} === 4 ? <>
-                                    <Badge status=\"processing\" text=\"待评价\" />
-                                </> : ''}
-                                {res.data.{$field} === 5 ? <>
-                                    <Badge status=\"warning\" text=\"已完成\" />
-                                </> : ''}
-                                {/* 其它颜色 <Badge color=\"pink\" text=\"状态名称\" /> pink red yellow orange cyan green blue purple geekblue magenta volcano gold lime */}
-                            </>";
-                            }
-
-                            // 文本可复制
-                            if ($type == 'text_copy') {
-                                $children = "<Typography.Paragraph
-                                copyable={{
-                                    text: res.data.{$field},
-                                }}
-                            >{res.data.{$field}}</Typography.Paragraph>";
-                            }
-
-                            // 灰色文本
-                            if ($type == 'text_secondary') {
-                                $children = "<Typography.Text type='secondary'>{res.data.{$field}}</Typography.Text>";
-                            }
-
-                            // 绿色文本
-                            if ($type == 'text_success') {
-                                $children = "<Typography.Text type='success'>{res.data.{$field}}</Typography.Text>";
-                            }
-
-                            // 黄色文本
-                            if ($type == 'text_warning') {
-                                $children = "<Typography.Text type='warning'>{res.data.{$field}}</Typography.Text>";
-                            }
-
-                            // 红色文本
-                            if ($type == 'text_danger') {
-                                $children = "<Typography.Text type='danger'>{res.data.{$field}}</Typography.Text>";
-                            }
-
-                            // 加粗文本
-                            if ($type == 'text_strong') {
-                                $children = "<Typography.Text strong={true}>{res.data.{$field}}</Typography.Text>";
-                            }
-
-                            // 黄色底文本
-                            if ($type == 'text_mark') {
-                                $children = "<Typography.Text mark={true}>{res.data.{$field}}</Typography.Text>";
-                            }
-
-                            // 灰色底文本
-                            if ($type == 'text_code') {
-                                $children = "<Typography.Text code={true}>{res.data.{$field}}</Typography.Text>";
-                            }
-
-                            // 弹窗查看文本
-                            if ($type == 'preview_content') {
-                                $children = "<PreviewContent title=\"查看\" content={res.data.{$field}} type={1}/>";
-                            }
-
-                            // 预览多个图片或视频
-                            if ($type == 'preview_images_videos') {
-                                $children = "<PreviewImagesVideos imgs={res.data.{$field}} />";
-                            }
-
-                            // 预览富文本内容
-                            if ($type == 'preview_teditor') {
-                                $children = "<PreviewTeditor title=\"{$tmp_field_title}\" content={res.data.{$field}} />";
-                            }
-
-                            // 预览视频
-                            if ($type == 'preview_video') {
-                                $children = "<PreviewVideo url={res.data.{$field}} />";
-                            }
-
-                            // preview_pdf
-                            if ($type == 'preview_pdf') {
-                                $children = "<PreviewPdf title=\"{$tmp_field_title}\" url={res.data.{$field}} />";
-                            }
-
-                            // 预览word
-                            if ($type == 'preview_word') {
-                                $children = "<PreviewWord title=\"{$tmp_field_title}\" url={res.data.{$field}} />";
-                            }
-                            
-
-                        echo "            {
-                            key: '{$field}',
-                            label: '{$tmp_field_title}',
-                            children: {$children},
-                        },
-            ";
-
-                            }
+                        $children = "";
+                        // 文本
+                        if ($type == 'text') {
+                            $children = "<Typography.Text>{res.data.{$field}}</Typography.Text>";
                         }
-                    ?>
-                    ]);
-                } else {
-                    message.error(res.message)
-                }
-            })
-        }
-        
-    }, [infoId]) 
+
+                        // 文本可展开
+                        if ($type == 'text_ellipsis') {
+                            $children = "<Typography.Paragraph
+                                ellipsis={{
+                                    rows: 1,
+                                    expandable: 'collapsible',
+                                }}
+                        >{res.data.{$field}}</Typography.Paragraph>";
+                        }
+
+                        // 状态如订单状态
+                        if ($type == 'status') {
+                            $children = "<>
+                            {res.data.{$field} === 1 ? <>
+                                <Typography.Text type=\"danger\">待付款</Typography.Text>
+                            </> : ''}
+                            {res.data.{$field} === 2 ? <>
+                                <Typography.Text mark>待发货</Typography.Text>
+                            </> : ''}
+                            {res.data.{$field} === 3 ? <>
+                                <Typography.Text type=\"success\">待收货</Typography.Text>
+                            </> : ''}
+                            {res.data.{$field} === 4 ? <>
+                                <Typography.Text type=\"success\">待评价</Typography.Text>
+                            </> : ''}
+                            {res.data.{$field} === 5 ? <>
+                                <Typography.Text>已完成</Typography.Text>
+                            </> : ''}
+                            {res.data.{$field} === 6 ? <>
+                                <Typography.Text disabled>已关闭</Typography.Text>
+                            </> : ''}
+                            {res.data.{$field} === 7 ? <>
+                                <Typography.Text mark>退款审核中</Typography.Text>
+                            </> : ''}
+                            {res.data.{$field} === 8 ? <>
+                                <Typography.Text underline>已退款</Typography.Text>
+                            </> : ''}
+                        </>";
+                        }
+
+                        // 进度条
+                        if ($type == 'progress') {
+                            $children = "<>
+                            <Progress
+                                styles={{
+                                    root: { maxWidth: 150 }
+                                }}
+                                percent={res.data.{$field}}
+                                size=\"small\"
+                                format={(val) => {
+                                    return `\${val}%`
+                                }}
+                                percentPosition={{
+                                    align: 'end',
+                                    type: 'outer',
+                                }}
+                            />
+                        </>";
+                        }
+
+                        // 徽标-带背景色的数字
+                        if ($type == 'badge_number') {
+                            $children = "<>
+                            <Badge 
+                                count={res.data.{$field}} 
+                                // color=\"#faad14\" // 黄色 
+                                // color=\"#f5222d\" // 红色
+                                // color=\"#52c41a\" // 绿色
+                            />
+                        </>";
+                        }
+
+                        // 徽标-状态
+                        if ($type == 'badge_status') {
+                            $children = "<>
+                            {res.data.{$field} === 1 ? <>
+                                <Badge status=\"success\" text=\"待付款\" />
+                            </> : ''}
+                            {res.data.{$field} === 2 ? <>
+                                <Badge status=\"error\" text=\"待发货\" />
+                            </> : ''}
+                            {res.data.{$field} === 3 ? <>
+                                <Badge status=\"default\" text=\"待收货\" />
+                            </> : ''}
+                            {res.data.{$field} === 4 ? <>
+                                <Badge status=\"processing\" text=\"待评价\" />
+                            </> : ''}
+                            {res.data.{$field} === 5 ? <>
+                                <Badge status=\"warning\" text=\"已完成\" />
+                            </> : ''}
+                            {/* 其它颜色 <Badge color=\"pink\" text=\"状态名称\" /> pink red yellow orange cyan green blue purple geekblue magenta volcano gold lime */}
+                        </>";
+                        }
+
+                        // 文本可复制
+                        if ($type == 'text_copy') {
+                            $children = "<Typography.Paragraph
+                            copyable={{
+                                text: res.data.{$field},
+                            }}
+                        >{res.data.{$field}}</Typography.Paragraph>";
+                        }
+
+                        // 灰色文本
+                        if ($type == 'text_secondary') {
+                            $children = "<Typography.Text type='secondary'>{res.data.{$field}}</Typography.Text>";
+                        }
+
+                        // 绿色文本
+                        if ($type == 'text_success') {
+                            $children = "<Typography.Text type='success'>{res.data.{$field}}</Typography.Text>";
+                        }
+
+                        // 黄色文本
+                        if ($type == 'text_warning') {
+                            $children = "<Typography.Text type='warning'>{res.data.{$field}}</Typography.Text>";
+                        }
+
+                        // 红色文本
+                        if ($type == 'text_danger') {
+                            $children = "<Typography.Text type='danger'>{res.data.{$field}}</Typography.Text>";
+                        }
+
+                        // 加粗文本
+                        if ($type == 'text_strong') {
+                            $children = "<Typography.Text strong={true}>{res.data.{$field}}</Typography.Text>";
+                        }
+
+                        // 黄色底文本
+                        if ($type == 'text_mark') {
+                            $children = "<Typography.Text mark={true}>{res.data.{$field}}</Typography.Text>";
+                        }
+
+                        // 灰色底文本
+                        if ($type == 'text_code') {
+                            $children = "<Typography.Text code={true}>{res.data.{$field}}</Typography.Text>";
+                        }
+
+                        // 弹窗查看文本
+                        if ($type == 'preview_content') {
+                            $children = "<PreviewContent title=\"查看\" content={res.data.{$field}} type={1}/>";
+                        }
+
+                        // 预览多个图片或视频
+                        if ($type == 'preview_images_videos') {
+                            $children = "<PreviewImagesVideos imgs={res.data.{$field}} />";
+                        }
+
+                        // 预览富文本内容
+                        if ($type == 'preview_teditor') {
+                            $children = "<PreviewTeditor title=\"{$tmp_field_title}\" content={res.data.{$field}} />";
+                        }
+
+                        // 预览视频
+                        if ($type == 'preview_video') {
+                            $children = "<PreviewVideo url={res.data.{$field}} />";
+                        }
+
+                        // preview_pdf
+                        if ($type == 'preview_pdf') {
+                            $children = "<PreviewPdf title=\"{$tmp_field_title}\" url={res.data.{$field}} />";
+                        }
+
+                        // 预览word
+                        if ($type == 'preview_word') {
+                            $children = "<PreviewWord title=\"{$tmp_field_title}\" url={res.data.{$field}} />";
+                        }
+                        
+
+                    echo "            {
+                        key: '{$field}',
+                        label: '{$tmp_field_title}',
+                        children: {$children},
+                    },
+        ";
+
+                        }
+                    }
+                ?>
+                ]);
+            } else {
+                message.error(res.message)
+            }
+        })
+    }
 
     return <>
         <ModalForm

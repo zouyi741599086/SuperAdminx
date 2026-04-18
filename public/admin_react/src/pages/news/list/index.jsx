@@ -32,13 +32,19 @@ const NewsList = () => {
     }
 
     ///////////////////////////保存排序///////////////////////////
-    const [sortArr, setSortArr] = useState([]);
+    const sortArrRef = useRef([]); 
     const updateSort = () => {
-        newsApi.updateSort({ list: sortArr }).then(res => {
+        const listToSave = sortArrRef.current; 
+        if (listToSave.length === 0) {
+            message.info('没有需要保存的排序');
+            return;
+        }
+        newsApi.updateSort({ list: listToSave  }).then(res => {
             if (res.code === 1) {
                 message.success(res.message)
                 tableRef.current.reload();
-                setSortArr([]);
+                sortArrRef.current = []; 
+                getList();
             } else {
                 message.error(res.message)
             }
@@ -46,20 +52,13 @@ const NewsList = () => {
     }
     // 排序改变的时候
     const sortArrChange = (id, sort) => {
-        let _sortArr = [...sortArr];
-        let whether = _sortArr.some(_item => {
-            if (_item.id === id) {
-                _item.sort = sort;
-                return true;
-            }
-        })
-        if (!whether) {
-            _sortArr.push({
-                id,
-                sort
-            })
+        let _sortArr = sortArrRef.current;
+        const index = _sortArr.findIndex(item => item.id === id);
+        if (index !== -1) {
+            _sortArr[index].sort = sort;
+        } else {
+            _sortArr.push({ id, sort });
         }
-        setSortArr(_sortArr);
     }
 
     ///////////////修改状态///////////////////

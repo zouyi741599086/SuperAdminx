@@ -3,6 +3,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { userApi } from '@/api/user';
 import { App, Card, Row, Col, Tree } from 'antd';
 import SelectUser from '@/components/selectUser';
+
 const updateTreeData = (list, key, children) =>
     list.map(node => {
         if (node.key === key) {

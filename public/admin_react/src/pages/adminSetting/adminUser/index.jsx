@@ -1,4 +1,4 @@
-import { useRef, lazy, useState } from 'react';
+import { useRef, lazy } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { adminUserApi } from '@/api/adminUser';
 import { ProTable } from '@ant-design/pro-components';
@@ -21,7 +21,7 @@ const AdminUser = () => {
     const tableRef = useRef();
 
     // 要修改的数据
-    const [updateId, setUpdateId] = useState(0);
+    const updateRef = useRef();
 
     // 修改状态
     const updateStatus = (id, status) => {
@@ -132,17 +132,19 @@ const AdminUser = () => {
         {
             title: '操作',
             dataIndex: 'action',
-            render: (_, render) => {
+            render: (_, record) => {
                 return <>
                     <Button
                         type="link"
                         size="small"
-                        onClick={() => { setUpdateId(render.id) }}
+                        onClick={() => {
+                            updateRef.current?.open(record.id);
+                        }}
                         disabled={authCheck('adminUpdate')}
                     >修改</Button>
                     <Popconfirm
                         title="确认要删除吗？"
-                        onConfirm={() => { del(render.id) }}
+                        onConfirm={() => { del(record.id) }}
                         disabled={authCheck('adminUserDelete')}
                     >
                         <Button
@@ -191,8 +193,7 @@ const AdminUser = () => {
                             <Lazyload block={false}>
                                 <Update
                                     tableReload={tableReload}
-                                    updateId={updateId}
-                                    setUpdateId={setUpdateId}
+                                    ref={updateRef}
                                 />
                             </Lazyload>
                         </>

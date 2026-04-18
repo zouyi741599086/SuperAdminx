@@ -53,7 +53,7 @@
         }
     }
 ?>
-import { useRef, lazy, useState} from 'react';
+import { useRef, lazy, useState, useImperativeHandle} from 'react';
 import { PlusOutlined, EditOutlined} from '@ant-design/icons';
 import {
     ModalForm, ProForm,
@@ -120,29 +120,33 @@ echo "import Select{$v} from '@/components/select{$v}';\n";
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const Update<?php echo $tableNameToCamelCase;?> = ({ tableReload, updateId, setUpdateId, ...props }) => {
+const Update<?php echo $tableNameToCamelCase;?> = ({ tableReload, ref, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
     const [open, setOpen] = useState(false);
+    const [currentId, setCurrentId] = useState(0);
 
-    useUpdateEffect(() => {
-        if (updateId > 0) {
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id) => {
+            setCurrentId(id);
             setOpen(true);
         }
-    }, [updateId])
+    }));
+
+    const handleOpenChange = (visible) => {
+        if (!visible) {
+            setOpen(false);
+            setCurrentId(0);
+        }
+    };
 
     return <>
         <ModalForm
             name="update<?php echo CodeGeneratorUtilLogic::toCamelCase($data['table_name']);?>"
             formRef={formRef}
             open={open}
-            onOpenChange={(_boolean) => {
-                setOpen(_boolean);
-                // 关闭的时候干掉updateId，不然无法重复修改同一条数据
-                if (_boolean === false) {
-                    setUpdateId(0);
-                }
-            }}
+            onOpenChange={handleOpenChange}
             title="<?php echo $data['react_other']['modal_form_title'] ?? '';?>"
             //trigger={
             //    <Button 
@@ -164,7 +168,7 @@ const Update<?php echo $tableNameToCamelCase;?> = ({ tableReload, updateId, setU
                 destroyOnHidden: true,
             }}
             params={{
-                id: updateId
+                id: currentId
             }}
             request={async (params) => {
                 const result = await <?php echo $apiFileName;?>Api.findData(params);
@@ -177,13 +181,12 @@ const Update<?php echo $tableNameToCamelCase;?> = ({ tableReload, updateId, setU
             }}
             onFinish={async (values) => {
                 const result = await <?php echo $apiFileName;?>Api.<?php echo $data['react_other']['modal_form_api_name'] ?? '';?>({
-                    id: updateId,
+                    id: currentId,
                     ...values
                 });
                 if (result.code === 1) {
                     tableReload?.();
                     message.success(result.message)
-                    formRef.current?.resetFields?.()
                     return true;
                 } else {
                     message.error(result.message)

@@ -28,7 +28,7 @@ class NewsQueryLogic
             ->withoutField('content')
             ->when(true, function ($query) use ($params)
             {
-                $orderBy = "id desc";
+                $orderBy = "sort desc,id desc";
                 $query->order(get_admin_order_by($orderBy, $params));
             })
             ->paginate($params['pageSize'] ?? 20);

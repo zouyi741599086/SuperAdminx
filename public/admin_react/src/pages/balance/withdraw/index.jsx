@@ -12,6 +12,8 @@ import SelectUser from '@/components/selectUser';
 import Info from './component/info';
 import Audit from './component/audit';
 
+const { Text } = Typography;
+
 const Withdraw = () => {
     const { message } = App.useApp();
     const tableRef = useRef();
@@ -36,9 +38,10 @@ const Withdraw = () => {
             message.destroy('excel')
             if (res.code === 1 && res.data.filePath && res.data.fileName) {
                 message.success('表格已生成');
-                setTimeout(() => {
-                    window.open(`${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`);
-                }, 1000)
+                const downloadUrl = res.data.filePath.indexOf("http") !== -1
+                    ? res.data.filePath
+                    : `${fileApi.download}?filePath=${res.data.filePath}&fileName=${res.data.fileName}`;
+                window.location.href = downloadUrl;
             } else {
                 message.error('数据导出失败');
             }
@@ -46,7 +49,7 @@ const Withdraw = () => {
     }
 
     //////////////////查看详情的id////////////////
-    const [infoId, setInfoId] = useState(0);
+    const infoRef = useRef();
 
     ///////////////////审核通过、已打款////////////////////
     const updateStatus = (id, status) => {
@@ -63,9 +66,7 @@ const Withdraw = () => {
         })
     }
     ////////////////////审核拒绝、打款失败 的id////////////////
-    const [updateId, setUpdateId] = useState([]);
-    const [updateStatusValue, setUpdateStatusValue] = useState(0);
-
+    const auditRef = useRef();
 
     //表格列
     const columns = [
@@ -116,7 +117,24 @@ const Withdraw = () => {
                         label: '打款失败',
                     },
                 ]
-            }
+            },
+            render: (_, record) => <>
+                {record.status === 2 ? <>
+                    <Text type="danger">审核中</Text>
+                </> : ''}
+                {record.status === 4 ? <>
+                    <Text type="danger">审核通过待打款</Text>
+                </> : ''}
+                {record.status === 6 ? <>
+                    <Text mark>审核拒绝</Text>
+                </> : ''}
+                {record.status === 8 ? <>
+                    <Text type="success">已打款</Text>
+                </> : ''}
+                {record.status === 10 ? <>
+                    <Text mark>打款失败</Text>
+                </> : ''}
+            </>
         },
         {
             title: '提现金额',
@@ -154,7 +172,7 @@ const Withdraw = () => {
                         size="small"
                         disabled={authCheck('balanceWithdrawInfo')}
                         onClick={() => {
-                            setInfoId(record.id);
+                            infoRef.current?.open(record.id);
                         }}
                     >详情</Button>
 
@@ -178,8 +196,7 @@ const Withdraw = () => {
                             danger
                             disabled={authCheck('balanceWithdrawUpdateStatus')}
                             onClick={() => {
-                                setUpdateStatusValue(6);
-                                setUpdateId([record.id]);
+                                auditRef.current?.open([record.id], 6);
                             }}
                         >审核拒绝</Button>
                     </> : ''}
@@ -203,8 +220,7 @@ const Withdraw = () => {
                             danger
                             disabled={authCheck('balanceWithdrawUpdateStatus')}
                             onClick={() => {
-                                setUpdateStatusValue(10);
-                                setUpdateId([record.id]);
+                                auditRef.current?.open([record.id], 10);
                             }}
                         >打款失败</Button>
                     </> : ''}
@@ -216,16 +232,7 @@ const Withdraw = () => {
     ];
     return (
         <>
-            <Info
-                infoId={infoId}
-                setInfoId={setInfoId}
-            />
-            <Audit
-                updateId={updateId}
-                setUpdateId={setUpdateId}
-                updateStatusValue={updateStatusValue}
-                tableReload={tableReload}
-            />
+
             <PageContainer
                 className="rx-page-container"
                 ghost
@@ -254,6 +261,14 @@ const Withdraw = () => {
                                     disabled={authCheck('balanceWithdrawExportData')}
                                 >导出</Button>
                             </Tooltip>
+
+                            <Info
+                                ref={infoRef}
+                            />
+                            <Audit
+                                ref={auditRef}
+                                tableReload={tableReload}
+                            />
                         </Space>
                     }
                     pagination={{
@@ -263,6 +278,9 @@ const Withdraw = () => {
                         showQuickJumper: true,
                         showSizeChanger: true,
                         responsive: true,
+                    }}
+                    options={{
+                        fullScreen: true
                     }}
                     //开启批量选择
                     rowSelection={{
@@ -292,8 +310,7 @@ const Withdraw = () => {
                                     danger
                                     disabled={authCheck('balanceWithdrawUpdateStatus')}
                                     onClick={() => {
-                                        setUpdateStatusValue(6);
-                                        setUpdateId(selectedRowKeys);
+                                        auditRef.current?.open(selectedRowKeys, 6);
                                     }}
                                 >批量审核拒绝</Button>
                                 <Popconfirm
@@ -315,8 +332,7 @@ const Withdraw = () => {
                                     danger
                                     disabled={authCheck('balanceWithdrawUpdateStatus')}
                                     onClick={() => {
-                                        setUpdateStatusValue(8);
-                                        setUpdateId(selectedRowKeys);
+                                        auditRef.current?.open(selectedRowKeys, 8);
                                     }}
                                 >批量打款失败</Button>
                             </Space>

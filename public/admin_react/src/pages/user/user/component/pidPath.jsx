@@ -1,22 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useImperativeHandle } from 'react';
 import { Modal, Timeline, Avatar, Typography, App, Badge } from 'antd';
 import { userApi } from '@/api/user';
 
-const PidPath = ({ pidPathUserId, setPidPathUserId, ...props }) => {
+const PidPath = ({ ref, ...props }) => {
     const { message } = App.useApp();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [userId, setUserId] = useState(0);
 
-    useEffect(() => {
-        setIsModalOpen(pidPathUserId ? true : false);
-        if (pidPathUserId) {
-            selectPidPathUser();
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id) => {
+            setUserId(id);
+            selectPidPathUser(id);
+            setOpen(true);
         }
-    }, [pidPathUserId])
+    }));
+
 
     const [list, setList] = useState([]);
-    const selectPidPathUser = () => {
+    const selectPidPathUser = (id) => {
         userApi.selectPidPathUser({
-            id: pidPathUserId
+            id: id
         }).then(res => {
             if (res.code === 1) {
                 let _list = [];
@@ -25,7 +29,7 @@ const PidPath = ({ pidPathUserId, setPidPathUserId, ...props }) => {
                         icon: <Badge count={index + 1} color="#faad14" size="small" />,
                         content: <>
                             <div style={{ display: 'flex' }}>
-                                <div style={{ flex: 1 ,display: 'flex'}}>
+                                <div style={{ flex: 1, display: 'flex' }}>
                                     <Avatar
                                         src={item?.img}
                                         style={{
@@ -43,7 +47,7 @@ const PidPath = ({ pidPathUserId, setPidPathUserId, ...props }) => {
                                     </div>
                                 </div>
                                 <div style={{ paddingLeft: '30px' }}>
-                                    
+
                                 </div>
                             </div>
                         </>
@@ -61,22 +65,21 @@ const PidPath = ({ pidPathUserId, setPidPathUserId, ...props }) => {
         <>
             <Modal
                 title="推荐路劲"
-                open={isModalOpen}
+                open={open}
                 footer={null}
                 onCancel={() => {
-                    setIsModalOpen(false);
-                    setPidPathUserId(null);
+                    setOpen(false);
                 }}
             >
                 <Timeline
                     styles={{
-						root: {
-                        	marginTop: 24,
-                        	maxHeight: 500,
-                        	overflowY: 'auto',
-                        	padding: '10px'
-                    	}
-					}}
+                        root: {
+                            marginTop: 24,
+                            maxHeight: 500,
+                            overflowY: 'auto',
+                            padding: '10px'
+                        }
+                    }}
                     items={list}
                 />
             </Modal>

@@ -52,14 +52,29 @@ const FieldsItem = ({ data, delFields, setUpdateData, createFields, fields, setF
     // 拖拽结束后
     const handleDragEnd = (event) => {
         const { active, over } = event;
+        console.log(active)
+        console.log(over)
+        console.log(fields)
         if (active.id !== over?.id) {
             // 先找是哪个组件的二级组件在排序
             let tmpIndex;
+            // 二级组件的类型，group还是formList
+            let tmpValueType;
             fields.some((item, index) => {
-                if (item.valueType == 'group' || item.valueType == 'formList') {
+                if (item.valueType == 'group') {
                     return item.columns.some((_item, _index) => {
                         if (_item.id == active.id) {
                             tmpIndex = index;
+                            tmpValueType = 'group';
+                            return true;
+                        }
+                    })
+                }
+                if (item.valueType == 'formList') {
+                    return item.columns[0].columns.some((_item, _index) => {
+                        if (_item.id == active.id) {
+                            tmpIndex = index;
+                            tmpValueType = 'formList';
                             return true;
                         }
                     })
@@ -68,11 +83,21 @@ const FieldsItem = ({ data, delFields, setUpdateData, createFields, fields, setF
             })
 
             let _fields = [...fields];
-            _fields[tmpIndex].columns = (() => {
-                const oldIndex = _fields[tmpIndex].columns.findIndex((i) => i.id === active.id);
-                const newIndex = _fields[tmpIndex].columns.findIndex((i) => i.id === over?.id);
-                return arrayMove(_fields[tmpIndex].columns, oldIndex, newIndex);
-            })();
+            if (tmpValueType == 'group') {
+                _fields[tmpIndex].columns = (() => {
+                    const oldIndex = _fields[tmpIndex].columns.findIndex((i) => i.id === active.id);
+                    const newIndex = _fields[tmpIndex].columns.findIndex((i) => i.id === over?.id);
+                    return arrayMove(_fields[tmpIndex].columns, oldIndex, newIndex);
+                })();
+            }
+            if (tmpValueType == 'formList') {
+                _fields[tmpIndex].columns[0].columns = (() => {
+                    const oldIndex = _fields[tmpIndex].columns[0].columns.findIndex((i) => i.id === active.id);
+                    const newIndex = _fields[tmpIndex].columns[0].columns.findIndex((i) => i.id === over?.id);
+                    return arrayMove(_fields[tmpIndex].columns[0].columns, oldIndex, newIndex);
+                })();
+            }
+
             setFields(_fields);
         }
     }
@@ -81,12 +106,12 @@ const FieldsItem = ({ data, delFields, setUpdateData, createFields, fields, setF
         <Card
             title={`${data.valueTypeTitle} ${data.valueType != 'group' && data.valueType != 'formList' ? data.name : ''}`}
             size="small"
-			styles={{
-				root: style
-			}}
+            styles={{
+                root: style
+            }}
             className={{
-				root: isDragging ? 'dragon' : ''
-			}}
+                root: isDragging ? 'dragon' : ''
+            }}
             ref={setNodeRef}
             {...attributes}
             {...listeners}

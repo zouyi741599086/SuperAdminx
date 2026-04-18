@@ -1,10 +1,9 @@
-import { useRef, useState, lazy } from 'react';
+import { useRef, useState, lazy, useImperativeHandle } from 'react';
 import {
     ModalForm,
 } from '@ant-design/pro-components';
 import { App } from 'antd';
 import { adminUserApi } from '@/api/adminUser';
-import { useUpdateEffect } from 'ahooks';
 import Lazyload from '@/component/lazyLoad/index';
 
 const Form1 = lazy(() => import('./../component/form1'));
@@ -15,24 +14,26 @@ const Form1 = lazy(() => import('./../component/form1'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const Update = ({ tableReload, updateId, setUpdateId, ...props }) => {
+const Update = ({ tableReload, ref, ...props }) => {
     const { message } = App.useApp();
     const formRef = useRef();
-    const open = updateId > 0;
+    const [open, setOpen] = useState(false);
+    const [currentId, setCurrentId] = useState(0);
 
-    const handleOpenChange = (_boolean) => {
-        if (!_boolean) {
-            Promise.resolve().then(() => {
-                setUpdateId(0);
-            });
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id) => {
+            setCurrentId(id);
+            setOpen(true);
+        }
+    }));
+
+    const handleOpenChange = (visible) => {
+        if (!visible) {
+            setOpen(false);
+            setCurrentId(0);
         }
     };
-
-    useUpdateEffect(() => {
-        if (updateId > 0) {
-            formRef.current?.resetFields?.();
-        }
-    }, [updateId]);
 
     return (
         <ModalForm
@@ -52,7 +53,7 @@ const Update = ({ tableReload, updateId, setUpdateId, ...props }) => {
                 destroyOnHidden: true,
             }}
             params={{
-                id: updateId
+                id: currentId
             }}
             request={async (params) => {
                 const result = await adminUserApi.findData(params);
@@ -66,13 +67,12 @@ const Update = ({ tableReload, updateId, setUpdateId, ...props }) => {
             }}
             onFinish={async (values) => {
                 const result = await adminUserApi.update({
-                    id: updateId,
+                    id: currentId,
                     ...values
                 });
                 if (result.code === 1) {
                     tableReload();
-                    message.success(result.message)
-                    formRef.current?.resetFields?.()
+                    message.success(result.message);
                     return true;
                 } else {
                     message.error(result.message)

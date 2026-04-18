@@ -52,11 +52,11 @@ const Balance = () => {
         })
     }
 
-    // 转账的用户id
-    const [turnUserId, setTurnUserId] = useState();
+    // 转账
+    const trunRef = useRef();
 
-    // 变更余额的用户id
-    const [updateBalanceUserId, setUpdateBalanceUserId] = useState();
+    // 变更余额
+    const updateBalanceRef = useRef();
 
     // 余额的类型配置
     const [balanceType, setBalanceType] = useState([])
@@ -129,7 +129,7 @@ const Balance = () => {
                     size="small"
                     disabled={authCheck('updateBalance')}
                     onClick={() => {
-                        setUpdateBalanceUserId(record.user_id);
+                        updateBalanceRef.current?.open(record.user_id);
                     }}
                 >变更余额</Button>
                 <Button
@@ -137,7 +137,7 @@ const Balance = () => {
                     size="small"
                     disabled={authCheck('balanceTurn')}
                     onClick={() => {
-                        setTurnUserId(record.user_id);
+                        trunRef.current?.open(record.user_id);
                     }}
                 >转账</Button>
             </>,
@@ -212,8 +212,7 @@ const Balance = () => {
                                 <UpdateBalance
                                     tableReload={tableReload}
                                     balanceType={balanceType}
-                                    updateBalanceUserId={updateBalanceUserId}
-                                    setUpdateBalanceUserId={setUpdateBalanceUserId}
+                                    ref={updateBalanceRef}
                                 />
                             </Lazyload>
                             {/* 账户转账 */}
@@ -221,8 +220,7 @@ const Balance = () => {
                                 <Turn
                                     tableReload={tableReload}
                                     balanceType={balanceType}
-                                    turnUserId={turnUserId}
-                                    setTurnUserId={setTurnUserId}
+                                    ref={trunRef}
                                 />
                             </Lazyload>
                         </Space>

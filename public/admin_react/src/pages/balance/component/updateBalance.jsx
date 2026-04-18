@@ -1,8 +1,7 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useImperativeHandle} from 'react';
 import { ModalForm, ProFormDependency } from '@ant-design/pro-components';
 import { balanceApi } from '@/api/balance';
 import { App } from 'antd';
-import { useUpdateEffect } from 'ahooks';
 import { ProFormDigit, ProFormSelect, ProFormText, ProFormRadio } from '@ant-design/pro-components';
 
 /**
@@ -23,24 +22,26 @@ const transformToLabelValueArray = (obj) => {
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const UpdateBalance = ({ tableReload, balanceType, updateBalanceUserId, setUpdateBalanceUserId, ...props }) => {
+const UpdateBalance = ({ tableReload, balanceType, ref, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
-    const open = updateBalanceUserId > 0;
+    const [open, setOpen] = useState(false);
+    const [userId, setUserId] = useState(0);
 
-    const handleOpenChange = (_boolean) => {
-        if (!_boolean) {
-            Promise.resolve().then(() => {
-                setUpdateBalanceUserId(0);
-            });
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id) => {
+            setUserId(id);
+            setOpen(true);
+        }
+    }));
+
+    const handleOpenChange = (visible) => {
+        if (!visible) {
+            setOpen(false);
+            setUserId(0);
         }
     };
-
-    useUpdateEffect(() => {
-        if (updateBalanceUserId > 0) {
-            formRef.current?.resetFields?.();
-        }
-    }, [updateBalanceUserId]);
 
     return <>
         <ModalForm
@@ -61,13 +62,12 @@ const UpdateBalance = ({ tableReload, balanceType, updateBalanceUserId, setUpdat
             }}
             onFinish={async (values) => {
                 const result = await balanceApi.updateBalance({
-                    user_id: updateBalanceUserId,
+                    user_id: userId,
                     ...values
                 });
                 if (result.code === 1) {
                     tableReload?.();
                     message.success(result.message)
-                    formRef.current?.resetFields?.()
                     return true;
                 } else {
                     message.error(result.message)

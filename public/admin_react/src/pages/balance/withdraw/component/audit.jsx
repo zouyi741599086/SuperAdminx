@@ -1,30 +1,36 @@
-import { useRef } from 'react';
+import { useRef, useState, useImperativeHandle } from 'react';
 import {
     ModalForm,
     ProFormTextArea,
 } from '@ant-design/pro-components';
 import { balanceWithdrawApi } from '@/api/balanceWithdraw';
 import { App } from 'antd';
-import { useUpdateEffect } from 'ahooks';
 
-const Audit = ({ tableReload, updateId, setUpdateId, updateStatusValue, ...props }) => {
+/**
+ * 审核拒绝 或 打款失败
+ */
+const Audit = ({ tableReload, ref, ...props }) => {
     const formRef = useRef();
     const { message } = App.useApp();
-    const open = updateId.length > 0;
+    const [open, setOpen] = useState(false);
+    const [currentId, setCurrentId] = useState(0);
+    const [status, setStatus] = useState(0);
 
-    const handleOpenChange = (_boolean) => {
-        if (!_boolean) {
-            Promise.resolve().then(() => {
-                setUpdateId([]);
-            });
+    // 暴露给父组件的方法
+    useImperativeHandle(ref, () => ({
+        open: (id, _status) => {
+            setCurrentId(id);
+            setStatus(_status);
+            setOpen(true);
+        }
+    }));
+
+    const handleOpenChange = (visible) => {
+        if (!visible) {
+            setOpen(false);
+            setCurrentId(0);
         }
     };
-
-    useUpdateEffect(() => {
-        if (updateId.length > 0) {
-            formRef.current?.resetFields?.();
-        }
-    }, [updateId]);
 
     return (
         <ModalForm
@@ -32,7 +38,7 @@ const Audit = ({ tableReload, updateId, setUpdateId, updateStatusValue, ...props
             formRef={formRef}
             open={open}
             onOpenChange={handleOpenChange}
-            title={updateStatusValue === 6 ? '审核拒绝' : '打款失败'}
+            title={status === 6 ? '审核拒绝' : '打款失败'}
             width={460}
             //第一个输入框获取焦点
             autoFocusFirstInput={true}
@@ -40,16 +46,18 @@ const Audit = ({ tableReload, updateId, setUpdateId, updateStatusValue, ...props
             isKeyPressSubmit={true}
             //不干掉null跟undefined 的数据
             omitNil={false}
+            modalProps={{
+                destroyOnHidden: true,
+            }}
             onFinish={async (values) => {
                 const result = await balanceWithdrawApi.updateStatus({
-                    id: updateId,
-                    status: updateStatusValue,
+                    id: currentId,
+                    status: status,
                     ...values
                 });
                 if (result.code === 1) {
                     tableReload();
                     message.success(result.message)
-                    formRef.current?.resetFields?.()
                     return true;
                 } else {
                     message.error(result.message)
@@ -58,7 +66,7 @@ const Audit = ({ tableReload, updateId, setUpdateId, updateStatusValue, ...props
         >
             <ProFormTextArea
                 name="reason"
-                label={updateStatusValue === 6 ? '拒绝理由' : '失败原因'}
+                label={status === 6 ? '拒绝理由' : '失败原因'}
                 placeholder="请输入"
                 rules={[
                     { required: true, message: '请输入' }

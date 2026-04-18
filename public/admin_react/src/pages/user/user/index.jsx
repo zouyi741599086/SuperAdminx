@@ -33,7 +33,7 @@ const User = () => {
     }
 
     // 要修改的数据
-    const [updateId, setUpdateId] = useState(0);
+    const updateRef = useRef();
 
 
     /////////////////////////导出////////////////////////
@@ -75,7 +75,7 @@ const User = () => {
     }
 
     // 查推荐路劲的用户
-    const [pidPathUserId, setPidPathUserId] = useState(null);
+    const pidPathRef = useRef();
 
     // 表格列
     const columns = [
@@ -188,7 +188,7 @@ const User = () => {
                         type="link"
                         size="small"
                         onClick={() => {
-                            setUpdateId(record.id)
+                            updateRef.current?.open(record.id);
                         }}
                         disabled={authCheck('userUpdate')}
                     >修改</Button>
@@ -196,7 +196,7 @@ const User = () => {
                         <Button
                             type="link"
                             onClick={() => {
-                                setPidPathUserId(record.id);
+                                pidPathRef.current?.open(record.id);
                             }}
                         >查推荐路劲</Button>
                     </> : ''}
@@ -254,12 +254,10 @@ const User = () => {
                             <Lazyload block={false}>
                                 <Update
                                     tableReload={tableReload}
-                                    updateId={updateId}
-                                    setUpdateId={setUpdateId}
+                                    ref={updateRef}
                                 />
                                 <PidPath
-                                    pidPathUserId={pidPathUserId}
-                                    setPidPathUserId={setPidPathUserId}
+                                    ref={pidPathRef}
                                 />
                             </Lazyload>
                         </>

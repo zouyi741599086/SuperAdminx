@@ -8,6 +8,7 @@ import {
 import { configApi } from '@/api/config';
 import { Alert, Skeleton, Space, App, Tooltip, Button,Card} from 'antd';
 import LazyLoad from '@/component/lazyLoad/index';
+import { config } from '@/common/config'
 import {
     ArrowUpOutlined,
     ArrowDownOutlined,
@@ -80,6 +81,9 @@ const UpdateConfig = ({ name, ...props }) => {
             name
         }).then(res => {
             if (res.code === 1) {
+                // 设置页面标题
+                document.title = `${config.projectName}-${res.data.title}`;
+
                 if (res.data.type === 'list') {
                     res.data.fields_config[0].fieldProps = {
                         // 一行显示4个字段，删除后就变为一行一个字段
