@@ -29,6 +29,7 @@ return [
                 'money_turn'               => '账户转账',
                 'money_lottery_zhongjiang' => '现金抽奖',
                 'money_shop_order_benefit' => '分销佣金',
+                'money_refund'             => '退款',
                 'money_top_up'             => '充值',
                 'money_other'              => '其它',
             ],

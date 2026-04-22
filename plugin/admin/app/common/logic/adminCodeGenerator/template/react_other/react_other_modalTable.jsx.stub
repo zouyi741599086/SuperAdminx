@@ -87,7 +87,7 @@ import { useRef, lazy, useState, useImperativeHandle} from 'react';
 import { ModalForm } from '@ant-design/pro-components';
 import { <?php echo $apiFileName;?>Api } from '@/api/<?php echo $apiFileName;?>';
 import { ProTable } from '@ant-design/pro-components';
-import { App, Button, Typography, <?php echo implode(', ',$antdComponent);?>} from 'antd';
+import { App, Button,Modal, Typography, <?php echo implode(', ',$antdComponent);?>} from 'antd';
 import {
     DeleteOutlined,
     PlusOutlined,
@@ -128,11 +128,9 @@ const <?php echo $tableNameToCamelCase;?> = ({ tableReload, ref, ...props }) => 
         }
     }));
 
-    const handleOpenChange = (visible) => {
-        if (!visible) {
-            setOpen(false);
-            setCurrentId(0);
-        }
+    const closeOpen = () => {
+        setCurrentId(0);
+        setOpen(false);
     };
 
     ///////////////////////////刷新表格数据///////////////////////
@@ -184,26 +182,12 @@ const <?php echo $tableNameToCamelCase;?> = ({ tableReload, ref, ...props }) => 
     ];
 
     return <>
-        <ModalForm
-            name="list<?php echo CodeGeneratorUtilLogic::toCamelCase($data['table_name']);?>"
+        <Modal
             open={open}
-            onOpenChange={handleOpenChange}
+            onCancel={closeOpen}
             title="<?php echo $data['react_other']['modal_table_title'] ?? '';?>"
-            //trigger={
-            //    <Button 
-            //        //type="primary" 
-            //        type="link"
-            //        size="small"
-            //        disabled={authCheck('<?php echo $data['react_other']['modal_table_auth_id'] ?? 0;?>')} 
-            //        icon={<EditOutlined />}
-            //    ><?php echo $data['react_other']['modal_table_title'] ?? '';?></Button>
-            //}
             width={1000}
-            layout="horizontal"
-            modalProps={{
-                destroyOnHidden: true,
-            }}
-            submitter={false}
+            footer={null}
         >
             <ProTable
                 actionRef={tableRef}
@@ -252,7 +236,7 @@ const <?php echo $tableNameToCamelCase;?> = ({ tableReload, ref, ...props }) => 
                 }}
 
             />
-        </ModalForm>
+        </Modal>
     </>;
 };
 

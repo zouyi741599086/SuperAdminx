@@ -14,7 +14,9 @@
     echo "
     public function get{$function_name}Attr(\$value, \$data)
     {\n";
-
+        if ($key == 'date') {
+            echo "        return date('Y-m-d', \$value);";
+        }
     echo "
     }\n\n";
 

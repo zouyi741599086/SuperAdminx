@@ -25,7 +25,7 @@ class ConfigQueryLogic
             true,
         )
             ->withoutField('content,fields_config')
-            ->order('sort asc,id desc')
+            ->order('sort desc,id desc')
             ->paginate($params['pageSize'] ?? 20);
     }
 

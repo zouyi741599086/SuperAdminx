@@ -125,15 +125,23 @@ const search_attrs = [
 // 修改器选择项
 const set_attrs = [
     {
-        value: '',
+        value: 'empty',
         label: '空函数',
+    },
+    {
+        value: 'date',
+        label: '日期转换',
     },
 ];
 // 获取器选择项
 const get_attrs = [
     {
-        value: '',
+        value: 'empty',
         label: '空函数',
+    },
+    {
+        value: 'date',
+        label: '日期转换',
     },
 ];
 // 关联模型的关系
@@ -368,9 +376,9 @@ const Model = ({ tableName, operationFile, ...props }) => {
                     }
                 }
             })
-            formRef.current.setFieldValue(['model', 'relevance'], formRelevance);
+            formRef.current?.setFieldValue?.(['model', 'relevance'], formRelevance);
         }
-    }, [tableCloumnList, data, mysqlConfig, formRef])
+    }, [tableCloumnList, data, mysqlConfig, formRef.current])
 
 
     return <>

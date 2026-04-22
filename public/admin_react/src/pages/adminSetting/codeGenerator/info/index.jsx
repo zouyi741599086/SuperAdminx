@@ -112,7 +112,9 @@ const Info = () => {
                     title: '提示',
                     content: res.message,
                     keyboard: true,
-                    maskClosable: true,
+                    mask: {
+                        closable: true,
+                    },
                     onOk: () => {
                         operationFile(name, true);
                     }

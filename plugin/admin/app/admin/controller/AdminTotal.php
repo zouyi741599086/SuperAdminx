@@ -33,20 +33,8 @@ class AdminTotal
      */
     public function index(Request $request) : Response
     {
-        // 待发货的订单
-        $data['shop_order_fahuo'] = ShopOrderModel::where('status', 20)
-            ->count();
-
-        // 待处理售后的订单
-        $data['shop_order_after_sales'] = ShopOrderAfterSalesModel::where('status', 'in', [10, 40, 50, 70])
-            ->count();
-
         // 待审核提现
         $data['balance_withdraw'] = BalanceWithdrawModel::where('status', 2)
-            ->count();
-
-        // 待发货积分订单
-        $data['integral_order'] = IntegralOrderModel::where('status', 10)
             ->count();
 
         return success($data, '获取成功');

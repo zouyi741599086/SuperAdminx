@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, lazy } from 'react';
 import { PageContainer } from '@ant-design/pro-components';
 import { payRecordApi } from '@/api/payRecord';
 import { ProTable } from '@ant-design/pro-components';
@@ -9,7 +9,9 @@ import {
     CloudDownloadOutlined,
 } from '@ant-design/icons';
 import SelectUser from '@/components/selectUser';
+import Lazyload from '@/component/lazyLoad/index';
 
+const RefundMoney = lazy(() => import('./component/refundMoney'));
 
 /**
  * 支付记录 
@@ -27,6 +29,9 @@ const PayRecord = () => {
         tableRef.current.reload();
         tableRef.current.clearSelected();
     }
+
+    // 退款
+    const refundRef = useRef();
 
     /////////////////////////导出////////////////////////
     const exportData = () => {
@@ -187,13 +192,6 @@ const PayRecord = () => {
             </>
         },
         {
-            title: '我方订单号',
-            dataIndex: 'out_trade_no',
-            search: true,
-            valueType: 'text',
-            copyable: true,
-        },
-        {
             title: '对方订单号',
             dataIndex: 'orderno',
             search: true,
@@ -207,11 +205,12 @@ const PayRecord = () => {
             },
         },
         {
-            title: '支付金额',
+            title: '金额',
             dataIndex: 'total',
             search: false,
             render: (_, record) => <>
-                <Typography.Text type="danger">￥{record.total}</Typography.Text>
+                <div>支付金额：<Typography.Text type="success">￥{record.total}</Typography.Text></div>
+                <div>已退金额：<Typography.Text type="danger">￥{record.total - record.refund_money}</Typography.Text></div>
             </>
         },
         {
@@ -221,7 +220,24 @@ const PayRecord = () => {
             valueType: 'dateRange',
             render: (_, record) => record.success_time,
         },
-
+        {
+            title: '操作',
+            dataIndex: 'action',
+            search: false,
+            render: (_, record) => <>
+                {record.refund_money > 0 ? <>
+                    <Button
+                        type="link"
+                        size="small"
+                        danger
+                        disabled={authCheck('payRecordRefundMoney')}
+                        onClick={() => {
+                            refundRef.current?.open(record.id);
+                        }}
+                    >退款</Button>
+                </> : '--'}
+            </>
+        },
     ];
     return (
         <>
@@ -263,6 +279,12 @@ const PayRecord = () => {
                                     >导出</Button>
                                 </Tooltip>
                             </Space>
+                            <Lazyload block={false}>
+                                <RefundMoney
+                                    tableReload={tableReload}
+                                    ref={refundRef}
+                                />
+                            </Lazyload>
                         </>
                     }
                     pagination={{
@@ -292,7 +314,16 @@ const PayRecord = () => {
                             total: result.data.total,
                         };
                     }}
-
+                    // expandable={{
+                    //     expandedRowRender: (record) => <>
+                    //         {record.type == 1 ? <>
+                    //             商城订单号：
+                    //             {record.ShopOrder.map(item => {
+                    //                 return <Typography.Paragraph copyable>{item.orderno}</Typography.Paragraph>
+                    //             })}
+                    //         </> : '--'}
+                    //     </>
+                    // }}
                 />
             </PageContainer>
         </>
