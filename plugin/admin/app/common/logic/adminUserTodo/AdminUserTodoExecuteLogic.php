@@ -1,7 +1,7 @@
 <?php
-namespace plugin\admin\app\common\logic\adminTodo;
+namespace plugin\admin\app\common\logic\adminUserTodo;
 
-use plugin\admin\app\common\model\AdminTodoModel;
+use plugin\admin\app\common\model\AdminUserTodoModel;
 use think\facade\Db;
 
 /**
@@ -10,7 +10,7 @@ use think\facade\Db;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-class AdminTodoExecuteLogic
+class AdminUserTodoExecuteLogic
 {
 
     /**
@@ -32,7 +32,7 @@ class AdminTodoExecuteLogic
                     ];
                 }
             }
-            $data && (new AdminTodoModel())->saveAll($data);
+            $data && (new AdminUserTodoModel())->saveAll($data);
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
@@ -48,7 +48,7 @@ class AdminTodoExecuteLogic
     {
         Db::startTrans();
         try {
-            AdminTodoModel::update($params);
+            AdminUserTodoModel::update($params);
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();
@@ -65,7 +65,7 @@ class AdminTodoExecuteLogic
     {
         Db::startTrans();
         try {
-            AdminTodoModel::where('id', 'in', $id)->update([
+            AdminUserTodoModel::where('id', 'in', $id)->update([
                 'status'        => $status,
                 'complete_time' => date('Y-m-d H:i:s'),
             ]);
@@ -82,6 +82,6 @@ class AdminTodoExecuteLogic
      */
     public function delete(int|array $id)
     {
-        AdminTodoModel::destroy($id);
+        AdminUserTodoModel::destroy($id);
     }
 }

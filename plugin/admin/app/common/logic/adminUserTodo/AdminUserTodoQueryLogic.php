@@ -1,7 +1,7 @@
 <?php
-namespace plugin\admin\app\common\logic\adminTodo;
+namespace plugin\admin\app\common\logic\adminUserTodo;
 
-use plugin\admin\app\common\model\AdminTodoModel;
+use plugin\admin\app\common\model\AdminUserTodoModel;
 
 /**
  * 待办事项 逻辑层
@@ -9,7 +9,7 @@ use plugin\admin\app\common\model\AdminTodoModel;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-class AdminTodoQueryLogic
+class AdminUserTodoQueryLogic
 {
 
     /**
@@ -21,7 +21,7 @@ class AdminTodoQueryLogic
      * */
     public function getList(array $params = [], array $with = [], array $withCount = [], bool $page = true)
     {
-        $list = AdminTodoModel::withSearch(
+        $list = AdminUserTodoModel::withSearch(
             ['admin_user_id', 'date', 'status'],
             $params,
             true,
@@ -55,7 +55,7 @@ class AdminTodoQueryLogic
         $endDate   = $endDate ?: date('Y-m-t');
         $startDate = date('Y-m-d', strtotime($startDate . ' -7 days')); // 减7天
         $endDate   = date('Y-m-d', strtotime($endDate . ' +14 days')); // 加14天
-        $stats     = AdminTodoModel::where('admin_user_id', $adminUserId)
+        $stats     = AdminUserTodoModel::where('admin_user_id', $adminUserId)
             ->whereBetweenTime('date', $startDate, $endDate)
             ->whereNotNull('date')
             ->fieldRaw("DATE(date) as stat_date")
@@ -81,6 +81,6 @@ class AdminTodoQueryLogic
      */
     public function findData(int $id, array $with = [])
     {
-        return AdminTodoModel::with($with)->find($id);
+        return AdminUserTodoModel::with($with)->find($id);
     }
 }

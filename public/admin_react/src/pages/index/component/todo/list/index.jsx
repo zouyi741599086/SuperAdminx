@@ -1,6 +1,6 @@
 import { useRef, lazy, useState, useImperativeHandle } from 'react';
 import { ProList } from '@ant-design/pro-components';
-import { adminTodoApi } from '@/api/adminTodo';
+import { adminUserTodoApi } from '@/api/adminUserTodo';
 import { App, Button, Modal, Tag, Popconfirm } from 'antd';
 import Lazyload from '@/component/lazyLoad/index';
 
@@ -12,7 +12,7 @@ const Update = lazy(() => import('./../update/index'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const AdminTodo = ({ tableReload, ref, ...props }) => {
+const adminUserTodo = ({ tableReload, ref, ...props }) => {
     const tableRef = useRef();
     const updateRef = useRef();
     const { message } = App.useApp();
@@ -40,7 +40,7 @@ const AdminTodo = ({ tableReload, ref, ...props }) => {
 
     //////////////////////////删除////////////////////////
     const del = (id) => {
-        adminTodoApi.delete({
+        adminUserTodoApi.delete({
             id
         }).then(res => {
             if (res.code === 1) {
@@ -55,7 +55,7 @@ const AdminTodo = ({ tableReload, ref, ...props }) => {
 
     ///////////////修改状态///////////////////
     const updateStatus = (id, status) => {
-        adminTodoApi.updateStatus({
+        adminUserTodoApi.updateStatus({
             id,
             status
         }).then(res => {
@@ -116,22 +116,24 @@ const AdminTodo = ({ tableReload, ref, ...props }) => {
                             >已完成</Button>
                         </Popconfirm>
                     );
-                    action.push(
-                        <Popconfirm
-                            key="delete"
-                            title="确认要删除吗？"
-                            onConfirm={() => { del(record.id) }}
-                        >
-                            <Button
-                                type="link"
-                                size="small"
-                                danger
-                            >删除</Button>
-                        </Popconfirm>
-                    );
+                    
                 } else {
                     action.push(`完成时间：${record.complete_time}`);
                 }
+				
+				action.push(
+                    <Popconfirm
+                        key="delete"
+                        title="确认要删除吗？"
+                        onConfirm={() => { del(record.id) }}
+                    >
+                        <Button
+                            type="link"
+                            size="small"
+                            danger
+                        >删除</Button>
+                    </Popconfirm>
+                );
                 return action;
             }
         },
@@ -162,7 +164,7 @@ const AdminTodo = ({ tableReload, ref, ...props }) => {
                 }}
                 // 请求数据
                 request={async (params = {}, sort, filter) => {
-                    const res = await adminTodoApi.getList({
+                    const res = await adminUserTodoApi.getList({
                         ...params,// 包含了翻页参数跟搜索参数
                     });
                     return {
@@ -177,4 +179,4 @@ const AdminTodo = ({ tableReload, ref, ...props }) => {
     </>;
 };
 
-export default AdminTodo;
+export default adminUserTodo;

@@ -1,8 +1,8 @@
-import { useState} from 'react'
+import { useState } from 'react'
 import { ProCard } from '@ant-design/pro-components';
 import { App, Statistic, Row, Col, Tooltip } from 'antd';
 import { adminTotalApi } from '@/api/adminTotal';
-import { useMount } from 'ahooks';
+import { useMount, useInterval } from 'ahooks';
 import { authCheck } from '@/common/function';
 import { useNavigate } from 'react-router';
 import {
@@ -23,6 +23,11 @@ const StatisticsCom = () => {
     useMount(() => {
         getData();
     })
+
+    // 每分钟获取一次数据
+    useInterval(() => {
+        getData();
+    }, 1000 * 60);
 
     const getData = () => {
         adminTotalApi.index().then(res => {

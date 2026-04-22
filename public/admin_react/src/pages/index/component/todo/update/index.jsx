@@ -1,6 +1,6 @@
 import { useRef, useState, useImperativeHandle } from 'react';
 import { ModalForm, ProFormTextArea, ProFormDateTimePicker  } from '@ant-design/pro-components';
-import { adminTodoApi } from '@/api/adminTodo';
+import { adminUserTodoApi } from '@/api/adminUserTodo';
 import dayjs from 'dayjs';
 import { App, Row, Col } from 'antd';
 
@@ -33,7 +33,7 @@ const Update = ({ tableReload, ref, ...props }) => {
 
     return <>
         <ModalForm
-            name="updateAdminTodo"
+            name="updateadminUserTodo"
             formRef={formRef}
             open={open}
             onOpenChange={handleOpenChange}
@@ -52,7 +52,7 @@ const Update = ({ tableReload, ref, ...props }) => {
                 id: currentId
             }}
             request={async (params) => {
-                const result = await adminTodoApi.findData(params);
+                const result = await adminUserTodoApi.findData(params);
                 if (result.code === 1) {
                     return result.data;
                 } else {
@@ -61,7 +61,7 @@ const Update = ({ tableReload, ref, ...props }) => {
                 }
             }}
             onFinish={async (values) => {
-                const result = await adminTodoApi.update({
+                const result = await adminUserTodoApi.update({
                     id: currentId,
                     ...values,
                     date: dayjs(values.date).format('YYYY-MM-DD HH:mm:ss'), // 时间格式化

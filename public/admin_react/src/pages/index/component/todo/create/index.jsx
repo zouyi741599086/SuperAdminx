@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { adminTodoApi } from '@/api/adminTodo';
+import { adminUserTodoApi } from '@/api/adminUserTodo';
 import { Button, App } from 'antd';
 import {
     ModalForm,
@@ -22,7 +22,7 @@ const Create = ({ tableReload, ...props }) => {
 
     return <>
         <ModalForm
-            name="createAdminTodo"
+            name="createadminUserTodo"
             formRef={formRef}
             title="添加待办事项"
             trigger={
@@ -48,10 +48,11 @@ const Create = ({ tableReload, ...props }) => {
                     item.date = dayjs(item.date).format('YYYY-MM-DD HH:mm')
                     return item
                 })
-                const result = await adminTodoApi.create(values);
+                const result = await adminUserTodoApi.create(values);
                 if (result.code === 1) {
                     tableReload?.();
                     message.success(result.message);
+                    formRef.current?.resetFields();
                     return true;
                 } else {
                     message.error(result.message);

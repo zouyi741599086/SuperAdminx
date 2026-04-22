@@ -3,7 +3,7 @@ import { App, Button, Space, Calendar, Tooltip, Badge } from 'antd';
 import { ProCard } from '@ant-design/pro-components';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import Lazyload from '@/component/lazyLoad/index';
-import { adminTodoApi } from '@/api/adminTodo';
+import { adminUserTodoApi } from '@/api/adminUserTodo';
 import { useMount } from 'ahooks';
 
 const Create = lazy(() => import('./create/index'));
@@ -20,7 +20,7 @@ const Todo = () => {
 
     // 获取当前月的待办事项总数
     const getMonthCount = (start_date = null, end_date = null) => {
-        adminTodoApi.getMonthCount({ start_date, end_date }).then(result => {
+        adminUserTodoApi.getMonthCount({ start_date, end_date }).then(result => {
             if (result.code === 1) {
                 setMonthCount(result.data);
             } else {

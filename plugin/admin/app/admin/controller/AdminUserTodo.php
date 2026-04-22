@@ -1,7 +1,7 @@
 <?php
 namespace plugin\admin\app\admin\controller;
 
-use plugin\admin\app\common\service\AdminTodoService;
+use plugin\admin\app\common\service\AdminUserTodoService;
 use support\Request;
 use support\Response;
 
@@ -11,7 +11,7 @@ use support\Response;
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-class AdminTodo
+class AdminUserTodo
 {
 
     // 此控制器是否需要登录
@@ -22,7 +22,7 @@ class AdminTodo
     protected $noNeedEncrypt = [];
 
     public function __construct(
-        private AdminTodoService $adminTodoService,
+        private AdminUserTodoService $adminUserTodoService,
     ) {}
 
     /**
@@ -33,7 +33,9 @@ class AdminTodo
      */
     public function getList(Request $request) : Response
     {
-        $list = $this->adminTodoService->getList(params: $request->get(), page: false)->select();
+        $params                  = $request->get();
+        $params['admin_user_id'] = $request->adminUser->id;
+        $list                    = $this->adminUserTodoService->getList(params: $params, page: false)->select();
         return success($list);
     }
 
@@ -47,7 +49,7 @@ class AdminTodo
      */
     public function getMonthCount(Request $request, ?string $start_date = null, ?string $end_date = null) : Response
     {
-        $list = $this->adminTodoService->getMonthCount($request->adminUser->id, $start_date, $end_date);
+        $list = $this->adminUserTodoService->getMonthCount($request->adminUser->id, $start_date, $end_date);
         return success($list);
     }
 
@@ -59,7 +61,7 @@ class AdminTodo
      */
     public function create(Request $request) : Response
     {
-        $this->adminTodoService->create($request->post(), $request->adminUser->id);
+        $this->adminUserTodoService->create($request->post(), $request->adminUser->id);
         return success([], '添加成功');
     }
 
@@ -72,7 +74,7 @@ class AdminTodo
      */
     public function findData(Request $request, int $id) : Response
     {
-        $data = $this->adminTodoService->findData($id);
+        $data = $this->adminUserTodoService->findData($id);
         return success($data);
     }
 
@@ -84,7 +86,7 @@ class AdminTodo
      */
     public function update(Request $request) : Response
     {
-        $this->adminTodoService->update($request->post());
+        $this->adminUserTodoService->update($request->post());
         return success([], '修改成功');
     }
 
@@ -98,7 +100,7 @@ class AdminTodo
      */
     public function updateStatus(Request $request, int $id, int $status) : Response
     {
-        $this->adminTodoService->updateStatus($id, $status);
+        $this->adminUserTodoService->updateStatus($id, $status);
         return success();
     }
 
@@ -110,7 +112,7 @@ class AdminTodo
      */
     public function delete(Request $request) : Response
     {
-        $this->adminTodoService->delete($request->post('id'));
+        $this->adminUserTodoService->delete($request->post('id'));
         return success([], '删除成功');
     }
 }
