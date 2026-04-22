@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50726
 File Encoding         : 65001
 
-Date: 2026-04-22 10:52:00
+Date: 2026-04-22 12:04:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,11 +78,13 @@ CREATE TABLE `sa_admin_log` (
   `request_post` longtext COLLATE utf8mb4_unicode_ci COMMENT '请求的post参数',
   `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='总后台-系统操作日志';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='总后台-系统操作日志';
 
 -- ----------------------------
 -- Records of sa_admin_log
 -- ----------------------------
+INSERT INTO `sa_admin_log` VALUES ('1', '邹意', '18819806503', '新增待办事项', '127.0.0.1', '//localhost:8888/app/admin/admin/AdminUserTodo/create', '{\"host\":\"localhost:8888\",\"connection\":\"keep-alive\",\"content-length\":\"110\",\"sec-ch-ua-platform\":\"\\\"Windows\\\"\",\"sec-ch-ua\":\"\\\"Google Chrome\\\";v=\\\"147\\\", \\\"Not.A\\/Brand\\\";v=\\\"8\\\", \\\"Chromium\\\";v=\\\"147\\\"\",\"sec-ch-ua-mobile\":\"?0\",\"superadminxkeysecret\":\"qIJF08EXegL0PqdAjhpGv0QCyTwpLL7pYVovmG1YHxCfZberi+S9C\\/TQ4GVAGDY9bhCFLxjTFgBoT\\/dBw8na9bUVRh7o4SVZXTvkHVfpNo7KydEeJo2P67ye5Fg4X52wbi8OB1sOqg1XZEm8\\/QuU5FaeavrILdrSDBWMWGwMCNEiO0VgW\\/\\/ufferqrhIU8OSRFNdjz8Ak6xGbXTfeX4mu98n2hGzOIPs5DYn+ewrhZHf6DZmka+TqEgeqlwSHlvZHg2O7N13HRGWD63EZamsAy0j86VIMdiur2m93lQ07OTPLb4dAGQjoY3MfmoOtf81zUzhnc5hFNKlDgG6ry4w9w==\",\"user-agent\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/147.0.0.0 Safari\\/537.36\",\"accept\":\"application\\/json, text\\/plain, *\\/*\",\"content-type\":\"application\\/json;charset=UTF-8\",\"token\":\"WMz6xObEcfuKtACPa3ph\\/J9m\\/gm42D0CEqRIzcKfX9E50xHQHbxDIOtKqTFFElrH+84A70hcjU6w8+rVOBbTkl+7wlAOo7w49ranVawALY\\/lWJb5zd2PQ25CZzwf1TjmG9lHl9ZIXWVfwpsb4KoVUmzo6IpV1jmW9FznrHc4IA+eFUk9E\\/8yWtjJRzvZXdlAmEZ72g1fURtq\\/lVW9zIy2SMrhdI1k5ry4hlMEdfWk0M7sDR3p+2c67JwFb283QwnfI1YuL8Isx8cHAIGRnAGzbNmEoYsiRFE2mU9MecB7xRfRyCI3Tu5VPR1ns9e7HPWVkmEdGyEEXjTfvcFw30YbA==\",\"origin\":\"http:\\/\\/localhost:5200\",\"sec-fetch-site\":\"same-site\",\"sec-fetch-mode\":\"cors\",\"sec-fetch-dest\":\"empty\",\"referer\":\"http:\\/\\/localhost:5200\\/\",\"accept-encoding\":\"gzip, deflate, br, zstd\",\"accept-language\":\"zh-CN,zh;q=0.9\"}', '[]', '{\"list\":[{\"date\":\"2026-04-25 00:00\",\"content\":\"\\u53d1\\u751f\\u7684\"},{\"date\":\"2026-04-26 00:00\",\"content\":\"\\u53d1\\u751f\\u7684\"}]}', '2026-04-22 12:01:22');
+INSERT INTO `sa_admin_log` VALUES ('2', '邹意', '18819806503', '修改待办事项状态', '127.0.0.1', '//localhost:8888/app/admin/admin/AdminUserTodo/updateStatus', '{\"host\":\"localhost:8888\",\"connection\":\"keep-alive\",\"content-length\":\"20\",\"sec-ch-ua-platform\":\"\\\"Windows\\\"\",\"sec-ch-ua\":\"\\\"Google Chrome\\\";v=\\\"147\\\", \\\"Not.A\\/Brand\\\";v=\\\"8\\\", \\\"Chromium\\\";v=\\\"147\\\"\",\"sec-ch-ua-mobile\":\"?0\",\"superadminxkeysecret\":\"qIiDJsIRDuGdEl4zbopnK+kp7uKv\\/oC+YYDY0x0iq\\/5as2kWXLOwwpia8QgApjWP\\/zR61KOP6szrxmQzR0mGOTba+oJV0Wjo0G5Nt+B8NAPf5DsrH9fOmyp2TE4y1\\/3YIhOxlRsR93axoeM5o6W2zm1engnqL6d8QGjmGJjEESN5CKBbjGPqBjq4TsgcBwCH12YsmeJOjB67ILTrm9mA54TF5KEsZW3UlZzyXq455izY3IO62GdckK0jkB0Kq2oNmMZKpFpVM0qGy7W1aR+5diCcUbRoTitRaH0TLktmWdSdlnTGY7eoP8zunm0cGlA9bvz1xyGW9dV4nritodbhPQ==\",\"user-agent\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/147.0.0.0 Safari\\/537.36\",\"accept\":\"application\\/json, text\\/plain, *\\/*\",\"content-type\":\"application\\/json;charset=UTF-8\",\"token\":\"phC8EtnzWLFK7kENcXLePTJQDy8JZ66uN464j\\/ovliCmMvN6LQ2q3ghFcGU62RQGTGiOB\\/JHJaxuzvUXwY2o\\/rDO3jY7wxpBYOBK69IxtLdj44BFM5ZAbSOu3joeFk6H6oNrDbVBniE9try3snLRwbs4xRqJPY165f+nxCWH+R6tFFWSyKeqvoYx1hnmbNHeV2Da7oMZWyJYp6gdu4WQ56H5sUcovIsVB4uvvyRpPa4DlIDh2aUHEvnNsf0ceL5yTTm\\/E9xcahk\\/LqGj7Tm36wIfwIycMjpTFE6a77K\\/XxPLTsc0QptrxUbOMm6wnHoVgg7mMTULXzcB14WcWSEgDA==\",\"origin\":\"http:\\/\\/localhost:5200\",\"sec-fetch-site\":\"same-site\",\"sec-fetch-mode\":\"cors\",\"sec-fetch-dest\":\"empty\",\"referer\":\"http:\\/\\/localhost:5200\\/\",\"accept-encoding\":\"gzip, deflate, br, zstd\",\"accept-language\":\"zh-CN,zh;q=0.9\"}', '[]', '{\"id\":10,\"status\":2}', '2026-04-22 12:01:25');
 
 -- ----------------------------
 -- Table structure for sa_admin_menu
@@ -310,31 +312,6 @@ INSERT INTO `sa_admin_role_menu` VALUES ('7051', '30', '1805');
 INSERT INTO `sa_admin_role_menu` VALUES ('7052', '30', '1803');
 
 -- ----------------------------
--- Table structure for sa_admin_todo
--- ----------------------------
-DROP TABLE IF EXISTS `sa_admin_todo`;
-CREATE TABLE `sa_admin_todo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `admin_user_id` int(11) NOT NULL,
-  `date` datetime DEFAULT NULL COMMENT '日期',
-  `content` text COMMENT '内容',
-  `status` tinyint(1) DEFAULT '1' COMMENT '状态，1》为完成，2》已完成',
-  `create_time` datetime DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  `complete_time` datetime DEFAULT NULL COMMENT '完成时间',
-  PRIMARY KEY (`id`),
-  KEY `fk_sa_admin_todo_sa_admin_user1_idx` (`admin_user_id`),
-  CONSTRAINT `fk_sa_admin_todo_sa_admin_user1` FOREIGN KEY (`admin_user_id`) REFERENCES `sa_admin_user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='后台管理用户-待办事项';
-
--- ----------------------------
--- Records of sa_admin_todo
--- ----------------------------
-INSERT INTO `sa_admin_todo` VALUES ('7', '1', '2026-04-22 00:00:00', '测试111', '1', '2026-04-22 10:36:33', '2026-04-22 10:36:33', null);
-INSERT INTO `sa_admin_todo` VALUES ('8', '1', '2026-04-30 00:00:00', '测试2222', '2', '2026-04-22 10:36:33', '2026-04-22 10:36:33', '2026-04-22 10:36:40');
-INSERT INTO `sa_admin_todo` VALUES ('9', '1', '2026-04-22 08:00:00', '测试33334', '1', '2026-04-22 10:36:33', '2026-04-22 10:36:47', null);
-
--- ----------------------------
 -- Table structure for sa_admin_user
 -- ----------------------------
 DROP TABLE IF EXISTS `sa_admin_user`;
@@ -361,8 +338,8 @@ CREATE TABLE `sa_admin_user` (
 -- ----------------------------
 -- Records of sa_admin_user
 -- ----------------------------
-INSERT INTO `sa_admin_user` VALUES ('1', '2', 'superadminx', '$2y$10$zwGrjAyuByV4qROeJkXxt.7zO/.pafmaO3tWtb.QYWU4nLDZnP1i6', '1', '1', '邹意发生的发生的', '18819806503', '/storage/default-tx.png', '2026-04-22 10:32:18', '127.0.0.1', '2023-03-22 16:04:08', '2026-04-22 10:32:19');
-INSERT INTO `sa_admin_user` VALUES ('76', '1', 'admin', '$2y$10$KtWHQ552b2V8.Az1XT7i5u9OVeP2WdGH/gfSmAuelL723awErKt7O', '29', '1', '邹意', '18819806503', '/storage/default-tx.png', '2026-01-21 17:02:02', '127.0.0.1', '2024-07-09 14:41:00', '2026-01-21 17:02:03');
+INSERT INTO `sa_admin_user` VALUES ('1', '2', 'superadminx', '$2y$10$zwGrjAyuByV4qROeJkXxt.7zO/.pafmaO3tWtb.QYWU4nLDZnP1i6', '1', '1', '邹意发生的发生的', '18819806503', '/storage/default-tx.png', '2026-04-22 12:00:46', '127.0.0.1', '2023-03-22 16:04:08', '2026-04-22 12:00:47');
+INSERT INTO `sa_admin_user` VALUES ('76', '1', 'admin', '$2y$10$KtWHQ552b2V8.Az1XT7i5u9OVeP2WdGH/gfSmAuelL723awErKt7O', '29', '1', '邹意', '18819806503', '/storage/default-tx.png', '2026-04-22 12:00:52', '127.0.0.1', '2024-07-09 14:41:00', '2026-04-22 12:00:53');
 INSERT INTO `sa_admin_user` VALUES ('82', '1', '123456', '$2y$10$O8WtXx7ZZa/ezgLsZjugHOmnXgEvBpVdJZeck19oHYSV1skoSPF2a', '29', '1', '测试', '13996482451', '/storage/default-tx.png', '2025-09-04 15:06:01', '', '2025-09-04 14:47:17', '2026-03-05 17:01:21');
 INSERT INTO `sa_admin_user` VALUES ('83', '1', '123456123456', '$2y$10$LoXV/0fK2oIM.MygWKpPHe/IFEZkoQmQ.agn6bFgFigBA.27AugcC', '29', '1', '123456', '13345612345', '', null, '', '2026-03-05 17:00:29', '2026-03-05 17:00:29');
 
@@ -390,6 +367,33 @@ CREATE TABLE `sa_admin_user_shortcut_menu` (
 -- ----------------------------
 INSERT INTO `sa_admin_user_shortcut_menu` VALUES ('1', '1', '1413', null, '1');
 INSERT INTO `sa_admin_user_shortcut_menu` VALUES ('2', '1', '1416', null, '2');
+
+-- ----------------------------
+-- Table structure for sa_admin_user_todo
+-- ----------------------------
+DROP TABLE IF EXISTS `sa_admin_user_todo`;
+CREATE TABLE `sa_admin_user_todo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `admin_user_id` int(11) NOT NULL,
+  `date` datetime DEFAULT NULL COMMENT '日期',
+  `content` text COMMENT '内容',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态，1》为完成，2》已完成',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `complete_time` datetime DEFAULT NULL COMMENT '完成时间',
+  PRIMARY KEY (`id`),
+  KEY `fk_sa_admin_todo_sa_admin_user1_idx` (`admin_user_id`),
+  CONSTRAINT `fk_sa_admin_todo_sa_admin_user1` FOREIGN KEY (`admin_user_id`) REFERENCES `sa_admin_user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COMMENT='后台管理用户-待办事项';
+
+-- ----------------------------
+-- Records of sa_admin_user_todo
+-- ----------------------------
+INSERT INTO `sa_admin_user_todo` VALUES ('7', '1', '2026-04-22 00:00:00', '测试111', '2', '2026-04-22 10:36:33', '2026-04-22 10:36:33', '2026-04-22 12:00:59');
+INSERT INTO `sa_admin_user_todo` VALUES ('8', '1', '2026-04-30 00:00:00', '测试2222', '2', '2026-04-22 10:36:33', '2026-04-22 10:36:33', '2026-04-22 10:36:40');
+INSERT INTO `sa_admin_user_todo` VALUES ('9', '1', '2026-04-22 08:00:00', '测试33334', '1', '2026-04-22 10:36:33', '2026-04-22 10:36:47', null);
+INSERT INTO `sa_admin_user_todo` VALUES ('10', '76', '2026-04-25 00:00:00', '发生的', '2', '2026-04-22 12:01:22', '2026-04-22 12:01:22', '2026-04-22 12:01:25');
+INSERT INTO `sa_admin_user_todo` VALUES ('11', '76', '2026-04-26 00:00:00', '发生的', '1', '2026-04-22 12:01:22', '2026-04-22 12:01:22', null);
 
 -- ----------------------------
 -- Table structure for sa_balance
@@ -5064,7 +5068,7 @@ CREATE TABLE `sa_token` (
   `token` varchar(32) DEFAULT NULL COMMENT '存的token',
   PRIMARY KEY (`id`),
   UNIQUE KEY `token_UNIQUE` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='登录用户的token';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='登录用户的token';
 
 -- ----------------------------
 -- Records of sa_token
@@ -5077,6 +5081,8 @@ INSERT INTO `sa_token` VALUES ('5', 'SuperAdminx_admin_1', 'e99f8b3a45c94ed3fcf6
 INSERT INTO `sa_token` VALUES ('6', 'SuperAdminx_admin_1', '14f35aec1cd959f5e70fbf232fae22ae');
 INSERT INTO `sa_token` VALUES ('7', 'SuperAdminx_admin_1', '90545889c5ebfd13790242105692bbfb');
 INSERT INTO `sa_token` VALUES ('8', 'SuperAdminx_admin_1', '867b8d1f533024f688f10a175cb71bb4');
+INSERT INTO `sa_token` VALUES ('9', 'SuperAdminx_admin_1', 'e2d9cfd295b92a3829a1deab574ff9bc');
+INSERT INTO `sa_token` VALUES ('10', 'SuperAdminx_admin_76', '0194e61a554b048a3893226ae430969f');
 
 -- ----------------------------
 -- Table structure for sa_user
