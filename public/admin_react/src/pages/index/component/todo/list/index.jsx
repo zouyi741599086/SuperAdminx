@@ -12,7 +12,7 @@ const Update = lazy(() => import('./../update/index'));
  * @author zy <741599086@qq.com>
  * @link https://www.superadminx.com/
  * */
-const adminUserTodo = ({ tableReload, ref, ...props }) => {
+const AdminUserTodo = ({ tableReload, ref, ...props }) => {
     const tableRef = useRef();
     const updateRef = useRef();
     const { message } = App.useApp();
@@ -79,6 +79,10 @@ const adminUserTodo = ({ tableReload, ref, ...props }) => {
         {
             dataIndex: 'content',
             listSlot: 'description',
+            render: (_, record) => <>
+                {record.content}
+                {record.status === 2 ? <><br /><small>完成时间：{record.complete_time}</small></> : ''}
+            </>,
         },
         {
             dataIndex: 'status',
@@ -111,14 +115,12 @@ const adminUserTodo = ({ tableReload, ref, ...props }) => {
                             onConfirm={() => { updateStatus(record.id, 2) }}
                         >
                             <Button
-                                type="link"
+                                variant="link"
                                 size="small"
+                                color="green"
                             >已完成</Button>
                         </Popconfirm>
                     );
-                    
-                } else {
-                    action.push(`完成时间：${record.complete_time}`);
                 }
 				
 				action.push(
@@ -179,4 +181,4 @@ const adminUserTodo = ({ tableReload, ref, ...props }) => {
     </>;
 };
 
-export default adminUserTodo;
+export default AdminUserTodo;

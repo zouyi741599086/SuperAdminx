@@ -19,7 +19,7 @@ import { useMount } from 'ahooks';
  * @param {string} startYearMonth 年月，如 2022-01
  * @returns 
  */
-function getMonthsBetween(startYearMonth) {
+const getMonthsBetween = (startYearMonth) => {
     const [startYear, startMonth] = startYearMonth.split('-').map(Number);
     const now = new Date();
     const currentYear = now.getFullYear();
@@ -51,7 +51,6 @@ function getMonthsBetween(startYearMonth) {
  */
 const transformToLabelValueArray = (obj) => {
     return Object.entries(obj).map(([value, label]) => ({
-        label: label,
         value: value
     }));
 };
@@ -121,7 +120,7 @@ const Details = () => {
             // 过滤掉没得明细的余额
             _balanceType = _balanceType.filter(item => item.details == true);
 
-            setTtopList(_balanceType);
+            _balanceType.length > 1 && setTtopList(_balanceType);
             setTopKey(_balanceType[0].key);
         } else {
             message.error(resut.message);
@@ -234,6 +233,7 @@ const Details = () => {
         }
 
     }, [topKey, topList]);
+
     return (
         <>
             <PageContainer

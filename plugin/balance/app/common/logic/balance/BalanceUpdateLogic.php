@@ -23,7 +23,7 @@ class BalanceUpdateLogic
      * @param array $params
      * @return void
      */
-    public function updateBalance(array $params): void
+    public function updateBalance(array $params) : void
     {
         Db::startTrans();
         try {
@@ -64,8 +64,15 @@ class BalanceUpdateLogic
                 ],
             );
 
-            // 增加明细
-            $this->detailsExecuteLogic->create($params);
+            // 增加明细，先判断是否有明细
+            $balanceTypeList = config('plugin.balance.superadminx.balance_type', 'array');
+            foreach ($balanceTypeList as $key => $value) {
+                if ($value['field'] == $params['balance_type'] && $value['details']) {
+                    $this->detailsExecuteLogic->create($params);
+                    break;
+                }
+            }
+
             Db::commit();
         } catch (\Throwable $e) {
             Db::rollback();

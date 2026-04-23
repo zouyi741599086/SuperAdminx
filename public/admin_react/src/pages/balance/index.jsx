@@ -161,7 +161,6 @@ const Balance = () => {
 
     return (
         <>
-
             <PageContainer
                 className="sa-page-container"
                 ghost

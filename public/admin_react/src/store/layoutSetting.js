@@ -4,9 +4,9 @@ import { storage } from '@/common/function';
 const storeKey = 'layoutSetting';
 // 默认值
 const defaultValue = storage.get(storeKey) || {
-    layoutValue: "slide", // 布局方式
+    layoutValue: "slide", // 布局方式 slide slideSplitMenus left top topSplitMenus
     antdThemeValue: 'default', // 整体主题 default dark compact
-    primaryColorValue: "#f5222d", // 主题色
+    primaryColorValue: "#f5222d", // 主题色 #f5222d #1677ff #13c2c2 #fa541c #faad14 #52c41a #2f54eb #722ed1 #cb00bf
     bodyFilterValue: false, // 色弱模式
     themeSimple: false, // 简约风，就是没得背景
     isRadius: false, // 导航、顶部等是否圆角

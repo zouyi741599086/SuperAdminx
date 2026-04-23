@@ -1,7 +1,7 @@
 <?php
 namespace plugin\balance\app\common\logic\balance;
 
-use plugin\shop\app\common\model\PayRecordModel;
+use plugin\payRecord\app\common\model\PayRecordModel;
 use support\Log;
 use app\utils\PayUtils;
 
